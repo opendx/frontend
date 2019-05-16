@@ -6,8 +6,11 @@
         <el-table-column label="变量名" align="center" prop="name" />
         <el-table-column label="变量值" align="center" prop="value" />
         <el-table-column label="描述" align="center" prop="description" />
-        <el-table-column label="创建人" align="center" prop="creatorNickName" />
-        <el-table-column label="创建时间" align="center" prop="createTime" />
+        <el-table-column label="创建时间" align="center">
+          <template scope="{ row }">
+            {{ row.creatorNickName + ' ' + row.createTime }}
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="200" align="center">
           <template scope="{ row }">
             <el-button type="primary" @click="updateGlobalVar(row)">修改</el-button>
