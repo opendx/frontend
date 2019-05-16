@@ -21,8 +21,8 @@
         <el-table-column label="创建时间" align="center" prop="createTime" />
         <el-table-column label="操作" width="200" align="center">
           <template scope="{ row }">
-            <el-button size="small" type="primary" @click="updateProject(row)">修改</el-button>
-            <el-button size="small" type="danger" @click="deleteProject(row)">删除</el-button>
+            <el-button type="primary" @click="updateProject(row)">修改</el-button>
+            <el-button type="danger" @click="deleteProject(row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
