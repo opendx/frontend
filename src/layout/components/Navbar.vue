@@ -18,10 +18,18 @@
 
       </template>
 
+      <el-select v-model="projectId" placeholder="选择一个项目" style="top: -15px" size="mini" @visible-change="selectProject" @change="selectedProject">
+        <el-option
+          v-for="project in projectList"
+          :key="project.id"
+          :label="project.name"
+          :value="project.id"
+        />
+      </el-select>
+
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+        <div>
+          {{ name }}
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/profile/index">
@@ -53,6 +61,7 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
+import { getProjectList } from '@/api/project'
 
 export default {
   components: {
@@ -66,9 +75,25 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
+      'name',
       'avatar',
       'device'
     ])
+  },
+  data() {
+    return {
+      projectList: [],
+      projectId: null
+    }
+  },
+  async created() {
+    this.projectId = this.$store.state.project.id
+    this.projectList = [
+      {
+        id: this.projectId,
+        name: this.$store.state.project.name
+      }
+    ]
   },
   methods: {
     toggleSideBar() {
@@ -77,6 +102,20 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    selectProject(type) {
+      if (type) {
+        // el-select展开
+        getProjectList().then(response => {
+          this.projectList = response.data
+        })
+      }
+    },
+    selectedProject(projectId) {
+      const selectedProject = this.projectList.filter(project => project.id === projectId)
+      this.$store.dispatch('project/setId', selectedProject[0].id)
+      this.$store.dispatch('project/setType', selectedProject[0].type)
+      this.$store.dispatch('project/setName', selectedProject[0].name)
     }
   }
 }
@@ -140,7 +179,7 @@ export default {
     }
 
     .avatar-container {
-      margin-right: 30px;
+      /*margin-right: 30px;*/
 
       .avatar-wrapper {
         margin-top: 5px;
