@@ -123,6 +123,22 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/device',
+    component: Layout,
+    name: 'Device',
+    meta: {
+      icon: 'deviceControl'
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/pages/device/list'),
+        name: 'ListDevice',
+        meta: { title: '设备列表', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/project',
     component: Layout,
     name: 'Project',
