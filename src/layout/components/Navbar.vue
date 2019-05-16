@@ -29,7 +29,7 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div>
-          {{ name }}
+          <svg-icon icon-class="people" /><span style="font-size: 15px; margin-left: 5px">{{ name }}</span>
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/profile/index">
@@ -179,7 +179,7 @@ export default {
     }
 
     .avatar-container {
-      /*margin-right: 30px;*/
+      margin-right: 10px;
 
       .avatar-wrapper {
         margin-top: 5px;
