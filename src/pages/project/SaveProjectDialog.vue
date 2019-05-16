@@ -16,10 +16,10 @@
       </el-form-item>
     </el-form>
 
-    <div slot="footer" class="dialog-footer">
+    <span slot="footer">
       <el-button @click="cancel()">取 消</el-button>
       <el-button type="primary" @click="saveProject()">保 存</el-button>
-    </div>
+    </span>
   </el-dialog>
 </template>
 <script>
