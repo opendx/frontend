@@ -121,6 +121,36 @@ export const constantRoutes = [
         meta: { title: 'Profile', icon: 'user', noCache: true }
       }
     ]
+  },
+  {
+    path: '/project',
+    component: Layout,
+    name: 'Project',
+    meta: {
+      title: '项目',
+      icon: 'project'
+    },
+    children: [
+      {
+        path: 'add',
+        component: () => import('@/pages/project/add'),
+        name: 'AddProject',
+        meta: { title: '添加项目', noCache: true }
+      },
+      {
+        path: 'update',
+        component: () => import('@/pages/project/update'),
+        name: 'UpdateProject',
+        meta: { title: '更新项目', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/pages/project/list'),
+        name: 'ListProject',
+        meta: { title: '项目列表', noCache: true }
+      }
+    ]
   }
 ]
 
