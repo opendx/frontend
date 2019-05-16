@@ -3,7 +3,7 @@
     <!--查询-->
     <div>
       <el-select v-model="queryForm.type" placeholder="项目类型" clearable>
-        <el-option v-for="projectType in projectTypes" :label="projectType.name" :value="projectType.type" :key="projectType.type"></el-option>
+        <el-option v-for="projectType in projectTypes" :key="projectType.type" :label="projectType.name" :value="projectType.type" />
       </el-select>
       <el-button type="primary" @click="onQueryBtnClick">查询</el-button>
     </div>
@@ -19,9 +19,8 @@
         <el-table-column label="项目描述" align="center" prop="description" />
         <el-table-column label="创建人" align="center" prop="creatorNickName" />
         <el-table-column label="创建时间" align="center" prop="createTime" />
-        <el-table-column label="操作" width="300" align="center">
+        <el-table-column label="操作" width="200" align="center">
           <template scope="{ row }">
-            <el-button size="small" type="success" @click="selectProject(row)">选择</el-button>
             <el-button size="small" type="primary" @click="updateProject(row)">修改</el-button>
             <el-button size="small" type="danger" @click="deleteProject(row)">删除</el-button>
           </template>
@@ -77,19 +76,6 @@ export default {
       this.$router.push({
         name: 'UpdateProject',
         params: project
-      })
-    },
-    // 选择项目
-    selectProject(project) {
-      this.$confirm('切换到该项目', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$store.dispatch('setProjectId', project.id)
-        this.$store.dispatch('setProjectType', project.type)
-        this.$store.dispatch('setProjectName', project.name)
-        window.location.reload()
       })
     },
     deleteProject(project) {
