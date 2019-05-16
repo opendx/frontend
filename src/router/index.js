@@ -151,6 +151,36 @@ export const constantRoutes = [
         meta: { title: '项目列表', noCache: true }
       }
     ]
+  },
+  {
+    path: '/globalVar',
+    component: Layout,
+    name: 'GlobalVar',
+    meta: {
+      title: '全局变量',
+      icon: 'globalvar'
+    },
+    children: [
+      {
+        path: 'add',
+        component: () => import('@/pages/globalvar/add'),
+        name: 'AddGlobalVar',
+        meta: { title: '添加全部变量', noCache: true }
+      },
+      {
+        path: 'update',
+        component: () => import('@/pages/globalvar/update'),
+        name: 'UpdateGlobalVar',
+        meta: { title: '更新全局变量', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/pages/globalvar/list'),
+        name: 'ListGlobalVar',
+        meta: { title: '全局变量列表', noCache: true }
+      }
+    ]
   }
 ]
 

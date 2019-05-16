@@ -12,7 +12,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="项目描述">
-        <el-input v-model.trim="project.description" type="textarea" clearable style="width: 300px" />
+        <el-input v-model.trim="project.description" type="textarea" style="width: 300px" />
       </el-form-item>
     </el-form>
 
