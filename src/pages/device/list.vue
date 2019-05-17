@@ -59,7 +59,7 @@ export default {
     },
     btnText(row) {
       const status = row.status
-      return status === 0 ? '离线' : status === 1 ? '[' + row.username + ']使用中' : '使用'
+      return status === 0 ? '离线' : status === 1 ? '[' + row.username + ']使用中' : '立即使用'
     }
   },
   data() {
