@@ -52,11 +52,7 @@ export default {
   },
   created() {
     if (!this.isAdd) {
-      const _project = this.$route.params
-      this.project.id = _project.id
-      this.project.name = _project.name
-      this.project.description = _project.description
-      this.project.type = _project.type
+      this.project = this.$route.params
     }
   },
   methods: {

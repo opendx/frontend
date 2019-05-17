@@ -40,11 +40,7 @@ export default {
   },
   created() {
     if (!this.isAdd) {
-      const _globalVar = this.$route.params
-      this.globalVar.id = _globalVar.id
-      this.globalVar.name = _globalVar.name
-      this.globalVar.value = _globalVar.value
-      this.globalVar.description = _globalVar.description
+      this.globalVar = this.$route.params
     }
   },
   methods: {
