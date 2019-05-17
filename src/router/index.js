@@ -151,20 +151,20 @@ export const constantRoutes = [
         path: 'add',
         component: () => import('@/pages/project/add'),
         name: 'AddProject',
-        meta: { title: '添加项目', noCache: true }
+        meta: { title: '添加', noCache: true }
       },
       {
         path: 'update',
         component: () => import('@/pages/project/update'),
         name: 'UpdateProject',
-        meta: { title: '更新项目', noCache: true },
+        meta: { title: '更新', noCache: true },
         hidden: true
       },
       {
         path: 'list',
         component: () => import('@/pages/project/list'),
         name: 'ListProject',
-        meta: { title: '项目列表', noCache: true }
+        meta: { title: '列表', noCache: true }
       }
     ]
   },
@@ -181,20 +181,20 @@ export const constantRoutes = [
         path: 'add',
         component: () => import('@/pages/globalvar/add'),
         name: 'AddGlobalVar',
-        meta: { title: '添加全部变量', noCache: true }
+        meta: { title: '添加', noCache: true }
       },
       {
         path: 'update',
         component: () => import('@/pages/globalvar/update'),
         name: 'UpdateGlobalVar',
-        meta: { title: '更新全局变量', noCache: true },
+        meta: { title: '更新', noCache: true },
         hidden: true
       },
       {
         path: 'list',
         component: () => import('@/pages/globalvar/list'),
         name: 'ListGlobalVar',
-        meta: { title: '全局变量列表', noCache: true }
+        meta: { title: '列表', noCache: true }
       }
     ]
   }
