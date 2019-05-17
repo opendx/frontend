@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import SaveGlobalVarDialog from './SaveGlobalVarDialog'
+import SaveGlobalVarDialog from './components/SaveGlobalVarDialog'
 export default {
   components: {
     SaveGlobalVarDialog

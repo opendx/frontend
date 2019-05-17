@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import SaveProjectDialog from './SaveProjectDialog'
+import SaveProjectDialog from './components/SaveProjectDialog'
 export default {
   components: {
     SaveProjectDialog
