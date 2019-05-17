@@ -1,10 +1,15 @@
 <template>
   <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
-      <keep-alive :include="cachedViews">
-        <router-view :key="key" />
-      </keep-alive>
-    </transition>
+    <div :style="leftStyle">
+      <transition name="fade-transform" mode="out-in">
+        <keep-alive :include="cachedViews">
+          <router-view :key="key" />
+        </keep-alive>
+      </transition>
+    </div>
+    <div v-if="showDevice" style="width: 450px;height:100%;position: fixed;top: 50px;right: 0;background-color: #0a76a4">
+      1234
+    </div>
   </section>
 </template>
 
@@ -12,6 +17,12 @@
 export default {
   name: 'AppMain',
   computed: {
+    leftStyle() {
+      return this.$store.state.device.show ? 'width: calc(100% - 450px)' : ''
+    },
+    showDevice() {
+      return this.$store.state.device.show
+    },
     cachedViews() {
       return this.$store.state.tagsView.cachedViews
     },

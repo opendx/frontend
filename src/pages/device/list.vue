@@ -17,14 +17,14 @@
         </el-table-column>
         <el-table-column label="设备id" align="center" prop="id" />
         <el-table-column label="设备名" align="center" prop="name" />
-        <el-table-column label="系统版本" align="center" prop="systemVersion" />
-        <el-table-column label="分辨率" align="center">
+        <el-table-column label="系统版本" align="center" prop="systemVersion" width="50" />
+        <el-table-column label="分辨率" align="center" width="100">
           <template scope="{ row }">
             {{ row.screenHeight + 'x' + row.screenWidth }}
           </template>
         </el-table-column>
         <el-table-column label="cpu" align="center" prop="cpuInfo" />
-        <el-table-column label="内存" align="center" prop="memSize" />
+        <el-table-column label="内存" align="center" prop="memSize" width="80" />
         <el-table-column label="agent ip" align="center" prop="agentIp" />
         <el-table-column label="操作" align="center">
           <template scope="{ row }">
@@ -92,22 +92,19 @@ export default {
       this.fetchDeviceList()
     },
     useDevice(device) {
-      if (this.$store.state.mGlobleVar.openDebugDeviceWindow) {
+      if (this.$store.state.device.show) {
         this.$notify.error('只能使用一台手机')
         return
       }
-
-      // 先租用手机
-      deviceStart(device.id).then(resp => {
+      deviceStart(device.id).then(() => {
         // 设备改为使用中
         device.username = this.$store.state.user.name
         device.status = 1
 
-        this.$store.dispatch('setAgentIp', device.agentIp)
-        this.$store.dispatch('setAgentPort', device.agentPort)
-        this.$store.dispatch('setDeviceId', device.id)
-        // 开启手机远程调试窗口
-        this.$store.dispatch('openDebugWindow', device)
+        this.$store.dispatch('device/setAgentIp', device.agentIp)
+        this.$store.dispatch('device/setAgentPort', device.agentPort)
+        this.$store.dispatch('device/setId', device.id)
+        this.$store.dispatch('device/setShow', true)
       })
     },
 
