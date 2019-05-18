@@ -2,17 +2,17 @@
   <div class="app-container">
     <!--查询-->
     <div>
-      <el-select v-model="queryForm.type" placeholder="项目类型" clearable>
-        <el-option v-for="projectType in projectTypes" :key="projectType.type" :label="projectType.name" :value="projectType.type" />
+      <el-select v-model="queryForm.platform" placeholder="平台" clearable>
+        <el-option v-for="platform in platforms" :key="platform.type" :label="platform.name" :value="platform.type" />
       </el-select>
       <el-button type="primary" @click="onQueryBtnClick">查询</el-button>
     </div>
     <!-- 列表 -->
     <div style="margin-top: 10px">
       <el-table :data="projectList" highlight-current-row border>
-        <el-table-column label="项目类型" align="center">
+        <el-table-column label="平台" align="center">
           <template scope="{ row }">
-            {{ row.type === 1 ? 'Android' : 'iOS' }}
+            {{ row.platform === 1 ? 'Android' : 'iOS' }}
           </template>
         </el-table-column>
         <el-table-column label="项目名称" align="center" prop="name" />
@@ -48,7 +48,7 @@ export default {
   },
   data() {
     return {
-      projectTypes: [
+      platforms: [
         {
           type: 1,
           name: 'Android'
@@ -63,7 +63,7 @@ export default {
       queryForm: {
         pageNum: 1,
         pageSize: 10,
-        type: null
+        platform: null
       }
     }
   },

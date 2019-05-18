@@ -1,17 +1,17 @@
 <template>
   <el-dialog :title="title" :visible="true" :show-close="false">
-    <el-form :data="project" label-width="80px">
-      <el-form-item label="项目名称" :rules="[{required: true}]">
+    <el-form :data="project" label-width="60px">
+      <el-form-item label="名称" :rules="[{required: true}]">
         <el-input v-model.trim="project.name" clearable style="width: 300px" />
       </el-form-item>
-      <el-form-item label="项目类型" :rules="[{required: true}]">
-        <el-radio-group v-model="project.type" :disabled="!isAdd">
-          <el-radio v-for="projectType in projectTypes" :key="projectType.type" :label="projectType.type">
-            {{ projectType.name }}
+      <el-form-item label="平台" :rules="[{required: true}]">
+        <el-radio-group v-model="project.platform" :disabled="!isAdd">
+          <el-radio v-for="platform in platforms" :key="platform.type" :label="platform.type">
+            {{ platform.name }}
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="项目描述">
+      <el-form-item label="描述">
         <el-input v-model.trim="project.description" type="textarea" style="width: 300px" />
       </el-form-item>
     </el-form>
@@ -32,7 +32,7 @@ export default {
   data() {
     return {
       title: this.isAdd ? '添加项目' : '更新项目',
-      projectTypes: [
+      platforms: [
         {
           type: 1,
           name: 'Android'
@@ -46,7 +46,7 @@ export default {
         id: null,
         name: '',
         description: '',
-        type: null
+        platform: null
       }
     }
   },
