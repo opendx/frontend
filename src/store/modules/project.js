@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 
 const state = {
   id: Cookies.get('projectId') || null,
-  type: Cookies.get('projectType') || null,
+  platform: Cookies.get('platform') || null,
   name: Cookies.get('projectName') || null
 }
 
@@ -10,8 +10,8 @@ const mutations = {
   SET_ID(state, id) {
     state.id = id
   },
-  SET_TYPE(state, type) {
-    state.type = type
+  SET_PLATFORM(state, platform) {
+    state.platform = platform
   },
   SET_NAME(state, name) {
     state.name = name
@@ -23,9 +23,9 @@ const actions = {
     Cookies.set('projectId', id)
     commit('SET_ID', id)
   },
-  setType({ commit }, type) {
-    Cookies.set('projectType', type)
-    commit('SET_TYPE', type)
+  setPlatform({ commit }, platform) {
+    Cookies.set('platform', platform)
+    commit('SET_PLATFORM', platform)
   },
   setName({ commit }, name) {
     Cookies.set('projectName', name)
