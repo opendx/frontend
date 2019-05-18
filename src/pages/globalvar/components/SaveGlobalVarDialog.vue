@@ -1,10 +1,10 @@
 <template>
   <el-dialog :title="title" :visible="true" :show-close="false">
     <el-form :data="globalVar" label-width="100px">
-      <el-form-item label="全局变量名" :rules="[{required: true}]">
+      <el-form-item label="变量名" :rules="[{required: true}]">
         <el-input v-model.trim="globalVar.name" clearable style="width: 300px" :disabled="!isAdd" />
       </el-form-item>
-      <el-form-item label="全局变量值" :rules="[{required: true}]">
+      <el-form-item label="变量值" :rules="[{required: true}]">
         <el-input v-model.trim="globalVar.value" clearable style="width: 300px" />
       </el-form-item>
       <el-form-item label="描述">
