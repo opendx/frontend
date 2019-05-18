@@ -32,7 +32,7 @@
     </div>
     <!--分页-->
     <div>
-      <pagination v-show="total>0" :total="total" :page.sync="queryForm.pageNum" :limit.sync="queryForm.pageSize" @pagination="fetchProjectList()" />
+      <pagination v-show="total>0" :total="total" :page.sync="queryForm.pageNum" :limit.sync="queryForm.pageSize" @pagination="fetchProjectList" />
     </div>
   </div>
 </template>

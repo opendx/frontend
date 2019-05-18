@@ -17,8 +17,8 @@
     </el-form>
 
     <span slot="footer">
-      <el-button @click="cancel()">取 消</el-button>
-      <el-button type="primary" @click="saveProject()">保 存</el-button>
+      <el-button @click="cancel">取 消</el-button>
+      <el-button type="primary" @click="saveProject">保 存</el-button>
     </span>
   </el-dialog>
 </template>

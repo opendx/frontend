@@ -169,6 +169,44 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/page',
+    component: Layout,
+    name: 'Page',
+    meta: {
+      title: 'Page',
+      icon: 'page'
+    },
+    children: [
+      {
+        path: 'update',
+        component: () => import('@/pages/page/update'),
+        name: 'UpdatePage',
+        meta: { title: '更新', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/pages/page/list'),
+        name: 'ListPage',
+        meta: { title: 'Page', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/category',
+    component: Layout,
+    name: 'Category',
+    children: [
+      {
+        path: 'addPageCategory',
+        component: () => import('@/pages/category/addPageCategory'),
+        name: 'AddPageCategory',
+        meta: { title: '添加Page分类', noCache: true },
+        hidden: true
+      }
+    ]
+  },
+  {
     path: '/globalVar',
     component: Layout,
     name: 'GlobalVar',

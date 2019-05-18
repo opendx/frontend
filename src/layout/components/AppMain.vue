@@ -8,19 +8,19 @@
       </transition>
     </div>
     <div v-if="showDevice" style="width: 450px;height:100%;position: fixed;top: 50px;right: 0;background-color: #0a76a4">
-      <device-controller />
+      <!--<device-controller />-->
     </div>
   </section>
 </template>
 
 <script>
-import DeviceController from '@/pages/device/components/Controller'
+// import DeviceController from '@/pages/device/components/Controller'
 
 export default {
   name: 'AppMain',
-  components: {
-    DeviceController
-  },
+  // components: {
+  //   DeviceController
+  // },
   computed: {
     leftStyle() {
       return this.$store.state.device.show ? 'width: calc(100% - 450px)' : ''

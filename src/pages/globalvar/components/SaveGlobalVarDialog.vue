@@ -13,8 +13,8 @@
     </el-form>
 
     <div slot="footer">
-      <el-button @click="cancel()">取 消</el-button>
-      <el-button type="primary" @click="saveGlobalVar()">保 存</el-button>
+      <el-button @click="cancel">取 消</el-button>
+      <el-button type="primary" @click="saveGlobalVar">保 存</el-button>
     </div>
   </el-dialog>
 </template>
