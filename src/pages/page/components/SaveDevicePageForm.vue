@@ -1,37 +1,43 @@
 <template>
   <div>
-    <el-form :model="savePageForm" label-width="100px">
-      <el-form-item label="page名" :rules="[{required: true}]">
-        <el-input v-model="savePageForm.name" clearable />
-      </el-form-item>
-      <el-form-item label="分类">
-        <el-select v-model="savePageForm.categoryId" clearable filterable @visible-change="getPageCategoryList">
-          <el-option v-for="category in pageCategoryList" :key="category.id" :value="category.id" :label="category.name" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="描述">
-        <el-input v-model="savePageForm.description" clearable />
-      </el-form-item>
-      <el-form-item label="图片下载地址">
-        <el-input v-model="savePageForm.imgUrl" clearable />
-      </el-form-item>
-      <el-form-item label="图片高">
-        <el-input v-model="savePageForm.imgHeight" clearable />
-      </el-form-item>
-      <el-form-item label="图片宽">
-        <el-input v-model="savePageForm.imgWidth" clearable />
-      </el-form-item>
-      <el-form-item label="图片布局">
-        <el-input v-model="savePageForm.windowHierarchyJson" clearable />
-      </el-form-item>
-      <el-form-item label="设备id">
-        <el-input v-model="savePageForm.deviceId" clearable />
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="savePage">保 存</el-button>
-      </el-form-item>
-    </el-form>
+    <el-row :gutter="10">
+      <el-col :span="12">
+        <el-form :model="savePageForm" label-width="100px">
+          <el-form-item label="page名" :rules="[{required: true}]">
+            <el-input v-model="savePageForm.name" clearable />
+          </el-form-item>
+          <el-form-item label="分类">
+            <el-select v-model="savePageForm.categoryId" clearable filterable @visible-change="getPageCategoryList">
+              <el-option v-for="category in pageCategoryList" :key="category.id" :value="category.id" :label="category.name" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="描述">
+            <el-input v-model="savePageForm.description" clearable />
+          </el-form-item>
+          <el-form-item label="图片下载地址">
+            <el-input v-model="savePageForm.imgUrl" clearable :disabled="isAdd" />
+          </el-form-item>
+          <el-form-item label="图片高">
+            <el-input v-model="savePageForm.imgHeight" clearable :disabled="isAdd" />
+          </el-form-item>
+          <el-form-item label="图片宽">
+            <el-input v-model="savePageForm.imgWidth" clearable :disabled="isAdd" />
+          </el-form-item>
+          <el-form-item label="图片布局">
+            <el-input v-model="savePageForm.windowHierarchyJson" clearable :disabled="isAdd" />
+          </el-form-item>
+          <el-form-item label="设备id">
+            <el-input v-model="savePageForm.deviceId" clearable :disabled="isAdd" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="savePage">保 存</el-button>
+          </el-form-item>
+        </el-form>
+      </el-col>
+      <el-col :span="12">
+        <img :src="savePageForm.imgUrl" style="width: 320px">
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
@@ -48,7 +54,7 @@ export default {
       savePageForm: {
         id: undefined,
         name: '',
-        projectId: this.projectId,
+        projectId: undefined,
         categoryId: undefined,
         description: '',
         imgUrl: '',
@@ -68,23 +74,25 @@ export default {
   created() {
     if (!this.isAdd) {
       this.fetchPageCategoryList() // 防止el-select只显示category id
-      this.savePageForm = this.$route.params
     }
+    this.savePageForm = this.$route.params
+    this.savePageForm.projectId = this.projectId
   },
   methods: {
-    cancel() {
-      this.$emit('cancel')
-    },
     savePage() {
       if (this.isAdd) {
         addPage(this.savePageForm).then(response => {
           this.$notify.success(response.msg)
-          this.$emit('saveSuccess')
+          this.$router.push({
+            path: '/page/list'
+          })
         })
       } else {
         updatePage(this.savePageForm).then(response => {
           this.$notify.success(response.msg)
-          this.$emit('saveSuccess')
+          this.$router.push({
+            path: '/page/list'
+          })
         })
       }
     },

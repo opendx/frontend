@@ -7,6 +7,7 @@
         </keep-alive>
       </transition>
     </div>
+    <!--这里先写死450-->
     <div v-if="showDevice" style="width: 450px;height:100%;position: fixed;top: 50px;right: 0;background-color: #0a76a4">
       <android-controller />
     </div>
@@ -23,6 +24,7 @@ export default {
   },
   computed: {
     leftStyle() {
+      // 这里先写死450
       return this.$store.state.device.show ? 'width: calc(100% - 450px)' : ''
     },
     showDevice() {

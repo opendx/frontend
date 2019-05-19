@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <save-device-page-form :is-add="false" />
+    <save-device-page-form :is-add="true" />
   </div>
 </template>
 

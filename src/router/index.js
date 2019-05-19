@@ -178,6 +178,13 @@ export const constantRoutes = [
     },
     children: [
       {
+        path: 'add',
+        component: () => import('@/pages/page/add'),
+        name: 'AddPage',
+        meta: { title: '添加', noCache: true },
+        hidden: true
+      },
+      {
         path: 'update',
         component: () => import('@/pages/page/update'),
         name: 'UpdatePage',
