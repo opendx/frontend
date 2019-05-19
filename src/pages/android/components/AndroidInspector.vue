@@ -1,31 +1,24 @@
 <template>
   <div>
     <!--gutter 列的间距-->
-    <el-row :gutter="5">
+    <el-row style="height: 800px">
       <!--左侧图片-->
-      <el-col :span="8">
-        <el-card align="center" style="height:650px;overflow: auto;">
-          <canvas id="inspectorCanvas" :width="imgInfo.imgWidth" :height="imgInfo.imgHeight" style="width: 320px;position: absolute" />
-          <img :src="imgInfo.downloadURL" style="width: 320px">
-        </el-card>
+      <el-col :span="8" align="center" style="height: 100%;overflow: auto">
+        <canvas id="inspectorCanvas" :width="imgInfo.imgWidth" :height="imgInfo.imgHeight" style="width: 320px;position: absolute" />
+        <img :src="imgInfo.downloadURL" style="width: 320px">
       </el-col>
       <!--中间布局树-->
-      <el-col :span="9">
-        <el-card align="center" style="height:650px;overflow: auto">
-          <el-tree ref="tree" v-loading="treeLoading" :data="treeData" :props="defaultProps" highlight-current :expand-on-click-node="false" node-key="id" :default-expanded-keys="currentExpandedKey" @node-click="nodeClick" />
-        </el-card>
+      <el-col :span="9" align="center" style="height: 100%;overflow: auto">
+        <el-tree ref="tree" v-loading="treeLoading" :data="treeData" :props="defaultProps" highlight-current :expand-on-click-node="false" node-key="id" :default-expanded-keys="currentExpandedKey" @node-click="nodeClick" />
       </el-col>
       <!--右侧控件信息-->
-      <el-col :span="7" style="font-size: 14px;">
-        <el-card style="height: 650px;overflow: auto">
-          <el-alert title="点击即可复制到粘贴板" type="success" style="margin-bottom: 10px" />
-          <ul style="list-style: none;word-break: break-all;padding: 0px">
-            <li v-for="(value,key) in nodeDetail" style="border-bottom: 1px solid #eee">
-              <label style="width: 100px;display: inline-block;">{{ key }}</label>
-              <div v-clipboard:copy="value" v-clipboard:success="onCopy" title="click to copy" style="display: inline;color: #8cc5ff;cursor: pointer;">{{ value }}</div>
-            </li>
-          </ul>
-        </el-card>
+      <el-col :span="7" style="height: 100%;overflow: auto;font-size: 14px;">
+        <ul style="list-style: none;word-break: break-all;padding: 0px">
+          <li v-for="(value,key) in nodeDetail" :key="key" style="border-bottom: 1px solid #eee">
+            <label style="width: 100px;display: inline-block;">{{ key }}</label>
+            <div v-clipboard:copy="value" v-clipboard:success="onCopy" title="click to copy" style="display: inline;color: #8cc5ff;cursor: pointer;">{{ value }}</div>
+          </li>
+        </ul>
       </el-col>
     </el-row>
   </div>
@@ -34,8 +27,12 @@
 <script>
 import _ from 'lodash'
 import { getXPath, getXPathLite } from '@/utils/xpath'
+import clipboard from '@/directive/clipboard/index.js'
 
 export default {
+  directives: {
+    clipboard
+  },
   props: {
     imgInfo: Object,
     windowHierarchyJSON: Object,
@@ -222,9 +219,5 @@ export default {
   /*选中tree时候的背景色*/
   .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
     background-color: #8cc5ff;
-  }
-  /*tree字体*/
-  .el-tree-node__label {
-    font-size: 5px;
   }
 </style>

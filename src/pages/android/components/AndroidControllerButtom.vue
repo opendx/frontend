@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-popover v-model="showAndroidCapture" placement="left" trigger="manual" width="1000px" height="100%">
+    <el-popover v-model="showAndroidCapture" placement="left" trigger="manual">
       <div v-if="showAndroidCapture">
-        <android-capture />
+        <android-capture @addPageClicked="showAndroidCapture = false" />
       </div>
       <el-button slot="reference" @click="showAndroidCapture = !showAndroidCapture">
         <svg-icon icon-class="capture" height="100%" />
