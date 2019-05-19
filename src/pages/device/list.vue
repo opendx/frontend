@@ -17,7 +17,7 @@
         </el-table-column>
         <el-table-column label="设备id" align="center" prop="id" />
         <el-table-column label="设备名" align="center" prop="name" />
-        <el-table-column label="系统版本" align="center" prop="systemVersion" width="50" />
+        <el-table-column label="系统版本" align="center" prop="systemVersion" width="120" />
         <el-table-column label="分辨率" align="center" width="100">
           <template scope="{ row }">
             {{ row.screenHeight + 'x' + row.screenWidth }}

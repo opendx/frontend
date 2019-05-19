@@ -2,7 +2,8 @@ const state = {
   show: false,
   agentIp: null,
   agentPort: null,
-  id: null
+  id: null,
+  port: null
 }
 
 const mutations = {
@@ -13,6 +14,7 @@ const mutations = {
       state.agentIp = null
       state.agentPort = null
       state.id = null
+      state.port = null
     }
   },
   SET_AGENT_IP(state, agentIp) {
@@ -23,6 +25,9 @@ const mutations = {
   },
   SET_ID(state, id) {
     state.id = id
+  },
+  SET_PORT(state, port) {
+    state.port = port
   }
 }
 
@@ -38,6 +43,9 @@ const actions = {
   },
   setId({ commit }, id) {
     commit('SET_ID', id)
+  },
+  setPort({ commit }, port) {
+    commit('SET_PORT', port)
   }
 }
 
