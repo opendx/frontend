@@ -2,7 +2,7 @@
   <div>
     <el-popover v-model="showAndroidCapture" placement="left" trigger="manual">
       <div v-if="showAndroidCapture">
-        <android-capture @addPageClicked="showAndroidCapture = false" />
+        <android-capture @closeAndroidCapture="showAndroidCapture = false" />
       </div>
       <el-button slot="reference" @click="showAndroidCapture = !showAndroidCapture">
         <svg-icon icon-class="capture" height="100%" />
@@ -12,6 +12,7 @@
     <el-button size="mini" @click="clickHome">Home</el-button>
     <el-button size="mini" @click="clickBack">Back</el-button>
     <el-button size="mini" @click="clickPower">Power</el-button>
+    <el-button size="mini" @click="clickClose">Close</el-button>
     <el-popover placement="left" trigger="click">
       <!-- 安装APP -->
       <el-upload drag action="/" :on-change="onChange" :multiple="false" :auto-upload="false">
@@ -131,6 +132,9 @@ export default {
     // 点击power
     clickPower() {
       this.minitouchWebsocket.send(JSON.stringify(this.power))
+    },
+    clickClose() {
+      this.$store.state.device.show = false // AppMain.vue在v-if销毁右侧控制设备组件
     }
   }
 }

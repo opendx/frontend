@@ -2,6 +2,7 @@
   <div style="width: 1400px;height: 900px;margin-bottom: 10px">
     <i class="el-icon-refresh" style="font-size: 20px;color: green" title="重新获取" @click="refresh" />
     <i class="el-icon-circle-plus" style="font-size: 20px;color: black" title="添加page" @click="addPage" />
+    <i class="el-icon-error" style="font-size: 20px;color: black" title="关闭" @click="destoryCurrentComponent" />
     <!-- inspector -->
     <div>
       <android-inspector :img-info="imgInfo" :window-hierarchy-j-s-o-n="windowHierarchyJSONObject" :tree-loading="treeLoading" />
@@ -66,7 +67,7 @@ export default {
       this.fetchData()
     },
     addPage() {
-      this.$emit('addPageClicked')
+      this.destoryCurrentComponent()
       this.$router.push({
         name: 'AddPage',
         params: {
@@ -77,6 +78,9 @@ export default {
           windowHierarchyJson: JSON.stringify(this.windowHierarchyJSONObject)
         }
       })
+    },
+    destoryCurrentComponent() {
+      this.$emit('closeAndroidCapture')
     }
   }
 }
