@@ -1,21 +1,10 @@
 <template>
-  <div>
-    <el-row style="margin-bottom: 3px">
-      <el-card>
-        <!--<svg-icon icon-class="android" style="vertical-align: middle;margin-right: 10px"></svg-icon>-->
-        <!--<el-button size="mini" type="primary" v-clipboard:copy="addPageForm.imgUrl" v-clipboard:success="copyImgURL">复制图片地址</el-button>-->
-        <!--<el-button size="mini" type="primary" v-clipboard:copy="addPageForm.windowHierarchyJson" v-clipboard:success="copyTreeData">复制布局树</el-button>-->
-        <el-button size="mini" type="success" icon="el-icon-refresh" @click="refresh" />
-      </el-card>
-    </el-row>
-
+  <div style="width: 1400px;height: 820px;margin-bottom: 10px">
+    <i class="el-icon-refresh" style="font-size: 20px;color: green" title="重新获取" @click="refresh" />
+    <i class="el-icon-circle-plus" style="font-size: 20px;color: black" title="添加page" @click="addPage" />
     <!-- inspector -->
-    <div style="margin-bottom: 3px">
-      <android-inspector :img-info="imgInfo" :window-hierarchy-j-s-o-n="windowHierarchyJSONObject" :tree-loading="treeLoading" />
-    </div>
-
     <div>
-      <save-device-page-form :is-add="true" />
+      <android-inspector :img-info="imgInfo" :window-hierarchy-j-s-o-n="windowHierarchyJSONObject" :tree-loading="treeLoading" />
     </div>
   </div>
 </template>
@@ -23,13 +12,11 @@
 <script>
 import { dump, screenshot } from '@/api/agent'
 import AndroidInspector from './AndroidInspector'
-import SaveDevicePageForm from '@/pages/page/components/SaveDevicePageForm'
 
 export default {
 
   components: {
-    AndroidInspector,
-    SaveDevicePageForm
+    AndroidInspector
   },
   data() {
     return {
@@ -67,7 +54,6 @@ export default {
       this.treeLoading = true
       dump(this.agentIp, this.agentPort, this.deviceId).then(response => {
         this.windowHierarchyJSONObject = JSON.parse(response.data)
-        // this.addPageForm.windowHierarchyJson = JSON.stringify(this.windowHierarchyJSONObject)
       }).finally(() => {
         this.treeLoading = false
       })
@@ -78,6 +64,19 @@ export default {
     },
     refresh() {
       this.fetchData()
+    },
+    addPage() {
+      this.$emit('addPageClicked')
+      this.$router.push({
+        name: 'AddPage',
+        params: {
+          imgUrl: this.imgInfo.downloadURL,
+          imgHeight: this.imgInfo.imgHeight,
+          imgWidth: this.imgInfo.imgWidth,
+          deviceId: this.deviceId,
+          windowHierarchyJson: JSON.stringify(this.windowHierarchyJSONObject)
+        }
+      })
     }
   }
 }
