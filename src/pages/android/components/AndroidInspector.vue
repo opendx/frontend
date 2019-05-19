@@ -1,11 +1,12 @@
 <template>
   <div>
     <!--gutter 列的间距-->
-    <el-row style="height: 800px">
+    <el-row style="height: 850px">
       <!--左侧图片-->
       <el-col :span="8" align="center" style="height: 100%;overflow: auto">
-        <canvas id="inspectorCanvas" :width="imgInfo.imgWidth" :height="imgInfo.imgHeight" style="width: 320px;position: absolute" />
-        <img :src="imgInfo.downloadURL" style="width: 320px">
+        <!--先写死400px-->
+        <canvas id="inspectorCanvas" :width="imgInfo.imgWidth" :height="imgInfo.imgHeight" style="width: 400px;position: absolute" />
+        <img :src="imgInfo.downloadURL" style="width: 400px">
       </el-col>
       <!--中间布局树-->
       <el-col :span="9" align="center" style="height: 100%;overflow: auto">
@@ -40,10 +41,8 @@ export default {
   },
   data() {
     return {
-      // 画布 盖在图片上方
-      canvas: null,
       canvasCtx: null,
-      // 比例 手机屏幕宽度/画布像素宽度320px  如:1080/320
+      // 比例 手机屏幕宽度/画布像素宽度，如:1080/400
       scale: null,
 
       defaultProps: {
@@ -67,7 +66,8 @@ export default {
   },
   watch: {
     imgInfo() {
-      this.scale = (this.imgInfo.imgWidth) / 320
+      // 宽度先写死400
+      this.scale = (this.imgInfo.imgWidth) / 400
       console.log('scale', this.scale)
     },
     windowHierarchyJSON() {
@@ -85,12 +85,10 @@ export default {
       // from macaca Inspector end
       // 树所有数据
       this.treeData.push(data)
-      console.log('服务端返回的树信息,经过处理后为:', this.treeData)
     },
     // 监听当前选中的node发生改变
     // 点击截图或点击树节点 都将触发selectedNode变更
     selectedNode(curVal) {
-      console.log('检测到当前选择的节点发生变化', curVal)
       if (curVal.id === undefined) {
         return
       }
@@ -106,14 +104,10 @@ export default {
       this.currentExpandedKey.splice(0, 1, curVal.id)
       // 当前选中
       this.$refs.tree.setCurrentKey(curVal.id)
-      console.log('当前选中的node key:' + curVal.id)
       // 3.改变右侧节点详细信息
-      console.log('treeData', this.treeData)
       // 使用macaca xpath计算方法
       this.selectedNode.xpath = getXPath(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
-      console.log('xpath', this.selectedNode.xpath)
       this.selectedNode.xpath_lite = getXPathLite(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
-      console.log('xpath_lite', this.selectedNode.xpath_lite)
       // copy对象
       const nodeDetail = Object.assign({}, this.selectedNode)
       // 去除id nodes
@@ -125,13 +119,12 @@ export default {
   },
   mounted() {
     // init canvas
-    this.initCanvas()
+    const canvas = document.getElementById('inspectorCanvas')
+    this.canvasCtx = canvas.getContext('2d')
     // 点击左侧屏幕截图
-    this.canvas.onmousedown = e => {
-      console.log('canvas onmousedown e', e)
-      console.log(this.scale)
-      const deviceX = (e.clientX - this.canvas.getBoundingClientRect().left) * this.scale
-      const deviceY = (e.clientY - this.canvas.getBoundingClientRect().top) * this.scale
+    canvas.onmousedown = e => {
+      const deviceX = (e.clientX - canvas.getBoundingClientRect().left) * this.scale
+      const deviceY = (e.clientY - canvas.getBoundingClientRect().top) * this.scale
       console.log('点击手机屏幕:' + deviceX + ',' + deviceY)
 
       // 最小面积的节点
@@ -177,10 +170,6 @@ export default {
     nodeClick(data) {
       console.log('点击树', data)
       this.selectedNode = data
-    },
-    initCanvas() {
-      this.canvas = document.getElementById('inspectorCanvas')
-      this.canvasCtx = this.canvas.getContext('2d')
     },
     // this method from macaca Inspector https://github.com/macacajs/app-inspector/blob/master/lib/android.js
     adaptor(node) {
