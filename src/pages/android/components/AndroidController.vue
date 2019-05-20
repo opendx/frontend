@@ -70,10 +70,18 @@ export default {
     this.minicapWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/minicap/' + this.deviceId + '/' + this.username)
     this.minicapWebsocket.binaryType = 'blob'
     this.minicapWebsocket.onclose = () => {
-      console.log('minicap ws close')
+      this.$notify({
+        title: '提示',
+        message: 'minicap websocet close',
+        duration: 0
+      })
     }
     this.minicapWebsocket.onerror = () => {
-      console.log('minicap ws error')
+      this.$notify({
+        title: '提示',
+        message: 'minicap websocet error',
+        duration: 0
+      })
     }
     this.minicapWebsocket.onmessage = (message) => {
       if (typeof message.data !== 'string') {
@@ -97,10 +105,18 @@ export default {
     // minitouch
     this.minitouchWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/minitouch/' + this.deviceId)
     this.minitouchWebsocket.onclose = () => {
-      console.log('minitouch ws close')
+      this.$notify({
+        title: '提示',
+        message: 'minitouch websocet close',
+        duration: 0
+      })
     }
     this.minitouchWebsocket.onerror = () => {
-      console.log('minitouch ws error')
+      this.$notify({
+        title: '提示',
+        message: 'minitouch websocet error',
+        duration: 0
+      })
     }
     let isMouseDown = false
     // 当鼠标处于按下的状态移出画布,这个时候体验不好，需要在移出的时候，发送鼠标抬起事件,并将鼠标状态设为抬起

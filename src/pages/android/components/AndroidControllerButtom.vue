@@ -4,15 +4,19 @@
       <div v-if="showAndroidCapture">
         <android-capture @closeAndroidCapture="showAndroidCapture = false" />
       </div>
-      <el-button slot="reference" @click="showAndroidCapture = !showAndroidCapture">
-        <svg-icon icon-class="capture" height="100%" />
+      <el-button slot="reference" :disabled="!$store.state.device.port" @click="showAndroidCapture = !showAndroidCapture">
+        <svg-icon icon-class="capture" />
       </el-button>
     </el-popover>
-    <el-button size="mini" @click="clickMenu">Menu</el-button>
-    <el-button size="mini" @click="clickHome">Home</el-button>
-    <el-button size="mini" @click="clickBack">Back</el-button>
-    <el-button size="mini" @click="clickPower">Power</el-button>
-    <el-button size="mini" @click="clickClose">Close</el-button>
+
+    <el-button-group>
+      <el-button size="mini" @click="clickMenu">Menu</el-button>
+      <el-button size="mini" @click="clickHome">Home</el-button>
+      <el-button size="mini" @click="clickBack">Back</el-button>
+      <el-button size="mini" @click="clickPower">Power</el-button>
+      <el-button size="mini" @click="clickClose">Close</el-button>
+    </el-button-group>
+
     <el-popover placement="left" trigger="click">
       <!-- 安装APP -->
       <el-upload drag action="/" :on-change="onChange" :multiple="false" :auto-upload="false">
@@ -22,7 +26,7 @@
       <!--开启远程调试-->
       <el-button type="primary" size="mini" @click="startOrStopAdbKit">{{ adbKitBtnText }}</el-button>
       <el-tag v-if="adbKitIsStart" type="success">{{ adbkitTip }}</el-tag>
-      <el-button slot="reference" size="mini">more</el-button>
+      <el-button slot="reference" size="mini">More</el-button>
     </el-popover>
   </div>
 </template>
@@ -134,7 +138,7 @@ export default {
       this.minitouchWebsocket.send(JSON.stringify(this.power))
     },
     clickClose() {
-      this.$store.state.device.show = false // AppMain.vue在v-if销毁右侧控制设备组件
+      this.$store.dispatch('device/setShow', false) // AppMain.vue在v-if销毁右侧控制设备组件
     }
   }
 }
