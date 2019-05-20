@@ -133,7 +133,7 @@ export default {
       this.allNodes.forEach(item => {
         if (deviceX >= item.bounds[0] && deviceY >= item.bounds[1] && deviceX <= item.bounds[0] + item.bounds[2] && deviceY <= item.bounds[1] + item.bounds[3]) {
           if (leastNode.id) {
-            if (leastNode.bounds[2] * leastNode.bounds[3] > item.bounds[2] * item.bounds[3]) {
+            if (leastNode.bounds[2] * leastNode.bounds[3] >= item.bounds[2] * item.bounds[3]) {
               leastNode = item
             }
           } else {
