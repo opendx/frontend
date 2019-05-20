@@ -26,7 +26,7 @@
       <!--开启远程调试-->
       <el-button type="primary" size="mini" @click="startOrStopAdbKit">{{ adbKitBtnText }}</el-button>
       <el-tag v-if="adbKitIsStart" type="success">{{ adbkitTip }}</el-tag>
-      <el-button slot="reference" size="mini">More</el-button>
+      <el-button slot="reference" size="mini">...</el-button>
     </el-popover>
   </div>
 </template>

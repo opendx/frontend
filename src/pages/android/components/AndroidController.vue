@@ -4,7 +4,7 @@
     <div align="center">
       <canvas id="androidControllerCanvas" />
     </div>
-    <div style="margin-top: 10px" align="center">
+    <div style="margin-top: 2px" align="center">
       <android-controller-buttom :minitouch-websocket="minitouchWebsocket" />
     </div>
   </div>
