@@ -125,16 +125,12 @@ export const constantRoutes = [
   {
     path: '/device',
     component: Layout,
-    name: 'Device',
-    meta: {
-      icon: 'deviceControl'
-    },
     children: [
       {
         path: 'list',
         component: () => import('@/pages/device/list'),
         name: 'ListDevice',
-        meta: { title: '设备列表', noCache: true }
+        meta: { title: '设备', icon: 'deviceControl', noCache: true }
       }
     ]
   },
@@ -142,6 +138,7 @@ export const constantRoutes = [
     path: '/project',
     component: Layout,
     name: 'Project',
+    redirect: '/project/list',
     meta: {
       title: '项目',
       icon: 'project'
@@ -171,31 +168,26 @@ export const constantRoutes = [
   {
     path: '/page',
     component: Layout,
-    name: 'Page',
-    meta: {
-      title: 'Page',
-      icon: 'page'
-    },
     children: [
       {
         path: 'add',
         component: () => import('@/pages/page/add'),
         name: 'AddPage',
-        meta: { title: '添加', noCache: true },
+        meta: { title: '添加Page', noCache: true },
         hidden: true
       },
       {
         path: 'update',
         component: () => import('@/pages/page/update'),
         name: 'UpdatePage',
-        meta: { title: '更新', noCache: true },
+        meta: { title: '更新Page', noCache: true },
         hidden: true
       },
       {
         path: 'list',
         component: () => import('@/pages/page/list'),
         name: 'ListPage',
-        meta: { title: 'Page', noCache: true }
+        meta: { title: 'Page', icon: 'page', noCache: true }
       }
     ]
   },
@@ -217,6 +209,7 @@ export const constantRoutes = [
     path: '/globalVar',
     component: Layout,
     name: 'GlobalVar',
+    redirect: '/globalVar/list',
     meta: {
       title: '全局变量',
       icon: 'globalvar'
