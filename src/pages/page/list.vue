@@ -3,7 +3,7 @@
     <!--page分类-->
     <div>
       <el-tabs type="card" addable @tab-add="addPageCategory" @tab-click="onTabClick">
-        <el-tab-pane v-for="category in pageCategoryList" :key="category.name" :label="category.name" />
+        <el-tab-pane v-for="category in pageCategoryList" :key="category.id" :label="category.name" />
       </el-tabs>
     </div>
     <!--page列表-->
