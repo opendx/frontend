@@ -235,6 +235,30 @@ export const constantRoutes = [
         meta: { title: '列表', noCache: true }
       }
     ]
+  },
+  {
+    path: '/action',
+    component: Layout,
+    name: 'Action',
+    meta: {
+      title: 'Action',
+      icon: 'module'
+    },
+    children: [
+      {
+        path: 'pageAction/list',
+        component: () => import('@/pages/action/pageaction/list'),
+        name: 'PageActionList',
+        meta: { title: 'PageActionList', noCache: true }
+      },
+      {
+        path: 'pageAction/add/:pageId',
+        component: () => import('@/pages/action/pageaction/add'),
+        name: 'PageActionAdd',
+        meta: { title: 'PageActionAdd', noCache: true },
+        hidden: true
+      }
+    ]
   }
 ]
 
