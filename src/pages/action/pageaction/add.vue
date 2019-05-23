@@ -20,28 +20,9 @@ export default {
   },
   data() {
     return {
-      pageList: [],
-      actionList: [],
-      total: 0,
-      queryActionListForm: {
-        pageNum: 1,
-        pageSize: 10,
-        pageId: undefined
-      }
     }
   },
   computed: {
-    projectId() {
-      return this.$store.state.project.id
-    }
-  },
-  async created() {
-    await this.fetchPageList()
-    if (this.pageList.length > 0) {
-      // 默认用第一个pageId请求action
-      this.queryActionListForm.pageId = this.pageList[0].id
-      await this.fetchActionList()
-    }
   },
   methods: {
 

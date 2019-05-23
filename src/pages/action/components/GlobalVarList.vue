@@ -3,8 +3,7 @@
     <el-table :data="globalVarList" border>
       <el-table-column align="center" label="全局变量名">
         <template scope="{ row }">
-          {{ row.name }}
-          <el-button v-clipboard:copy="'${' + row.name + '}'" v-clipboard:success="onCopy" type="text">copy</el-button>
+          <el-button v-clipboard:copy="'${' + row.name + '}'" v-clipboard:success="onCopy" type="text">{{ row.name }}</el-button>
         </template>
       </el-table-column>
       <el-table-column align="center" property="value" label="全局变量值" />

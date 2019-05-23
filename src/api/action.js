@@ -31,6 +31,13 @@ export function deleteAction(actionId) {
   })
 }
 
+export function getSelectableActions(projectId, platform) {
+  return request({
+    method: 'GET',
+    url: '/action/selectable/' + projectId + '/' + platform
+  })
+}
+
 export function debugAction(data) {
   return request({
     method: 'POST',

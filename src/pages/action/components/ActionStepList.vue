@@ -9,54 +9,47 @@
         </template>
       </el-table-column>
       <el-table-column label="步骤名" align="center">
-        <template scope="scope">
-          <el-input v-model="scope.row.name" clearable />
+        <template scope="{ row }">
+          <el-input v-model="row.name" clearable />
         </template>
       </el-table-column>
       <el-table-column label="Action" align="center">
-        <template scope="scope">
-          <el-select
-            v-model="scope.row.actionId"
-            filterable
-            clearable
-            style="width: 100%"
-            @change="actionSelected($event,scope.row)"
-            @visible-change="selectAction"
-          >
-            <el-option v-for="action in selectableActions" :value="action.id" :label="action.name" />
+        <template scope="{ row }">
+          <el-select v-model="row.actionId" filterable clearable style="width: 100%" @change="actionSelected($event, row)" @visible-change="selectAction">
+            <el-option v-for="action in selectableActions" :key="action.id" :value="action.id" :label="optionLabelName(action)" />
           </el-select>
         </template>
       </el-table-column>
       <el-table-column label="Action参数值" align="center">
-        <template scope="scope">
-          <el-table :data="scope.row.paramValues" border>
+        <template scope="{ row }">
+          <el-table :data="row.paramValues" border>
             <el-table-column label="参数名" align="center">
-              <template scope="scope1">
-                <el-popover
-                  placement="right"
-                  width="400"
-                  trigger="hover"
-                >
-                  参数描述：{{ scope1.row.description }}
-                  <el-table :data="scope1.row.possibleValues">
-                    <el-table-column property="value" align="center" label="可选参数值" />
+              <template scope="scope_paramValues">
+                <el-popover placement="right" width="400" trigger="click">
+                  描述：{{ scope_paramValues.row.description || '无' }}
+                  <el-table :data="scope_paramValues.row.possibleValues" border style="margin-top: 5px">
+                    <el-table-column align="center" label="可选值">
+                      <template scope="scope_possibleValues">
+                        <el-button v-clipboard:copy="scope_possibleValues.row.value" v-clipboard:success="onCopy" type="text">{{ scope_possibleValues.row.value }}</el-button>
+                      </template>
+                    </el-table-column>
                     <el-table-column property="description" align="center" label="描述" />
                   </el-table>
-                  <el-button slot="reference" type="text">{{ scope1.row.paramName }}</el-button>
+                  <el-button slot="reference" type="text">{{ scope_paramValues.row.paramName }}</el-button>
                 </el-popover>
               </template>
             </el-table-column>
             <el-table-column label="参数值" align="center">
-              <template scope="scope1">
-                <el-input v-model="scope1.row.paramValue" clearable />
+              <template scope="scope_paramValues">
+                <el-input v-model="scope_paramValues.row.paramValue" clearable />
               </template>
             </el-table-column>
           </el-table>
         </template>
       </el-table-column>
       <el-table-column label="赋值" align="center" width="100">
-        <template scope="scope">
-          <el-input v-model="scope.row.evaluation" clearable />
+        <template scope="{ row }">
+          <el-input v-model="row.evaluation" clearable />
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="160">
@@ -73,8 +66,12 @@
 </template>
 
 <script>
-import { findSelectableActions } from '@/api/action'
+import { getSelectableActions } from '@/api/action'
+import clipboard from '@/directive/clipboard/index.js'
 export default {
+  directives: {
+    clipboard
+  },
   data() {
     return {
       steps: [],
@@ -83,8 +80,20 @@ export default {
     }
   },
   computed: {
+    optionLabelName() {
+      return function(action) {
+        const text1 = action.type === 1 ? '[基础组件]' : action.type === 2 ? '[封装组件]' : action.type === 3 ? '[测试用例]' : '[未知]'
+        const text2 = action.hasReturnValue ? '[有返回值]' : '[void]'
+        const text3 = action.returnValueDesc ? '[' + action.returnValueDesc + ']' : ''
+        const text4 = action.name
+        return text1 + text2 + text3 + text4
+      }
+    },
     projectId() {
       return this.$store.state.project.id
+    },
+    platform() {
+      return this.$store.state.project.platform
     },
     stepNumber() {
       return function(row, stepNumber) {
@@ -107,22 +116,14 @@ export default {
   },
   created() {
     // 防止 复制/修改 pageAction 选择action不显示actionName
-    this.getSelectableActions()
+    // this.fetchSelectableActions()
   },
   methods: {
     moveUp(index) {
-      const temp = this.steps[index]
-      this.steps[index] = this.steps[index - 1]
-      this.steps[index - 1] = temp
-      // 触发vue更新数据
-      this.steps = this.steps.splice(0, this.steps.length)
+      this.steps[index - 1] = this.steps.splice(index, 1, this.steps[index - 1])[0]
     },
     moveDown(index) {
-      const temp = this.steps[index + 1]
-      this.steps[index + 1] = this.steps[index]
-      this.steps[index] = temp
-      // 触发vue更新数据
-      this.steps = this.steps.splice(0, this.steps.length)
+      this.steps[index + 1] = this.steps.splice(index, 1, this.steps[index + 1])[0]
     },
     deleteStep(index) {
       this.steps.splice(index, 1)
@@ -132,33 +133,36 @@ export default {
     },
     // 步骤勾选
     handleSelectionChange(val) {
-      const arr = this.steps.filter(step => {
-        return val.indexOf(step) !== -1
-      })
-      this.selectedSteps = arr
+      this.selectedSteps = this.steps.filter(step => val.indexOf(step) !== -1)
     },
-    // 点击select框
     selectAction(type) {
       if (type) {
-        this.getSelectableActions()
+        this.fetchSelectableActions()
       }
     },
-    getSelectableActions() {
-      findSelectableActions(this.projectId).then(resp => {
+    fetchSelectableActions() {
+      getSelectableActions(this.projectId, this.platform).then(resp => {
         this.selectableActions = resp.data
       })
     },
-    // 步骤选择了一个action
+    // 步骤,选择了一个action
     actionSelected(actionId, step) {
-      this.selectableActions.forEach(action => {
-        if (action.id === actionId) {
-          action.params.forEach(param => {
+      const selectedAction = this.selectableActions.filter(action => action.id === actionId)[0]
+      if (selectedAction) {
+        if (selectedAction.params && selectedAction.params.length > 0) {
+          selectedAction.params.forEach(param => {
             param.paramName = param.name
             delete param.name
           })
-          step.paramValues = action.params
         }
-      })
+        step.paramValues = selectedAction.params
+      } else {
+        // 清空当前选择的action
+        step.paramValues = []
+      }
+    },
+    onCopy(e) {
+      this.$notify.success(e.text + '复制成功')
     }
   }
 }
