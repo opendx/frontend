@@ -5,7 +5,7 @@
     <i class="el-icon-error" style="font-size: 20px;color: black" title="关闭" @click="destoryCurrentComponent" />
     <!-- inspector -->
     <div>
-      <android-inspector :img-info="imgInfo" :window-hierarchy-j-s-o-n="windowHierarchyJSONObject" :tree-loading="treeLoading" />
+      <android-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy-json="windowHierarchyJson" :tree-loading="treeLoading" />
     </div>
   </div>
 </template>
@@ -22,12 +22,13 @@ export default {
   data() {
     return {
       // 传递给AndroidInspctor组件的数据
+      canvasId: 'android-capture-canvas',
       imgInfo: {
         imgWidth: null,
         imgHeight: null,
-        downloadURL: null
+        imgUrl: null
       },
-      windowHierarchyJSONObject: null,
+      windowHierarchyJson: null,
       treeLoading: false
     }
   },
@@ -48,13 +49,18 @@ export default {
   methods: {
     fetchScreenShot() {
       screenshot(this.agentIp, this.agentPort, this.deviceId).then(response => {
-        this.imgInfo = response.data
+        const imgData = response.data
+        this.imgInfo = {
+          imgWidth: imgData.imgWidth,
+          imgHeight: imgData.imgHeight,
+          imgUrl: imgData.downloadURL
+        }
       })
     },
     fetchWindowHierarchyJSON() {
       this.treeLoading = true
       dump(this.agentIp, this.agentPort, this.deviceId).then(response => {
-        this.windowHierarchyJSONObject = JSON.parse(response.data)
+        this.windowHierarchyJson = JSON.parse(response.data)
       }).finally(() => {
         this.treeLoading = false
       })
@@ -71,11 +77,11 @@ export default {
       this.$router.push({
         name: 'AddPage',
         params: {
-          imgUrl: this.imgInfo.downloadURL,
+          imgUrl: this.imgInfo.imgUrl,
           imgHeight: this.imgInfo.imgHeight,
           imgWidth: this.imgInfo.imgWidth,
           deviceId: this.deviceId,
-          windowHierarchyJson: JSON.stringify(this.windowHierarchyJSONObject)
+          windowHierarchyJson: JSON.stringify(this.windowHierarchyJson)
         }
       })
     },

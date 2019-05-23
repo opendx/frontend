@@ -5,8 +5,8 @@
       <!--左侧图片-->
       <el-col :span="8" align="center" style="height: 100%;overflow: auto">
         <!--先写死400px-->
-        <canvas id="inspectorCanvas" :width="imgInfo.imgWidth" :height="imgInfo.imgHeight" style="width: 400px;position: absolute" />
-        <img :src="imgInfo.downloadURL" style="width: 400px">
+        <canvas :id="canvasId" :width="imgInfo.imgWidth" :height="imgInfo.imgHeight" style="width: 400px;position: absolute" />
+        <img :src="imgInfo.imgUrl" style="width: 400px">
       </el-col>
       <!--中间布局树-->
       <el-col :span="9" align="center" style="height: 100%;overflow: auto">
@@ -35,8 +35,9 @@ export default {
     clipboard
   },
   props: {
+    canvasId: String,
     imgInfo: Object,
-    windowHierarchyJSON: Object,
+    windowHierarchyJson: Object,
     treeLoading: Boolean
   },
   data() {
@@ -57,7 +58,6 @@ export default {
       selectedNode: {},
       // 当前展开的key
       currentExpandedKey: [],
-
       // 所有的节点
       allNodes: [],
       // 树节点索引  从0开始 累加
@@ -70,7 +70,7 @@ export default {
       this.scale = (this.imgInfo.imgWidth) / 400
       console.log('scale', this.scale)
     },
-    windowHierarchyJSON() {
+    windowHierarchyJson() {
       // 重新初始化数据，防止点击刷新按钮，数据错乱
       this.nodeDetail = {}
       this.treeData = []
@@ -78,13 +78,13 @@ export default {
       this.currentExpandedKey = []
       this.allNodes = []
       this.nodeIndex = 0
-
       // from macaca Inspector start https://github.com/macacajs/app-inspector/blob/master/lib/android.js
-      const origin = _.filter(this.windowHierarchyJSON.hierarchy.node, i => i !== null && typeof i === 'object' && i.package !== 'com.android.systemui')
+      const origin = _.filter(this.windowHierarchyJson.hierarchy.node, i => i !== null && typeof i === 'object' && i.package !== 'com.android.systemui')
       const data = this.adaptor(origin[0])
       // from macaca Inspector end
       // 树所有数据
       this.treeData.push(data)
+      console.log('treeData', this.treeData)
     },
     // 监听当前选中的node发生改变
     // 点击截图或点击树节点 都将触发selectedNode变更
@@ -119,7 +119,7 @@ export default {
   },
   mounted() {
     // init canvas
-    const canvas = document.getElementById('inspectorCanvas')
+    const canvas = document.getElementById(this.canvasId)
     this.canvasCtx = canvas.getContext('2d')
     // 点击左侧屏幕截图
     canvas.onmousedown = e => {
