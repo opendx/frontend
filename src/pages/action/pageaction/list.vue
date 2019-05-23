@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
-    <!--page分类-->
+    <el-button v-if="queryActionListForm.pageId" style="margin-bottom: 10px" @click="addPageAction">+</el-button>
+    <!--page-->
     <div>
       <el-tabs type="card" @tab-click="onTabClick">
         <el-tab-pane v-for="page in pageList" :key="page.id" :label="page.name" />
       </el-tabs>
     </div>
-    <el-button v-if="queryActionListForm.pageId" @click="addPageAction">添加page action</el-button>
-    <!--page列表-->
+    <!--action列表-->
     <div>
       <el-table :data="actionList" highlight-current-row border>
         <el-table-column label="创建时间" align="center" prop="createTime" />
