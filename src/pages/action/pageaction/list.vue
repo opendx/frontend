@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     addPageAction() {
-      this.$router.push('/action/pageAction/add/' + this.queryActionListForm.pageId)
+      this.$router.push('/action/pageAction/add')
     },
     async fetchActionList() {
       const { data } = await getActionList(this.queryActionListForm)

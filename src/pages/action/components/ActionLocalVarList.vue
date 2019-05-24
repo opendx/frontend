@@ -1,11 +1,15 @@
 <template>
   <div>
-    <el-button size="mini" type="primary" @click="addLocalVar">添加局部变量</el-button>
-    <el-table :data="localVars" border style="margin-top: 4px">
-      <el-table-column label="局部变量名" align="center">
+    <el-table :data="localVars" border>
+      <el-table-column label="" align="center">
+        <template slot="header">
+          <el-button type="text" @click="addLocalVar">+</el-button>
+          局部变量名
+        </template>
         <template scope="{ row }">
-          <el-input v-model="row.name" clearable style="width: 90%" />
-          <el-button v-clipboard:copy="'@{' + row.name + '}'" v-clipboard:success="onCopy" type="text">copy</el-button>
+          <el-input v-model="row.name" clearable>
+            <el-button slot="append" v-clipboard:copy="'@{' + row.name + '}'" v-clipboard:success="onCopy">copy</el-button>
+          </el-input>
         </template>
       </el-table-column>
       <el-table-column label="局部变量值" align="center">

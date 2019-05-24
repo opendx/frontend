@@ -1,11 +1,15 @@
 <template>
   <div>
-    <el-button size="mini" type="primary" :disabled="!isAdd" @click="addParam">添加参数</el-button>
-    <el-table :data="params" border style="margin-top: 4px">
-      <el-table-column label="参数名" align="center">
+    <el-table :data="params" border>
+      <el-table-column align="center">
+        <template slot="header">
+          <el-button type="text" :disabled="!isAdd" @click="addParam">+</el-button>
+          参数名
+        </template>
         <template scope="{ row }">
-          <el-input v-model="row.name" clearable style="width: 95%" />
-          <el-button v-clipboard:copy="'#{' + row.name + '}'" v-clipboard:success="onCopy" type="text">copy</el-button>
+          <el-input v-model="row.name" clearable>
+            <el-button slot="append" v-clipboard:copy="'#{' + row.name + '}'" v-clipboard:success="onCopy">copy</el-button>
+          </el-input>
         </template>
       </el-table-column>
       <el-table-column label="描述" align="center">

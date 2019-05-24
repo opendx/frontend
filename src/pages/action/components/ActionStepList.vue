@@ -1,9 +1,12 @@
 <template>
   <div>
-    <el-button size="mini" type="primary" @click="addStep">添加步骤</el-button>
-    <el-table :data="steps" border style="margin-top: 4px" @selection-change="handleSelectionChange">
+    <el-table :data="steps" border @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" width="30" />
-      <el-table-column label="步骤" align="center" width="50">
+      <el-table-column align="center" width="80">
+        <template slot="header">
+          <el-button type="text" @click="addStep">+</el-button>
+          步骤
+        </template>
         <template scope="scope">
           {{ stepNumber(scope.row, scope.$index + 1) }}
         </template>

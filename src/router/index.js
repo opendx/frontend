@@ -252,7 +252,7 @@ export const constantRoutes = [
         meta: { title: 'PageActionList', noCache: true }
       },
       {
-        path: 'pageAction/add/:pageId',
+        path: 'pageAction/add',
         component: () => import('@/pages/action/pageaction/add'),
         name: 'PageActionAdd',
         meta: { title: 'PageActionAdd', noCache: true },
