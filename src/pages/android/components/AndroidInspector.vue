@@ -13,7 +13,7 @@
         <el-tree ref="tree" v-loading="treeLoading" :data="treeData" :props="defaultProps" highlight-current :expand-on-click-node="false" node-key="id" :default-expanded-keys="currentExpandedKey" @node-click="nodeClick" />
       </el-col>
       <!--右侧控件信息-->
-      <el-col :span="7" style="height: 100%;overflow: auto;font-size: 14px;">
+      <el-col :span="7" style="height: 100%;overflow: auto">
         <ul style="list-style: none;word-break: break-all;padding: 0px">
           <li v-for="(value,key) in nodeDetail" :key="key" style="border-bottom: 1px solid #eee">
             <label style="width: 100px;display: inline-block;">{{ key }}</label>
