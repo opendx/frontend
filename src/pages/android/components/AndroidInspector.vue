@@ -71,6 +71,9 @@ export default {
       console.log('scale', this.scale)
     },
     windowHierarchyJson() {
+      if (this.windowHierarchyJson == null) {
+        return
+      }
       // 重新初始化数据，防止点击刷新按钮，数据错乱
       this.nodeDetail = {}
       this.treeData = []
