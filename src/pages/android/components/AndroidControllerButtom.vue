@@ -4,7 +4,7 @@
       <div v-if="showAndroidCapture">
         <android-capture @closeAndroidCapture="showAndroidCapture = false" />
       </div>
-      <el-button slot="reference" :disabled="!$store.state.device.port" @click="showAndroidCapture = !showAndroidCapture">
+      <el-button slot="reference" :disabled="!$store.state.device.port" @click="showAndroidCapture = !showAndroidCapture" size="mini">
         <svg-icon icon-class="capture" />
       </el-button>
     </el-popover>
