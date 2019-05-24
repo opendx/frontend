@@ -21,6 +21,7 @@ export default {
   },
   data() {
     return {
+      windowHierarchyJsonString: null,
       // 传递给AndroidInspctor组件的数据
       canvasId: 'android-capture-canvas',
       imgInfo: {
@@ -60,7 +61,8 @@ export default {
     fetchWindowHierarchyJSON() {
       this.treeLoading = true
       dump(this.agentIp, this.agentPort, this.deviceId).then(response => {
-        this.windowHierarchyJson = JSON.parse(response.data)
+        this.windowHierarchyJsonString = response.data
+        this.windowHierarchyJson = JSON.parse(this.windowHierarchyJsonString)
       }).finally(() => {
         this.treeLoading = false
       })
@@ -81,7 +83,7 @@ export default {
           imgHeight: this.imgInfo.imgHeight,
           imgWidth: this.imgInfo.imgWidth,
           deviceId: this.deviceId,
-          windowHierarchyJson: JSON.stringify(this.windowHierarchyJson)
+          windowHierarchyJson: this.windowHierarchyJsonString
         }
       })
     },
