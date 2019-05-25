@@ -81,6 +81,8 @@ export default {
       this.currentExpandedKey = []
       this.allNodes = []
       this.nodeIndex = 0
+      // 清除上一次的红色区域
+      this.canvasCtx.clearRect(0, 0, this.imgInfo.imgWidth, this.imgInfo.imgHeight)
       // from macaca Inspector start https://github.com/macacajs/app-inspector/blob/master/lib/android.js
       const origin = _.filter(this.windowHierarchyJson.hierarchy.node, i => i !== null && typeof i === 'object' && i.package !== 'com.android.systemui')
       const data = this.adaptor(origin[0])
