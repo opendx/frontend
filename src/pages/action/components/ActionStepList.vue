@@ -86,10 +86,18 @@ export default {
     optionLabelName() {
       return function(action) {
         const text1 = action.type === 1 ? '[基础组件]' : action.type === 2 ? '[封装组件]' : action.type === 3 ? '[测试用例]' : '[未知]'
-        const text2 = action.hasReturnValue ? '[有返回值]' : '[void]'
-        const text3 = action.returnValueDesc ? '[' + action.returnValueDesc + ']' : ''
-        const text4 = action.name
-        return text1 + text2 + text3 + text4
+        let text2
+        if (action.hasReturnValue === 1) {
+          if (action.returnValueDesc) {
+            text2 = '[返回值：' + action.returnValueDesc + ']'
+          } else {
+            text2 = '[有返回值]'
+          }
+        } else {
+          text2 = '[void]'
+        }
+        const text3 = action.name
+        return text1 + text2 + text3
       }
     },
     projectId() {
