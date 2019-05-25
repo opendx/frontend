@@ -16,8 +16,11 @@
         </el-table-column>
         <el-table-column label="page名" align="center" property="name" />
         <el-table-column label="描述" align="center" property="description" />
-        <el-table-column label="创建人" align="center" prop="creatorNickName" />
-        <el-table-column label="创建时间" align="center" property="createTime" />
+        <el-table-column label="创建时间" align="center">
+          <template scope="{ row }">
+            {{ row.creatorNickName + ' ' + row.createTime }}
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="150" align="center">
           <template scope="{ row }">
             <el-button type="primary" class="el-icon-edit" @click="updatePage(row)" />
