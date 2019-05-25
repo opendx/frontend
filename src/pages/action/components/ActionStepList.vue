@@ -4,7 +4,7 @@
       <el-table-column align="center" type="selection" width="30" />
       <el-table-column align="center" width="80">
         <template slot="header">
-          <el-button type="text" @click="addStep">+</el-button>
+          <i class="el-icon-circle-plus" @click="addStep" />
           步骤
         </template>
         <template scope="scope">
@@ -55,12 +55,12 @@
           <el-input v-model="row.evaluation" clearable />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="160">
+      <el-table-column label="操作" align="center" width="140">
         <template scope="scope">
           <el-button-group>
             <el-button size="mini" :disabled="moveUpDisable(scope.$index)" @click="moveUp(scope.$index)">↑</el-button>
             <el-button size="mini" :disabled="moveDownDisable(scope.$index)" @click="moveDown(scope.$index)">↓</el-button>
-            <el-button size="mini" type="danger" @click="deleteStep(scope.$index)">删除</el-button>
+            <el-button size="mini" class="el-icon-delete" @click="deleteStep(scope.$index)" />
           </el-button-group>
         </template>
       </el-table-column>

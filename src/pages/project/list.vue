@@ -5,7 +5,7 @@
       <el-select v-model="queryForm.platform" placeholder="平台" clearable>
         <el-option v-for="platform in platforms" :key="platform.type" :label="platform.name" :value="platform.type" />
       </el-select>
-      <el-button type="primary" @click="onQueryBtnClick">查询</el-button>
+      <el-button type="primary" class="el-icon-search" @click="onQueryBtnClick" />
     </div>
     <!-- 列表 -->
     <div style="margin-top: 10px">
@@ -24,8 +24,8 @@
         </el-table-column>
         <el-table-column label="操作" width="200" align="center">
           <template scope="{ row }">
-            <el-button type="primary" @click="updateProject(row)">修改</el-button>
-            <el-button type="danger" @click="deleteProject(row)">删除</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="updateProject(row)" />
+            <el-button type="danger" class="el-icon-delete" @click="deleteProject(row)" />
           </template>
         </el-table-column>
       </el-table>

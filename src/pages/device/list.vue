@@ -5,7 +5,7 @@
       <el-select v-model="queryForm.type" placeholder="设备类型" clearable>
         <el-option v-for="deviceType in deviceTypes" :key="deviceType.type" :label="deviceType.name" :value="deviceType.type" />
       </el-select>
-      <el-button type="primary" @click="onQueryBtnClick">查询</el-button>
+      <el-button type="primary" class="el-icon-search" @click="onQueryBtnClick" />
     </div>
     <!--列表-->
     <div style="margin-top: 10px">

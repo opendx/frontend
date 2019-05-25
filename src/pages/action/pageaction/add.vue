@@ -8,8 +8,8 @@
         <el-button>调试</el-button>
         <el-button>保存</el-button>
       </el-button-group>
-      <el-select v-model="saveActionForm.pageId" @change="pageSelected" clearable filterable>
-        <el-option v-for="page in pages" :label="page.name" :value="page.id" :key="page.id" />
+      <el-select v-model="saveActionForm.pageId" clearable filterable @change="pageSelected">
+        <el-option v-for="page in pages" :key="page.id" :label="page.name" :value="page.id" />
       </el-select>
       <el-popover trigger="click" placement="left">
         <div style="width: 1400px;height: 850px;margin-bottom: 10px">
@@ -18,17 +18,17 @@
         <el-button slot="reference" icon="el-icon-view" :disabled="windowHierarchyJson === null" />
       </el-popover>
     </sticky>
-    <el-row :gutter="5">
-      <el-col :span="8" style="max-height: 200px;overflow: auto;">
+    <el-tabs tab-position="left" style="height: 250px">
+      <el-tab-pane label="方法参数">
         <action-param-list :is-add="true" />
-      </el-col>
-      <el-col :span="12" style="max-height: 200px;overflow: auto;">
+      </el-tab-pane>
+      <el-tab-pane label="局部变量">
         <action-local-var />
-      </el-col>
-      <el-col :span="4" style="max-height: 200px;overflow: auto;">
+      </el-tab-pane>
+      <el-tab-pane label="全局变量">
         <global-var-list />
-      </el-col>
-    </el-row>
+      </el-tab-pane>
+    </el-tabs>
     <action-step-list />
   </div>
 </template>

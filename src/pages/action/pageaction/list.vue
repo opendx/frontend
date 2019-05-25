@@ -18,8 +18,8 @@
         <el-table-column label="更新人" align="center" prop="updatorNickName" />
         <el-table-column label="操作" width="150" align="center">
           <template scope="{ row }">
-            <el-button size="small" type="primary" @click="updatePage(row)">修改</el-button>
-            <el-button size="small" type="danger" @click="deletePage(row.id)">删除</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="updatePage(row)" />
+            <el-button type="danger" class="el-icon-delete" @click="deletePage(row.id)" />
           </template>
         </el-table-column>
       </el-table>

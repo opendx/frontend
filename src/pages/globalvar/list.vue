@@ -13,8 +13,8 @@
         </el-table-column>
         <el-table-column label="操作" width="200" align="center">
           <template scope="{ row }">
-            <el-button type="primary" @click="updateGlobalVar(row)">修改</el-button>
-            <el-button type="danger" @click="deleteGlobalVar(row)">删除</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="updateGlobalVar(row)" />
+            <el-button type="danger" class="el-icon-delete" @click="deleteGlobalVar(row)" />
           </template>
         </el-table-column>
       </el-table>
