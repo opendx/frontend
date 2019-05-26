@@ -107,15 +107,13 @@ export default {
     this.minitouchWebsocket.onclose = () => {
       this.$notify({
         title: '提示',
-        message: 'minitouch websocet close',
-        duration: 0
+        message: 'minitouch websocet close'
       })
     }
     this.minitouchWebsocket.onerror = () => {
       this.$notify({
         title: '提示',
-        message: 'minitouch websocet error',
-        duration: 0
+        message: 'minitouch websocet error'
       })
     }
     let isMouseDown = false

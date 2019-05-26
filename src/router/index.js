@@ -266,6 +266,51 @@ export const constantRoutes = [
         meta: { title: '列表', noCache: true }
       }
     ]
+  },
+  {
+    path: '/action/testcase',
+    component: Layout,
+    redirect: '/action/testcase/list',
+    name: 'TestcaseAction',
+    meta: {
+      title: '测试用例',
+      icon: 'testcase'
+    },
+    children: [
+      {
+        path: 'add',
+        component: () => import('@/pages/action/testcase/add'),
+        name: 'TestcaseActionAdd',
+        meta: { title: '添加', noCache: true }
+      },
+      {
+        path: 'update/:actionId',
+        component: () => import('@/pages/action/testcase/update'),
+        name: 'TestcaseActionUpdate',
+        meta: { title: '更新', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/pages/action/testcase/list'),
+        name: 'TestcaseActionList',
+        meta: { title: '列表', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/testSuite',
+    component: Layout,
+    name: 'TestSuite',
+    children: [
+      {
+        path: 'add',
+        component: () => import('@/pages/testsuite/add'),
+        name: 'AddTestSuite',
+        meta: { title: '添加测试集', noCache: true },
+        hidden: true
+      }
+    ]
   }
 ]
 

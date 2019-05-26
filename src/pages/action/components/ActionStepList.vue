@@ -29,8 +29,8 @@
             <el-table-column label="参数名" align="center">
               <template scope="scope_paramValues">
                 <el-popover placement="right" width="400" trigger="click">
-                  描述：{{ scope_paramValues.row.description || '无' }}
-                  <el-table v-if="scope_paramValues.row.possibleValues" :data="scope_paramValues.row.possibleValues" border style="margin-top: 5px">
+                  描述：{{ paramNameDesc(row.actionId, scope_paramValues.row.paramName) }}
+                  <el-table v-if="hasPossibleValue(row.actionId, scope_paramValues.row.paramName)" :data="possibleValues(row.actionId, scope_paramValues.row.paramName)" border style="margin-top: 5px">
                     <el-table-column align="center" label="可选值">
                       <template scope="scope_possibleValues">
                         <el-button v-clipboard:copy="scope_possibleValues.row.value" v-clipboard:success="onCopy" type="text">{{ scope_possibleValues.row.value }}</el-button>
@@ -83,6 +83,36 @@ export default {
     }
   },
   computed: {
+    possibleValues() {
+      return function(actionId, paramName) {
+        const action = this.selectableActions.filter(action => action.id === actionId)[0]
+        const possibleValues = action.params.filter(param => param.name === paramName)[0].possibleValues
+        return possibleValues
+      }
+    },
+    hasPossibleValue() {
+      return function(actionId, paramName) {
+        const action = this.selectableActions.filter(action => action.id === actionId)[0]
+        if (action && action.params && action.params.length > 0) {
+          const param = action.params.filter(param => param.name === paramName)[0]
+          if (param && param.possibleValues && param.possibleValues.length > 0) {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return false
+        }
+      }
+    },
+    paramNameDesc() {
+      return function(actionId, paramName) {
+        const action = this.selectableActions.filter(action => action.id === actionId)[0]
+        if (action && action.params && action.params.length > 0) {
+          return action.params.filter(param => param.name === paramName)[0].description
+        }
+      }
+    },
     evaluationDisabled() {
       return function(actionId) {
         if (!actionId) {
@@ -164,20 +194,19 @@ export default {
         this.selectableActions = resp.data
       })
     },
-    // 步骤,选择了一个action
+    // 选择了一个action或清除
     actionSelected(actionId, step) {
+      step.paramValues = []
       const selectedAction = this.selectableActions.filter(action => action.id === actionId)[0]
       if (selectedAction) {
         if (selectedAction.params && selectedAction.params.length > 0) {
           selectedAction.params.forEach(param => {
-            param.paramName = param.name
-            delete param.name
+            step.paramValues.push({
+              paramName: param.name,
+              paramValue: ''
+            })
           })
         }
-        step.paramValues = selectedAction.params
-      } else {
-        // 清空当前选择的action
-        step.paramValues = []
       }
     },
     onCopy(e) {

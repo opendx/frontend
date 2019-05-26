@@ -8,7 +8,7 @@
         <el-button @click="saveAction">保存</el-button>
       </el-button-group>
       <span v-if="!isTestCase"><!-- 不是测试用例，显示page select选择page，以及查看page布局信息的el-icon-view -->
-        <el-select v-model="saveActionForm.pageId" clearable filterable style="width: 100px" @change="pageSelected">
+        <el-select v-model="saveActionForm.pageId" clearable filterable style="width: 150px" @change="pageSelected" placeholder="选择page">
           <el-option v-for="page in pages" :key="page.id" :label="page.name" :value="page.id" />
         </el-select>
         <el-popover trigger="click" placement="left">
@@ -19,7 +19,7 @@
         </el-popover>
       </span>
       <span v-if="isTestCase"><!-- 测试用例，提供测试集选择 -->
-        <el-select v-model="saveActionForm.testSuiteId" clearable filterable>
+        <el-select v-model="saveActionForm.testSuiteId" clearable filterable style="width: 150px" placeholder="选择testSuite">
           <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
         </el-select>
       </span>
@@ -139,23 +139,61 @@ export default {
       this.saveActionForm.localVars = this.$refs.localVarList.localVars
       this.saveActionForm.steps = this.$refs.stepList.steps
       this.saveActionForm.hasReturnValue = this.saveActionForm.returnValue ? 1 : 0
-      this.saveActionForm.returnValueDesc = this.saveActionForm.returnValue ? this.saveActionForm.localVars.filter(localVar => localVar.name === this.saveActionForm.returnValue)[0].description : ''
+
+      // 返回值必须在局部变量里
+      if (this.saveActionForm.returnValue) {
+        const localVars = this.saveActionForm.localVars.filter(localVar => localVar.name === this.saveActionForm.returnValue)
+        if (localVars && localVars.length > 0) {
+          this.saveActionForm.returnValueDesc = localVars[0].description
+        } else {
+          this.$notify.error('返回值必须为局部变量')
+          return
+        }
+      } else {
+        this.saveActionForm.returnValueDesc = ''
+      }
 
       if (this.isAdd) {
         addAction(this.saveActionForm).then(response => {
-          this.$notify.success(response.msg)
-          this.$router.push('/action/encapsulation/list')
+          this.onSaveSuccess(response)
         })
       } else {
         updateAction(this.saveActionForm).then(response => {
-          this.$notify.success(response.msg)
-          this.$router.push('/action/encapsulation/list')
+          this.onSaveSuccess(response)
         })
       }
     },
+    onSaveSuccess(response) {
+      this.$notify.success(response.msg)
+      if (this.isTestCase) {
+        this.$router.push('/action/testcase/list')
+      } else {
+        this.$router.push('/action/encapsulation/list')
+      }
+    },
     debugAction() {
+      if (!this.$store.state.device.show) {
+        this.$notify.error('先选择一台设备使用后才能调试')
+        return
+      }
+      const action = {}
+      action.name = this.saveActionForm.name
+      action.params = this.$refs.paramList.params
+      action.localVars = this.$refs.localVarList.localVars
+      action.steps = this.$refs.stepList.selectedSteps
+      action.projectId = this.$store.state.project.id
+      action.platform = this.$store.state.project.platform
+      action.hasReturnValue = 0 // 调试不用处理返回值
       this.debugBtnLoading = true
-      debugAction().then(response => {
+      debugAction({
+        action: action,
+        debugInfo: {
+          agentIp: this.$store.state.device.agentIp,
+          agentPort: this.$store.state.device.agentPort,
+          port: this.$store.state.device.port,
+          deviceId: this.$store.state.device.id
+        }
+      }).then(response => {
         this.$notify.success(response.msg)
       }).finally(() => {
         this.debugBtnLoading = false
