@@ -349,6 +349,25 @@ export const constantRoutes = [
         meta: { title: '列表', noCache: true }
       }
     ]
+  },
+  {
+    path: '/testTask',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/pages/testtask/list'),
+        name: 'ListTestTask',
+        meta: { title: '测试任务', icon: 'testtask', noCache: true }
+      },
+      {
+        path: 'report/:testTaskId',
+        component: () => import('@/pages/testtask/report/index'),
+        name: 'ReportTestTask',
+        meta: { title: '测试报告', noCache: true },
+        hidden: true
+      }
+    ]
   }
 ]
 
