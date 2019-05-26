@@ -2,7 +2,7 @@
   <div class="app-container">
     <!--testSuite-->
     <div>
-      <el-tabs type="card" @tab-click="onTabClick" addable @tab-add="addTestSuite">
+      <el-tabs type="card" addable @tab-click="onTabClick" @tab-add="addTestSuite">
         <el-tab-pane v-for="testSuite in testSuiteList" :key="testSuite.id" :label="testSuite.name" />
       </el-tabs>
     </div>
@@ -77,10 +77,12 @@ export default {
     copyAction(action) {
       const _action = JSON.parse(JSON.stringify(action))
       delete _action.id
-      delete _action.createdTime
+      delete _action.createTime
       delete _action.creatorUid
+      delete _action.creatorNickName
       delete _action.updateTime
       delete _action.updatorUid
+      delete _action.updatorNickName
       this.$router.push({
         name: 'TestcaseActionAdd',
         params: _action

@@ -77,10 +77,12 @@ export default {
     copyAction(action) {
       const _action = JSON.parse(JSON.stringify(action))
       delete _action.id
-      delete _action.createdTime
+      delete _action.createTime
       delete _action.creatorUid
+      delete _action.creatorNickName
       delete _action.updateTime
       delete _action.updatorUid
+      delete _action.updatorNickName
       this.$router.push({
         name: 'EncapsulationActionAdd',
         params: _action

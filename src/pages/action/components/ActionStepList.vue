@@ -118,7 +118,10 @@ export default {
         if (!actionId) {
           return true
         } else {
-          return !(this.selectableActions.filter(action => action.id === actionId)[0].hasReturnValue)
+          const action = this.selectableActions.filter(action => action.id === actionId)[0]
+          if (action) {
+            return !(action.hasReturnValue)
+          }
         }
       }
     },
