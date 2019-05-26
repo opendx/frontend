@@ -21,8 +21,9 @@
             {{ (row.updatorNickName ? row.updatorNickName : '') + ' ' + (row.updateTime ? row.updateTime : '') }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="150" align="center">
+        <el-table-column label="操作" width="250" align="center">
           <template scope="{ row }">
+            <el-button type="success" @click="copyAction(row)">复制</el-button>
             <el-button type="primary" class="el-icon-edit" @click="updateAction(row.id)" />
             <el-button type="danger" class="el-icon-delete" @click="deleteAction(row.id)" />
           </template>
@@ -73,6 +74,18 @@ export default {
     this.fetchActionList()
   },
   methods: {
+    copyAction(action) {
+      const _action = JSON.parse(JSON.stringify(action))
+      delete _action.id
+      delete _action.createdTime
+      delete _action.creatorUid
+      delete _action.updateTime
+      delete _action.updatorUid
+      this.$router.push({
+        name: 'EncapsulationActionAdd',
+        params: _action
+      })
+    },
     async fetchActionList() {
       const { data } = await getActionList(this.queryActionListForm)
       this.actionList = data.data

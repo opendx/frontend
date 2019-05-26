@@ -4,8 +4,8 @@
       <el-input v-model="saveActionForm.name" placeholder="action名" style="width: 200px" clearable />
       <el-input v-model="saveActionForm.description" placeholder="描述" style="width: 200px" clearable />
       <el-button-group>
-        <el-button :loading="debugBtnLoading" @click="debugAction">调试</el-button>
-        <el-button @click="saveAction">保存</el-button>
+        <el-button :loading="debugBtnLoading" @click="debugAction" type="info">调试</el-button>
+        <el-button @click="saveAction" type="success">保存</el-button>
       </el-button-group>
       <span v-if="!isTestCase"><!-- 不是测试用例，显示page select选择page，以及查看page布局信息的el-icon-view -->
         <el-select v-model="saveActionForm.pageId" clearable filterable style="width: 150px" @change="pageSelected" placeholder="选择page">
@@ -19,7 +19,7 @@
         </el-popover>
       </span>
       <span v-if="isTestCase"><!-- 测试用例，提供测试集选择 -->
-        <el-select v-model="saveActionForm.testSuiteId" clearable filterable style="width: 150px" placeholder="选择testSuite">
+        <el-select v-model="saveActionForm.testSuiteId" clearable filterable style="width: 150px" placeholder="选择测试集">
           <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
         </el-select>
       </span>
@@ -111,6 +111,15 @@ export default {
       const editActionId = this.$route.params.actionId
       const { data } = await getActionList({ id: editActionId })
       this.saveActionForm = data[0]
+      if (this.saveActionForm.pageId) { // 编辑时，默认绑定了page，需要初始化布局数据，否则点击右上角眼睛看不到数据
+        this.initPageWindowHierarchyData(this.saveActionForm.pageId)
+      }
+      this.$refs.paramList.params = this.saveActionForm.params
+      this.$refs.localVarList.localVars = this.saveActionForm.localVars
+      this.$refs.stepList.steps = this.saveActionForm.steps
+    } else {
+      // 复制，传递过来的数据
+      this.saveActionForm = this.$route.params
       if (this.saveActionForm.pageId) { // 编辑时，默认绑定了page，需要初始化布局数据，否则点击右上角眼睛看不到数据
         this.initPageWindowHierarchyData(this.saveActionForm.pageId)
       }
