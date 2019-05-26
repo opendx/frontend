@@ -2,9 +2,9 @@
   <div>
     <el-table :data="steps" border @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" width="30" />
-      <el-table-column align="center" width="80">
+      <el-table-column align="center" width="70">
         <template slot="header">
-          <i class="el-icon-circle-plus" @click="addStep" />
+          <el-button type="text" class="el-icon-circle-plus" @click="addStep" />
           步骤
         </template>
         <template scope="scope">
@@ -30,7 +30,7 @@
               <template scope="scope_paramValues">
                 <el-popover placement="right" width="400" trigger="click">
                   描述：{{ scope_paramValues.row.description || '无' }}
-                  <el-table :data="scope_paramValues.row.possibleValues" border style="margin-top: 5px">
+                  <el-table v-if="scope_paramValues.row.possibleValues" :data="scope_paramValues.row.possibleValues" border style="margin-top: 5px">
                     <el-table-column align="center" label="可选值">
                       <template scope="scope_possibleValues">
                         <el-button v-clipboard:copy="scope_possibleValues.row.value" v-clipboard:success="onCopy" type="text">{{ scope_possibleValues.row.value }}</el-button>
@@ -52,7 +52,7 @@
       </el-table-column>
       <el-table-column label="赋值" align="center" width="100">
         <template scope="{ row }">
-          <el-input v-model="row.evaluation" clearable />
+          <el-input v-model="row.evaluation" clearable :disabled="evaluationDisabled(row.actionId)" />
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="140">
@@ -83,6 +83,15 @@ export default {
     }
   },
   computed: {
+    evaluationDisabled() {
+      return function(actionId) {
+        if (!actionId) {
+          return true
+        } else {
+          return !(this.selectableActions.filter(action => action.id === actionId)[0].hasReturnValue)
+        }
+      }
+    },
     optionLabelName() {
       return function(action) {
         const text1 = action.type === 1 ? '[基础组件]' : action.type === 2 ? '[封装组件]' : action.type === 3 ? '[测试用例]' : '[未知]'
@@ -126,8 +135,7 @@ export default {
     }
   },
   created() {
-    // 防止 复制/修改 pageAction 选择action不显示actionName
-    // this.fetchSelectableActions()
+    this.fetchSelectableActions()
   },
   methods: {
     moveUp(index) {

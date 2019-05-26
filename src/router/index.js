@@ -237,24 +237,32 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/pageAction',
+    path: '/action/encapsulation',
     component: Layout,
-    name: 'PageAction',
+    redirect: '/action/encapsulation/list',
+    name: 'EncapsulationAction',
     meta: {
-      title: 'PageAction',
+      title: '封装Action',
       icon: 'module'
     },
     children: [
       {
         path: 'add',
-        component: () => import('@/pages/action/pageaction/add'),
-        name: 'PageActionAdd',
+        component: () => import('@/pages/action/encapsulation/add'),
+        name: 'EncapsulationActionAdd',
         meta: { title: '添加', noCache: true }
       },
       {
+        path: 'update/:actionId',
+        component: () => import('@/pages/action/encapsulation/update'),
+        name: 'EncapsulationActionUpdate',
+        meta: { title: '更新', noCache: true },
+        hidden: true
+      },
+      {
         path: 'list',
-        component: () => import('@/pages/action/pageaction/list'),
-        name: 'PageActionList',
+        component: () => import('@/pages/action/encapsulation/list'),
+        name: 'EncapsulationActionList',
         meta: { title: '列表', noCache: true }
       }
     ]

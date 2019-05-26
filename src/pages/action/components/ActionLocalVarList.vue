@@ -3,7 +3,7 @@
     <el-table :data="localVars" border>
       <el-table-column label="" align="center">
         <template slot="header">
-          <i class="el-icon-circle-plus" @click="addLocalVar" />
+          <el-button type="text" class="el-icon-circle-plus" @click="addLocalVar" />
           局部变量名
         </template>
         <template scope="{ row }">
@@ -24,7 +24,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="50">
         <template scope="scope">
-          <i class="el-icon-delete" @click="deleteLocalVar(scope.$index)" />
+          <el-button type="text" class="el-icon-delete" @click="deleteLocalVar(scope.$index)" />
         </template>
       </el-table-column>
     </el-table>

@@ -3,7 +3,7 @@
     <el-table :data="params" border>
       <el-table-column align="center">
         <template slot="header">
-          <i v-show="isAdd" class="el-icon-circle-plus" @click="addParam" />
+          <el-button type="text" :disabled="!isAdd" class="el-icon-circle-plus" @click="addParam" />
           参数名
         </template>
         <template scope="{ row }">
@@ -19,7 +19,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="50">
         <template scope="scope">
-          <i class="el-icon-delete" @click="deleteParam(scope.$index)" />
+          <el-button type="text" :disabled="!isAdd" class="el-icon-delete" @click="deleteParam(scope.$index)" />
         </template>
       </el-table-column>
     </el-table>
