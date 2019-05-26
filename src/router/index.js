@@ -311,6 +311,44 @@ export const constantRoutes = [
         hidden: true
       }
     ]
+  },
+  {
+    path: '/testPlan',
+    component: Layout,
+    redirect: '/testPlan/list',
+    name: 'TestPlan',
+    meta: {
+      title: '测试计划',
+      icon: 'testplan'
+    },
+    children: [
+      {
+        path: 'add',
+        component: () => import('@/pages/testplan/add'),
+        name: 'TestPlanAdd',
+        meta: { title: '添加', noCache: true }
+      },
+      {
+        path: 'update/:testPlanId',
+        component: () => import('@/pages/testplan/update'),
+        name: 'TestPlanUpdate',
+        meta: { title: '更新', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'commitTest/:testPlanId',
+        component: () => import('@/pages/testplan/commitTest'),
+        name: 'TestPlanCommitTest',
+        meta: { title: '提交测试', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/pages/testplan/list'),
+        name: 'TestPlanList',
+        meta: { title: '列表', noCache: true }
+      }
+    ]
   }
 ]
 
