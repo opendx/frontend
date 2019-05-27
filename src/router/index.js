@@ -123,6 +123,18 @@ export const constantRoutes = [
   //   ]
   // },
   {
+    path: '/agent',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/pages/agent/list'),
+        name: 'ListAgent',
+        meta: { title: 'Agent', icon: 'node', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/device',
     component: Layout,
     children: [
@@ -166,6 +178,37 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/globalVar',
+    component: Layout,
+    name: 'GlobalVar',
+    redirect: '/globalVar/list',
+    meta: {
+      title: '全局变量',
+      icon: 'globalvar'
+    },
+    children: [
+      {
+        path: 'add',
+        component: () => import('@/pages/globalvar/add'),
+        name: 'AddGlobalVar',
+        meta: { title: '添加', noCache: true }
+      },
+      {
+        path: 'update',
+        component: () => import('@/pages/globalvar/update'),
+        name: 'UpdateGlobalVar',
+        meta: { title: '更新', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/pages/globalvar/list'),
+        name: 'ListGlobalVar',
+        meta: { title: '列表', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/page',
     component: Layout,
     children: [
@@ -202,37 +245,6 @@ export const constantRoutes = [
         name: 'AddPageCategory',
         meta: { title: '添加Page分类', noCache: true },
         hidden: true
-      }
-    ]
-  },
-  {
-    path: '/globalVar',
-    component: Layout,
-    name: 'GlobalVar',
-    redirect: '/globalVar/list',
-    meta: {
-      title: '全局变量',
-      icon: 'globalvar'
-    },
-    children: [
-      {
-        path: 'add',
-        component: () => import('@/pages/globalvar/add'),
-        name: 'AddGlobalVar',
-        meta: { title: '添加', noCache: true }
-      },
-      {
-        path: 'update',
-        component: () => import('@/pages/globalvar/update'),
-        name: 'UpdateGlobalVar',
-        meta: { title: '更新', noCache: true },
-        hidden: true
-      },
-      {
-        path: 'list',
-        component: () => import('@/pages/globalvar/list'),
-        name: 'ListGlobalVar',
-        meta: { title: '列表', noCache: true }
       }
     ]
   },
@@ -366,18 +378,6 @@ export const constantRoutes = [
         name: 'ReportTestTask',
         meta: { title: '测试报告', noCache: true },
         hidden: true
-      }
-    ]
-  },
-  {
-    path: '/agent',
-    component: Layout,
-    children: [
-      {
-        path: 'list',
-        component: () => import('@/pages/agent/list'),
-        name: 'ListAgent',
-        meta: { title: 'Agent', icon: 'node', noCache: true }
       }
     ]
   }
