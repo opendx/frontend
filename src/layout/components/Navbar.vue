@@ -32,18 +32,18 @@
           <svg-icon icon-class="people" /><span style="font-size: 15px; margin-left: 5px">{{ name }}</span>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/profile/index">
-            <el-dropdown-item>Profile</el-dropdown-item>
-          </router-link>
-          <router-link to="/">
-            <el-dropdown-item>Dashboard</el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
+          <!--<router-link to="/profile/index">-->
+            <!--<el-dropdown-item>Profile</el-dropdown-item>-->
+          <!--</router-link>-->
+          <!--<router-link to="/">-->
+            <!--<el-dropdown-item>Dashboard</el-dropdown-item>-->
+          <!--</router-link>-->
+          <a target="_blank" href="https://github.com/FGNewb">
             <el-dropdown-item>Github</el-dropdown-item>
           </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
+          <!--<a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">-->
+            <!--<el-dropdown-item>Docs</el-dropdown-item>-->
+          <!--</a>-->
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">Log Out</span>
           </el-dropdown-item>
