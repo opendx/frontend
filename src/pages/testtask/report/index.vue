@@ -4,22 +4,22 @@
       <span slot="header" style="font-weight: 900">
         概况
       </span>
-      <el-table :data="tableData" border>
+      <el-table :data="testTaskSummary" border>
         <el-table-column label="项目类型" align="center">
-          <template scope="scope">
-            <svg-icon v-if="scope.row.projectType === 1" icon-class="android"/>
-            <svg-icon v-else-if="scope.row.projectType === 2" icon-class="ios"/>
+          <template scope="{ row }">
+            <svg-icon v-if="row.platform === 1" icon-class="android"/>
+            <svg-icon v-else-if="row.platform === 2" icon-class="ios"/>
             <svg-icon v-else icon-class="web"/>
           </template>
         </el-table-column>
         <el-table-column label="项目" prop="projectName" align="center"/>
-        <el-table-column label="测试任务" prop="testTaskName" align="center"/>
-        <el-table-column label="任务提交人" prop="creatorName" align="center"/>
-        <el-table-column label="开始时间" prop="startTime" align="center"/>
-        <el-table-column label="结束时间" prop="endTime" align="center"/>
-        <el-table-column label="通过用例数" prop="passCount" align="center"/>
-        <el-table-column label="失败用例数" prop="failCount" align="center"/>
-        <el-table-column label="跳过用例数" prop="skipCount" align="center"/>
+        <el-table-column label="测试任务" prop="name" align="center"/>
+        <el-table-column label="任务提交人" prop="commitorNickName" align="center"/>
+        <el-table-column label="提交时间" prop="commitTime" align="center"/>
+        <el-table-column label="结束时间" prop="finishTime" align="center"/>
+        <el-table-column label="通过用例数" prop="passCaseCount" align="center"/>
+        <el-table-column label="失败用例数" prop="failCaseCount" align="center"/>
+        <el-table-column label="跳过用例数" prop="skipCaseCount" align="center"/>
         <el-table-column label="通过率" prop="passPercent" align="center"/>
       </el-table>
     </el-card>
@@ -40,6 +40,7 @@
 
 <script>
 import { getDeviceTestTaskList } from '@/api/deviceTestTask'
+import { getTestTaskSummary } from '@/api/testTask'
 import TestCase from './TestCase'
 
 export default {
@@ -50,27 +51,15 @@ export default {
     return {
       testTaskId: this.$route.params.testTaskId,
       deviceTestTaskList: [],
-      tableData: []
+      testTaskSummary: []
     }
   },
   created() {
-//      getReportData(this.testTaskId).then(resp=>{
-//        this.reportData = resp.data
-//        this.tableData.push({
-//          projectName: this.reportData.projectName,
-//          projectType: this.reportData.projectType,
-//          testTaskName: this.reportData.testTaskName,
-//          creatorName: this.reportData.creatorName,
-//          startTime: this.reportData.startTime,
-//          endTime: this.reportData.endTime,
-//          passCount: this.reportData.passCount,
-//          failCount:this.reportData.failCount,
-//          skipCount: this.reportData.skipCount,
-//          passPercent: (Math.round(this.reportData.passCount / (this.reportData.passCount+this.reportData.failCount+this.reportData.skipCount) * 10000) / 100.00 + "%")
-//        })
-//      })
     getDeviceTestTaskList({ testTaskId: this.testTaskId }).then(response => {
       this.deviceTestTaskList = response.data
+    })
+    getTestTaskSummary(this.testTaskId).then(response => {
+      this.testTaskSummary.push(response.data)
     })
   }
 }

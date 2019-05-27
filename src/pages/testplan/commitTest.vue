@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div>
     <commit-test-dialog />
   </div>
 </template>

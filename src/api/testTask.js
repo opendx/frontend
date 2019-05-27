@@ -15,3 +15,10 @@ export function getTestTaskList(params) {
     params
   })
 }
+
+export function getTestTaskSummary(testTaskId) {
+  return request({
+    method: 'GET',
+    url: '/testTask/summary/' + testTaskId
+  })
+}

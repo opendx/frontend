@@ -139,7 +139,7 @@ export default {
             const actions = response.data
             if (actions) {
               actions.forEach(action => {
-                action.label = action.name + ' | ' + action.createTime + ' | ' + action.creatorNickName
+                action.label = action.name + ' | ' + action.createTime + '(' + action.creatorNickName + ')'
               })
             }
             this.testSuitesTreeData.push({ label: suiteName, children: actions })

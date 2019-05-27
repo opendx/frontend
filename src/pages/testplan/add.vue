@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div>
     <save-test-plan-dialog :is-add="true" />
   </div>
 </template>
