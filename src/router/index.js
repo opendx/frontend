@@ -368,6 +368,18 @@ export const constantRoutes = [
         hidden: true
       }
     ]
+  },
+  {
+    path: '/agent',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/pages/agent/list'),
+        name: 'ListAgent',
+        meta: { title: 'Agent', icon: 'node', noCache: true }
+      }
+    ]
   }
 ]
 

@@ -72,15 +72,13 @@ export default {
     this.minicapWebsocket.onclose = () => {
       this.$notify({
         title: '提示',
-        message: 'minicap websocet close',
-        duration: 0
+        message: 'minicap websocet close'
       })
     }
     this.minicapWebsocket.onerror = () => {
       this.$notify({
         title: '提示',
-        message: 'minicap websocet error',
-        duration: 0
+        message: 'minicap websocet error'
       })
     }
     this.minicapWebsocket.onmessage = (message) => {
