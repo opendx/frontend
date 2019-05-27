@@ -14,8 +14,8 @@
       <el-table-column label="设备" align="center">
         <template scope="{ row }">
           <el-table :data="row.devices" size="mini">
-            <el-table-column label="设备名" prop="name" align="center"></el-table-column>
-            <el-table-column label="设备id" prop="id" align="center"></el-table-column>
+            <el-table-column label="设备名" prop="name" align="center" />
+            <el-table-column label="设备id" prop="id" align="center" />
             <el-table-column label="设备状态" align="center">
               <template scope="device_scope">
                 {{ device_scope.row.status === 2 ? '在线闲置': '[' + device_scope.row.username + ']使用中' }}
