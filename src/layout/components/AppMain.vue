@@ -8,7 +8,7 @@
       </transition>
     </div>
     <!--这里先写死420-->
-    <div v-if="showDevice" style="width: 420px;height:100%;position: fixed;top: 50px;right: 0;background-color: #0a76a4">
+    <div v-if="showDevice" style="width: 420px;height:100%;position: fixed;top: 50px;right: 0">
       <android-controller />
     </div>
   </section>
