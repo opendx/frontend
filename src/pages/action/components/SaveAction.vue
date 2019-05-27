@@ -187,6 +187,10 @@ export default {
         this.$notify.error('先选择一台设备使用后才能调试')
         return
       }
+      if (this.$refs.stepList.selectedSteps.length === 0) {
+        this.$notify.error('至少勾选一个步骤')
+        return
+      }
       const action = {}
       action.name = this.saveActionForm.name
       action.params = this.$refs.paramList.params
