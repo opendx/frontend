@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-button @click="$router.push('/action/testcase/add')" style="margin-bottom: 10px" class="el-icon-plus" />
     <!--testSuite-->
     <div>
       <el-tabs type="card" addable @tab-click="onTabClick" @tab-add="addTestSuite">

@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-button @click="$router.push('/action/encapsulation/add')" style="margin-bottom: 10px" class="el-icon-plus" />
     <!--page-->
     <div>
       <el-tabs type="card" @tab-click="onTabClick">

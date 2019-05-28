@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-button @click="$router.push('/testplan/add')" style="margin-bottom: 10px" class="el-icon-plus" />
     <el-table :data="testPlanList" border>
       <el-table-column label="测试计划" align="center" prop="name"></el-table-column>
       <el-table-column label="描述" align="center" prop="description"></el-table-column>

@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-button @click="$router.push('/globalVar/add')" style="margin-bottom: 10px" class="el-icon-plus" />
     <!-- 列表 -->
     <div>
       <el-table :data="globalVarList" highlight-current-row border>

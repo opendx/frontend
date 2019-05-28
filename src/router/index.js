@@ -149,62 +149,52 @@ export const constantRoutes = [
   {
     path: '/project',
     component: Layout,
-    name: 'Project',
-    redirect: '/project/list',
-    meta: {
-      title: '项目',
-      icon: 'project'
-    },
     children: [
       {
         path: 'add',
         component: () => import('@/pages/project/add'),
         name: 'AddProject',
-        meta: { title: '添加', noCache: true }
+        meta: { title: '添加项目', noCache: true },
+        hidden: true
       },
       {
         path: 'update',
         component: () => import('@/pages/project/update'),
         name: 'UpdateProject',
-        meta: { title: '更新', noCache: true },
+        meta: { title: '更新项目', noCache: true },
         hidden: true
       },
       {
         path: 'list',
         component: () => import('@/pages/project/list'),
         name: 'ListProject',
-        meta: { title: '列表', noCache: true }
+        meta: { title: '项目', icon: 'project', noCache: true }
       }
     ]
   },
   {
     path: '/globalVar',
     component: Layout,
-    name: 'GlobalVar',
-    redirect: '/globalVar/list',
-    meta: {
-      title: '全局变量',
-      icon: 'globalvar'
-    },
     children: [
       {
         path: 'add',
         component: () => import('@/pages/globalvar/add'),
         name: 'AddGlobalVar',
-        meta: { title: '添加', noCache: true }
+        meta: { title: '添加全局变量', noCache: true },
+        hidden: true
       },
       {
         path: 'update',
         component: () => import('@/pages/globalvar/update'),
         name: 'UpdateGlobalVar',
-        meta: { title: '更新', noCache: true },
+        meta: { title: '更新全局变量', noCache: true },
         hidden: true
       },
       {
         path: 'list',
         component: () => import('@/pages/globalvar/list'),
         name: 'ListGlobalVar',
-        meta: { title: '列表', noCache: true }
+        meta: { title: '全局变量', icon: 'globalvar', noCache: true }
       }
     ]
   },
@@ -251,62 +241,52 @@ export const constantRoutes = [
   {
     path: '/action/encapsulation',
     component: Layout,
-    redirect: '/action/encapsulation/list',
-    name: 'EncapsulationAction',
-    meta: {
-      title: '封装Action',
-      icon: 'module'
-    },
     children: [
       {
         path: 'add',
         component: () => import('@/pages/action/encapsulation/add'),
         name: 'EncapsulationActionAdd',
-        meta: { title: '添加', noCache: true }
+        meta: { title: '添加Action', noCache: true },
+        hidden: true
       },
       {
         path: 'update/:actionId',
         component: () => import('@/pages/action/encapsulation/update'),
         name: 'EncapsulationActionUpdate',
-        meta: { title: '更新', noCache: true },
+        meta: { title: '更新Action', noCache: true },
         hidden: true
       },
       {
         path: 'list',
         component: () => import('@/pages/action/encapsulation/list'),
         name: 'EncapsulationActionList',
-        meta: { title: '列表', noCache: true }
+        meta: { title: 'Action', icon: 'module', noCache: true }
       }
     ]
   },
   {
     path: '/action/testcase',
     component: Layout,
-    redirect: '/action/testcase/list',
-    name: 'TestcaseAction',
-    meta: {
-      title: '测试用例',
-      icon: 'testcase'
-    },
     children: [
       {
         path: 'add',
         component: () => import('@/pages/action/testcase/add'),
         name: 'TestcaseActionAdd',
-        meta: { title: '添加', noCache: true }
+        meta: { title: '添加测试用例', noCache: true },
+        hidden: true
       },
       {
         path: 'update/:actionId',
         component: () => import('@/pages/action/testcase/update'),
         name: 'TestcaseActionUpdate',
-        meta: { title: '更新', noCache: true },
+        meta: { title: '更新测试用例', noCache: true },
         hidden: true
       },
       {
         path: 'list',
         component: () => import('@/pages/action/testcase/list'),
         name: 'TestcaseActionList',
-        meta: { title: '列表', noCache: true }
+        meta: { title: '测试用例', icon: 'testcase', noCache: true }
       }
     ]
   },
@@ -327,24 +307,19 @@ export const constantRoutes = [
   {
     path: '/testPlan',
     component: Layout,
-    redirect: '/testPlan/list',
-    name: 'TestPlan',
-    meta: {
-      title: '测试计划',
-      icon: 'testplan'
-    },
     children: [
       {
         path: 'add',
         component: () => import('@/pages/testplan/add'),
         name: 'TestPlanAdd',
-        meta: { title: '添加', noCache: true }
+        meta: { title: '添加测试计划', noCache: true },
+        hidden: true
       },
       {
         path: 'update/:testPlanId',
         component: () => import('@/pages/testplan/update'),
         name: 'TestPlanUpdate',
-        meta: { title: '更新', noCache: true },
+        meta: { title: '更新测试计划', noCache: true },
         hidden: true
       },
       {
@@ -358,7 +333,7 @@ export const constantRoutes = [
         path: 'list',
         component: () => import('@/pages/testplan/list'),
         name: 'TestPlanList',
-        meta: { title: '列表', noCache: true }
+        meta: { title: '测试计划', icon: 'testplan', noCache: true }
       }
     ]
   },

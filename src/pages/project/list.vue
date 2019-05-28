@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-button @click="$router.push('/project/add')" style="margin-bottom: 10px" class="el-icon-plus" />
     <!--查询-->
     <div>
       <el-select v-model="queryForm.platform" placeholder="平台" clearable>
