@@ -15,9 +15,9 @@ export function deviceStart(deviceId) {
   })
 }
 
-export function getOnlineDevices(type) {
+export function getOnlineDevices(platform) {
   return request({
     method: 'GET',
-    url: '/device/online/' + type
+    url: '/device/online/' + platform
   })
 }

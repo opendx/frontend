@@ -2,8 +2,8 @@
   <div class="app-container">
     <!--查询-->
     <div>
-      <el-select v-model="queryForm.type" placeholder="设备类型" clearable>
-        <el-option v-for="deviceType in deviceTypes" :key="deviceType.type" :label="deviceType.name" :value="deviceType.type" />
+      <el-select v-model="queryForm.platform" placeholder="设备类型" clearable>
+        <el-option v-for="devicePlatform in devicePlatforms" :key="devicePlatform.platform" :label="devicePlatform.name" :value="devicePlatform.platform" />
       </el-select>
       <el-button type="primary" class="el-icon-search" @click="onQueryBtnClick" />
     </div>
@@ -64,13 +64,13 @@ export default {
   },
   data() {
     return {
-      deviceTypes: [
+      devicePlatforms: [
         {
-          type: 1,
+          platform: 1,
           name: 'Android'
         },
         {
-          type: 2,
+          platform: 2,
           name: 'iOS'
         }
       ],
@@ -79,7 +79,7 @@ export default {
       queryForm: {
         pageNum: 1,
         pageSize: 10,
-        type: null
+        platform: null
       }
     }
   },
