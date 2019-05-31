@@ -199,6 +199,7 @@ export default {
       action.projectId = this.$store.state.project.id
       action.platform = this.$store.state.project.platform
       action.hasReturnValue = 0 // 调试不用处理返回值
+      action.type = this.isTestCase ? 3 : 2
       this.debugBtnLoading = true
       debugAction({
         action: action,
