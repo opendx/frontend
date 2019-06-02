@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getDeviceTestTaskList(params) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/deviceTestTask/list',
     params
   })

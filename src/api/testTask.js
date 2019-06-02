@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function commitTestTask(data) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/testTask/commit',
     data
   })
@@ -10,7 +10,7 @@ export function commitTestTask(data) {
 
 export function getTestTaskList(params) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/testTask/list',
     params
   })
@@ -18,7 +18,7 @@ export function getTestTaskList(params) {
 
 export function getTestTaskSummary(testTaskId) {
   return request({
-    method: 'GET',
+    method: 'get',
     url: '/testTask/summary/' + testTaskId
   })
 }

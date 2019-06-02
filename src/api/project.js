@@ -1,36 +1,32 @@
 import request from '@/utils/request'
 
-// 新增项目
 export function addProject(data) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/project/add',
-    data: data
+    data
   })
 }
 
-// 删除项目
 export function deleteProject(id) {
   return request({
-    method: 'GET',
+    method: 'get',
     url: '/project/delete/' + id
   })
 }
 
-// 修改项目
 export function updateProject(data) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/project/update',
-    data: data
+    data
   })
 }
 
-// 查询项目列表
 export function getProjectList(params) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/project/list',
-    params: params
+    params
   })
 }

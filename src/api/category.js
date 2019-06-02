@@ -2,15 +2,15 @@ import request from '@/utils/request'
 
 export function getCategoryList(params) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/category/list',
-    params: params
+    params
   })
 }
 
 export function addCategory(data) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/category/add',
     data
   })

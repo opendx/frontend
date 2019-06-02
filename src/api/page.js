@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function addPage(data) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/page/add',
     data
   })
@@ -10,22 +10,22 @@ export function addPage(data) {
 
 export function getPageList(params) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/page/list',
-    params: params
+    params
   })
 }
 
 export function deletePage(pageId) {
   return request({
-    method: 'GET',
+    method: 'get',
     url: '/page/delete/' + pageId
   })
 }
 
 export function updatePage(data) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/page/update',
     data
   })

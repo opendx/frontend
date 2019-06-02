@@ -2,31 +2,31 @@ import request from '@/utils/request'
 
 export function addGlobalVar(data) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/globalVar/add',
-    data: data
+    data
   })
 }
 
 export function updateGlobalVar(data) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/globalVar/update',
-    data: data
+    data
   })
 }
 
 export function getGlobalVarList(params) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/globalVar/list',
-    params: params
+    params
   })
 }
 
 export function deleteGlobalVar(globalVarId) {
   return request({
-    method: 'GET',
+    method: 'get',
     url: '/globalVar/delete/' + globalVarId
   })
 }

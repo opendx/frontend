@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function addTestSuite(data) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/testSuite/add',
     data
   })
@@ -10,7 +10,7 @@ export function addTestSuite(data) {
 
 export function getTestSuiteList(params) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/testSuite/list',
     params
   })

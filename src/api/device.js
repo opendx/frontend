@@ -1,23 +1,23 @@
 import request from '@/utils/request'
 
-export function getDeviceList(device) {
+export function getDeviceList(params) {
   return request({
-    method: 'POST',
+    method: 'post',
     url: '/device/list',
-    params: device
+    params
   })
 }
 
 export function deviceStart(deviceId) {
   return request({
-    method: 'GET',
+    method: 'get',
     url: '/device/start/' + deviceId
   })
 }
 
 export function getOnlineDevices(platform) {
   return request({
-    method: 'GET',
+    method: 'get',
     url: '/device/online/' + platform
   })
 }
