@@ -1,5 +1,12 @@
 <template>
   <div>
+    <el-alert
+      v-if="showAlert"
+      style="position: fixed"
+      :closable="false"
+      title="远程连接已断开"
+      type="error"
+      show-icon />
     <!--画布-->
     <div align="center">
       <canvas id="androidControllerCanvas" />
@@ -20,6 +27,7 @@ export default {
   },
   data() {
     return {
+      showAlert: false,
       minicapWebsocket: null,
       minitouchWebsocket: null,
       touchDown: {
@@ -70,16 +78,10 @@ export default {
     this.minicapWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/minicap/' + this.deviceId + '/' + this.username)
     this.minicapWebsocket.binaryType = 'blob'
     this.minicapWebsocket.onclose = () => {
-      this.$notify({
-        title: '提示',
-        message: 'minicap websocet close'
-      })
+      this.showAlert = true
     }
     this.minicapWebsocket.onerror = () => {
-      this.$notify({
-        title: '提示',
-        message: 'minicap websocet error'
-      })
+      this.showAlert = true
     }
     this.minicapWebsocket.onmessage = (message) => {
       if (typeof message.data !== 'string') {
@@ -103,16 +105,10 @@ export default {
     // minitouch
     this.minitouchWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/minitouch/' + this.deviceId)
     this.minitouchWebsocket.onclose = () => {
-      this.$notify({
-        title: '提示',
-        message: 'minitouch websocet close'
-      })
+      this.showAlert = true
     }
     this.minitouchWebsocket.onerror = () => {
-      this.$notify({
-        title: '提示',
-        message: 'minitouch websocet error'
-      })
+      this.showAlert = true
     }
     let isMouseDown = false
     // 当鼠标处于按下的状态移出画布,这个时候体验不好，需要在移出的时候，发送鼠标抬起事件,并将鼠标状态设为抬起
