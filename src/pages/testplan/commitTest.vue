@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <commit-test-dialog />
-  </div>
+  <commit-test-dialog />
 </template>
 
 <script>

@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <save-test-plan-dialog :is-add="false" />
-  </div>
+  <save-test-plan-dialog :is-add="false" />
 </template>
 
 <script>
