@@ -2,8 +2,9 @@
   <div class="app-container">
     <!--page分类-->
     <div>
-      <el-tabs type="card" addable @tab-add="addPageCategory" @tab-click="onTabClick">
-        <el-tab-pane v-for="category in pageCategoryList" :key="category.id" :label="category.name" />
+      <el-button @click="addPageCategory" style="margin-bottom: 10px">添加分类</el-button>
+      <el-tabs type="card" v-model="selectedCategoryName" @tab-remove="deletePageCategory" @tab-click="onTabClick">
+        <el-tab-pane v-for="category in pageCategoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'" />
       </el-tabs>
     </div>
     <!--page列表-->
@@ -38,7 +39,7 @@
 
 <script>
 
-import { getCategoryList } from '@/api/category'
+import { getCategoryList, deleteCategory } from '@/api/category'
 import { getPageList, deletePage } from '@/api/page'
 import Pagination from '@/components/Pagination'
 
@@ -48,6 +49,7 @@ export default {
   },
   data() {
     return {
+      selectedCategoryName: '全部',
       pageCategoryList: [
         {
           name: '全部'
@@ -94,6 +96,23 @@ export default {
     },
     addPageCategory() {
       this.$router.push({ path: '/category/addPageCategory' })
+    },
+    deletePageCategory(name) {
+      this.$confirm('删除' + name + '？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const category = this.pageCategoryList.filter(category => category.name === name)[0]
+        deleteCategory(category.id).then(response => {
+          this.$notify.success(response.msg)
+          // 移除tab，切换到全部，重新请求全部数据
+          this.pageCategoryList.splice(this.pageCategoryList.indexOf(category), 1)
+          this.selectedCategoryName = '全部'
+          this.queryPageListForm.categoryId = undefined
+          this.fetchPageList()
+        })
+      })
     },
     deletePage(id) {
       this.$confirm('删除该Page？', '提示', {

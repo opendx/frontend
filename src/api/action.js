@@ -26,15 +26,15 @@ export function getActionList(params) {
 
 export function deleteAction(actionId) {
   return request({
-    method: 'get',
-    url: '/action/delete/' + actionId
+    method: 'delete',
+    url: '/action/' + actionId
   })
 }
 
 export function getSelectableActions(projectId, platform) {
   return request({
     method: 'get',
-    url: '/action/selectable/' + projectId + '/' + platform
+    url: '/action/selectable/project/' + projectId + '/platform/' + platform
   })
 }
 

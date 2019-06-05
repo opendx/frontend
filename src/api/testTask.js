@@ -19,6 +19,6 @@ export function getTestTaskList(params) {
 export function getTestTaskSummary(testTaskId) {
   return request({
     method: 'get',
-    url: '/testTask/summary/' + testTaskId
+    url: '/testTask/' + testTaskId + '/summary'
   })
 }

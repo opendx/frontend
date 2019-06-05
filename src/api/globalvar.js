@@ -26,7 +26,7 @@ export function getGlobalVarList(params) {
 
 export function deleteGlobalVar(globalVarId) {
   return request({
-    method: 'get',
-    url: '/globalVar/delete/' + globalVarId
+    method: 'delete',
+    url: '/globalVar/' + globalVarId
   })
 }

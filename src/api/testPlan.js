@@ -2,31 +2,31 @@ import request from '@/utils/request'
 
 export function addTestPlan(data) {
   return request({
-    url: '/testPlan/add',
     method: 'post',
+    url: '/testPlan/add',
     data
   })
 }
 
 export function deleteTestPlan(testPlanId) {
   return request({
-    url: '/testPlan/delete/' + testPlanId,
-    method: 'get'
+    method: 'delete',
+    url: '/testPlan/' + testPlanId
   })
 }
 
 export function updateTestPlan(data) {
   return request({
-    url: '/testPlan/update',
     method: 'post',
+    url: '/testPlan/update',
     data
   })
 }
 
 export function getTestPlanList(params) {
   return request({
-    url: '/testPlan/list',
     method: 'post',
+    url: '/testPlan/list',
     params
   })
 }

@@ -11,13 +11,13 @@ export function getDeviceList(params) {
 export function deviceStart(deviceId) {
   return request({
     method: 'get',
-    url: '/device/start/' + deviceId
+    url: '/device/' + deviceId + '/start'
   })
 }
 
 export function getOnlineDevices(platform) {
   return request({
     method: 'get',
-    url: '/device/online/' + platform
+    url: '/device/online/platform/' + platform
   })
 }

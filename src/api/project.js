@@ -10,8 +10,8 @@ export function addProject(data) {
 
 export function deleteProject(id) {
   return request({
-    method: 'get',
-    url: '/project/delete/' + id
+    method: 'delete',
+    url: '/project/' + id
   })
 }
 

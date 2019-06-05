@@ -18,8 +18,8 @@ export function getPageList(params) {
 
 export function deletePage(pageId) {
   return request({
-    method: 'get',
-    url: '/page/delete/' + pageId
+    method: 'delete',
+    url: '/page/' + pageId
   })
 }
 
