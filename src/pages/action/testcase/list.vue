@@ -1,10 +1,13 @@
 <template>
   <div class="app-container">
-    <el-button @click="$router.push('/action/testcase/add')" style="margin-bottom: 10px" class="el-icon-plus" />
+    <div style="margin-bottom: 10px">
+      <el-button @click="$router.push('/testSuite/add')">添加测试集</el-button>
+      <el-button @click="$router.push('/action/testcase/add')">添加测试用例</el-button>
+    </div>
     <!--testSuite-->
     <div>
-      <el-tabs type="card" addable @tab-click="onTabClick" @tab-add="addTestSuite">
-        <el-tab-pane v-for="testSuite in testSuiteList" :key="testSuite.id" :label="testSuite.name" />
+      <el-tabs type="card" v-model="selectedTestSuiteName" @tab-remove="deleteTestSuite" @tab-click="onTabClick">
+        <el-tab-pane v-for="testSuite in testSuiteList" :key="testSuite.id" :label="testSuite.name" :name="testSuite.name" :closable="testSuite.name !== '全部'" />
       </el-tabs>
     </div>
     <!--action列表-->
@@ -42,7 +45,7 @@
 
 import { getActionList, deleteAction } from '@/api/action'
 import Pagination from '@/components/Pagination'
-import { getTestSuiteList } from '@/api/testSuite'
+import { getTestSuiteList, deleteTestSuite } from '@/api/testSuite'
 
 export default {
   components: {
@@ -50,6 +53,7 @@ export default {
   },
   data() {
     return {
+      selectedTestSuiteName: '全部',
       testSuiteList: [{
         name: '全部',
         id: undefined
@@ -89,9 +93,6 @@ export default {
         params: _action
       })
     },
-    addTestSuite() {
-      this.$router.push({ path: '/testSuite/add' })
-    },
     async fetchActionList() {
       const { data } = await getActionList(this.queryActionListForm)
       this.actionList = data.data
@@ -105,6 +106,23 @@ export default {
       const activedTestSuite = this.testSuiteList.filter(testSuite => testSuite.name === tab.label)[0]
       this.queryActionListForm.testSuiteId = activedTestSuite.id
       this.fetchActionList()
+    },
+    deleteTestSuite(name) {
+      this.$confirm('删除' + name + '？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const testSuite = this.testSuiteList.filter(testSuite => testSuite.name === name)[0]
+        deleteTestSuite(testSuite.id).then(response => {
+          this.$notify.success(response.msg)
+          // 移除tab，切换到全部，重新请求全部数据
+          this.testSuiteList.splice(this.testSuiteList.indexOf(testSuite), 1)
+          this.selectedTestSuiteName = '全部'
+          this.queryActionListForm.testSuiteId = undefined
+          this.fetchActionList()
+        })
+      })
     },
     deleteAction(id) {
       this.$confirm('删除该Action？', '提示', {

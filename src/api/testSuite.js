@@ -8,6 +8,13 @@ export function addTestSuite(data) {
   })
 }
 
+export function deleteTestSuite(id) {
+  return request({
+    method: 'delete',
+    url: '/testSuite/' + id
+  })
+}
+
 export function getTestSuiteList(params) {
   return request({
     method: 'post',

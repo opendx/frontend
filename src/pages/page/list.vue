@@ -1,12 +1,10 @@
 <template>
   <div class="app-container">
+    <el-button @click="$router.push('/category/addPageCategory')" style="margin-bottom: 10px">添加分类</el-button>
     <!--page分类-->
-    <div>
-      <el-button @click="addPageCategory" style="margin-bottom: 10px">添加分类</el-button>
-      <el-tabs type="card" v-model="selectedCategoryName" @tab-remove="deletePageCategory" @tab-click="onTabClick">
-        <el-tab-pane v-for="category in pageCategoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'" />
-      </el-tabs>
-    </div>
+    <el-tabs type="card" v-model="selectedCategoryName" @tab-remove="deletePageCategory" @tab-click="onTabClick">
+      <el-tab-pane v-for="category in pageCategoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'" />
+    </el-tabs>
     <!--page列表-->
     <div>
       <el-table :data="pageList" highlight-current-row border>
@@ -93,9 +91,6 @@ export default {
       const activeCategory = this.pageCategoryList.filter(category => category.name === tab.label)[0]
       this.queryPageListForm.categoryId = activeCategory.id
       this.fetchPageList()
-    },
-    addPageCategory() {
-      this.$router.push({ path: '/category/addPageCategory' })
     },
     deletePageCategory(name) {
       this.$confirm('删除' + name + '？', '提示', {
