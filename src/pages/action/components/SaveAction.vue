@@ -151,14 +151,11 @@ export default {
       this.saveActionForm.steps = this.$refs.stepList.steps
       this.saveActionForm.hasReturnValue = this.saveActionForm.returnValue ? 1 : 0
 
-      // 返回值必须在局部变量里
+      // 返回值描述
       if (this.saveActionForm.returnValue) {
         const localVars = this.saveActionForm.localVars.filter(localVar => localVar.name === this.saveActionForm.returnValue)
         if (localVars && localVars.length > 0) {
           this.saveActionForm.returnValueDesc = localVars[0].description
-        } else {
-          this.$notify.error('返回值必须为局部变量')
-          return
         }
       } else {
         this.saveActionForm.returnValueDesc = ''

@@ -7,7 +7,7 @@
           参数名
         </template>
         <template scope="{ row }">
-          <el-input v-model="row.name" clearable>
+          <el-input v-model="row.name" :disabled="!isAdd" clearable>
             <el-button slot="append" v-clipboard:copy="'#{' + row.name + '}'" v-clipboard:success="onCopy">copy</el-button>
           </el-input>
         </template>
