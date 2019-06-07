@@ -1,14 +1,14 @@
 <template>
   <div>
     <sticky :z-index="10" class-name="sub-navbar">
-      <el-input v-model="saveActionForm.name" placeholder="action名" style="width: 200px" clearable />
+      <span class="required"/><el-input v-model="saveActionForm.name" placeholder="action名" style="width: 200px" clearable />
       <el-input v-model="saveActionForm.description" placeholder="描述" style="width: 200px" clearable />
       <el-button-group>
-        <el-button :loading="debugBtnLoading" type="info" @click="debugAction">调试</el-button>
+        <el-button type="warning" :loading="debugBtnLoading" @click="debugAction">调试</el-button>
         <el-button type="success" @click="saveAction">保存</el-button>
       </el-button-group>
       <span v-if="!isTestCase"><!-- 不是测试用例，显示page select选择page，以及查看page布局信息的el-icon-view -->
-        <el-select v-model="saveActionForm.pageId" clearable filterable style="width: 150px" placeholder="选择page" @change="pageSelected">
+        <el-select v-model="saveActionForm.pageId" clearable filterable style="width: 150px" placeholder="绑定page" @change="pageSelected">
           <el-option v-for="page in pages" :key="page.id" :label="page.name" :value="page.id" />
         </el-select>
         <el-popover trigger="click" placement="left">
@@ -19,7 +19,7 @@
         </el-popover>
       </span>
       <span v-if="isTestCase"><!-- 测试用例，提供测试集选择 -->
-        <el-select v-model="saveActionForm.testSuiteId" clearable filterable style="width: 150px" placeholder="选择测试集">
+        <el-select v-model="saveActionForm.testSuiteId" clearable filterable style="width: 150px" placeholder="绑定测试集">
           <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
         </el-select>
       </span>
@@ -218,3 +218,10 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .required:before {
+    content: '*';
+    color: #ff4949;
+    margin-right: 4px;
+  }
+</style>

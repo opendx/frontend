@@ -2,10 +2,10 @@
   <div>
     <el-table :data="steps" border @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" width="30" />
-      <el-table-column align="center" width="70">
+      <el-table-column align="center" width="80">
         <template slot="header">
           <el-button type="text" class="el-icon-circle-plus" @click="addStep" />
-          步骤
+          <span class="required">步骤</span>
         </template>
         <template scope="scope">
           {{ stepNumber(scope.row, scope.$index + 1) }}
@@ -218,3 +218,10 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .required:before {
+    content: '*';
+    color: #ff4949;
+    margin-right: 4px;
+  }
+</style>
