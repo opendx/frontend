@@ -36,7 +36,14 @@
           <global-var-list />
         </el-tab-pane>
         <el-tab-pane label="返回值">
-          <el-input v-model="saveActionForm.returnValue" clearable :disabled="!isAdd" />
+          <el-row :gutter="5">
+            <el-col :span="12">
+              <el-input v-model="saveActionForm.returnValue" clearable :disabled="!isAdd" placeholder="返回值" />
+            </el-col>
+            <el-col :span="12">
+              <el-input v-model="saveActionForm.returnValueDesc" clearable :disabled="!isAdd" placeholder="描述" />
+            </el-col>
+          </el-row>
         </el-tab-pane>
       </el-tabs>
       <action-step-list ref="stepList" />
@@ -150,16 +157,6 @@ export default {
       this.saveActionForm.localVars = this.$refs.localVarList.localVars
       this.saveActionForm.steps = this.$refs.stepList.steps
       this.saveActionForm.hasReturnValue = this.saveActionForm.returnValue ? 1 : 0
-
-      // 返回值描述
-      if (this.saveActionForm.returnValue) {
-        const localVars = this.saveActionForm.localVars.filter(localVar => localVar.name === this.saveActionForm.returnValue)
-        if (localVars && localVars.length > 0) {
-          this.saveActionForm.returnValueDesc = localVars[0].description
-        }
-      } else {
-        this.saveActionForm.returnValueDesc = ''
-      }
 
       if (this.isAdd) {
         addAction(this.saveActionForm).then(response => {
