@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">fgnb</h3>
       </div>
 
       <el-form-item prop="username">
