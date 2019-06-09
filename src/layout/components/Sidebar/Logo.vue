@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       title: 'fgnb',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      logo: '/favicon.ico'
     }
   }
 }
@@ -57,6 +57,7 @@ export default {
     & .sidebar-logo {
       width: 32px;
       height: 32px;
+      -webkit-border-radius: 40%;
       vertical-align: middle;
       margin-right: 12px;
     }
