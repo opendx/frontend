@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: 'fgnb',
+      title: 'DaXiang',
       logo: '/favicon.ico'
     }
   }
@@ -55,9 +55,9 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
-      -webkit-border-radius: 40%;
+      width: 40px;
+      height: 40px;
+      -webkit-border-radius: 30%;
       vertical-align: middle;
       margin-right: 12px;
     }

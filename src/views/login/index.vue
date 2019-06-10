@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div style="margin-top: 200px">
-      <h2 align="center">fgnb</h2>
+      <h2 align="center">DaXiang</h2>
       <el-tabs v-model="activeName" style="width: 98px;margin: auto">
         <el-tab-pane label="登录" name="login" />
         <el-tab-pane label="注册" name="register" />
