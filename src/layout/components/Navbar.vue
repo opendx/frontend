@@ -38,7 +38,7 @@
           <!--<router-link to="/">-->
             <!--<el-dropdown-item>Dashboard</el-dropdown-item>-->
           <!--</router-link>-->
-          <a target="_blank" href="https://github.com/FGNewb">
+          <a target="_blank" href="https://github.com/opendx">
             <el-dropdown-item>Github</el-dropdown-item>
           </a>
           <!--<a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">-->
