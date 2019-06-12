@@ -20,15 +20,15 @@ const mutations = {
 
 const actions = {
   setId({ commit }, id) {
-    Cookies.set('projectId', id)
+    Cookies.set('projectId', id, { expires: 365 })
     commit('SET_ID', id)
   },
   setPlatform({ commit }, platform) {
-    Cookies.set('platform', platform)
+    Cookies.set('platform', platform, { expires: 365 })
     commit('SET_PLATFORM', platform)
   },
   setName({ commit }, name) {
-    Cookies.set('projectName', name)
+    Cookies.set('projectName', name, { expires: 365 })
     commit('SET_NAME', name)
   }
 }
