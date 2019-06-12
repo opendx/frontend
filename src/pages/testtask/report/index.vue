@@ -7,20 +7,20 @@
       <el-table :data="testTaskSummary" border>
         <el-table-column label="项目类型" align="center">
           <template scope="{ row }">
-            <svg-icon v-if="row.platform === 1" icon-class="android"/>
-            <svg-icon v-else-if="row.platform === 2" icon-class="ios"/>
+            <svg-icon v-if="row.platform === 1" icon-class="android" />
+            <svg-icon v-else-if="row.platform === 2" icon-class="ios" />
             <svg-icon v-else icon-class="web"/>
           </template>
         </el-table-column>
-        <el-table-column label="项目" prop="projectName" align="center"/>
-        <el-table-column label="测试任务" prop="name" align="center"/>
-        <el-table-column label="任务提交人" prop="commitorNickName" align="center"/>
-        <el-table-column label="提交时间" prop="commitTime" align="center"/>
-        <el-table-column label="结束时间" prop="finishTime" align="center"/>
-        <el-table-column label="通过用例数" prop="passCaseCount" align="center"/>
-        <el-table-column label="失败用例数" prop="failCaseCount" align="center"/>
-        <el-table-column label="跳过用例数" prop="skipCaseCount" align="center"/>
-        <el-table-column label="通过率" prop="passPercent" align="center"/>
+        <el-table-column label="项目" prop="projectName" align="center" />
+        <el-table-column label="测试任务" prop="name" align="center" />
+        <el-table-column label="任务提交人" prop="commitorNickName" align="center" />
+        <el-table-column label="提交时间" prop="commitTime" align="center" />
+        <el-table-column label="完成时间" prop="finishTime" align="center" />
+        <el-table-column label="通过用例数" prop="passCaseCount" align="center" />
+        <el-table-column label="失败用例数" prop="failCaseCount" align="center" />
+        <el-table-column label="跳过用例数" prop="skipCaseCount" align="center" />
+        <el-table-column label="通过率" prop="passPercent" align="center" />
       </el-table>
     </el-card>
 
@@ -41,7 +41,7 @@
 <script>
 import { getDeviceTestTaskList } from '@/api/deviceTestTask'
 import { getTestTaskSummary } from '@/api/testTask'
-import TestCase from './TestCase'
+import TestCase from './components/TestCase'
 
 export default {
   components: {

@@ -7,7 +7,7 @@
             {{ row.creatorNickName + ' ' + row.commitTime }}
           </template>
         </el-table-column>
-        <el-table-column label="结束时间" prop="finishTime" align="center"></el-table-column>
+        <el-table-column label="完成时间" prop="finishTime" align="center"></el-table-column>
         <el-table-column label="测试任务" prop="name" align="center"></el-table-column>
         <el-table-column label="任务描述" prop="description" align="center"></el-table-column>
         <el-table-column label="测试计划" prop="testPlanName" align="center"></el-table-column>
