@@ -14,12 +14,12 @@
         <div style="float: left">
           <video :src="testcase.videoUrl" width="300px" controls="controls">浏览器不支持video标签</video>
         </div>
-        <div style="float: left;margin-left: 10px;max-height: 600px;overflow: auto">
+        <div style="float: left;margin-left: 5px;max-height: 600px;overflow: auto">
           <el-table :data="testcase.steps" border>
             <el-table-column prop="number" label="步骤" align="center" width="50px" />
             <el-table-column prop="name" label="步骤名" align="center" width="200px" />
-            <el-table-column prop="startTime" label="开始时间" align="center" width="180px" />
-            <el-table-column prop="endTime" label="结束时间" align="center" width="180px" />
+            <el-table-column prop="startTime" label="开始时间" align="center" width="160px" />
+            <el-table-column prop="endTime" label="结束时间" align="center" width="160px" />
             <el-table-column label="耗时" align="center" width="100px">
               <template scope="{ row }">
                 {{ row.endTime ? parseInt(new Date(row.endTime) - new Date(row.startTime)) / 1000 + 's' : '-' }}
@@ -34,9 +34,9 @@
             </el-table-column>
           </el-table>
         </div>
-        <div style="float: left;margin-left: 10px">
+        <div style="float: left;margin-left: 5px">
           <el-table :data="[testcase]" border>
-            <el-table-column label="失败信息" align="center" width="300px">
+            <el-table-column label="失败信息" align="center" width="280px">
               <template scope="{ row }">
                 <span style="color:red" v-if="row.failInfo">{{ row.failInfo }}</span>
                 <span v-else>-</span>
