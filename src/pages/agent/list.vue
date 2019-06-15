@@ -6,12 +6,14 @@
           <div class="circle"/>
         </template>
       </el-table-column>
-      <el-table-column label="agent" align="center">
+      <el-table-column label="操作系统" property="osName" align="center" />
+      <el-table-column label="java版本" property="javaVersion" align="center" />
+      <el-table-column label="host" align="center">
         <template scope="{ row }">
-          {{ row.agentIp + ':' + row.agentPort }}
+          {{ row.ip + ':' + row.port }}
         </template>
       </el-table-column>
-      <el-table-column label="设备" align="center">
+      <el-table-column label="设备" align="center" width="1200">
         <template scope="{ row }">
           <el-table :data="row.devices" size="mini">
             <el-table-column label="设备名" prop="name" align="center" />
