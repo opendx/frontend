@@ -13,7 +13,7 @@
           {{ row.ip + ':' + row.port }}
         </template>
       </el-table-column>
-      <el-table-column label="设备" align="center" width="1200">
+      <el-table-column label="设备" align="center">
         <template scope="{ row }">
           <el-table :data="row.devices" size="mini">
             <el-table-column label="设备名" prop="name" align="center" />
