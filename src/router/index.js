@@ -135,6 +135,32 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/app',
+    component: Layout,
+    children: [
+      {
+        path: 'add',
+        component: () => import('@/pages/app/add'),
+        name: 'AddApp',
+        meta: { title: '添加App', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'update',
+        component: () => import('@/pages/app/update'),
+        name: 'UpdateApp',
+        meta: { title: '更新app', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/pages/app/list'),
+        name: 'ListApp',
+        meta: { title: 'App', icon: 'app', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/device',
     component: Layout,
     children: [
