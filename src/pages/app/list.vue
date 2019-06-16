@@ -33,7 +33,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template scope="{ row }">
-            <el-button v-if="queryForm.platform === 1 && (!row.packageName || !row.launchActivity || !row.version)" @click="aaptDumpBadging(row)" title="获取Version PackageName LaunchActivity">aapt dump</el-button>
+            <el-button v-if="queryForm.platform === 1 && (!row.packageName || !row.launchActivity || !row.version)" @click="aaptDumpBadging(row)" title="获取Version PackageName LaunchActivity" :loading="aaptDumpBadgingBtnLoading">aapt dump</el-button>
             <el-button type="primary" class="el-icon-edit" @click="updateApp(row)" />
             <el-button type="danger" class="el-icon-delete" @click="deleteApp(row)" />
           </template>
@@ -61,6 +61,7 @@ export default {
   },
   data() {
     return {
+      aaptDumpBadgingBtnLoading: false,
       platforms: [
         {
           type: 1,
@@ -117,9 +118,12 @@ export default {
       this.fetchAppList()
     },
     aaptDumpBadging(row) {
+      this.aaptDumpBadgingBtnLoading = true
       aaptDumpBadging(row.id).then(response => {
         this.$notify.success(response.msg)
         this.fetchAppList()
+      }).finally(() => {
+        this.aaptDumpBadgingBtnLoading = false
       })
     }
   }
