@@ -7,18 +7,14 @@
     <div class="right-menu">
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
-
         <error-log class="errLog-container right-menu-item hover-effect" />
-
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
         <el-tooltip content="Global Size" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
-
       </template>
-
-      <el-select v-model="projectId" placeholder="选择一个项目" style="top: -15px" size="mini" @visible-change="selectProject" @change="selectedProject">
+      <el-button icon="el-icon-warning" v-if="!$store.state.project.id" type="danger" style="position: relative; top: -15px" size="mini">选择一个项目作为当前的测试项目</el-button>
+      <el-select v-model="projectId" placeholder="选择项目" style="top: -15px" size="mini" @visible-change="selectProject" @change="selectedProject">
         <el-option
           v-for="project in projectList"
           :key="project.id"
@@ -26,24 +22,14 @@
           :value="project.id"
         />
       </el-select>
-
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div>
           <svg-icon icon-class="people" /><span style="font-size: 15px; margin-left: 5px">{{ name }}</span>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <!--<router-link to="/profile/index">-->
-            <!--<el-dropdown-item>Profile</el-dropdown-item>-->
-          <!--</router-link>-->
-          <!--<router-link to="/">-->
-            <!--<el-dropdown-item>Dashboard</el-dropdown-item>-->
-          <!--</router-link>-->
           <a target="_blank" href="https://github.com/opendx">
             <el-dropdown-item>Github</el-dropdown-item>
           </a>
-          <!--<a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">-->
-            <!--<el-dropdown-item>Docs</el-dropdown-item>-->
-          <!--</a>-->
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">Log Out</span>
           </el-dropdown-item>
