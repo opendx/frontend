@@ -168,7 +168,7 @@ export const constantRoutes = [
         path: 'list',
         component: () => import('@/pages/device/list'),
         name: 'ListDevice',
-        meta: { title: '设备', icon: 'deviceControl', noCache: true }
+        meta: { title: '设备', icon: 'device', noCache: true }
       }
     ]
   },
