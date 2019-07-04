@@ -3,13 +3,13 @@
     <el-collapse>
       <el-collapse-item v-for="testcase in data" :key="testcase.id">
         <template slot="title">
-          <el-tag size="small" style="color: black; background-color: white; margin-right: 5px">
-            {{ testcaseTitle(testcase) }}
-          </el-tag>
           <el-tag :type="testcase.status === 0 ? 'danger' : testcase.status === 1 ? 'success' : 'warning'" size="small" style="margin-right: 5px">
             {{ testcase.status === 0 ? '失败' : testcase.status === 1 ? '成功' : '跳过' }}
           </el-tag>
-          <el-tag @click="$router.push('/action/testcase/update/'+testcase.id)" size="small" type="success">查看用例</el-tag>
+          <el-tag size="small" style="color: black; background-color: white; margin-right: 5px">
+            {{ testcaseTitle(testcase) }}
+          </el-tag>
+          <el-tag @click="$router.push('/action/testcase/update/'+testcase.id)" size="small" type="info">查看用例</el-tag>
         </template>
         <div style="float: left">
           <video :src="testcase.videoUrl" width="300px" controls="controls">浏览器不支持video标签</video>

@@ -10,25 +10,25 @@
             {{ testPlan.description }}
           </el-form-item>
           <el-form-item label="BeforeClass">
-            <el-select v-model="testPlan.beforeClass" clearable :disabled="true">
+            <el-select v-model="testPlan.beforeClass" clearable :disabled="true" placeholder="">
               <el-option v-for="action in selectableActions" :label="action.name" :value="action.id" :key="action.id" />
             </el-select>
             <span style="margin-left: 10px;font-size: 10px;color: #8c939d">所有测试用例执行前执行的操作</span>
           </el-form-item>
           <el-form-item label="BeforeMethod">
-            <el-select v-model="testPlan.beforeMethod" clearable :disabled="true">
+            <el-select v-model="testPlan.beforeMethod" clearable :disabled="true" placeholder="">
               <el-option v-for="action in selectableActions" :label="action.name" :value="action.id" :key="action.id" />
             </el-select>
             <span style="margin-left: 10px;font-size: 10px;color: #8c939d">每条测试用例执行前执行的操作</span>
           </el-form-item>
           <el-form-item label="AfterMethod">
-            <el-select v-model="testPlan.afterMethod" clearable :disabled="true">
+            <el-select v-model="testPlan.afterMethod" clearable :disabled="true" placeholder="">
               <el-option v-for="action in selectableActions" :label="action.name" :value="action.id" :key="action.id" />
             </el-select>
             <span style="margin-left: 10px;font-size: 10px;color: #8c939d">每条测试用例执行后执行的操作</span>
           </el-form-item>
           <el-form-item label="AfterClass">
-            <el-select v-model="testPlan.afterClass" clearable :disabled="true">
+            <el-select v-model="testPlan.afterClass" clearable :disabled="true" placeholder="">
               <el-option v-for="action in selectableActions" :label="action.name" :value="action.id" :key="action.id" />
             </el-select>
             <span style="margin-left: 10px;font-size: 10px;color: #8c939d">所有测试用例执行后执行的操作</span>

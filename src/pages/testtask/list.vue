@@ -33,13 +33,13 @@
         </el-table-column>
         <el-table-column label="执行状态" align="center">
           <template scope="scope">
-            <el-tag :type="scope.row.status === 0 ? 'danger' : 'success'">{{ scope.row.status === 0 ? '未完成' : '已完成' }}</el-tag>
+            {{ scope.row.status === 0 ? '未完成' : '已完成' }}
           </template>
         </el-table-column>
         <el-table-column label="测试报告" align="center">
           <template scope="scope">
             <!--测试完成才显示-->
-            <div v-if="scope.row.status === 1"><el-button type="success" size="mini" @click="goToReportPage(scope.row)">查看</el-button></div>
+            <div v-if="scope.row.status === 1"><el-button size="mini" type="text" @click="goToReportPage(scope.row)">查看</el-button></div>
           </template>
         </el-table-column>
       </el-table>
