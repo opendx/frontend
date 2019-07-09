@@ -1,7 +1,7 @@
 <template>
   <div>
     <sticky :z-index="10" class-name="sub-navbar">
-      <span class="required"/><el-input v-model="saveActionForm.name" placeholder="action名" style="width: 200px" clearable />
+      <span class="required" /><el-input v-model="saveActionForm.name" placeholder="action名" style="width: 200px" clearable />
       <el-input v-model="saveActionForm.description" placeholder="描述" style="width: 200px" clearable />
       <el-button-group>
         <el-button type="warning" :loading="debugBtnLoading" @click="debugAction">调试</el-button>
@@ -200,7 +200,6 @@ export default {
         debugInfo: {
           agentIp: this.$store.state.device.agentIp,
           agentPort: this.$store.state.device.agentPort,
-          port: this.$store.state.device.port,
           deviceId: this.$store.state.device.id
         }
       }).then(response => {

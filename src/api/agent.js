@@ -32,11 +32,11 @@ export function stopAdbKit(agentIp, agentPort, deviceId) {
   })
 }
 
-export function startUiautomator2Server(agentIp, agentPort, deviceId) {
+export function freshAndroidDriver(agentIp, agentPort, deviceId) {
   const request = service(agentIp, agentPort)
   return request({
     method: 'get',
-    url: '/android/' + deviceId + '/uiautomator2server/start'
+    url: '/android/' + deviceId + '/freshAndroidDriver'
   })
 }
 

@@ -6,7 +6,8 @@
       :closable="false"
       title="远程连接已断开"
       type="error"
-      show-icon />
+      show-icon
+    />
     <!--画布-->
     <div align="center">
       <canvas id="androidControllerCanvas" />
@@ -19,7 +20,7 @@
 
 <script>
 import AndroidControllerButtom from './AndroidControllerButtom'
-import { startUiautomator2Server } from '@/api/agent'
+import { freshAndroidDriver } from '@/api/agent'
 
 export default {
   components: {
@@ -69,9 +70,8 @@ export default {
   mounted() {
     const canvas = document.getElementById('androidControllerCanvas')
     const canvasContext = canvas.getContext('2d')
-    // 启动uiautomator2 server
-    startUiautomator2Server(this.agentIp, this.agentPort, this.deviceId).then(response => {
-      this.$store.dispatch('device/setPort', response.data.port)
+    // freshAndroidDriver
+    freshAndroidDriver(this.agentIp, this.agentPort, this.deviceId).then(response => {
     })
     // minicap
     const BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
