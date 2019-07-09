@@ -185,6 +185,10 @@ export default {
         this.$notify.error('至少勾选一个步骤')
         return
       }
+      if (!this.$store.state.device.appiumSessionId) {
+        this.$notify.error('appium正在初始化，请稍后')
+        return
+      }
       const action = {}
       action.name = this.saveActionForm.name
       action.params = this.$refs.paramList.params

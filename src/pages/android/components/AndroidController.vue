@@ -72,6 +72,7 @@ export default {
     const canvasContext = canvas.getContext('2d')
     // freshAndroidDriver
     freshAndroidDriver(this.agentIp, this.agentPort, this.deviceId).then(response => {
+      this.$store.dispatch('device/setAppiumSessionId', response.data.appiumSessionId)
     })
     // minicap
     const BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
