@@ -10,10 +10,10 @@
     </el-popover>
 
     <el-button-group>
-      <el-button size="mini" @click="clickMenu">Menu</el-button>
-      <el-button size="mini" @click="clickHome">Home</el-button>
-      <el-button size="mini" @click="clickBack">Back</el-button>
-      <el-button size="mini" @click="clickPower">Power</el-button>
+      <el-button size="mini" @click="clickMenu" :disabled="!$store.state.device.appiumSessionId">Menu</el-button>
+      <el-button size="mini" @click="clickHome" :disabled="!$store.state.device.appiumSessionId">Home</el-button>
+      <el-button size="mini" @click="clickBack" :disabled="!$store.state.device.appiumSessionId">Back</el-button>
+      <el-button size="mini" @click="clickPower" :disabled="!$store.state.device.appiumSessionId">Power</el-button>
       <el-button size="mini" @click="clickClose">Close</el-button>
     </el-button-group>
 
