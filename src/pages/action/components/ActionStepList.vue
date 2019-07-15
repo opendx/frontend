@@ -131,7 +131,7 @@ export default {
         let text2
         if (action.hasReturnValue === 1) {
           if (action.returnValueDesc) {
-            text2 = '[返回值：' + action.returnValueDesc + ']'
+            text2 = '[' + action.returnValueDesc + ']'
           } else {
             text2 = '[有返回值]'
           }
@@ -139,7 +139,11 @@ export default {
           text2 = '[void]'
         }
         const text3 = action.name
-        return text1 + text2 + text3
+        let text4 = ''
+        if (action.description) {
+          text4 = ' //' + action.description
+        }
+        return text1 + text2 + text3 + text4
       }
     },
     projectId() {
