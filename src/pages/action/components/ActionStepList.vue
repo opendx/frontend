@@ -21,7 +21,7 @@
           <el-select v-model="row.actionId" filterable clearable style="width: 100%" @change="actionSelected($event, row)" @visible-change="selectAction">
             <el-option v-for="action in selectableActions" :key="action.id" :value="action.id" :label="action.name">
               <span style="float: left">{{ optionLabelName(action) }}</span>
-              <span style="float: right; color: #8492a6; font-size: 13px">{{ action.description }}</span>
+              <span style="float: right; padding-left: 5px; color: #8492a6; font-size: 13px">{{ action.description }}</span>
             </el-option>
           </el-select>
         </template>
