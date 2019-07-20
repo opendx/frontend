@@ -13,6 +13,14 @@
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
       </template>
+      <el-select v-model="idleDeviceId" placeholder="选择手机" style="top: -15px" size="mini" @visible-change="selectIdleDevice" @change="selectedIdleDevice">
+        <el-option
+          v-for="idleDevice in idleDeviceList"
+          :key="idleDevice.id"
+          :label="idleDevice.name"
+          :value="idleDevice.id"
+        />
+      </el-select>
       <el-button icon="el-icon-warning" v-if="!$store.state.project.id" type="danger" style="position: relative; top: -15px" size="mini">选择一个项目作为当前的测试项目</el-button>
       <el-select v-model="projectId" placeholder="选择项目" style="top: -15px" size="mini" @visible-change="selectProject" @change="selectedProject">
         <el-option
@@ -48,6 +56,7 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import { getProjectList } from '@/api/project'
+import { getDeviceList, deviceStart } from '@/api/device'
 
 export default {
   components: {
@@ -69,7 +78,9 @@ export default {
   data() {
     return {
       projectList: [],
-      projectId: null
+      projectId: null,
+      idleDeviceList: [],
+      idleDeviceId: null
     }
   },
   async created() {
@@ -102,6 +113,28 @@ export default {
       this.$store.dispatch('project/setId', selectedProject[0].id)
       this.$store.dispatch('project/setPlatform', selectedProject[0].platform)
       this.$store.dispatch('project/setName', selectedProject[0].name)
+    },
+    selectIdleDevice(type) {
+      if (type) {
+        // status: 2 在线闲置
+        getDeviceList({ status: 2 }).then(response => {
+          this.idleDeviceList = response.data
+        })
+      }
+    },
+    selectedIdleDevice(idleDeviceId) {
+      this.idleDeviceId = null
+      if (this.$store.state.device.show) {
+        this.$notify.error('只能使用一台手机')
+        return
+      }
+      deviceStart(idleDeviceId).then(() => {
+        const device = this.idleDeviceList.filter(idleDevice => idleDevice.id === idleDeviceId)[0]
+        this.$store.dispatch('device/setAgentIp', device.agentIp)
+        this.$store.dispatch('device/setAgentPort', device.agentPort)
+        this.$store.dispatch('device/setId', device.id)
+        this.$store.dispatch('device/setShow', true)
+      })
     }
   }
 }
