@@ -19,7 +19,10 @@
       <el-table-column label="Action" align="center">
         <template scope="{ row }">
           <el-select v-model="row.actionId" filterable clearable style="width: 100%" @change="actionSelected($event, row)" @visible-change="selectAction">
-            <el-option v-for="action in selectableActions" :key="action.id" :value="action.id" :label="optionLabelName(action)" />
+            <el-option v-for="action in selectableActions" :key="action.id" :value="action.id" :label="action.name">
+              <span style="float: left">{{ optionLabelName(action) }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{ action.description }}</span>
+            </el-option>
           </el-select>
         </template>
       </el-table-column>
@@ -139,11 +142,7 @@ export default {
           text2 = '[void]'
         }
         const text3 = action.name
-        let text4 = ''
-        if (action.description) {
-          text4 = ' //' + action.description
-        }
-        return text1 + text2 + text3 + text4
+        return text1 + text2 + text3
       }
     },
     projectId() {
