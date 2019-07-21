@@ -47,7 +47,9 @@
             </el-table-column>
             <el-table-column label="参数值" align="center">
               <template scope="scope_paramValues">
-                <el-input v-model="scope_paramValues.row.paramValue" clearable />
+                <el-input id="paramValue" v-model="scope_paramValues.row.paramValue" clearable @focus="paramValueFocus($event, scope_paramValues.row)" />
+                <!--todo 1.图片样式调整 2. 无法粘贴图片的问题 3.先写死309，后端加字段表示是否能粘贴图片-->
+                <img v-if="row.actionId === 309 && scope_paramValues.row.paramValue" :src="scope_paramValues.row.paramValue" />
               </template>
             </el-table-column>
           </el-table>
@@ -82,7 +84,8 @@ export default {
     return {
       steps: [],
       selectedSteps: [],
-      selectableActions: []
+      selectableActions: [],
+      paramValueHasAddedEventListener: false
     }
   },
   computed: {
@@ -174,6 +177,29 @@ export default {
     this.fetchSelectableActions()
   },
   methods: {
+    paramValueFocus(event, row) {
+      if (this.paramValueHasAddedEventListener) {
+        return
+      }
+      this.paramValueHasAddedEventListener = true
+      document.getElementById('paramValue').addEventListener('paste', e => {
+        if (e.clipboardData) {
+          if (!e.clipboardData.items) {
+            return
+          }
+          const item = e.clipboardData.items[0]
+          // 判断是否为图片数据
+          if (item && item.kind === 'file' && item.type.match(/^image\//i)) {
+            const imgFile = item.getAsFile()
+            const reader = new FileReader()
+            reader.onload = e => {
+              row.paramValue = e.target.result
+            }
+            reader.readAsDataURL(imgFile)
+          }
+        }
+      })
+    },
     moveUp(index) {
       this.steps[index - 1] = this.steps.splice(index, 1, this.steps[index - 1])[0]
     },
