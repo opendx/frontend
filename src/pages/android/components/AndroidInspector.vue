@@ -83,9 +83,16 @@ export default {
       this.nodeIndex = 0
       // 清除上一次的红色区域
       this.canvasCtx.clearRect(0, 0, this.imgInfo.imgWidth, this.imgInfo.imgHeight)
+      console.log('hierarchy', this.windowHierarchyJson.hierarchy)
       // from macaca Inspector start https://github.com/macacajs/app-inspector/blob/master/lib/android.js
-      const origin = _.filter(this.windowHierarchyJson.hierarchy.node, i => i !== null && typeof i === 'object' && i.package !== 'com.android.systemui')
-      const data = this.adaptor(origin[0])
+      const matchedNode = _.findLast(this.windowHierarchyJson.hierarchy, i => {
+        return (
+          i !== null &&
+          typeof i === 'object' &&
+          i.package !== 'com.android.systemui'
+        )
+      })
+      const data = this.adaptor(matchedNode)
       // from macaca Inspector end
       // 树所有数据
       this.treeData.push(data)
