@@ -11,14 +11,10 @@
           {{ stepNumber(scope.row, scope.$index + 1) }}
         </template>
       </el-table-column>
-      <el-table-column label="步骤名" align="center">
+      <el-table-column label="Action" align="center" width="300">
         <template scope="{ row }">
-          <el-input v-model="row.name" clearable />
-        </template>
-      </el-table-column>
-      <el-table-column label="Action" align="center">
-        <template scope="{ row }">
-          <el-select v-model="row.actionId" filterable clearable style="width: 100%" @change="actionSelected($event, row)" @visible-change="selectAction">
+          <el-input v-model="row.name" clearable placeholder="步骤名" style="margin-bottom: 5px" />
+          <el-select v-model="row.actionId" filterable clearable style="width: 100%" @change="actionSelected($event, row)" @visible-change="selectAction" placeholder="选择action">
             <el-option v-for="action in selectableActions" :key="action.id" :value="action.id" :label="action.name">
               <span style="float: left">{{ optionLabelName(action) }}</span>
               <span style="float: right; padding-left: 5px; color: #8492a6; font-size: 13px">{{ action.description }}</span>
@@ -31,7 +27,7 @@
           <el-table :data="row.paramValues" border>
             <el-table-column label="参数名" align="center">
               <template scope="scope_paramValues">
-                <el-popover placement="right" width="400" trigger="click">
+                <el-popover placement="right" trigger="click">
                   描述：{{ paramNameDesc(row.actionId, scope_paramValues.row.paramName) }}
                   <el-table v-if="hasPossibleValue(row.actionId, scope_paramValues.row.paramName)" :data="possibleValues(row.actionId, scope_paramValues.row.paramName)" border style="margin-top: 5px">
                     <el-table-column align="center" label="可选值">
@@ -55,7 +51,7 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column label="赋值" align="center" width="100">
+      <el-table-column label="赋值" align="center" width="200">
         <template scope="{ row }">
           <el-input v-model="row.evaluation" clearable :disabled="evaluationDisabled(row.actionId)" />
         </template>
