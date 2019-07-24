@@ -4,7 +4,8 @@ const arrKeyAttrs = [
   'rawIndentifier', // iOS
   'name', // Android & iOS
   'text', // Android
-  'value'// iOS
+  'value', // iOS
+  'content-desc' // Android
 ]
 
 let mapIdCount = {}
@@ -12,6 +13,7 @@ let mapRawIndentifierCount = {}
 let mapTextCount = {}
 let mapNameCount = {}
 let mapValueCount = {}
+let mapContentDescCount = {}
 let isScan = false
 
 const androidRootName = 'MacacaAppInspectorRoot'
@@ -62,6 +64,9 @@ function scanNode(nodes) {
             case 'value':
               mapValueCount[value] = mapValueCount[value] && mapValueCount[value] + 1 || 1
               break
+            case 'content-desc':
+              mapContentDescCount[value] = mapValueCount[value] && mapValueCount[value] + 1 || 1
+              break
           }
         }
       })
@@ -76,6 +81,7 @@ export function getXPathLite(tree, nodePath) {
   mapTextCount = {}
   mapNameCount = {}
   mapValueCount = {}
+  mapContentDescCount = {}
   isScan = false
 
   scanNode([tree])
@@ -94,6 +100,7 @@ export function getXPathLite(tree, nodePath) {
     const text = current['text']
     // const value = current['value']
     const rawIndentifier = current['rawIndentifier']
+    const contentDesc = current['content-desc']
 
     const index = getChildIndex(current, nodes)
 
@@ -105,6 +112,8 @@ export function getXPathLite(tree, nodePath) {
       XPath = `/*[@name='${name.trim()}']`
     } else if (text && mapTextCount[text] === 1 && text.trim()) {
       XPath = `/*[@text='${text.trim()}']`
+    } else if (contentDesc && mapContentDescCount[contentDesc] === 1 && contentDesc.trim()) {
+      XPath = `/*[@content-desc='${contentDesc.trim()}']`
     } else {
       if (current.class !== androidRootName) {
         XPath = `${XPath}/${current.class}[${index}]`
@@ -133,4 +142,43 @@ export function getXPath(tree, nodePath) {
   }
 
   return `//${array.join('/')}`
+}
+
+export function getAndroidUiautomator(tree, nodePath) {
+  mapIdCount = {}
+  mapRawIndentifierCount = {}
+  mapTextCount = {}
+  mapNameCount = {}
+  mapValueCount = {}
+  mapContentDescCount = {}
+  isScan = false
+
+  scanNode([tree])
+  isScan = true
+
+  // const array = []
+  let nodes = [tree]
+  const paths = [0, ...nodePath]
+
+  let androidUiautomator = ''
+
+  for (let i = 0; i < paths.length; i++) {
+    const current = nodes[paths[i]]
+    const resourceId = current['resource-id']
+    const text = current['text']
+    const contentDesc = current['content-desc']
+
+    if (resourceId && mapIdCount[resourceId] === 1 && resourceId.trim()) {
+      androidUiautomator = `new UiSelector().resourceId('${resourceId.trim()}')`
+    } else if (text && mapTextCount[text] === 1 && text.trim()) {
+      androidUiautomator = `new UiSelector().text('${text.trim()}')`
+    } else if (contentDesc && mapContentDescCount[contentDesc] === 1 && contentDesc.trim()) {
+      androidUiautomator = `new UiSelector().description('${contentDesc.trim()}')`
+    } else {
+      androidUiautomator = ''
+    }
+
+    nodes = current.nodes
+  }
+  return androidUiautomator
 }

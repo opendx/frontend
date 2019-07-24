@@ -27,7 +27,7 @@
 
 <script>
 import _ from 'lodash'
-import { getXPath, getXPathLite } from '@/utils/xpath'
+import { getXPath, getXPathLite, getAndroidUiautomator } from '@/utils/xpath'
 import clipboard from '@/directive/clipboard/index.js'
 
 export default {
@@ -120,6 +120,7 @@ export default {
       // 使用macaca xpath计算方法
       this.selectedNode.xpath = getXPath(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
       this.selectedNode.xpath_lite = getXPathLite(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
+      this.selectedNode.uiautomator = getAndroidUiautomator(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
       // copy对象
       const nodeDetail = Object.assign({}, this.selectedNode)
       // 去除id nodes
