@@ -8,25 +8,25 @@
         <el-input v-model.trim="saveTestPlanForm.description" type="textarea" />
       </el-form-item>
       <el-form-item label="BeforeClass">
-        <el-select v-model="saveTestPlanForm.beforeClass" clearable>
+        <el-select v-model="saveTestPlanForm.beforeClass" clearable filterable>
           <el-option v-for="action in selectableActions" :label="action.name" :value="action.id" :key="action.id" />
         </el-select>
         <span style="margin-left: 10px;font-size: 10px;color: #8c939d">所有测试用例执行前执行的操作</span>
       </el-form-item>
       <el-form-item label="BeforeMethod">
-        <el-select v-model="saveTestPlanForm.beforeMethod" clearable>
+        <el-select v-model="saveTestPlanForm.beforeMethod" clearable filterable>
           <el-option v-for="action in selectableActions" :label="action.name" :value="action.id" :key="action.id" />
         </el-select>
         <span style="margin-left: 10px;font-size: 10px;color: #8c939d">每条测试用例执行前执行的操作</span>
       </el-form-item>
       <el-form-item label="AfterMethod">
-        <el-select v-model="saveTestPlanForm.afterMethod" clearable>
+        <el-select v-model="saveTestPlanForm.afterMethod" clearable filterable>
           <el-option v-for="action in selectableActions" :label="action.name" :value="action.id" :key="action.id" />
         </el-select>
         <span style="margin-left: 10px;font-size: 10px;color: #8c939d">每条测试用例执行后执行的操作</span>
       </el-form-item>
       <el-form-item label="AfterClass">
-        <el-select v-model="saveTestPlanForm.afterClass" clearable>
+        <el-select v-model="saveTestPlanForm.afterClass" clearable filterable>
           <el-option v-for="action in selectableActions" :label="action.name" :value="action.id" :key="action.id" />
         </el-select>
         <span style="margin-left: 10px;font-size: 10px;color: #8c939d">所有测试用例执行后执行的操作</span>

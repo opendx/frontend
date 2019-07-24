@@ -31,7 +31,7 @@
             {{ row.uploadorNickName + ' ' + row.uploadTime }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" width="300">
           <template scope="{ row }">
             <el-button v-if="queryForm.platform === 1 && (!row.packageName || !row.launchActivity || !row.version)" @click="aaptDumpBadging(row)" title="获取Version PackageName LaunchActivity" :loading="aaptDumpBadgingBtnLoading">aapt dump</el-button>
             <el-button type="primary" class="el-icon-edit" @click="updateApp(row)" />
