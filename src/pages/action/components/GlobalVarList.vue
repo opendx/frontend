@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="globalVarList" border>
+    <el-table :data="globalVarList" border height="250">
       <el-table-column align="center" label="全局变量名">
         <template scope="{ row }">
           <el-button v-clipboard:copy="'${' + row.name + '}'" v-clipboard:success="onCopy" type="text">{{ row.name }}</el-button>

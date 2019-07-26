@@ -4,7 +4,7 @@
       <span class="required" /><el-input v-model="saveActionForm.name" placeholder="action名" style="width: 200px" clearable />
       <el-input v-model="saveActionForm.description" placeholder="描述" style="width: 200px" clearable />
       <el-button-group>
-        <el-button type="warning" :loading="debugBtnLoading" @click="debugAction">调试</el-button>
+        <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" @keyup.enter.native="debugAction">调试</el-button>
         <el-button type="success" @click="saveAction">保存</el-button>
       </el-button-group>
       <span v-if="!isTestCase"><!-- 不是测试用例，显示page select选择page，以及查看page布局信息的el-icon-view -->
@@ -25,7 +25,7 @@
       </span>
     </sticky>
     <div class="app-container">
-      <el-tabs tab-position="left" style="height: 250px;overflow: auto">
+      <el-tabs tab-position="left">
         <el-tab-pane label="方法参数">
           <action-param-list ref="paramList" :is-add="isAdd" />
         </el-tab-pane>
@@ -35,7 +35,7 @@
         <el-tab-pane label="全局变量">
           <global-var-list />
         </el-tab-pane>
-        <el-tab-pane label="返回值">
+        <el-tab-pane label="返回值" style="height: 250px">
           <el-row :gutter="5">
             <el-col :span="12">
               <el-input v-model="saveActionForm.returnValue" clearable :disabled="!isAdd" placeholder="返回值" />
@@ -46,7 +46,7 @@
           </el-row>
         </el-tab-pane>
       </el-tabs>
-      <action-step-list ref="stepList" />
+      <action-step-list ref="stepList" style="margin-top: 5px" />
     </div>
   </div>
 </template>
