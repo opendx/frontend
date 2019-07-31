@@ -5,25 +5,25 @@
     <i class="el-icon-error" style="font-size: 20px;color: black" title="关闭" @click="destoryCurrentComponent" />
     <!-- inspector -->
     <div>
-      <android-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy-json="windowHierarchyJson" :tree-loading="treeLoading" />
+      <mobile-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy-json="windowHierarchyJson" :tree-loading="treeLoading" />
     </div>
   </div>
 </template>
 
 <script>
 import { dump, screenshot } from '@/api/agent'
-import AndroidInspector from './AndroidInspector'
+import MobileInspector from './MobileInspector'
 
 export default {
 
   components: {
-    AndroidInspector
+    MobileInspector
   },
   data() {
     return {
       windowHierarchyJsonString: null,
-      // 传递给AndroidInspctor组件的数据
-      canvasId: 'android-capture-canvas',
+      // 传递给MobileInspctor组件的数据
+      canvasId: 'mobile-capture-canvas',
       imgInfo: {
         imgWidth: null,
         imgHeight: null,
@@ -88,7 +88,7 @@ export default {
       })
     },
     destoryCurrentComponent() {
-      this.$emit('closeAndroidCapture')
+      this.$emit('closeMobileCapture')
     }
   }
 }

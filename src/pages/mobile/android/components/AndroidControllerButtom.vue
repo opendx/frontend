@@ -1,10 +1,10 @@
 <template>
   <div>
-    <el-popover v-model="showAndroidCapture" placement="left" trigger="manual">
-      <div v-if="showAndroidCapture">
-        <android-capture @closeAndroidCapture="showAndroidCapture = false" />
+    <el-popover v-model="showMobileCapture" placement="left" trigger="manual">
+      <div v-if="showMobileCapture">
+        <mobile-capture @closeMobileCapture="showMobileCapture = false" />
       </div>
-      <el-button slot="reference" :disabled="!$store.state.device.appiumSessionId" @click="showAndroidCapture = !showAndroidCapture" size="mini">
+      <el-button slot="reference" :disabled="!$store.state.device.appiumSessionId" @click="showMobileCapture = !showMobileCapture" size="mini">
         <svg-icon icon-class="capture" />
       </el-button>
     </el-popover>
@@ -32,19 +32,19 @@
 </template>
 
 <script>
-import AndroidCapture from './AndroidCapture'
+import MobileCapture from '@/pages/mobile/components/MobileCapture'
 import { startAdbKit, stopAdbKit, installApp } from '@/api/agent'
 
 export default {
   components: {
-    AndroidCapture
+    MobileCapture
   },
   props: {
     minitouchWebsocket: WebSocket
   },
   data() {
     return {
-      showAndroidCapture: false,
+      showMobileCapture: false,
 
       adbKitBtnText: '开启远程调试',
       adbkitTip: '',
