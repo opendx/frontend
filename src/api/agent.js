@@ -49,3 +49,11 @@ export function stopAdbKit(agentIp, agentPort, deviceId) {
     url: '/android/' + deviceId + '/adbkit/stop'
   })
 }
+
+export function iosPressHome(agentIp, agentPort, deviceId) {
+  const request = service(agentIp, agentPort)
+  return request({
+    method: 'get',
+    url: '/ios/' + deviceId + '/pressHome'
+  })
+}
