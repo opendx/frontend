@@ -33,7 +33,7 @@
 
 <script>
 import AndroidCapture from './AndroidCapture'
-import { startAdbKit, stopAdbKit, installApk } from '@/api/agent'
+import { startAdbKit, stopAdbKit, installApp } from '@/api/agent'
 
 export default {
   components: {
@@ -113,8 +113,8 @@ export default {
       this.installBtnText = '安装中...'
       this.installBtnLoading = true
       const form = new FormData()
-      form.append('apk', app)
-      installApk(this.agentIp, this.agentPort, this.deviceId, form).then(response => {
+      form.append('app', app)
+      installApp(this.agentIp, this.agentPort, this.deviceId, form).then(response => {
         this.$notify.success(response.msg)
       }).finally(() => {
         this.installBtnText = '安装APP'

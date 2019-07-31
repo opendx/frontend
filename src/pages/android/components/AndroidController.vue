@@ -20,7 +20,7 @@
 
 <script>
 import AndroidControllerButtom from './AndroidControllerButtom'
-import { freshAndroidDriver } from '@/api/agent'
+import { freshDriver } from '@/api/agent'
 
 export default {
   components: {
@@ -70,8 +70,8 @@ export default {
   mounted() {
     const canvas = document.getElementById('androidControllerCanvas')
     const canvasContext = canvas.getContext('2d')
-    // freshAndroidDriver
-    freshAndroidDriver(this.agentIp, this.agentPort, this.deviceId).then(response => {
+    // freshDriver
+    freshDriver(this.agentIp, this.agentPort, this.deviceId).then(response => {
       this.$store.dispatch('device/setAppiumSessionId', response.data.appiumSessionId)
     })
     // minicap
