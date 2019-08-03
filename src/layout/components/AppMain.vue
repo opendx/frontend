@@ -9,18 +9,21 @@
     </div>
     <!--这里先写死420-->
     <div v-if="showDevice" style="width: 420px;height:100%;position: fixed;top: 50px;right: 0">
-      <android-controller />
+      <android-controller v-if="platform === 1" />
+      <ios-controller v-else />
     </div>
   </section>
 </template>
 
 <script>
-import AndroidController from '@/pages/android/components/AndroidController'
+import AndroidController from '@/pages/mobile/android/components/AndroidController'
+import IosController from '@/pages/mobile/ios/components/IosController'
 
 export default {
   name: 'AppMain',
   components: {
-    AndroidController
+    AndroidController,
+    IosController
   },
   computed: {
     leftStyle() {
@@ -29,6 +32,9 @@ export default {
     },
     showDevice() {
       return this.$store.state.device.show
+    },
+    platform() {
+      return this.$store.state.device.platform
     },
     cachedViews() {
       return this.$store.state.tagsView.cachedViews

@@ -3,6 +3,7 @@ const state = {
   agentIp: null,
   agentPort: null,
   id: null,
+  platform: null,
   port: null,
   appiumSessionId: null
 }
@@ -15,6 +16,7 @@ const mutations = {
       state.agentIp = null
       state.agentPort = null
       state.id = null
+      state.platform = null
       state.port = null
       state.appiumSessionId = null
     }
@@ -27,6 +29,9 @@ const mutations = {
   },
   SET_ID(state, id) {
     state.id = id
+  },
+  SET_PLATFORM(state, platform) {
+    state.platform = platform
   },
   SET_PORT(state, port) {
     state.port = port
@@ -48,6 +53,9 @@ const actions = {
   },
   setId({ commit }, id) {
     commit('SET_ID', id)
+  },
+  setPlatform({ commit }, platform) {
+    commit('SET_PLATFORM', platform)
   },
   setPort({ commit }, port) {
     commit('SET_PORT', port)

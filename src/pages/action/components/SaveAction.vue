@@ -51,7 +51,7 @@
   </div>
 </template>
 <script>
-import AndroidInspector from '@/pages/android/components/AndroidInspector'
+import AndroidInspector from '@/pages/mobile/components/MobileInspector'
 import ActionParamList from '../components/ActionParamList'
 import ActionLocalVarList from '../components/ActionLocalVarList'
 import GlobalVarList from '../components/GlobalVarList'
