@@ -26,18 +26,24 @@
 
 <script>
 import MobileCapture from '@/pages/mobile/components/MobileCapture'
-import { installApp, iosPressHome } from '@/api/agent'
+import { installApp } from '@/api/agent'
 
 export default {
   components: {
     MobileCapture
+  },
+  props: {
+    iosWebsocket: WebSocket
   },
   data() {
     return {
       showMobileCapture: false,
       installBtnLoading: false,
       installBtnText: '安装APP',
-      choosedFile: null
+      choosedFile: null,
+      home: {
+        operation: 'home'
+      }
     }
   },
   computed: {
@@ -82,7 +88,7 @@ export default {
     },
     // 点击home
     clickHome() {
-      iosPressHome(this.agentIp, this.agentPort, this.deviceId)
+      this.iosWebsocket.send(JSON.stringify(this.home))
     },
     clickClose() {
       this.$store.dispatch('device/setShow', false) // AppMain.vue在v-if销毁右侧控制设备组件

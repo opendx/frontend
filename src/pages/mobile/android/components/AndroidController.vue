@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading" element-loading-text="正在初始化...">
     <el-alert
       v-if="showAlert"
       style="position: fixed"
@@ -27,6 +27,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       showAlert: false,
       androidWebsocket: null,
       touchDown: {
@@ -65,6 +66,7 @@ export default {
     this.androidWebsocket.close()
   },
   mounted() {
+    this.loading = true
     const canvas = document.getElementById('androidControllerCanvas')
     const canvasContext = canvas.getContext('2d')
     // androidWebsocket
@@ -97,6 +99,7 @@ export default {
       } else {
         console.log('androidWebsocket-onmessage', message.data)
         if (message.data && message.data.indexOf('appiumSessionId') !== -1) {
+          this.loading = false
           this.$store.dispatch('device/setAppiumSessionId', JSON.parse(message.data).data.appiumSessionId)
         }
       }
