@@ -11,7 +11,7 @@
     <!--画布-->
     <div align="center">
       <canvas id="iosControllerCanvas" :width="displayWidth" :height="displayHeight" style="position: absolute"></canvas>
-      <img v-if="showImg" :src="'http://localhost' + ':' + mjpegServerPort" :width="displayWidth">
+      <img v-if="showImg" :src="'http://' + agentIp + ':' + agentPort + '/iproxy/' + deviceId" :width="displayWidth">
     </div>
     <div style="margin-top: 2px" align="center">
       <ios-controller-buttom :ios-websocket="iosWebsocket" @recreateImg="recreateImg" />
