@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading" element-loading-text="正在初始化...，请确保屏幕处于解锁显示状态">
     <el-alert
       v-if="showAlert"
       style="position: fixed"
@@ -10,18 +10,17 @@
     />
     <!--画布-->
     <div align="center">
-      <canvas id="iosControllerCanvas" :width="displayWidth" :height="displayHeight"></canvas>
-      <img v-if="mjpegServerPort" :src="'http://' + agentIp + ':' + mjpegServerPort" :width="displayWidth">
+      <canvas id="iosControllerCanvas" :width="displayWidth" :height="displayHeight" style="position: absolute"></canvas>
+      <img v-if="showImg" :src="'http://localhost' + ':' + mjpegServerPort" :width="displayWidth">
     </div>
     <div style="margin-top: 2px" align="center">
-      <ios-controller-buttom />
+      <ios-controller-buttom :ios-websocket="iosWebsocket" @recreateImg="recreateImg" />
     </div>
   </div>
 </template>
 
 <script>
 import IosControllerButtom from './IosControllerButtom'
-import { freshDriver } from '@/api/agent'
 
 export default {
   components: {
@@ -29,8 +28,10 @@ export default {
   },
   data() {
     return {
+      loading: false,
       showAlert: false,
-      minitouchWebsocket: null,
+      iosWebsocket: null,
+      showImg: false,
       mjpegServerPort: null,
       displayWidth: null,
       displayHeight: null,
@@ -67,32 +68,41 @@ export default {
   },
   // 关闭控制窗口，组件销毁前
   beforeDestroy() {
-    this.minitouchWebsocket.close()
+    this.iosWebsocket.close()
   },
   mounted() {
     const canvas = document.getElementById('iosControllerCanvas')
-    const canvasContext = canvas.getContext('2d')
-    // freshDriver
-    freshDriver(this.agentIp, this.agentPort, this.deviceId).then(response => {
-      const data = response.data
-      this.$store.dispatch('device/setAppiumSessionId', data.appiumSessionId)
-      this.mjpegServerPort = data.mjpegServerPort
-      this.displayWidth = data.displayWidth
-      this.displayHeight = data.displayHeight
-    })
-    // minitouch
-    this.minitouchWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/minitouch/' + this.deviceId)
-    this.minitouchWebsocket.onclose = () => {
+    this.loading = true
+
+    // iosWebsocket
+    this.iosWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/ios/' + this.deviceId + '/' + this.username)
+    this.iosWebsocket.onclose = () => {
       this.showAlert = true
     }
-    this.minitouchWebsocket.onerror = () => {
+    this.iosWebsocket.onerror = () => {
       this.showAlert = true
+    }
+    this.iosWebsocket.onmessage = (message) => {
+      const data = message.data
+      console.log('iosWebsocket', data)
+      if (data === 'ok') {
+        this.showImg = true
+      } else {
+        if (data.indexOf('appiumSessionId') !== -1) {
+          this.loading = false
+          const d = JSON.parse(data).data
+          this.$store.dispatch('device/setAppiumSessionId', d.appiumSessionId)
+          this.mjpegServerPort = d.mjpegServerPort
+          this.displayWidth = d.displayWidth
+          this.displayHeight = d.displayHeight
+        }
+      }
     }
     let isMouseDown = false
     // 当鼠标处于按下的状态移出画布,这个时候体验不好，需要在移出的时候，发送鼠标抬起事件,并将鼠标状态设为抬起
     canvas.onmouseleave = () => {
       if (isMouseDown) {
-        this.minitouchWebsocket.send(JSON.stringify(this.touchUp))
+        this.iosWebsocket.send(JSON.stringify(this.touchUp))
         isMouseDown = false
       }
     }
@@ -101,12 +111,12 @@ export default {
       isMouseDown = true
       this.touchDown.percentOfX = this.getPercentOfX(e, canvas)
       this.touchDown.percentOfY = this.getPercentOfY(e, canvas)
-      this.minitouchWebsocket.send(JSON.stringify(this.touchDown))
+      this.iosWebsocket.send(JSON.stringify(this.touchDown))
     }
     // 鼠标抬起
     canvas.onmouseup = () => {
       isMouseDown = false
-      this.minitouchWebsocket.send(JSON.stringify(this.touchUp))
+      this.iosWebsocket.send(JSON.stringify(this.touchUp))
     }
     // 鼠标移动
     canvas.onmousemove = (e) => {
@@ -114,7 +124,7 @@ export default {
       if (isMouseDown) {
         this.touchMove.percentOfX = this.getPercentOfX(e, canvas)
         this.touchMove.percentOfY = this.getPercentOfY(e, canvas)
-        this.minitouchWebsocket.send(JSON.stringify(this.touchMove))
+        this.iosWebsocket.send(JSON.stringify(this.touchMove))
       }
     }
   },
@@ -128,6 +138,12 @@ export default {
       const offsetY = event.offsetY
       const offsetHeight = canvas.offsetHeight
       return offsetY / offsetHeight
+    },
+    recreateImg() {
+      this.showImg = false
+      setTimeout(() => {
+        this.showImg = true
+      }, 500)
     }
   }
 }
