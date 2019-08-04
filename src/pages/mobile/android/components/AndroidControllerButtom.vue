@@ -40,7 +40,7 @@ export default {
     MobileCapture
   },
   props: {
-    minitouchWebsocket: WebSocket
+    androidWebsocket: WebSocket
   },
   data() {
     return {
@@ -123,19 +123,19 @@ export default {
     },
     // 点击menu
     clickMenu() {
-      this.minitouchWebsocket.send(JSON.stringify(this.menu))
+      this.androidWebsocket.send(JSON.stringify(this.menu))
     },
     // 点击home
     clickHome() {
-      this.minitouchWebsocket.send(JSON.stringify(this.home))
+      this.androidWebsocket.send(JSON.stringify(this.home))
     },
     // 点击back
     clickBack() {
-      this.minitouchWebsocket.send(JSON.stringify(this.back))
+      this.androidWebsocket.send(JSON.stringify(this.back))
     },
     // 点击power
     clickPower() {
-      this.minitouchWebsocket.send(JSON.stringify(this.power))
+      this.androidWebsocket.send(JSON.stringify(this.power))
     },
     clickClose() {
       this.$store.dispatch('device/setShow', false) // AppMain.vue在v-if销毁右侧控制设备组件

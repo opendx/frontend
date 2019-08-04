@@ -13,14 +13,13 @@
       <canvas id="androidControllerCanvas" />
     </div>
     <div style="margin-top: 2px" align="center">
-      <android-controller-buttom :minitouch-websocket="minitouchWebsocket" />
+      <android-controller-buttom :android-websocket="androidWebsocket" />
     </div>
   </div>
 </template>
 
 <script>
 import AndroidControllerButtom from './AndroidControllerButtom'
-import { freshDriver } from '@/api/agent'
 
 export default {
   components: {
@@ -29,8 +28,7 @@ export default {
   data() {
     return {
       showAlert: false,
-      minicapWebsocket: null,
-      minitouchWebsocket: null,
+      androidWebsocket: null,
       touchDown: {
         operation: 'd',
         percentOfX: 0.5,
@@ -64,27 +62,22 @@ export default {
   },
   // 关闭控制窗口，组件销毁前
   beforeDestroy() {
-    this.minicapWebsocket.close()
-    this.minitouchWebsocket.close()
+    this.androidWebsocket.close()
   },
   mounted() {
     const canvas = document.getElementById('androidControllerCanvas')
     const canvasContext = canvas.getContext('2d')
-    // freshDriver
-    freshDriver(this.agentIp, this.agentPort, this.deviceId).then(response => {
-      this.$store.dispatch('device/setAppiumSessionId', response.data.appiumSessionId)
-    })
-    // minicap
+    // androidWebsocket
     const BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
-    this.minicapWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/minicap/' + this.deviceId + '/' + this.username)
-    this.minicapWebsocket.binaryType = 'blob'
-    this.minicapWebsocket.onclose = () => {
+    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/android/' + this.deviceId + '/' + this.username)
+    this.androidWebsocket.binaryType = 'blob'
+    this.androidWebsocket.onclose = () => {
       this.showAlert = true
     }
-    this.minicapWebsocket.onerror = () => {
+    this.androidWebsocket.onerror = () => {
       this.showAlert = true
     }
-    this.minicapWebsocket.onmessage = (message) => {
+    this.androidWebsocket.onmessage = (message) => {
       if (typeof message.data !== 'string') {
         let blob = new Blob([message.data], { type: 'image/jpeg' })
         const URL = window.URL || window.webkitURL
@@ -101,21 +94,18 @@ export default {
           u = null
           blob = null
         }
+      } else {
+        console.log('androidWebsocket-onmessage', message.data)
+        if (message.data && message.data.indexOf('appiumSessionId') !== -1) {
+          this.$store.dispatch('device/setAppiumSessionId', JSON.parse(message.data).data.appiumSessionId)
+        }
       }
-    }
-    // minitouch
-    this.minitouchWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/minitouch/' + this.deviceId)
-    this.minitouchWebsocket.onclose = () => {
-      this.showAlert = true
-    }
-    this.minitouchWebsocket.onerror = () => {
-      this.showAlert = true
     }
     let isMouseDown = false
     // 当鼠标处于按下的状态移出画布,这个时候体验不好，需要在移出的时候，发送鼠标抬起事件,并将鼠标状态设为抬起
     canvas.onmouseleave = () => {
       if (isMouseDown) {
-        this.minitouchWebsocket.send(JSON.stringify(this.touchUp))
+        this.androidWebsocket.send(JSON.stringify(this.touchUp))
         isMouseDown = false
       }
     }
@@ -124,12 +114,12 @@ export default {
       isMouseDown = true
       this.touchDown.percentOfX = this.getPercentOfX(e, canvas)
       this.touchDown.percentOfY = this.getPercentOfY(e, canvas)
-      this.minitouchWebsocket.send(JSON.stringify(this.touchDown))
+      this.androidWebsocket.send(JSON.stringify(this.touchDown))
     }
     // 鼠标抬起
     canvas.onmouseup = () => {
       isMouseDown = false
-      this.minitouchWebsocket.send(JSON.stringify(this.touchUp))
+      this.androidWebsocket.send(JSON.stringify(this.touchUp))
     }
     // 鼠标移动
     canvas.onmousemove = (e) => {
@@ -137,7 +127,7 @@ export default {
       if (isMouseDown) {
         this.touchMove.percentOfX = this.getPercentOfX(e, canvas)
         this.touchMove.percentOfY = this.getPercentOfY(e, canvas)
-        this.minitouchWebsocket.send(JSON.stringify(this.touchMove))
+        this.androidWebsocket.send(JSON.stringify(this.touchMove))
       }
     }
   },

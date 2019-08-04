@@ -16,14 +16,6 @@ export function dump(agentIp, agentPort, deviceId) {
   })
 }
 
-export function freshDriver(agentIp, agentPort, deviceId) {
-  const request = service(agentIp, agentPort)
-  return request({
-    method: 'get',
-    url: '/mobile/' + deviceId + '/freshDriver'
-  })
-}
-
 export function installApp(agentIp, agentPort, deviceId, data) {
   const request = service(agentIp, agentPort)
   return request({
@@ -47,13 +39,5 @@ export function stopAdbKit(agentIp, agentPort, deviceId) {
   return request({
     method: 'get',
     url: '/android/' + deviceId + '/adbkit/stop'
-  })
-}
-
-export function iosPressHome(agentIp, agentPort, deviceId) {
-  const request = service(agentIp, agentPort)
-  return request({
-    method: 'get',
-    url: '/ios/' + deviceId + '/pressHome'
   })
 }
