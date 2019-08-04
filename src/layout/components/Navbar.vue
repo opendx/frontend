@@ -17,7 +17,7 @@
         <el-option
           v-for="idleDevice in idleDeviceList"
           :key="idleDevice.id"
-          :label="idleDevice.name"
+          :label="idleDevice.id + ' ' + idleDevice.name + ' ' + idleDevice.systemVersion"
           :value="idleDevice.id"
         />
       </el-select>

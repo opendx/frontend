@@ -51,7 +51,6 @@
               <el-option v-for="device in onlineDevices" :label="device.id" :value="device.id" :key="device.id">
                 <span style="float: left;margin-right: 10px">{{ device.id }}</span>
                 <span style="float: left;margin-right: 10px">{{ device.name }}</span>
-                <span style="float: left;margin-right: 10px">{{ device.screenHeight + 'x' + device.screenWidth }}</span>
                 <span style="float: left">{{ device.systemVersion }}</span>
               </el-option>
             </el-select>
@@ -125,7 +124,7 @@ export default {
     }
   },
   created() {
-    getOnlineDevices(1).then(response => {
+    getOnlineDevices(this.platform).then(response => {
       this.onlineDevices = response.data
     })
     getSelectableActions(this.projectId, this.platform).then(response => {
