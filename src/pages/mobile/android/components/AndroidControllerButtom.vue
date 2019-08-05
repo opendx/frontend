@@ -1,10 +1,10 @@
 <template>
   <div>
-    <el-popover v-model="showMobileCapture" placement="left" trigger="manual">
-      <div v-if="showMobileCapture">
-        <mobile-capture @closeMobileCapture="showMobileCapture = false" />
+    <el-popover placement="left" trigger="click">
+      <div v-if="initMobileCapture">
+        <mobile-capture />
       </div>
-      <el-button slot="reference" :disabled="!$store.state.device.appiumSessionId" @click="showMobileCapture = !showMobileCapture" size="mini">
+      <el-button slot="reference" :disabled="!$store.state.device.appiumSessionId" @click="initMobileCapture = true" size="mini">
         <svg-icon icon-class="capture" />
       </el-button>
     </el-popover>
@@ -44,7 +44,7 @@ export default {
   },
   data() {
     return {
-      showMobileCapture: false,
+      initMobileCapture: false,
 
       adbKitBtnText: '开启远程调试',
       adbkitTip: '',

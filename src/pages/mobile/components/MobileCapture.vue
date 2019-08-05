@@ -2,7 +2,6 @@
   <div style="width: 1400px;height: 850px;margin-bottom: 10px">
     <i class="el-icon-refresh" style="font-size: 20px;color: green" title="重新获取" @click="refresh" />
     <i class="el-icon-circle-plus" style="font-size: 20px;color: black" title="添加page" @click="addPage" />
-    <i class="el-icon-error" style="font-size: 20px;color: black" title="关闭" @click="closeMobileCapture" />
     <!-- inspector -->
     <div>
       <mobile-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy-json="windowHierarchyJson" :tree-loading="treeLoading" />
@@ -86,9 +85,6 @@ export default {
           windowHierarchyJson: this.windowHierarchyJsonString
         }
       })
-    },
-    closeMobileCapture() {
-      this.$emit('closeMobileCapture')
     }
   }
 }
