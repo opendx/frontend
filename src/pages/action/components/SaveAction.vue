@@ -13,7 +13,7 @@
         </el-select>
         <el-popover trigger="click" placement="left">
           <div style="width: 1400px;height: 850px;margin-bottom: 10px">
-            <android-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy-json="windowHierarchyJson" :tree-loading="treeLoading" />
+            <mobile-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy-json="windowHierarchyJson" :tree-loading="treeLoading" />
           </div>
           <el-button slot="reference" icon="el-icon-view" :disabled="!saveActionForm.pageId > 0 " />
         </el-popover>
@@ -51,7 +51,7 @@
   </div>
 </template>
 <script>
-import AndroidInspector from '@/pages/mobile/components/MobileInspector'
+import MobileInspector from '@/pages/mobile/components/MobileInspector'
 import ActionParamList from '../components/ActionParamList'
 import ActionLocalVarList from '../components/ActionLocalVarList'
 import GlobalVarList from '../components/GlobalVarList'
@@ -62,7 +62,7 @@ import { getTestSuiteList } from '@/api/testSuite'
 import { addAction, updateAction, getActionList, debugAction } from '@/api/action'
 export default {
   components: {
-    AndroidInspector,
+    MobileInspector,
     ActionParamList,
     ActionLocalVarList,
     GlobalVarList,
