@@ -21,6 +21,7 @@
         <i class="el-icon-upload" /><div>将ipa拖到此处，或<em>点击选择ipa</em></div>
       </el-upload>
       <el-button :loading="installBtnLoading" type="primary" size="mini" @click="installApp">{{ installBtnText }}</el-button>
+      <el-button slot="reference" size="mini">...</el-button>
     </el-popover>
   </div>
 </template>
