@@ -75,9 +75,11 @@ export default {
     this.androidWebsocket.binaryType = 'blob'
     this.androidWebsocket.onclose = () => {
       this.showAlert = true
+      this.loading = false
     }
     this.androidWebsocket.onerror = () => {
       this.showAlert = true
+      this.loading = false
     }
     this.androidWebsocket.onmessage = (message) => {
       if (typeof message.data !== 'string') {

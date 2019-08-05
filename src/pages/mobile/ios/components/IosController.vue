@@ -78,9 +78,11 @@ export default {
     this.iosWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/ios/' + this.deviceId + '/' + this.username)
     this.iosWebsocket.onclose = () => {
       this.showAlert = true
+      this.loading = false
     }
     this.iosWebsocket.onerror = () => {
       this.showAlert = true
+      this.loading = false
     }
     this.iosWebsocket.onmessage = (message) => {
       const data = message.data
