@@ -74,7 +74,7 @@ export default {
       this.fetchData()
     },
     addPage() {
-      this.destoryCurrentComponent()
+      this.$emit('closeMobileCapture')
       this.$router.push({
         name: 'AddPage',
         params: {

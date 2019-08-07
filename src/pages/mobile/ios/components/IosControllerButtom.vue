@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-popover placement="left" trigger="click">
+    <el-popover v-model="visible" placement="left" trigger="click">
       <div v-if="initMobileCapture">
-        <mobile-capture />
+        <mobile-capture @closeMobileCapture="visible = false" />
       </div>
       <el-button slot="reference" :disabled="!$store.state.device.appiumSessionId" @click="initMobileCapture = true" size="mini">
         <svg-icon icon-class="capture" />
@@ -39,6 +39,7 @@ export default {
   },
   data() {
     return {
+      visible: false,
       initMobileCapture: false,
       installBtnLoading: false,
       installBtnText: '安装APP',
