@@ -56,7 +56,7 @@
           <el-input v-model="row.evaluation" clearable :disabled="evaluationDisabled(row.actionId)" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="140">
+      <el-table-column label="操作" align="center" width="160">
         <template scope="scope">
           <el-button-group>
             <el-button size="mini" :disabled="moveUpDisable(scope.$index)" @click="moveUp(scope.$index)">↑</el-button>
