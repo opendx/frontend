@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" element-loading-text="正在初始化...，请确保屏幕处于解锁显示状态">
+  <div v-loading="loading" element-loading-text="正在初始化.... 请确保屏幕处于解锁显示状态">
     <el-alert
       v-if="showAlert"
       style="position: fixed"
