@@ -89,9 +89,9 @@ export default {
       console.log('iosWebsocket', data)
       if (data === 'ok') {
         this.showImg = true
+        this.loading = false
       } else {
         if (data.indexOf('appiumSessionId') !== -1) {
-          this.loading = false
           const d = JSON.parse(data).data
           this.$store.dispatch('device/setAppiumSessionId', d.appiumSessionId)
           this.mjpegServerPort = d.mjpegServerPort

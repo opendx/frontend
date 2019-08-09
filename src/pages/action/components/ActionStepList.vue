@@ -16,7 +16,7 @@
           <el-input v-model="row.name" clearable placeholder="步骤名" style="margin-bottom: 5px" />
           <el-select v-model="row.actionId" filterable clearable style="width: 100%" @change="actionSelected($event, row)" @visible-change="selectAction" placeholder="选择action">
             <el-option v-for="action in selectableActions" :key="action.id" :value="action.id" :label="action.name">
-              <span style="float: left">{{ optionLabelName(action) }}</span>
+              <span style="float: left" v-html="optionLabelName(action)"></span>
               <span style="float: right; padding-left: 5px; color: #8492a6; font-size: 13px">{{ action.description }}</span>
             </el-option>
           </el-select>
@@ -43,9 +43,10 @@
             </el-table-column>
             <el-table-column label="参数值" align="center">
               <template scope="scope_paramValues">
-                <el-input id="paramValue" v-model="scope_paramValues.row.paramValue" clearable @focus="paramValueFocus($event, scope_paramValues.row)" />
-                <!--todo 1.图片样式调整 2. 无法粘贴图片的问题 3.先写死309，后端加字段表示是否能粘贴图片-->
-                <img v-if="row.actionId === 309 && scope_paramValues.row.paramValue" :src="scope_paramValues.row.paramValue" />
+                <el-input v-model="scope_paramValues.row.paramValue" clearable />
+                <!--后续有空重新实现粘贴图片的base64，并显示图片-->
+                <!--<el-input id="paramValue" v-model="scope_paramValues.row.paramValue" clearable @focus="paramValueFocus($event, scope_paramValues.row)" />-->
+                <!--<img v-if="row.actionId === 309 && scope_paramValues.row.paramValue" :src="scope_paramValues.row.paramValue" />-->
               </template>
             </el-table-column>
           </el-table>
@@ -129,7 +130,7 @@ export default {
     },
     optionLabelName() {
       return function(action) {
-        const text1 = action.type === 1 ? '[基础组件]' : action.type === 2 ? '[封装组件]' : action.type === 3 ? '[测试用例]' : '[未知]'
+        const text1 = action.type === 1 ? '<span style="color: blue">[基础组件]</span>' : action.type === 2 ? '<span style="color: green">[封装组件]</span>' : action.type === 3 ? '<span style="color: magenta">[测试用例]</span>' : '[未知]'
         let text2
         if (action.hasReturnValue === 1) {
           if (action.returnValueDesc) {
@@ -173,29 +174,29 @@ export default {
     this.fetchSelectableActions()
   },
   methods: {
-    paramValueFocus(event, row) {
-      if (this.paramValueHasAddedEventListener) {
-        return
-      }
-      this.paramValueHasAddedEventListener = true
-      document.getElementById('paramValue').addEventListener('paste', e => {
-        if (e.clipboardData) {
-          if (!e.clipboardData.items) {
-            return
-          }
-          const item = e.clipboardData.items[0]
-          // 判断是否为图片数据
-          if (item && item.kind === 'file' && item.type.match(/^image\//i)) {
-            const imgFile = item.getAsFile()
-            const reader = new FileReader()
-            reader.onload = e => {
-              row.paramValue = e.target.result
-            }
-            reader.readAsDataURL(imgFile)
-          }
-        }
-      })
-    },
+    // paramValueFocus(event, row) {
+    //   if (this.paramValueHasAddedEventListener) {
+    //     return
+    //   }
+    //   this.paramValueHasAddedEventListener = true
+    //   document.getElementById('paramValue').addEventListener('paste', e => {
+    //     if (e.clipboardData) {
+    //       if (!e.clipboardData.items) {
+    //         return
+    //       }
+    //       const item = e.clipboardData.items[0]
+    //       // 判断是否为图片数据
+    //       if (item && item.kind === 'file' && item.type.match(/^image\//i)) {
+    //         const imgFile = item.getAsFile()
+    //         const reader = new FileReader()
+    //         reader.onload = e => {
+    //           row.paramValue = e.target.result
+    //         }
+    //         reader.readAsDataURL(imgFile)
+    //       }
+    //     }
+    //   })
+    // },
     moveUp(index) {
       this.steps[index - 1] = this.steps.splice(index, 1, this.steps[index - 1])[0]
     },
