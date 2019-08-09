@@ -29,7 +29,7 @@
               <template scope="scope_paramValues">
                 <el-popover placement="right" trigger="click">
                   描述：{{ paramNameDesc(row.actionId, scope_paramValues.row.paramName) }}
-                  <el-table v-if="hasPossibleValue(row.actionId, scope_paramValues.row.paramName)" :data="possibleValues(row.actionId, scope_paramValues.row.paramName)" border style="margin-top: 5px">
+                  <el-table v-if="hasPossibleValue(row.actionId, scope_paramValues.row.paramName)" :data="possibleValues(row.actionId, scope_paramValues.row.paramName)" border style="margin-top: 5px;width: 500px">
                     <el-table-column align="center" label="可选值">
                       <template scope="scope_possibleValues">
                         <el-button v-clipboard:copy="scope_possibleValues.row.value" v-clipboard:success="onCopy" type="text">{{ scope_possibleValues.row.value }}</el-button>
