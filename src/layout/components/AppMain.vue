@@ -27,8 +27,8 @@ export default {
   },
   computed: {
     leftStyle() {
-      // 这里先写死420
-      return this.$store.state.device.show ? 'width: calc(100% - 420px)' : ''
+      // 这里先写死425
+      return this.$store.state.device.show ? 'width: calc(100% - 425px)' : ''
     },
     showDevice() {
       return this.$store.state.device.show

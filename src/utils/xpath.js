@@ -5,12 +5,14 @@ const arrKeyAttrs = [
   'text', // Android
   'content-desc', // Android
   'name', // iOS
+  'value' // iOS
 ]
 
 let mapIdCount = {}
 let mapTextCount = {}
 let mapNameCount = {}
 let mapContentDescCount = {}
+let mapValueCount = {}
 let isScan = false
 
 const androidRootName = 'MacacaAppInspectorRoot'
@@ -58,6 +60,9 @@ function scanNode(nodes) {
             case 'content-desc':
               mapContentDescCount[value] = mapContentDescCount[value] && mapContentDescCount[value] + 1 || 1
               break
+            case 'value':
+              mapValueCount[value] = mapValueCount[value] && mapValueCount[value] + 1 || 1
+              break
           }
         }
       })
@@ -71,6 +76,7 @@ export function getXPathLite(tree, nodePath) {
   mapTextCount = {}
   mapNameCount = {}
   mapContentDescCount = {}
+  mapValueCount = {}
   isScan = false
 
   scanNode([tree])
@@ -88,6 +94,7 @@ export function getXPathLite(tree, nodePath) {
     const resourceId = current['resource-id']
     const text = current['text']
     const contentDesc = current['content-desc']
+    const value = current['value']
 
     const index = getChildIndex(current, nodes)
 
@@ -99,6 +106,8 @@ export function getXPathLite(tree, nodePath) {
       XPath = `/${current.class}[@text='${text}']`
     } else if (contentDesc && mapContentDescCount[contentDesc] === 1) {
       XPath = `/${current.class}[@content-desc='${contentDesc}']`
+    } else if (value && mapValueCount[value] === 1) {
+      XPath = `/${current.class}[@value='${value}']`
     } else {
       if (current.class !== androidRootName) {
         XPath = `${XPath}/${current.class}[${index}]`
@@ -167,10 +176,8 @@ export function getAndroidUiautomator(tree, nodePath) {
 }
 
 export function getIOSNsPredicateString(tree, nodePath) {
-  mapIdCount = {}
-  mapTextCount = {}
   mapNameCount = {}
-  mapContentDescCount = {}
+  mapValueCount = {}
   isScan = false
 
   scanNode([tree])
@@ -185,9 +192,12 @@ export function getIOSNsPredicateString(tree, nodePath) {
   for (let i = 0; i < paths.length; i++) {
     const current = nodes[paths[i]]
     const name = current['name']
+    const value = current['value']
 
     if (name && mapNameCount[name] === 1) {
       iOSNsPredicateString = `type == '${current.type}' AND name == '${current.name}'`
+    } else if (value && mapValueCount[value] === 1) {
+      iOSNsPredicateString = `type == '${current.type}' AND value == '${current.value}'`
     } else {
       iOSNsPredicateString = ''
     }
