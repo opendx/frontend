@@ -10,9 +10,9 @@
     <!--列表-->
     <div style="margin-top: 10px">
       <el-table :data="deviceList" highlight-current-row border>
-        <el-table-column label="设备" align="center" width="220px">
+        <el-table-column label="设备" align="center" width="120px">
           <template scope="{ row }">
-            <img :src="row.imgUrl" width="200px">
+            <img :src="row.imgUrl" width="100px">
           </template>
         </el-table-column>
         <el-table-column label="设备id" align="center" prop="id" />

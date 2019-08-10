@@ -1,18 +1,15 @@
-// xpath 计算 from macaca app-inspector https://github.com/macacajs/app-inspector/blob/master/assets/libs/xpath.js
+// xpath from macaca app-inspector https://github.com/macacajs/app-inspector/blob/master/assets/libs/xpath.js
+// 修改了部分代码
 const arrKeyAttrs = [
   'resource-id', // Android
-  'rawIndentifier', // iOS
-  'name', // Android & iOS
   'text', // Android
-  'value', // iOS
-  'content-desc' // Android
+  'content-desc', // Android
+  'name', // iOS
 ]
 
 let mapIdCount = {}
-let mapRawIndentifierCount = {}
 let mapTextCount = {}
 let mapNameCount = {}
-let mapValueCount = {}
 let mapContentDescCount = {}
 let isScan = false
 
@@ -52,20 +49,14 @@ function scanNode(nodes) {
             case 'resource-id':
               mapIdCount[value] = mapIdCount[value] && mapIdCount[value] + 1 || 1
               break
-            case 'rawIndentifier':
-              mapRawIndentifierCount[value] = mapRawIndentifierCount[value] && mapRawIndentifierCount[value] + 1 || 1
-              break
             case 'name':
               mapNameCount[value] = mapNameCount[value] && mapNameCount[value] + 1 || 1
               break
             case 'text':
               mapTextCount[value] = mapTextCount[value] && mapTextCount[value] + 1 || 1
               break
-            case 'value':
-              mapValueCount[value] = mapValueCount[value] && mapValueCount[value] + 1 || 1
-              break
             case 'content-desc':
-              mapContentDescCount[value] = mapValueCount[value] && mapValueCount[value] + 1 || 1
+              mapContentDescCount[value] = mapContentDescCount[value] && mapContentDescCount[value] + 1 || 1
               break
           }
         }
@@ -77,10 +68,8 @@ function scanNode(nodes) {
 
 export function getXPathLite(tree, nodePath) {
   mapIdCount = {}
-  mapRawIndentifierCount = {}
   mapTextCount = {}
   mapNameCount = {}
-  mapValueCount = {}
   mapContentDescCount = {}
   isScan = false
 
@@ -98,22 +87,18 @@ export function getXPathLite(tree, nodePath) {
     const name = current['name']
     const resourceId = current['resource-id']
     const text = current['text']
-    // const value = current['value']
-    const rawIndentifier = current['rawIndentifier']
     const contentDesc = current['content-desc']
 
     const index = getChildIndex(current, nodes)
 
-    if (resourceId && mapIdCount[resourceId] === 1 && resourceId.trim()) {
-      XPath = `/*[@resource-id='${resourceId.trim()}']`
-    } else if (rawIndentifier && mapRawIndentifierCount[rawIndentifier] === 1 && rawIndentifier.trim()) {
-      XPath = `/*[@name='${rawIndentifier.trim()}']`
-    } else if (name && mapNameCount[name] === 1 && name.trim()) {
-      XPath = `/*[@name='${name.trim()}']`
-    } else if (text && mapTextCount[text] === 1 && text.trim()) {
-      XPath = `/*[@text='${text.trim()}']`
-    } else if (contentDesc && mapContentDescCount[contentDesc] === 1 && contentDesc.trim()) {
-      XPath = `/*[@content-desc='${contentDesc.trim()}']`
+    if (resourceId && mapIdCount[resourceId] === 1) {
+      XPath = `/${current.class}[@resource-id='${resourceId}']`
+    } else if (name && mapNameCount[name] === 1) {
+      XPath = `/${current.class}[@name='${name}']`
+    } else if (text && mapTextCount[text] === 1) {
+      XPath = `/${current.class}[@text='${text}']`
+    } else if (contentDesc && mapContentDescCount[contentDesc] === 1) {
+      XPath = `/${current.class}[@content-desc='${contentDesc}']`
     } else {
       if (current.class !== androidRootName) {
         XPath = `${XPath}/${current.class}[${index}]`
@@ -146,10 +131,8 @@ export function getXPath(tree, nodePath) {
 
 export function getAndroidUiautomator(tree, nodePath) {
   mapIdCount = {}
-  mapRawIndentifierCount = {}
   mapTextCount = {}
   mapNameCount = {}
-  mapValueCount = {}
   mapContentDescCount = {}
   isScan = false
 
@@ -168,12 +151,12 @@ export function getAndroidUiautomator(tree, nodePath) {
     const text = current['text']
     const contentDesc = current['content-desc']
 
-    if (resourceId && mapIdCount[resourceId] === 1 && resourceId.trim()) {
-      androidUiautomator = `new UiSelector().resourceId('${resourceId.trim()}')`
-    } else if (text && mapTextCount[text] === 1 && text.trim()) {
-      androidUiautomator = `new UiSelector().text('${text.trim()}')`
-    } else if (contentDesc && mapContentDescCount[contentDesc] === 1 && contentDesc.trim()) {
-      androidUiautomator = `new UiSelector().description('${contentDesc.trim()}')`
+    if (resourceId && mapIdCount[resourceId] === 1) {
+      androidUiautomator = `new UiSelector().resourceId('${resourceId}')`
+    } else if (text && mapTextCount[text] === 1) {
+      androidUiautomator = `new UiSelector().text('${text}')`
+    } else if (contentDesc && mapContentDescCount[contentDesc] === 1) {
+      androidUiautomator = `new UiSelector().description('${contentDesc}')`
     } else {
       androidUiautomator = ''
     }
@@ -181,4 +164,35 @@ export function getAndroidUiautomator(tree, nodePath) {
     nodes = current.nodes
   }
   return androidUiautomator
+}
+
+export function getIOSNsPredicateString(tree, nodePath) {
+  mapIdCount = {}
+  mapTextCount = {}
+  mapNameCount = {}
+  mapContentDescCount = {}
+  isScan = false
+
+  scanNode([tree])
+  isScan = true
+
+  // const array = []
+  let nodes = [tree]
+  const paths = [0, ...nodePath]
+
+  let iOSNsPredicateString = ''
+
+  for (let i = 0; i < paths.length; i++) {
+    const current = nodes[paths[i]]
+    const name = current['name']
+
+    if (name && mapNameCount[name] === 1) {
+      iOSNsPredicateString = `type == '${current.type}' AND name == '${current.name}'`
+    } else {
+      iOSNsPredicateString = ''
+    }
+
+    nodes = current.nodes
+  }
+  return iOSNsPredicateString
 }

@@ -8,9 +8,9 @@
     <!--page列表-->
     <div>
       <el-table :data="pageList" highlight-current-row border>
-        <el-table-column label="page" align="center">
+        <el-table-column label="page" align="center" width="120px">
           <template scope="{ row }">
-            <img v-if="row.imgUrl" :src="row.imgUrl" width="200px">
+            <img v-if="row.imgUrl" :src="row.imgUrl" width="100px">
           </template>
         </el-table-column>
         <el-table-column label="page名" align="center" property="name" />

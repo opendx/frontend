@@ -27,7 +27,7 @@
 
 <script>
 import _ from 'lodash'
-import { getXPath, getXPathLite, getAndroidUiautomator } from '@/utils/xpath'
+import { getXPath, getXPathLite, getAndroidUiautomator, getIOSNsPredicateString } from '@/utils/xpath'
 import clipboard from '@/directive/clipboard/index.js'
 
 export default {
@@ -50,6 +50,7 @@ export default {
         children: 'nodes',
         label: 'class'
       },
+      isAndroid: true,
 
       // 右侧节点详细数据
       nodeDetail: {},
@@ -84,6 +85,9 @@ export default {
       // 清除上一次的红色区域
       this.canvasCtx.clearRect(0, 0, this.imgInfo.imgWidth, this.imgInfo.imgHeight)
       console.log('hierarchy', this.windowHierarchyJson.hierarchy)
+      if (this.windowHierarchyJson.hierarchy.platform === 2) {
+        this.isAndroid = false
+      }
       // from macaca Inspector start https://github.com/macacajs/app-inspector/blob/master/lib/android.js
       const matchedNode = _.findLast(this.windowHierarchyJson.hierarchy, i => {
         return (
@@ -120,12 +124,20 @@ export default {
       // 使用macaca xpath计算方法
       this.selectedNode.xpath = getXPath(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
       this.selectedNode.xpath_lite = getXPathLite(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
-      this.selectedNode.uiautomator = getAndroidUiautomator(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
+      if (this.isAndroid) {
+        this.selectedNode.uiautomator = getAndroidUiautomator(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
+      } else {
+        this.selectedNode.iOSNsPredicateString = getIOSNsPredicateString(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
+      }
       // copy对象
       const nodeDetail = Object.assign({}, this.selectedNode)
       // 去除id nodes
       delete nodeDetail.id
       delete nodeDetail.nodes
+      if (!this.isAndroid) {
+        // 为了复用一套前端代码，后台在ios dump时添加了一个class属性
+        delete nodeDetail.class
+      }
 
       this.nodeDetail = nodeDetail
     }
