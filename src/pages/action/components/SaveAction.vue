@@ -12,7 +12,7 @@
           <el-option v-for="page in pages" :key="page.id" :label="page.name" :value="page.id" />
         </el-select>
         <el-popover trigger="click" placement="left">
-          <div style="width: 1400px;height: 850px;margin-bottom: 10px">
+          <div style="width: 1400px;height: 850px">
             <mobile-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy-json="windowHierarchyJson" :tree-loading="treeLoading" />
           </div>
           <el-button slot="reference" icon="el-icon-view" :disabled="!saveActionForm.pageId > 0 " />

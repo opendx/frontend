@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--gutter 列的间距-->
-    <el-row style="height: 850px">
+    <el-row style="height: 820px">
       <!--左侧图片-->
       <el-col :span="8" align="center" style="height: 100%;overflow: auto">
         <!--先写死400px-->
@@ -233,5 +233,9 @@ export default {
   /*选中tree时候的背景色*/
   .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
     background-color: #8cc5ff;
+  }
+  .el-tree>.el-tree-node {
+    min-width: 100%;
+    display: inline-block;
   }
 </style>
