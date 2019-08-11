@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    welcome
+    welcome,<a target="_blank" href="https://github.com/opendx">github star!</a>
   </div>
 </template>
 <script>
