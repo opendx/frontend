@@ -26,7 +26,7 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="Action参数值" align="center">
+      <el-table-column label="Action参数" align="center">
         <template scope="{ row }">
           <el-table :data="row.paramValues" border>
             <el-table-column label="参数名" align="center" width="200" show-overflow-tooltip>
@@ -36,7 +36,7 @@
                   <el-table v-if="hasPossibleValue(row.actionId, scope_paramValues.row.paramName)" :data="possibleValues(row.actionId, scope_paramValues.row.paramName)" border style="margin-top: 5px;width: 500px">
                     <el-table-column align="center" label="可选值">
                       <template scope="scope_possibleValues">
-                        <el-button v-clipboard:copy="scope_possibleValues.row.value" v-clipboard:success="onCopy" type="text">{{ scope_possibleValues.row.value }}</el-button>
+                        <el-button type="text" @click="clickPossibleValue(row, scope_paramValues.row.paramName, scope_possibleValues.row.value)">{{ scope_possibleValues.row.value }}</el-button>
                       </template>
                     </el-table-column>
                     <el-table-column property="description" align="center" label="描述" />
@@ -76,11 +76,7 @@
 
 <script>
 import { getSelectableActions } from '@/api/action'
-import clipboard from '@/directive/clipboard/index.js'
 export default {
-  directives: {
-    clipboard
-  },
   data() {
     return {
       steps: [],
@@ -238,8 +234,9 @@ export default {
         }
       }
     },
-    onCopy(e) {
-      this.$notify.success(e.text + '复制成功')
+    clickPossibleValue(row, paramName, possibleValue) {
+      const paramValue = row.paramValues.filter(paramValue => paramValue.paramName === paramName)[0]
+      paramValue.paramValue = possibleValue
     }
   }
 }
