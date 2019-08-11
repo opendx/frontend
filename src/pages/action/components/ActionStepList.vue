@@ -29,10 +29,10 @@
       <el-table-column label="Action参数值" align="center">
         <template scope="{ row }">
           <el-table :data="row.paramValues" border>
-            <el-table-column label="参数名" align="center">
+            <el-table-column label="参数名" align="center" width="200" show-overflow-tooltip>
               <template scope="scope_paramValues">
                 <el-popover placement="right" trigger="click">
-                  描述：{{ paramNameDesc(row.actionId, scope_paramValues.row.paramName) }}
+                  {{ paramNameDesc(row.actionId, scope_paramValues.row.paramName) }}
                   <el-table v-if="hasPossibleValue(row.actionId, scope_paramValues.row.paramName)" :data="possibleValues(row.actionId, scope_paramValues.row.paramName)" border style="margin-top: 5px;width: 500px">
                     <el-table-column align="center" label="可选值">
                       <template scope="scope_possibleValues">
