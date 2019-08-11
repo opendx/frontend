@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <div style="margin-top: 10px">
+    <div>
+      <el-button @click="fetchTestTaskList" style="margin-bottom: 10px">刷新</el-button>
       <el-table :data="testTaskList" border>
         <el-table-column label="提交时间" align="center" width="200">
           <template scope="{ row }">
