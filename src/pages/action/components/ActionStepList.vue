@@ -16,7 +16,11 @@
           <el-input v-model="row.name" clearable placeholder="步骤名" style="margin-bottom: 5px" />
           <el-select v-model="row.actionId" filterable clearable style="width: 100%" @change="actionSelected($event, row)" @visible-change="selectAction" placeholder="选择action">
             <el-option v-for="action in selectableActions" :key="action.id" :value="action.id" :label="action.name">
-              <span style="float: left" v-html="optionLabelName(action)"></span>
+              <span style="float: left;color: blue" v-if="action.type === 1">[基础组件]</span>
+              <span style="float: left;color: green" v-else-if="action.type === 2">[封装组件]</span>
+              <span style="float: left;color: magenta" v-else-if="action.type === 3">[测试用例]</span>
+              <span style="float: left">{{ returnValueTag(action) }}</span>
+              <span style="float: left">{{ action.name }}</span>
               <span style="float: right; padding-left: 5px; color: #8492a6; font-size: 13px">{{ action.description }}</span>
             </el-option>
           </el-select>
@@ -128,21 +132,17 @@ export default {
         }
       }
     },
-    optionLabelName() {
+    returnValueTag() {
       return function(action) {
-        const text1 = action.type === 1 ? '<span style="color: blue">[基础组件]</span>' : action.type === 2 ? '<span style="color: green">[封装组件]</span>' : action.type === 3 ? '<span style="color: magenta">[测试用例]</span>' : '[未知]'
-        let text2
         if (action.hasReturnValue === 1) {
           if (action.returnValueDesc) {
-            text2 = '[' + action.returnValueDesc + ']'
+            return '[' + action.returnValueDesc + ']'
           } else {
-            text2 = '[有返回值]'
+            return '[有返回值]'
           }
         } else {
-          text2 = '[void]'
+          return '[void]'
         }
-        const text3 = action.name
-        return text1 + text2 + text3
       }
     },
     projectId() {
