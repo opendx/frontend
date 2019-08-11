@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="steps" border @selection-change="handleSelectionChange" height="540">
+    <el-table :data="steps" border @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" width="30" />
       <el-table-column align="center" width="80">
         <template slot="header">
