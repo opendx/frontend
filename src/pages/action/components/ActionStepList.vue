@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div ref="closepopover" />
     <el-table :data="steps" border @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" width="30" />
       <el-table-column align="center" width="80">
@@ -237,6 +238,7 @@ export default {
     clickPossibleValue(row, paramName, possibleValue) {
       const paramValue = row.paramValues.filter(paramValue => paramValue.paramName === paramName)[0]
       paramValue.paramValue = possibleValue
+      this.$refs.closepopover.click()
     }
   }
 }
