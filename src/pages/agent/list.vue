@@ -7,6 +7,7 @@
         </template>
       </el-table-column>
       <el-table-column label="操作系统" property="osName" align="center" />
+      <el-table-column label="appium版本" property="appiumVersion" align="center" />
       <el-table-column label="java版本" property="javaVersion" align="center" />
       <el-table-column label="host" align="center">
         <template scope="{ row }">
