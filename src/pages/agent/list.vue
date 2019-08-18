@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-table :data="agentList" highlight-current-row border>
+    <el-table :data="agentList" highlight-current-row border v-loading="loading">
       <el-table-column label="状态" align="center" width="50">
         <template>
           <div class="circle"/>
@@ -38,13 +38,17 @@ import { getOnlineAgentList } from '@/api/serverAgent'
 export default {
   data() {
     return {
+      loading: false,
       agentList: []
     }
   },
   methods: {
     fetchOnlineAgentList() {
+      this.loading = true
       getOnlineAgentList().then(response => {
         this.agentList = response.data
+      }).finally(() => {
+        this.loading = false
       })
     }
   },
