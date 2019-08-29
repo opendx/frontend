@@ -35,12 +35,13 @@
         <el-table-column label="执行状态" align="center">
           <template scope="scope">
             {{ scope.row.status === 0 ? '未完成' : '已完成' }}
+            <el-button v-if="scope.row.status === 0" type="text" @click="lookProgress(scope.row)">查看执行进度</el-button>
           </template>
         </el-table-column>
         <el-table-column label="测试报告" align="center">
           <template scope="scope">
             <!--测试完成才显示-->
-            <div v-if="scope.row.status === 1"><el-button size="mini" type="text" @click="goToReportPage(scope.row)">查看</el-button></div>
+            <div v-if="scope.row.status === 1"><el-button type="text" @click="goToReportPage(scope.row)">查看</el-button></div>
           </template>
         </el-table-column>
       </el-table>
@@ -49,11 +50,21 @@
     <div>
       <pagination v-show="total>0" :total="total" :page.sync="queryTestTaskListForm.pageNum" :limit.sync="queryTestTaskListForm.pageSize" @pagination="fetchTestTaskList" />
     </div>
+    <!--进度弹窗-->
+    <el-dialog
+      :title="testTaskName"
+      :visible.sync="showProgressDialog"
+      width="50%">
+      <div v-for="progress in progressData" :key="progress.deviceId">
+        {{ progress.deviceId }}
+        <el-progress :percentage="progress.finishedTestcasePercent" />
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getTestTaskList } from '@/api/testTask'
+import { getTestTaskList, getTestTaskProgress } from '@/api/testTask'
 import Pagination from '@/components/Pagination'
 export default {
   components: {
@@ -67,7 +78,10 @@ export default {
         pageSize: 10,
         projectId: this.$store.state.project.id // 这里不能用computed里的projectId，会拿到undefined
       },
-      total: 0
+      total: 0,
+      showProgressDialog: false,
+      progressData: [],
+      testTaskName: ''
     }
   },
   methods: {
@@ -78,6 +92,13 @@ export default {
       getTestTaskList(this.queryTestTaskListForm).then(response => {
         this.testTaskList = response.data.data
         this.total = response.data.total
+      })
+    },
+    lookProgress(row) {
+      this.showProgressDialog = true
+      this.testTaskName = row.name
+      getTestTaskProgress(row.id).then(response => {
+        this.progressData = response.data
       })
     }
   },

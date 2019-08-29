@@ -22,3 +22,10 @@ export function getTestTaskSummary(testTaskId) {
     url: '/testTask/' + testTaskId + '/summary'
   })
 }
+
+export function getTestTaskProgress(testTaskId) {
+  return request({
+    method: 'get',
+    url: '/testTask/' + testTaskId + '/progress'
+  })
+}
