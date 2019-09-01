@@ -3,7 +3,6 @@ import Cookies from 'js-cookie'
 const state = {
   id: Cookies.get('projectId') ? parseInt(Cookies.get('projectId')) : null,
   platform: Cookies.get('platform') ? parseInt(Cookies.get('platform')) : null,
-  name: Cookies.get('projectName') || null
 }
 
 const mutations = {
@@ -12,9 +11,6 @@ const mutations = {
   },
   SET_PLATFORM(state, platform) {
     state.platform = platform
-  },
-  SET_NAME(state, name) {
-    state.name = name
   }
 }
 
@@ -26,10 +22,6 @@ const actions = {
   setPlatform({ commit }, platform) {
     Cookies.set('platform', platform, { expires: 365 })
     commit('SET_PLATFORM', platform)
-  },
-  setName({ commit }, name) {
-    Cookies.set('projectName', name, { expires: 365 })
-    commit('SET_NAME', name)
   }
 }
 

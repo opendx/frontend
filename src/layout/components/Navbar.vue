@@ -119,10 +119,9 @@ export default {
       }
     },
     selectedProject(projectId) {
-      const selectedProject = this.projectList.filter(project => project.id === projectId)
-      this.$store.dispatch('project/setId', selectedProject[0].id)
-      this.$store.dispatch('project/setPlatform', selectedProject[0].platform)
-      this.$store.dispatch('project/setName', selectedProject[0].name)
+      const selectedProject = this.projectList.filter(project => project.id === projectId)[0]
+      this.$store.dispatch('project/setId', selectedProject.id)
+      this.$store.dispatch('project/setPlatform', selectedProject.platform)
     },
     selectIdleDevice(type) {
       if (type) {
