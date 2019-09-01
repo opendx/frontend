@@ -83,9 +83,11 @@ export default {
         }
         const formData = new FormData()
         formData.append('file', this.choosedApp.raw)
-        formData.append('name', this.app.name)
-        formData.append('platform', this.app.platform)
-        formData.append('projectId', this.app.projectId)
+        for (const k in this.app) {
+          if (this.app[k]) {
+            formData.append(k, this.app[k])
+          }
+        }
         uploadApp(formData).then(response => {
           this.$notify.success(response.msg)
           this.goToAppListPage()
