@@ -17,7 +17,7 @@
     </el-form>
 
     <span slot="footer">
-      <el-button @click="cancel">取 消</el-button>
+      <el-button v-if="showCancel" @click="cancel">取 消</el-button>
       <el-button type="primary" @click="saveProject">保 存</el-button>
     </span>
   </el-dialog>
@@ -27,7 +27,11 @@ import { addProject, updateProject } from '@/api/project'
 
 export default {
   props: {
-    isAdd: Boolean
+    isAdd: Boolean,
+    showCancel: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {

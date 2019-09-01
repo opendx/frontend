@@ -21,7 +21,6 @@
           :value="idleDevice.id"
         />
       </el-select>
-      <el-button icon="el-icon-warning" v-if="!$store.state.project.id" type="danger" style="position: relative; top: -15px" size="mini">选择一个项目作为当前的测试项目</el-button>
       <el-select v-model="projectId" placeholder="选择项目" style="top: -15px" size="mini" @visible-change="selectProject" @change="selectedProject">
         <el-option
           v-for="project in projectList"
@@ -92,7 +91,12 @@ export default {
           confirmButtonText: '创建',
           showClose: false,
           callback: () => {
-            this.$router.push('/project/add')
+            this.$router.push({
+              name: 'AddProject',
+              params: {
+                showCancel: false
+              }
+            })
           }
         })
       }
