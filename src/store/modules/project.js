@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie'
 
 const state = {
-  id: Cookies.get('projectId') || null,
-  platform: Cookies.get('platform') || null,
+  id: Cookies.get('projectId') ? parseInt(Cookies.get('projectId')) : null,
+  platform: Cookies.get('platform') ? parseInt(Cookies.get('platform')) : null,
   name: Cookies.get('projectName') || null
 }
 

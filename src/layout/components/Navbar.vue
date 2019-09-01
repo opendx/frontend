@@ -83,14 +83,20 @@ export default {
       idleDeviceId: null
     }
   },
-  async created() {
+  created() {
     this.projectId = this.$store.state.project.id
-    this.projectList = [
-      {
-        id: this.projectId,
-        name: this.$store.state.project.name
+    getProjectList().then(response => {
+      this.projectList = response.data
+      if (this.projectList.length === 0) {
+        this.$alert('暂无项目，创建一个项目', '提示', {
+          confirmButtonText: '创建',
+          showClose: false,
+          callback: () => {
+            this.$router.push('/project/add')
+          }
+        })
       }
-    ]
+    })
   },
   methods: {
     toggleSideBar() {
