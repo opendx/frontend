@@ -62,6 +62,15 @@
           <el-input v-model="row.evaluation" clearable :disabled="evaluationDisabled(row.actionId)" />
         </template>
       </el-table-column>
+      <el-table-column label="异常处理" align="center" width="170">
+        <template scope="{ row }">
+          <el-select v-model="row.handleException">
+            <el-option label="中断执行" :value="null" />
+            <el-option label="忽略，继续执行" :value="0" />
+            <el-option label="抛出跳过异常" :value="1" />
+          </el-select>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" width="160">
         <template scope="scope">
           <el-button-group>
@@ -204,7 +213,7 @@ export default {
       this.steps.splice(index, 1)
     },
     addStep() {
-      this.steps.push({ paramValues: [] })
+      this.steps.push({ paramValues: [], handleException: null })
     },
     // 步骤勾选
     handleSelectionChange(val) {
