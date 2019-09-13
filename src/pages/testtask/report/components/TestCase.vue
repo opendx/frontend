@@ -34,7 +34,7 @@
             </el-table-column>
           </el-table>
         </div>
-        <div style="float: left;margin-left: 5px">
+        <div style="float: left;margin-left: 5px" v-if="testcase.failInfo || testcase.failImgUrl">
           <el-table :data="[testcase]" border>
             <el-table-column label="失败信息" align="center" width="280px">
               <template scope="{ row }">
