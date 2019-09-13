@@ -28,7 +28,7 @@
             <el-table-column label="状态" align="center" width="90px">
               <template scope="{ row }">
                 <el-tag :type="row.endTime ? 'success' : row.startTime ? 'danger' : 'info'" style="width: 65px;">
-                  {{ row.endTime ? '成功' : row.startTime ? '失败' : '未执行' }}
+                  {{ row.endTime ? '完成' : row.startTime ? '失败' : '未执行' }}
                 </el-tag>
               </template>
             </el-table-column>
