@@ -69,9 +69,10 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="160">
+      <el-table-column label="操作" align="center" width="180">
         <template scope="scope">
           <el-button-group>
+            <el-button size="mini" @click="addNextStep(scope.$index)">+</el-button>
             <el-button size="mini" :disabled="moveUpDisable(scope.$index)" @click="moveUp(scope.$index)">↑</el-button>
             <el-button size="mini" :disabled="moveDownDisable(scope.$index)" @click="moveDown(scope.$index)">↓</el-button>
             <el-button size="mini" class="el-icon-delete" @click="deleteStep(scope.$index)" />
@@ -212,6 +213,9 @@ export default {
     },
     addStep() {
       this.steps.push({ paramValues: [], handleException: null })
+    },
+    addNextStep(index) {
+      this.steps.splice(index + 1, 0, { paramValues: [], handleException: null })
     },
     // 步骤勾选
     handleSelectionChange(val) {
