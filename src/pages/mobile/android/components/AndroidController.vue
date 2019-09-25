@@ -89,25 +89,17 @@ export default {
         let img = new Image()
         img.src = u
         img.onload = () => {
-          const originWidth = img.width
-          const originHeight = img.height
-          const maxWidth = 420; const maxHeight = 800
-          let targetWidth = originWidth; let targetHeight = originHeight
-          if (originHeight > maxHeight) {
-            if (originWidth / originHeight > maxWidth / maxHeight) {
-              targetWidth = maxWidth
-              targetHeight = Math.round(maxWidth * (originHeight / originWidth))
-            } else {
-              targetHeight = maxHeight
-              targetWidth = Math.round(maxHeight * (originWidth / originHeight))
-            }
+          const maxHeight = 800
+          let width = img.width
+          let height = img.height
+          if (height > maxHeight) {
+            width = Math.round(maxHeight * (width / height))
+            height = maxHeight
           }
 
-          // canvas对图片进行缩放
-          canvas.width = targetWidth
-          canvas.height = targetHeight
-
-          canvasContext.drawImage(img, 0, 0, targetWidth, targetHeight)
+          canvas.width = width
+          canvas.height = height
+          canvasContext.drawImage(img, 0, 0, width, height)
           img.onload = null
           img.src = BLANK_IMG
           img = null
