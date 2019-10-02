@@ -193,7 +193,7 @@ export default {
       action.name = this.saveActionForm.name
       action.params = this.$refs.paramList.params
       action.localVars = this.$refs.localVarList.localVars
-      action.steps = this.$refs.stepList.selectedSteps
+      action.steps = this.$refs.stepList.selectedSteps.sort((a, b) => a.number - b.number)
       action.projectId = this.$store.state.project.id
       action.platform = this.$store.state.project.platform
       action.hasReturnValue = 0 // 调试不用处理返回值

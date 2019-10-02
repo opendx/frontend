@@ -12,9 +12,9 @@
           {{ stepNumber(scope.row, scope.$index + 1) }}
         </template>
       </el-table-column>
-      <el-table-column label="Action" align="center" width="300">
+      <el-table-column label="Action" align="center" width="200">
         <template scope="{ row }">
-          <el-input v-model="row.name" clearable placeholder="步骤名" style="margin-bottom: 5px" />
+          <el-input v-model="row.name" placeholder="步骤名" style="margin-bottom: 5px" type="textarea" :autosize="{ minRows: 1 }" />
           <el-select v-model="row.actionId" filterable clearable style="width: 100%" @change="actionSelected($event, row)" @visible-change="selectAction" placeholder="选择action">
             <el-option v-for="action in selectableActions" :key="action.id" :value="action.id" :label="action.name">
               <span style="float: left;color: blue" v-if="action.type === 1">[基础组件]</span>
@@ -48,7 +48,7 @@
             </el-table-column>
             <el-table-column label="参数值" align="center">
               <template scope="scope_paramValues">
-                <el-input v-model="scope_paramValues.row.paramValue" @paste.native="onpaste($event, scope_paramValues)" clearable />
+                <el-input v-model="scope_paramValues.row.paramValue" @paste.native="onpaste($event, scope_paramValues)" type="textarea" :autosize="{ minRows: 1 }"/>
                 <img v-if="isImg(scope_paramValues.row.paramValue)" :src="scope_paramValues.row.paramValue" />
               </template>
             </el-table-column>
@@ -57,7 +57,7 @@
       </el-table-column>
       <el-table-column label="赋值" align="center" width="200">
         <template scope="{ row }">
-          <el-input v-model="row.evaluation" clearable :disabled="evaluationDisabled(row.actionId)" />
+          <el-input v-model="row.evaluation" :disabled="evaluationDisabled(row.actionId)" type="textarea" :autosize="{ minRows: 1 }" />
         </template>
       </el-table-column>
       <el-table-column label="异常处理" align="center" width="170">
