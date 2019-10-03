@@ -41,7 +41,7 @@
           <el-input v-model="saveActionForm.returnValueDesc" clearable placeholder="描述" style="margin-top: 5px" />
         </el-tab-pane>
       </el-tabs>
-      <action-step-list ref="stepList" style="margin-top: 5px" />
+      <action-step-list ref="stepList" style="margin-top: 5px" :cur-action-id="saveActionForm.id" />
     </div>
   </div>
 </template>

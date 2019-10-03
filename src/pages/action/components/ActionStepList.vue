@@ -86,6 +86,10 @@
 <script>
 import { getSelectableActions } from '@/api/action'
 export default {
+  props: {
+    // 当前编辑的actionId
+    curActionId: Number
+  },
   data() {
     return {
       steps: [],
@@ -229,7 +233,7 @@ export default {
     },
     fetchSelectableActions() {
       getSelectableActions(this.projectId, this.platform).then(resp => {
-        this.selectableActions = resp.data
+        this.selectableActions = resp.data.filter(action => action.id !== this.curActionId)
       })
     },
     // 选择了一个action或清除
