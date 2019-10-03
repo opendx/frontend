@@ -7,9 +7,7 @@
           局部变量名
         </template>
         <template scope="{ row }">
-          <el-input v-model="row.name" clearable>
-            <el-button slot="append" v-clipboard:copy="'@{' + row.name + '}'" v-clipboard:success="onCopy">copy</el-button>
-          </el-input>
+          <el-input v-model="row.name" clearable />
         </template>
       </el-table-column>
       <el-table-column label="局部变量值" align="center">
@@ -32,11 +30,7 @@
 </template>
 
 <script>
-import clipboard from '@/directive/clipboard/index.js'
 export default {
-  directives: {
-    clipboard
-  },
   data() {
     return {
       returnValue: null,
@@ -53,9 +47,6 @@ export default {
     },
     deleteLocalVar(index) {
       this.localVars.splice(index, 1)
-    },
-    onCopy(e) {
-      this.$notify.success(e.text + '复制成功')
     }
   }
 }

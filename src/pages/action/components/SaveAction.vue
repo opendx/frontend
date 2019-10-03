@@ -36,14 +36,9 @@
           <global-var-list />
         </el-tab-pane>
         <el-tab-pane label="返回值" style="height: 250px">
-          <el-row :gutter="5">
-            <el-col :span="12">
-              <el-input v-model="saveActionForm.returnValue" clearable :disabled="!isAdd" placeholder="返回值" />
-            </el-col>
-            <el-col :span="12">
-              <el-input v-model="saveActionForm.returnValueDesc" clearable :disabled="!isAdd" placeholder="描述" />
-            </el-col>
-          </el-row>
+          <el-radio v-model="saveActionForm.hasReturnValue" :label="0" :disabled="!isAdd">void</el-radio>
+          <el-radio v-model="saveActionForm.hasReturnValue" :label="1" :disabled="!isAdd">Object</el-radio>
+          <el-input v-model="saveActionForm.returnValueDesc" clearable placeholder="描述" style="margin-top: 5px" />
         </el-tab-pane>
       </el-tabs>
       <action-step-list ref="stepList" style="margin-top: 5px" />
@@ -80,8 +75,7 @@ export default {
         name: '',
         description: '',
         type: this.isTestCase ? 3 : 2,
-        hasReturnValue: null,
-        returnValue: null,
+        hasReturnValue: 0,
         returnValueDesc: null,
         params: [],
         localVars: [],
@@ -156,7 +150,6 @@ export default {
       this.saveActionForm.params = this.$refs.paramList.params
       this.saveActionForm.localVars = this.$refs.localVarList.localVars
       this.saveActionForm.steps = this.$refs.stepList.steps
-      this.saveActionForm.hasReturnValue = this.saveActionForm.returnValue ? 1 : 0
 
       if (this.isAdd) {
         addAction(this.saveActionForm).then(response => {
@@ -196,7 +189,7 @@ export default {
       action.steps = this.$refs.stepList.selectedSteps.sort((a, b) => a.number - b.number)
       action.projectId = this.$store.state.project.id
       action.platform = this.$store.state.project.platform
-      action.hasReturnValue = 0 // 调试不用处理返回值
+      action.hasReturnValue = this.saveActionForm.hasReturnValue
       action.type = this.isTestCase ? 3 : 2
       this.debugBtnLoading = true
       debugAction({

@@ -7,9 +7,7 @@
           参数名
         </template>
         <template scope="{ row }">
-          <el-input v-model="row.name" :disabled="!isAdd" clearable>
-            <el-button slot="append" v-clipboard:copy="'#{' + row.name + '}'" v-clipboard:success="onCopy">copy</el-button>
-          </el-input>
+          <el-input v-model="row.name" :disabled="!isAdd" clearable />
         </template>
       </el-table-column>
       <el-table-column label="描述" align="center">
@@ -27,11 +25,7 @@
 </template>
 
 <script>
-import clipboard from '@/directive/clipboard/index.js'
 export default {
-  directives: {
-    clipboard
-  },
   props: {
     isAdd: Boolean
   },
@@ -49,9 +43,6 @@ export default {
     },
     deleteParam(index) {
       this.params.splice(index, 1)
-    },
-    onCopy(e) {
-      this.$notify.success(e.text + '复制成功')
     }
   }
 }
