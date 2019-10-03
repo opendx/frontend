@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-button @click="fetchOnlineAgentList" style="margin-bottom: 10px">刷新</el-button>
     <el-table :data="agentList" highlight-current-row border v-loading="loading">
       <el-table-column label="状态" align="center" width="50">
         <template>

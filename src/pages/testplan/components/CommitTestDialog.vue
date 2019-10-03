@@ -54,6 +54,7 @@
                 <span style="float: left">{{ device.systemVersion }}</span>
               </el-option>
             </el-select>
+            <span style="margin-left: 10px;font-size: 10px;color: #8c939d">使用中的设备不会立即执行测试任务</span>
           </el-form-item>
           <el-form-item label="用例分发策略" :rules="[{required: true}]">
             <el-radio v-model="commitTestTaskForm.runMode" label="1">

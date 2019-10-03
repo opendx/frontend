@@ -178,9 +178,10 @@ export default {
     this.fetchSelectableActions()
   },
   methods: {
-    isImg(base64) {
-      if (base64) {
-        return base64.startsWith('data:image/')
+    isImg(value) {
+      if (value) {
+        // 简单粗暴判断是否是base64
+        return value.startsWith('data:image/')
       } else {
         return false
       }
