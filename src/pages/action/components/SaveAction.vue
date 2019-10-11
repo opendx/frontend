@@ -35,9 +35,12 @@
         <el-tab-pane label="全局变量">
           <global-var-list />
         </el-tab-pane>
-        <el-tab-pane label="返回值" style="height: 250px">
+        <el-tab-pane label="返回值">
           <el-input v-model.trim="saveActionForm.returnValue" :disabled="!isAdd" clearable placeholder="返回值类型" />
           <el-input v-model="saveActionForm.returnValueDesc" clearable placeholder="描述" style="margin-top: 5px" />
+        </el-tab-pane>
+        <el-tab-pane label="import">
+          <action-import-list ref="importList" />
         </el-tab-pane>
       </el-tabs>
       <action-step-list ref="stepList" style="margin-top: 5px" :cur-action-id="saveActionForm.id" />
@@ -46,6 +49,7 @@
 </template>
 <script>
 import MobileInspector from '@/pages/mobile/components/MobileInspector'
+import ActionImportList from '../components/ActionImportList'
 import ActionParamList from '../components/ActionParamList'
 import ActionLocalVarList from '../components/ActionLocalVarList'
 import GlobalVarList from '../components/GlobalVarList'
@@ -57,6 +61,7 @@ import { addAction, updateAction, getActionList, debugAction } from '@/api/actio
 export default {
   components: {
     MobileInspector,
+    ActionImportList,
     ActionParamList,
     ActionLocalVarList,
     GlobalVarList,
@@ -79,6 +84,7 @@ export default {
         params: [],
         localVars: [],
         steps: [],
+        javaImports: [],
         platform: this.$store.state.project.platform,
         pageId: undefined,
         projectId: this.$store.state.project.id,
@@ -117,6 +123,7 @@ export default {
       this.$refs.paramList.params = this.saveActionForm.params
       this.$refs.localVarList.localVars = this.saveActionForm.localVars
       this.$refs.stepList.steps = this.saveActionForm.steps
+      this.$refs.importList.javaImports = this.saveActionForm.javaImports
     } else {
       // 复制，传递过来的数据
       if (this.$route.params.name) {
@@ -127,6 +134,7 @@ export default {
         this.$refs.paramList.params = this.saveActionForm.params
         this.$refs.localVarList.localVars = this.saveActionForm.localVars
         this.$refs.stepList.steps = this.saveActionForm.steps
+        this.$refs.importList.javaImports = this.saveActionForm.javaImports
       }
     }
   },
@@ -149,6 +157,7 @@ export default {
       this.saveActionForm.params = this.$refs.paramList.params
       this.saveActionForm.localVars = this.$refs.localVarList.localVars
       this.saveActionForm.steps = this.$refs.stepList.steps
+      this.saveActionForm.javaImports = this.$refs.importList.javaImports
 
       if (this.isAdd) {
         addAction(this.saveActionForm).then(response => {
@@ -183,6 +192,7 @@ export default {
       }
       const action = {}
       action.name = this.saveActionForm.name
+      action.javaImports = this.$refs.importList.javaImports
       action.params = this.$refs.paramList.params
       action.localVars = this.$refs.localVarList.localVars
       action.steps = this.$refs.stepList.selectedSteps.sort((a, b) => a.number - b.number)
