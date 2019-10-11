@@ -4,15 +4,20 @@
       <el-table-column align="center">
         <template slot="header">
           <el-button type="text" :disabled="!isAdd" class="el-icon-circle-plus" @click="addParam" />
-          参数名
+          方法参数类型
         </template>
         <template scope="{ row }">
-          <el-input v-model="row.name" :disabled="!isAdd" clearable />
+          <el-input v-model.trim="row.type" :disabled="!isAdd" clearable />
+        </template>
+      </el-table-column>
+      <el-table-column label="方法参数名" align="center">
+        <template scope="{ row }">
+          <el-input v-model.trim="row.name" :disabled="!isAdd" clearable />
         </template>
       </el-table-column>
       <el-table-column label="描述" align="center">
         <template scope="{ row }">
-          <el-input v-model="row.description" clearable />
+          <el-input v-model.trim="row.description" clearable />
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="50">
@@ -37,6 +42,7 @@ export default {
   methods: {
     addParam() {
       this.params.push({
+        type: 'String',
         name: '',
         description: ''
       })

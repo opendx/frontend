@@ -4,20 +4,25 @@
       <el-table-column label="" align="center">
         <template slot="header">
           <el-button type="text" class="el-icon-circle-plus" @click="addLocalVar" />
-          局部变量名
+          局部变量类型
         </template>
         <template scope="{ row }">
-          <el-input v-model="row.name" clearable />
+          <el-input v-model.trim="row.type" clearable />
+        </template>
+      </el-table-column>
+      <el-table-column label="局部变量名" align="center">
+        <template scope="{ row }">
+          <el-input v-model.trim="row.name" clearable />
         </template>
       </el-table-column>
       <el-table-column label="局部变量值" align="center">
         <template scope="{ row }">
-          <el-input v-model="row.value" clearable />
+          <el-input v-model.trim="row.value" clearable />
         </template>
       </el-table-column>
       <el-table-column label="描述" align="center">
         <template scope="{ row }">
-          <el-input v-model="row.description" clearable />
+          <el-input v-model.trim="row.description" clearable />
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="50">
@@ -40,6 +45,7 @@ export default {
   methods: {
     addLocalVar() {
       this.localVars.push({
+        type: 'String',
         name: '',
         value: '',
         description: ''
