@@ -30,7 +30,7 @@
       <el-table-column label="Action参数" align="center">
         <template scope="{ row }">
           <el-table :data="row.paramValues" border>
-            <el-table-column label="参数名" align="center" width="200" show-overflow-tooltip>
+            <el-table-column label="参数名" align="center" width="150" show-overflow-tooltip>
               <template scope="scope_paramValues">
                 <el-popover placement="right" trigger="click">
                   {{ paramNameDesc(row.actionId, scope_paramValues.row.paramName) }}
@@ -44,6 +44,11 @@
                   </el-table>
                   <el-button slot="reference" type="text">{{ scope_paramValues.row.paramName }}</el-button>
                 </el-popover>
+              </template>
+            </el-table-column>
+            <el-table-column label="参数类型" align="center" width="100" show-overflow-tooltip>
+              <template scope="scope_paramValues">
+                {{ scope_paramValues.row.paramType }}
               </template>
             </el-table-column>
             <el-table-column label="参数值" align="center">
@@ -135,7 +140,7 @@ export default {
         } else {
           const action = this.selectableActions.filter(action => action.id === actionId)[0]
           if (action) {
-            return !(action.hasReturnValue)
+            return action.returnValue === 'void'
           }
         }
       }
@@ -241,6 +246,7 @@ export default {
           selectedAction.params.forEach(param => {
             step.paramValues.push({
               paramName: param.name,
+              paramType: param.type,
               paramValue: ''
             })
           })

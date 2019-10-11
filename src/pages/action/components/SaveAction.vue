@@ -35,7 +35,7 @@
         <el-tab-pane label="全局变量">
           <global-var-list />
         </el-tab-pane>
-        <el-tab-pane label="返回值">
+        <el-tab-pane label="返回值类型">
           <el-input v-model.trim="saveActionForm.returnValue" :disabled="!isAdd" clearable placeholder="返回值类型" />
           <el-input v-model="saveActionForm.returnValueDesc" clearable placeholder="描述" style="margin-top: 5px" />
         </el-tab-pane>
