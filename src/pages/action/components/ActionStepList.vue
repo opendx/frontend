@@ -142,14 +142,10 @@ export default {
     },
     returnValueTag() {
       return function(action) {
-        if (action.hasReturnValue === 1) {
-          if (action.returnValueDesc) {
-            return '[' + action.returnValueDesc + ']'
-          } else {
-            return '[有返回值]'
-          }
+        if (action.returnValueDesc) {
+          return '[' + action.returnValue + ': ' + action.returnValueDesc + ']'
         } else {
-          return '[void]'
+          return '[' + action.returnValue + ']'
         }
       }
     },

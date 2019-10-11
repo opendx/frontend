@@ -36,8 +36,7 @@
           <global-var-list />
         </el-tab-pane>
         <el-tab-pane label="返回值" style="height: 250px">
-          <el-radio v-model="saveActionForm.hasReturnValue" :label="0" :disabled="!isAdd">void</el-radio>
-          <el-radio v-model="saveActionForm.hasReturnValue" :label="1" :disabled="!isAdd">Object</el-radio>
+          <el-input v-model.trim="saveActionForm.returnValue" :disabled="!isAdd" clearable placeholder="返回值" />
           <el-input v-model="saveActionForm.returnValueDesc" clearable placeholder="描述" style="margin-top: 5px" />
         </el-tab-pane>
       </el-tabs>
@@ -75,7 +74,7 @@ export default {
         name: '',
         description: '',
         type: this.isTestCase ? 3 : 2,
-        hasReturnValue: 0,
+        returnValue: 'void',
         returnValueDesc: null,
         params: [],
         localVars: [],
@@ -189,7 +188,7 @@ export default {
       action.steps = this.$refs.stepList.selectedSteps.sort((a, b) => a.number - b.number)
       action.projectId = this.$store.state.project.id
       action.platform = this.$store.state.project.platform
-      action.hasReturnValue = this.saveActionForm.hasReturnValue
+      action.returnValue = this.saveActionForm.returnValue
       action.type = this.isTestCase ? 3 : 2
       this.debugBtnLoading = true
       debugAction({
