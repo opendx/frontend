@@ -4,6 +4,7 @@
     <!-- 列表 -->
     <div>
       <el-table :data="globalVarList" highlight-current-row border>
+        <el-table-column label="变量类型" align="center" prop="type" />
         <el-table-column label="变量名" align="center" prop="name" />
         <el-table-column label="变量值" align="center" prop="value" />
         <el-table-column label="描述" align="center" prop="description" />

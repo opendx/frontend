@@ -1,6 +1,9 @@
 <template>
   <el-dialog :title="title" :visible="true" :show-close="false">
     <el-form :data="globalVar" label-width="100px">
+      <el-form-item label="变量类型" :rules="[{required: true}]">
+        <el-input v-model.trim="globalVar.type" clearable style="width: 300px" :disabled="!isAdd" />
+      </el-form-item>
       <el-form-item label="变量名" :rules="[{required: true}]">
         <el-input v-model.trim="globalVar.name" clearable style="width: 300px" :disabled="!isAdd" />
       </el-form-item>
@@ -31,6 +34,7 @@ export default {
       title: this.isAdd ? '添加全局变量' : '更新全局变量',
       globalVar: {
         id: undefined,
+        type: 'String',
         name: '',
         value: '',
         description: '',
