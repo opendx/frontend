@@ -53,7 +53,7 @@
             </el-table-column>
             <el-table-column label="参数值" align="center">
               <template scope="scope_paramValues">
-                <el-input v-model="scope_paramValues.row.paramValue" @paste.native="onpaste($event, scope_paramValues)" type="textarea" :autosize="{ minRows: 1 }"/>
+                <el-input v-model="scope_paramValues.row.paramValue" @paste.native="onpaste($event, scope_paramValues)" type="textarea" :autosize="{ minRows: 1, maxRows: 10 }"/>
                 <img v-if="isImg(scope_paramValues.row.paramValue)" :src="scope_paramValues.row.paramValue" />
               </template>
             </el-table-column>
