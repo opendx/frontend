@@ -4,7 +4,7 @@
     <i class="el-icon-circle-plus" style="font-size: 20px;color: black;cursor: pointer" title="添加page" @click="addPage" />
     <!-- inspector -->
     <div>
-      <mobile-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy-json="windowHierarchyJson" :tree-loading="treeLoading" />
+      <mobile-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy="windowHierarchy" :tree-loading="treeLoading" />
     </div>
   </div>
 </template>
@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      windowHierarchyJsonString: null,
+      windowHierarchy: null,
       // 传递给MobileInspctor组件的数据
       canvasId: 'mobile-capture-canvas',
       imgInfo: {
@@ -28,7 +28,6 @@ export default {
         imgHeight: null,
         imgUrl: null
       },
-      windowHierarchyJson: null,
       treeLoading: false
     }
   },
@@ -57,18 +56,17 @@ export default {
         }
       })
     },
-    fetchWindowHierarchyJSON() {
+    fetchWindowHierarchy() {
       this.treeLoading = true
       dump(this.agentIp, this.agentPort, this.deviceId).then(response => {
-        this.windowHierarchyJsonString = response.data
-        this.windowHierarchyJson = JSON.parse(this.windowHierarchyJsonString)
+        this.windowHierarchy = response.data
       }).finally(() => {
         this.treeLoading = false
       })
     },
     fetchData() {
       this.fetchScreenShot()
-      this.fetchWindowHierarchyJSON()
+      this.fetchWindowHierarchy()
     },
     refresh() {
       this.fetchData()
@@ -82,7 +80,7 @@ export default {
           imgHeight: this.imgInfo.imgHeight,
           imgWidth: this.imgInfo.imgWidth,
           deviceId: this.deviceId,
-          windowHierarchyJson: this.windowHierarchyJsonString
+          windowHierarchy: this.windowHierarchy
         }
       })
     }

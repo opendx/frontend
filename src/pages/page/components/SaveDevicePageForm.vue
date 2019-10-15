@@ -24,7 +24,7 @@
             <el-input v-model="savePageForm.imgWidth" clearable :disabled="isAdd" />
           </el-form-item>
           <el-form-item label="图片布局">
-            <el-input v-model="savePageForm.windowHierarchyJson" clearable :disabled="isAdd" />
+            <el-input v-model="savePageForm.windowHierarchy" clearable :disabled="isAdd" />
           </el-form-item>
           <el-form-item label="设备id">
             <el-input v-model="savePageForm.deviceId" clearable :disabled="isAdd" />
@@ -61,7 +61,7 @@ export default {
         imgHeight: undefined,
         imgWidth: undefined,
         deviceId: undefined,
-        windowHierarchyJson: ''
+        windowHierarchy: ''
       },
       pageCategoryList: []
     }

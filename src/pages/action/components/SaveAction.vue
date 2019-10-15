@@ -13,7 +13,7 @@
         </el-select>
         <el-popover trigger="click" placement="left">
           <div style="width: 1400px;height: 850px">
-            <mobile-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy-json="windowHierarchyJson" :tree-loading="treeLoading" />
+            <mobile-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy="windowHierarchy" :tree-loading="treeLoading" />
           </div>
           <el-button slot="reference" icon="el-icon-view" :disabled="!saveActionForm.pageId > 0 " />
         </el-popover>
@@ -100,7 +100,7 @@ export default {
         imgHeight: null,
         imgUrl: null
       },
-      windowHierarchyJson: null,
+      windowHierarchy: null,
       treeLoading: false
       // end-传递给AndroidInspctor组件的数据
     }
@@ -151,7 +151,7 @@ export default {
         imgHeight: currentPage.imgHeight,
         imgUrl: currentPage.imgUrl
       }
-      this.windowHierarchyJson = JSON.parse(currentPage.windowHierarchyJson)
+      this.windowHierarchy = currentPage.windowHierarchy
     },
     saveAction() {
       this.saveActionForm.params = this.$refs.paramList.params

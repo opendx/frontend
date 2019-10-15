@@ -37,7 +37,7 @@ export default {
   props: {
     canvasId: String,
     imgInfo: Object,
-    windowHierarchyJson: Object,
+    windowHierarchy: String,
     treeLoading: Boolean
   },
   data() {
@@ -51,7 +51,7 @@ export default {
         label: 'class'
       },
       isAndroid: true,
-
+      isWebView: false,
       // 右侧节点详细数据
       nodeDetail: {},
       treeData: [],
@@ -71,9 +71,21 @@ export default {
       this.scale = (this.imgInfo.imgWidth) / 400
       console.log('scale', this.scale)
     },
-    windowHierarchyJson() {
-      if (this.windowHierarchyJson == null) {
+    windowHierarchy() {
+      if (!this.windowHierarchy) {
         return
+      }
+      console.log('windowHierarchy', this.windowHierarchy)
+      let windowHierarchyJson
+      try {
+        windowHierarchyJson = JSON.parse(this.windowHierarchy)
+      } catch (e) {
+        // 先粗暴处理，转换不了json就是webview。webview返回回来是xml格式
+        this.isWebView = true
+        return
+      }
+      if (windowHierarchyJson.hierarchy.platform === 2) {
+        this.isAndroid = false
       }
       // 重新初始化数据，防止点击刷新按钮，数据错乱
       this.nodeDetail = {}
@@ -84,12 +96,8 @@ export default {
       this.nodeIndex = 0
       // 清除上一次的红色区域
       this.canvasCtx.clearRect(0, 0, this.imgInfo.imgWidth, this.imgInfo.imgHeight)
-      console.log('hierarchy', this.windowHierarchyJson.hierarchy)
-      if (this.windowHierarchyJson.hierarchy.platform === 2) {
-        this.isAndroid = false
-      }
       // from macaca Inspector start https://github.com/macacajs/app-inspector/blob/master/lib/android.js
-      const matchedNode = _.findLast(this.windowHierarchyJson.hierarchy, i => {
+      const matchedNode = _.findLast(windowHierarchyJson.hierarchy, i => {
         return (
           i !== null &&
           typeof i === 'object' &&
