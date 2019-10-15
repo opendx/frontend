@@ -50,7 +50,8 @@ export default {
         children: 'nodes',
         label: 'class'
       },
-      isAndroid: true,
+      isAndroid: false,
+      isIos: false,
       isWebView: false,
       // 右侧节点详细数据
       nodeDetail: {},
@@ -80,12 +81,14 @@ export default {
       try {
         windowHierarchyJson = JSON.parse(this.windowHierarchy)
       } catch (e) {
-        // 先粗暴处理，转换不了json就是webview。webview返回回来是xml格式
+        // 先粗暴处理，转换不了json就是webview。webview返回的是xml
         this.isWebView = true
         return
       }
-      if (windowHierarchyJson.hierarchy.platform === 2) {
-        this.isAndroid = false
+      if (windowHierarchyJson.hierarchy.platform === 1) {
+        this.isAndroid = true
+      } else if (windowHierarchyJson.hierarchy.platform === 2) {
+        this.isIos = true
       }
       // 重新初始化数据，防止点击刷新按钮，数据错乱
       this.nodeDetail = {}
@@ -134,7 +137,7 @@ export default {
       this.selectedNode.xpath_lite = getXPathLite(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
       if (this.isAndroid) {
         this.selectedNode.uiautomator = getAndroidUiautomator(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
-      } else {
+      } else if (this.isIos) {
         this.selectedNode.iOSNsPredicateString = getIOSNsPredicateString(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
       }
       // copy对象
@@ -142,7 +145,7 @@ export default {
       // 去除id nodes
       delete nodeDetail.id
       delete nodeDetail.nodes
-      if (!this.isAndroid) {
+      if (this.isIos) {
         // 为了复用一套前端代码，后台在ios dump时添加了一个class属性
         delete nodeDetail.class
       }
