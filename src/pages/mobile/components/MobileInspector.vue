@@ -9,17 +9,21 @@
         <img :src="imgInfo.imgUrl" style="width: 400px">
       </el-col>
       <!--中间布局树-->
-      <el-col :span="9" align="center" style="height: 100%;overflow: auto">
+      <el-col v-if="!isWebView" :span="9" align="center" style="height: 100%;overflow: auto">
         <el-tree ref="tree" v-loading="treeLoading" :data="treeData" :props="defaultProps" highlight-current :expand-on-click-node="false" node-key="id" :default-expanded-keys="currentExpandedKey" @node-click="nodeClick" />
       </el-col>
       <!--右侧控件信息-->
-      <el-col :span="7" style="height: 100%;overflow: auto">
+      <el-col v-if="!isWebView" :span="7" style="height: 100%;overflow: auto">
         <ul style="list-style: none;word-break: break-all;padding: 0px">
           <li v-for="(value,key) in nodeDetail" :key="key" style="border-bottom: 1px solid #eee">
             <label style="width: 100px;display: inline-block;">{{ key }}</label>
             <div v-clipboard:copy="value" v-clipboard:success="onCopy" title="click to copy" style="display: inline;color: #8cc5ff;cursor: pointer;">{{ value }}</div>
           </li>
         </ul>
+      </el-col>
+      <!--WebView-->
+      <el-col v-if="isWebView" :span="16" align="center" style="height: 100%;overflow: auto">
+        <div v-html="windowHierarchy"></div>
       </el-col>
     </el-row>
   </div>
@@ -83,12 +87,18 @@ export default {
       } catch (e) {
         // 先粗暴处理，转换不了json就是webview。webview返回的是xml
         this.isWebView = true
+        this.isAndroid = false
+        this.isIos = false
         return
       }
       if (windowHierarchyJson.hierarchy.platform === 1) {
         this.isAndroid = true
+        this.isIos = false
+        this.isWebView = false
       } else if (windowHierarchyJson.hierarchy.platform === 2) {
         this.isIos = true
+        this.isAndroid = false
+        this.isWebView = false
       }
       // 重新初始化数据，防止点击刷新按钮，数据错乱
       this.nodeDetail = {}
@@ -122,6 +132,9 @@ export default {
       // 1.重新绘制红色区域
       // 清除上一次的红色区域
       this.canvasCtx.clearRect(0, 0, this.imgInfo.imgWidth, this.imgInfo.imgHeight)
+      if (this.isWebView) {
+        return
+      }
       this.canvasCtx.fillStyle = 'red'
       // 透明度
       this.canvasCtx.globalAlpha = 0.5
