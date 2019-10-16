@@ -22,8 +22,8 @@
         </ul>
       </el-col>
       <!--WebView-->
-      <el-col v-if="isWebView" :span="16" align="center" style="height: 100%;overflow: auto">
-        <div v-html="windowHierarchy"></div>
+      <el-col v-if="isWebView" :span="16" align="center" style="height: 100%;">
+        <iframe :srcdoc="windowHierarchy" width="100%" height="100%"></iframe>
       </el-col>
     </el-row>
   </div>
