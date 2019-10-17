@@ -209,7 +209,7 @@ export default {
           deviceId: this.$store.state.device.id
         }
       }).then(response => {
-        this.$notify.success(response.msg)
+        this.$message.success(response.msg)
       }).finally(() => {
         this.debugBtnLoading = false
       })
