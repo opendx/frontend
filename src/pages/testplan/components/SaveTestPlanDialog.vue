@@ -1,6 +1,6 @@
 <template>
   <el-dialog :title="title" :visible="true" :show-close="false">
-    <el-form label-width="100px">
+    <el-form label-width="120px">
       <el-form-item label="测试计划名" :rules="[{required: true}]">
         <el-input v-model.trim="saveTestPlanForm.name" clearable />
       </el-form-item>
