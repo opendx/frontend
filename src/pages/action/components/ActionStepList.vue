@@ -12,7 +12,11 @@
           {{ stepNumber(scope.row, scope.$index + 1) }}
         </template>
       </el-table-column>
-      <el-table-column label="Action" align="center" width="200">
+      <el-table-column align="center" width="200">
+        <template slot="header">
+          <span>Action</span>
+          <el-button type="text" @click="showActionDetail = true">detail</el-button>
+        </template>
         <template scope="{ row }">
           <el-input v-model="row.name" placeholder="步骤名" style="margin-bottom: 5px" type="textarea" :autosize="{ minRows: 1 }" />
           <el-select v-model="row.actionId" filterable clearable style="width: 100%" @change="actionSelected($event, row)" @visible-change="selectAction" placeholder="选择action">
@@ -85,6 +89,55 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 展示action在java code里如何调用 -->
+    <el-drawer
+      title="Action Detail"
+      :visible.sync="showActionDetail"
+      direction="rtl"
+      :show-close="false"
+      size="90%">
+      <el-table :data="selectableActions.filter(data => !actionDetailSearch || data.name.toLowerCase().includes(actionDetailSearch.toLowerCase()))" height="95%" border>
+        <el-table-column align="center" width="200">
+          <template slot="header" slot-scope="scope">
+            <el-input
+              v-model="actionDetailSearch"
+              size="mini"
+              placeholder="输入关键字搜索"/>
+          </template>
+          <template scope="scope">
+            {{ scope.row.id }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="类型" width="100">
+          <template scope="scope">
+            {{ scope.row.type === 1 ? '基础组件' : scope.row.type === 2 ? '封装组件' : '测试用例' }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" property="name" label="action" width="300" />
+        <el-table-column align="center" property="description" label="描述" />
+        <el-table-column align="center" property="invoke" label="java代码调用" />
+        <el-table-column align="center" label="传参" width="600">
+          <template scope="scope">
+            <el-table :data="scope.row.params" border>
+              <el-table-column align="center" property="name" label="参数名" />
+              <el-table-column align="center" property="type" label="类型" />
+              <el-table-column align="center" property="description" label="描述" />
+              <!-- 先注释吊可能的值，不然table太卡 -->
+              <!--<el-table-column align="center" label="可能的值">-->
+                <!--<template scope="scope2">-->
+                  <!--<el-table :data="scope2.row.possibleValues" border>-->
+                    <!--<el-table-column align="center" property="value" label="值" />-->
+                    <!--<el-table-column align="center" property="description" label="描述" />-->
+                  <!--</el-table>-->
+                <!--</template>-->
+              <!--</el-table-column>-->
+            </el-table>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" property="returnValue" label="返回值" />
+        <el-table-column align="center" property="returnValueDesc" label="返回值描述" />
+      </el-table>
+    </el-drawer>
   </div>
 </template>
 
@@ -99,7 +152,9 @@ export default {
     return {
       steps: [],
       selectedSteps: [],
-      selectableActions: []
+      selectableActions: [],
+      showActionDetail: false,
+      actionDetailSearch: ''
     }
   },
   computed: {
