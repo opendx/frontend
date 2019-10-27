@@ -44,6 +44,12 @@
             <div v-if="scope.row.status === 1"><el-button type="text" @click="goToReportPage(scope.row)">查看</el-button></div>
           </template>
         </el-table-column>
+        <el-table-column label="操作" width="100" align="center">
+          <template scope="{ row }">
+            <!--已完成的不让删-->
+            <el-button type="danger" class="el-icon-delete" :disabled="row.status === 1" @click="deleteTestTask(row)" />
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <!--分页-->
@@ -64,7 +70,7 @@
 </template>
 
 <script>
-import { getTestTaskList, getTestTaskProgress } from '@/api/testTask'
+import { getTestTaskList, getTestTaskProgress, deleteTestTask } from '@/api/testTask'
 import Pagination from '@/components/Pagination'
 export default {
   components: {
@@ -99,6 +105,18 @@ export default {
       this.testTaskName = row.name
       getTestTaskProgress(row.id).then(response => {
         this.progressData = response.data
+      })
+    },
+    deleteTestTask(testTask) {
+      this.$confirm('删除该测试任务？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteTestTask(testTask.id).then(resp => {
+          this.$notify.success(resp.msg)
+          this.fetchTestTaskList()
+        })
       })
     }
   },
