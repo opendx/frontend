@@ -8,6 +8,13 @@
     <!--page列表-->
     <div>
       <el-table :data="pageList" highlight-current-row border>
+        <el-table-column label="分类" align="center">
+          <template scope="{ row }">
+            <el-select v-model="row.categoryId" clearable filterable @change="categoryChange(row)" placeholder="选择分类">
+              <el-option v-for="category in pageCategoryListWithoutTotal" :key="category.id" :value="category.id" :label="category.name" />
+            </el-select>
+          </template>
+        </el-table-column>
         <el-table-column label="page" align="center" width="120px">
           <template scope="{ row }">
             <img v-if="row.imgUrl" :src="row.imgUrl" width="100px">
@@ -18,13 +25,6 @@
         <el-table-column label="创建时间" align="center">
           <template scope="{ row }">
             {{ row.creatorNickName + ' ' + row.createTime }}
-          </template>
-        </el-table-column>
-        <el-table-column label="分类" align="center">
-          <template scope="{ row }">
-            <el-select v-model="row.categoryId" clearable filterable @change="categoryChange(row)" placeholder="选择分类">
-              <el-option v-for="category in pageCategoryListWithoutTotal" :key="category.id" :value="category.id" :label="category.name" />
-            </el-select>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150" align="center">
