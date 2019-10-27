@@ -7,8 +7,11 @@
         <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" @keyup.enter.native="debugAction">调试</el-button>
         <el-button type="success" @click="saveAction">保存</el-button>
       </el-button-group>
-      <span v-if="!isTestCase"><!-- 不是测试用例，显示page select选择page，以及查看page布局信息的el-icon-view -->
-        <el-select v-model="saveActionForm.pageId" clearable filterable style="width: 150px" placeholder="绑定page" @change="pageSelected">
+      <span v-if="!isTestCase"><!-- 不是测试用例，显示分类，显示page select选择page，以及查看page布局信息的el-icon-view -->
+        <el-select v-model="saveActionForm.categoryId" clearable filterable style="width: 200px" placeholder="选择分类">
+          <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
+        </el-select>
+        <el-select v-model="saveActionForm.pageId" clearable filterable style="width: 200px" placeholder="选择page" @change="pageSelected">
           <el-option v-for="page in pages" :key="page.id" :label="page.name" :value="page.id" />
         </el-select>
         <el-popover trigger="click" placement="left">
@@ -19,7 +22,7 @@
         </el-popover>
       </span>
       <span v-if="isTestCase"><!-- 测试用例，提供测试集选择 -->
-        <el-select v-model="saveActionForm.testSuiteId" clearable filterable style="width: 150px" placeholder="绑定测试集">
+        <el-select v-model="saveActionForm.testSuiteId" clearable filterable style="width: 200px" placeholder="选择测试集">
           <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
         </el-select>
       </span>
@@ -56,6 +59,7 @@ import GlobalVarList from '../components/GlobalVarList'
 import ActionStepList from '../components/ActionStepList'
 import Sticky from '@/components/Sticky'
 import { getPageList } from '@/api/page'
+import { getCategoryList } from '@/api/category'
 import { getTestSuiteList } from '@/api/testSuite'
 import { addAction, updateAction, getActionList, debugAction } from '@/api/action'
 export default {
@@ -88,8 +92,10 @@ export default {
         platform: this.$store.state.project.platform,
         pageId: undefined,
         projectId: this.$store.state.project.id,
-        testSuiteId: undefined
+        testSuiteId: undefined,
+        categoryId: undefined
       },
+      categories: [],
       pages: [],
       testSuites: [],
       debugBtnLoading: false,
@@ -107,6 +113,8 @@ export default {
   },
   async created() {
     if (!this.isTestCase) {
+      const response = await getCategoryList({ projectId: this.saveActionForm.projectId, type: 2 })
+      this.categories = response.data
       const { data } = await getPageList({ projectId: this.saveActionForm.projectId })
       this.pages = data
     } else {
