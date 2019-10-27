@@ -32,20 +32,16 @@
             {{ scope.row.status === 0 ? '-' : scope.row.skipCaseCount }}
           </template>
         </el-table-column>
-        <el-table-column label="执行状态" align="center">
+        <el-table-column label="状态" align="center">
           <template scope="scope">
             {{ scope.row.status === 0 ? '未完成' : '已完成' }}
             <el-button v-if="scope.row.status === 0" type="text" @click="lookProgress(scope.row)">查看执行进度</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="测试报告" align="center">
-          <template scope="scope">
-            <!--测试完成才显示-->
-            <div v-if="scope.row.status === 1"><el-button type="text" @click="goToReportPage(scope.row)">查看</el-button></div>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="100" align="center">
+        <el-table-column label="操作" width="200" align="center">
           <template scope="{ row }">
+            <!--未完成disable-->
+            <el-button @click="goToReportPage(row)" :disabled="row.status !== 1">查看报告</el-button>
             <!--已完成的不让删-->
             <el-button type="danger" class="el-icon-delete" :disabled="row.status === 1" @click="deleteTestTask(row)" />
           </template>
