@@ -20,6 +20,13 @@
             {{ row.creatorNickName + ' ' + row.createTime }}
           </template>
         </el-table-column>
+        <el-table-column label="分类" align="center">
+          <template scope="{ row }">
+            <el-select v-model="row.categoryId" clearable filterable @change="categoryChange(row)" placeholder="选择分类">
+              <el-option v-for="category in pageCategoryListWithoutTotal" :key="category.id" :value="category.id" :label="category.name" />
+            </el-select>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="150" align="center">
           <template scope="{ row }">
             <el-button type="primary" class="el-icon-edit" @click="updatePage(row)" />
@@ -38,7 +45,7 @@
 <script>
 
 import { getCategoryList, deleteCategory } from '@/api/category'
-import { getPageList, deletePage } from '@/api/page'
+import { getPageList, deletePage, updatePage } from '@/api/page'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -66,6 +73,9 @@ export default {
   computed: {
     projectId() {
       return this.$store.state.project.id
+    },
+    pageCategoryListWithoutTotal() {
+      return this.pageCategoryList.filter(category => category.name !== '全部')
     }
   },
   created() {
@@ -90,6 +100,7 @@ export default {
     onTabClick(tab) {
       const activeCategory = this.pageCategoryList.filter(category => category.name === tab.label)[0]
       this.queryPageListForm.categoryId = activeCategory.id
+      this.queryPageListForm.pageNum = 1
       this.fetchPageList()
     },
     deletePageCategory(name) {
@@ -125,6 +136,14 @@ export default {
       this.$router.push({
         name: 'UpdatePage',
         params: page
+      })
+    },
+    categoryChange(row) {
+      if (row.categoryId === '') { // 清除分类
+        row.categoryId = null
+      }
+      updatePage(row).then(response => {
+        this.fetchPageList()
       })
     }
   }
