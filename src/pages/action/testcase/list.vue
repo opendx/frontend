@@ -15,6 +15,13 @@
       <el-table :data="actionList" highlight-current-row border>
         <el-table-column label="测试用例" align="center" prop="name" />
         <el-table-column label="描述" align="center" prop="description" />
+        <el-table-column label="测试集" align="center">
+          <template scope="{ row }">
+            <el-select v-model="row.testSuiteId" clearable filterable @change="testSuiteChange(row)" placeholder="选择测试集">
+              <el-option v-for="testSuite in testSuiteListWithoutTotal" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
+            </el-select>
+          </template>
+        </el-table-column>
         <el-table-column label="创建时间" align="center">
           <template scope="{ row }">
             {{ row.creatorNickName + ' ' + row.createTime }}
@@ -43,7 +50,7 @@
 
 <script>
 
-import { getActionList, deleteAction } from '@/api/action'
+import { getActionList, deleteAction, updateAction } from '@/api/action'
 import Pagination from '@/components/Pagination'
 import { getTestSuiteList, deleteTestSuite } from '@/api/testSuite'
 
@@ -72,6 +79,9 @@ export default {
   computed: {
     projectId() {
       return this.$store.state.project.id
+    },
+    testSuiteListWithoutTotal() {
+      return this.testSuiteList.filter(suite => suite.name !== '全部')
     }
   },
   created() {
@@ -105,6 +115,7 @@ export default {
     onTabClick(tab) {
       const activedTestSuite = this.testSuiteList.filter(testSuite => testSuite.name === tab.label)[0]
       this.queryActionListForm.testSuiteId = activedTestSuite.id
+      this.queryActionListForm.pageNum = 1
       this.fetchActionList()
     },
     deleteTestSuite(name) {
@@ -138,6 +149,14 @@ export default {
     },
     updateAction(id) {
       this.$router.push('/action/testcase/update/' + id)
+    },
+    testSuiteChange(row) {
+      if (row.testSuiteId === '') { // 清除测试集
+        row.testSuiteId = null
+      }
+      updateAction(row).then(response => {
+        this.fetchActionList()
+      })
     }
   }
 }
