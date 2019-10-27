@@ -261,6 +261,13 @@ export const constantRoutes = [
         name: 'AddPageCategory',
         meta: { title: '添加Page分类', noCache: true },
         hidden: true
+      },
+      {
+        path: 'addActionCategory',
+        component: () => import('@/pages/category/addActionCategory'),
+        name: 'AddActionCategory',
+        meta: { title: '添加Action分类', noCache: true },
+        hidden: true
       }
     ]
   },
