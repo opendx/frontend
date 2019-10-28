@@ -38,10 +38,11 @@
             <el-button v-if="scope.row.status === 0" type="text" @click="lookProgress(scope.row)">查看执行进度</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="操作" width="350" align="center">
           <template scope="{ row }">
+            <el-button @click="showDrawer = true">设备测试任务</el-button>
             <!--未完成disable-->
-            <el-button @click="goToReportPage(row)" :disabled="row.status !== 1">查看报告</el-button>
+            <el-button type="success" @click="goToReportPage(row)" :disabled="row.status !== 1">查看报告</el-button>
             <!--已完成的不让删-->
             <el-button type="danger" class="el-icon-delete" :disabled="row.status === 1" @click="deleteTestTask(row)" />
           </template>
@@ -52,21 +53,20 @@
     <div>
       <pagination v-show="total>0" :total="total" :page.sync="queryTestTaskListForm.pageNum" :limit.sync="queryTestTaskListForm.pageSize" @pagination="fetchTestTaskList" />
     </div>
-    <!--进度弹窗-->
-    <el-dialog
-      :title="testTaskName"
-      :visible.sync="showProgressDialog"
-      width="50%">
-      <div v-for="progress in progressData" :key="progress.deviceId">
-        {{ progress.deviceId }}
-        <el-progress :percentage="progress.finishedTestcasePercent" />
-      </div>
-    </el-dialog>
+    <!--设备测试任务-->
+    <el-drawer
+      title="我是标题"
+      :visible.sync="showDrawer"
+      direction="rtl"
+      size="50%"
+      :before-close="handleClose">
+      <span>我来啦!</span>
+    </el-drawer>
   </div>
 </template>
 
 <script>
-import { getTestTaskList, getTestTaskProgress, deleteTestTask } from '@/api/testTask'
+import { getTestTaskList, deleteTestTask } from '@/api/testTask'
 import Pagination from '@/components/Pagination'
 export default {
   components: {
@@ -74,16 +74,14 @@ export default {
   },
   data() {
     return {
+      showDrawer: false,
       testTaskList: [],
       queryTestTaskListForm: {
         pageNum: 1,
         pageSize: 10,
         projectId: this.$store.state.project.id // 这里不能用computed里的projectId，会拿到undefined
       },
-      total: 0,
-      showProgressDialog: false,
-      progressData: [],
-      testTaskName: ''
+      total: 0
     }
   },
   methods: {
@@ -94,13 +92,6 @@ export default {
       getTestTaskList(this.queryTestTaskListForm).then(response => {
         this.testTaskList = response.data.data
         this.total = response.data.total
-      })
-    },
-    lookProgress(row) {
-      this.showProgressDialog = true
-      this.testTaskName = row.name
-      getTestTaskProgress(row.id).then(response => {
-        this.progressData = response.data
       })
     },
     deleteTestTask(testTask) {
