@@ -7,3 +7,10 @@ export function getDeviceTestTaskList(params) {
     params
   })
 }
+
+export function deleteDeviceTestTask(deviceTestTaskId) {
+  return request({
+    method: 'delete',
+    url: '/deviceTestTask/' + deviceTestTaskId
+  })
+}
