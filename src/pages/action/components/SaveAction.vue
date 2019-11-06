@@ -107,8 +107,21 @@ export default {
         imgUrl: null
       },
       windowHierarchy: null,
-      treeLoading: false
+      treeLoading: false,
       // end-传递给AndroidInspctor组件的数据
+      // 开始时的表单数据，用于校验表单数据是否有变化
+      startSaveActionFormString: ''
+    }
+  },
+  destroyed() {
+    window.onbeforeunload = null
+  },
+  mounted() {
+    window.onbeforeunload = () => {
+      if (this.saveActionFormChanged()) {
+        // 刷新或关闭窗口 且 数据发生变化，提示用户
+        return '提示'
+      }
     }
   },
   async created() {
@@ -145,6 +158,8 @@ export default {
         this.$refs.importList.javaImports = this.saveActionForm.javaImports
       }
     }
+    // 记录开始时的表单数据
+    this.startSaveActionFormString = JSON.stringify(this.saveActionForm)
   },
   methods: {
     pageSelected(id) {
@@ -221,6 +236,13 @@ export default {
       }).finally(() => {
         this.debugBtnLoading = false
       })
+    },
+    saveActionFormChanged() {
+      this.saveActionForm.params = this.$refs.paramList.params
+      this.saveActionForm.localVars = this.$refs.localVarList.localVars
+      this.saveActionForm.steps = this.$refs.stepList.steps
+      this.saveActionForm.javaImports = this.$refs.importList.javaImports
+      return JSON.stringify(this.saveActionForm) !== this.startSaveActionFormString
     }
   }
 }
