@@ -173,6 +173,32 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/driver',
+    component: Layout,
+    children: [
+      {
+        path: 'add',
+        component: () => import('@/pages/driver/add'),
+        name: 'AddDriver',
+        meta: { title: '添加Driver', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'update',
+        component: () => import('@/pages/driver/update'),
+        name: 'UpdateDriver',
+        meta: { title: '更新Driver', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/pages/driver/list'),
+        name: 'ListDriver',
+        meta: { title: 'Driver', icon: 'chrome', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/project',
     component: Layout,
     children: [
