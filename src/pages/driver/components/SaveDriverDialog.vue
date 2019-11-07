@@ -11,15 +11,17 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="xxx">
+      <el-form-item label="上传">
         <div v-for="url in driver.urls" :key="url.platform">
           <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :file-list="fileList">
-            <el-button>{{ url.platform === 1 ? 'windows' : url.platform === 2 ? 'linux' : 'mac' }} 点击上传</el-button>
-            <div slot="tip" class="el-upload__tip"></div>
+            :action="uploadUrl"
+            :limit="1"
+            :multiple="false"
+            :on-success="(response, file, fileList) => onFileUploadSuccess(response, file, fileList, url)">
+            <el-button>{{ url.platform === 1 ? 'windows' : url.platform === 2 ? 'linux' : 'mac' }} - 点击上传</el-button>
+            {{ url.downloadUrl }}
           </el-upload>
+          <el-divider></el-divider>
         </div>
       </el-form-item>
       <el-form-item label="devices">
@@ -71,7 +73,8 @@ export default {
         ],
         deviceIds: []
       },
-      devices: []
+      devices: [],
+      uploadUrl: process.env.VUE_APP_BASE_API + '/upload/file'
     }
   },
   created() {
@@ -83,6 +86,13 @@ export default {
     })
   },
   methods: {
+    onFileUploadSuccess(response, file, fileList, url) {
+      if (response.status !== 1) {
+        this.$message.error(response.msg)
+        return
+      }
+      url.downloadUrl = response.data.downloadURL
+    },
     cancel() {
       this.$router.back()
     },
