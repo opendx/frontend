@@ -2,9 +2,6 @@
   <div class="app-container">
     <div>
       <el-button @click="$router.push('/driver/add')">添加driver</el-button>
-      <el-tooltip content="" placement="bottom" effect="light">
-        <el-button>todo help</el-button>
-      </el-tooltip>
     </div>
     <!-- 列表 -->
     <div style="margin-top: 10px">
