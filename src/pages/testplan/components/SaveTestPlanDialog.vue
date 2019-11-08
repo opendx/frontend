@@ -62,7 +62,7 @@
             </el-radio>
           </el-form-item>
           <el-form-item label="设备" :rules="[{required: true}]">
-            <el-select v-model="saveTestPlanForm.deviceIds" clearable filterable multiple>
+            <el-select v-model="saveTestPlanForm.deviceIds" clearable filterable multiple style="width: 80%">
               <el-option v-for="device in onlineDevices" :label="device.id" :value="device.id" :key="device.id">
                 <span style="float: left;margin-right: 10px">{{ device.id }}</span>
                 <span style="float: left;margin-right: 10px">{{ device.name }}</span>
@@ -103,7 +103,7 @@ export default {
         afterMethod: null,
         testSuites: [],
         deviceIds: [],
-        runMode: '1'
+        runMode: 1
       },
       selectableActions: [],
       testSuites: [],

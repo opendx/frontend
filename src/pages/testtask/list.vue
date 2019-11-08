@@ -2,21 +2,14 @@
   <div class="app-container">
     <div>
       <el-button @click="fetchTestTaskList" style="margin-bottom: 10px">刷新</el-button>
-      <el-table :data="testTaskList" border>
+      <el-table :data="testTaskList" border fit>
         <el-table-column label="提交时间" align="center" width="200">
           <template scope="{ row }">
             {{ row.creatorNickName + ' ' + row.commitTime }}
           </template>
         </el-table-column>
         <el-table-column label="完成时间" prop="finishTime" align="center"></el-table-column>
-        <el-table-column label="测试任务" prop="name" align="center"></el-table-column>
-        <el-table-column label="任务描述" prop="description" align="center"></el-table-column>
         <el-table-column label="测试计划" prop="testPlanName" align="center"></el-table-column>
-        <el-table-column label="用例分发策略" align="center">
-          <template scope="scope">
-            {{ scope.row.runMode === 1 ? '兼容模式' : '高效模式' }}
-          </template>
-        </el-table-column>
         <el-table-column label="通过用例数" align="center">
           <template scope="scope">
             {{ scope.row.status === 0 ? '-' : scope.row.passCaseCount }}
@@ -39,7 +32,7 @@
         </el-table-column>
         <el-table-column label="操作" width="350" align="center">
           <template scope="{ row }">
-            <el-button type="primary" @click="onDeviceTestTaskBtnClick(row)">设备测试任务</el-button>
+            <el-button type="primary" @click="onDeviceTestTaskBtnClick(row)">查看进度</el-button>
             <!--未完成disable-->
             <el-button type="success" @click="goToReportPage(row)" :disabled="row.status !== 1">查看报告</el-button>
             <!--已完成的不让删-->
@@ -67,22 +60,14 @@
               <el-button type="danger" size="mini" class="el-icon-delete" :disabled="row.status !== 0" @click="deleteDeviceTestTask(row)" />
             </template>
           </el-table-column>
-          <el-table-column label="执行进度" align="center" width="100">
+          <el-table-column label="执行进度" align="center" width="150">
             <template scope="{ row }">
-              <div v-if="row.status === 0">
-                <el-tag type="info">待执行</el-tag>
-              </div>
-              <div v-else-if="row.status === 1">
-                <i class="el-icon-loading" />运行中
-              </div>
-              <div v-else-if="row.status === 2">
-                <el-tag>完成</el-tag>
-              </div>
+              <el-progress type="circle" :percentage="deviceExecutePercent(row)"></el-progress>
             </template>
           </el-table-column>
           <el-table-column label="设备id" align="center" prop="deviceId" width="100" show-overflow-tooltip />
-          <el-table-column label="测试任务开始时间" align="center" prop="startTime" width="180" />
-          <el-table-column label="测试任务结束时间" align="center" prop="endTime" width="180" />
+          <el-table-column label="开始时间" align="center" prop="startTime" width="100" />
+          <el-table-column label="结束时间" align="center" prop="endTime" width="100" />
           <el-table-column label="测试用例" align="center">
             <template scope="{ row }">
               <el-table :data="row.testcases" border max-height="400px">
@@ -148,6 +133,15 @@ export default {
       drawerTitle: '',
       testTaskIdInDrawer: undefined,
       deviceTestTaskList: []
+    }
+  },
+  computed: {
+    deviceExecutePercent() {
+      return function(row) {
+        const testcaseCount = row.testcases.length
+        const finishedTestcaseCount = row.testcases.filter(testcase => testcase.status).length // 有status == 执行完成
+        return parseInt(finishedTestcaseCount / testcaseCount * 100)
+      }
     }
   },
   methods: {
