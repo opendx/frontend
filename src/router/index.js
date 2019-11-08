@@ -382,13 +382,6 @@ export const constantRoutes = [
         hidden: true
       },
       {
-        path: 'commitTest/:testPlanId',
-        component: () => import('@/pages/testplan/commitTest'),
-        name: 'TestPlanCommitTest',
-        meta: { title: '提交测试', noCache: true },
-        hidden: true
-      },
-      {
         path: 'list',
         component: () => import('@/pages/testplan/list'),
         name: 'TestPlanList',

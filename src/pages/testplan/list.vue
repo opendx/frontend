@@ -1,9 +1,14 @@
 <template>
   <div class="app-container">
     <el-button @click="$router.push('/testplan/add')" style="margin-bottom: 10px">添加测试计划</el-button>
-    <el-table :data="testPlanList" border>
+    <el-table :data="testPlanList" border fit>
       <el-table-column label="测试计划" align="center" prop="name"></el-table-column>
       <el-table-column label="描述" align="center" prop="description"></el-table-column>
+      <el-table-column label="设备" align="center">
+        <template scope="{ row }">
+          <div v-for="deviceId in row.deviceIds" :key="deviceId">{{ deviceId }}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" align="center">
         <template scope="{ row }">
           {{ row.creatorNickName + ' ' + row.createTime }}
@@ -27,6 +32,7 @@
 <script>
 
 import { deleteTestPlan, getTestPlanList } from '@/api/testPlan'
+import { commitTestTask } from '@/api/testTask'
 import Pagination from '@/components/Pagination'
 export default {
   components: {
@@ -66,7 +72,10 @@ export default {
       this.$router.push('/testPlan/update/' + id)
     },
     commitTestPlan(id) {
-      this.$router.push('/testPlan/commitTest/' + id)
+      commitTestTask({ testPlanId: id }).then(response => {
+        this.$notify.success(response.msg)
+        this.$router.push('/testTask/list')
+      })
     }
   },
   created() {

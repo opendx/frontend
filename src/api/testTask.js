@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
-export function commitTestTask(data) {
+export function commitTestTask(params) {
   return request({
-    method: 'post',
+    method: 'get',
     url: '/testTask/commit',
-    data
+    params
   })
 }
 
