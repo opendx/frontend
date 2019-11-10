@@ -70,6 +70,12 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="开启定时任务">
+            <el-switch v-model="saveTestPlanForm.enableSchedule" :active-value="1" :inactive-value="0" />
+          </el-form-item>
+          <el-form-item label="cron表达式">
+            <el-input v-model="saveTestPlanForm.cronExpression" clearable />
+          </el-form-item>
         </el-form>
       </el-col>
     </el-row>
@@ -103,7 +109,9 @@ export default {
         afterMethod: null,
         testSuites: [],
         deviceIds: [],
-        runMode: 1
+        runMode: 1,
+        cronExpression: undefined,
+        enableSchedule: 0
       },
       selectableActions: [],
       testSuites: [],

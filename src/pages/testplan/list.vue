@@ -9,6 +9,12 @@
           <div v-for="deviceId in row.deviceIds" :key="deviceId">{{ deviceId }}</div>
         </template>
       </el-table-column>
+      <el-table-column label="定时任务" align="center" prop="description">
+        <template scope="{ row }">
+          {{ row.enableSchedule === 1 ?  '开启' : '关闭' }}
+        </template>
+      </el-table-column>
+      <el-table-column label="cron表达式" align="center" prop="cronExpression"></el-table-column>
       <el-table-column label="创建时间" align="center">
         <template scope="{ row }">
           {{ row.creatorNickName + ' ' + row.createTime }}
