@@ -70,7 +70,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="开启定时任务">
+          <el-form-item label="定时任务">
             <el-switch v-model="saveTestPlanForm.enableSchedule" :active-value="1" :inactive-value="0" />
           </el-form-item>
           <el-form-item label="cron表达式">
