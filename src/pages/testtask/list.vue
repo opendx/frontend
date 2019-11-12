@@ -139,7 +139,7 @@ export default {
     deviceExecutePercent() {
       return function(row) {
         const testcaseCount = row.testcases.length
-        const finishedTestcaseCount = row.testcases.filter(testcase => testcase.status).length // 有status == 执行完成
+        const finishedTestcaseCount = row.testcases.filter(testcase => testcase.status !== undefined && testcase.status !== null).length // 有status == 执行完成
         return parseInt(finishedTestcaseCount / testcaseCount * 100)
       }
     }
