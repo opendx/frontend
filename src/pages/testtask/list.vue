@@ -56,8 +56,8 @@
         <el-table :data="deviceTestTaskList" border max-height="800px">
           <el-table-column label="操作" width="80" align="center">
             <template scope="{ row }">
-              <!-- status:0 未运行，只有未运行的设备测试任务才能删 -->
-              <el-button type="danger" size="mini" class="el-icon-delete" :disabled="row.status !== 0" @click="deleteDeviceTestTask(row)" />
+              <!-- status:-1出错不能执行 status:0未开始执行 -->
+              <el-button type="danger" size="mini" class="el-icon-delete" :disabled="!(row.status === 0 || row.status === -1)" @click="deleteDeviceTestTask(row)" />
             </template>
           </el-table-column>
           <el-table-column label="执行进度" align="center" width="150">
