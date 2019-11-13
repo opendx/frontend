@@ -51,6 +51,12 @@
       :visible.sync="showDrawer"
       direction="rtl"
       size="95%">
+      <el-drawer
+        size="60%"
+        :append-to-body="true"
+        :visible.sync="innerDrawer">
+        <codemirror v-model="codemirrorContent" :options="cmOptions"></codemirror>
+      </el-drawer>
       <div style="padding: 5px">
         <el-button @click="fetchDeviceTestTask(testTaskIdInDrawer)" size="mini" style="margin-bottom: 5px">刷新</el-button>
         <el-table :data="deviceTestTaskList" border max-height="800px">
@@ -62,10 +68,16 @@
           </el-table-column>
           <el-table-column label="执行进度" align="center" width="150">
             <template scope="{ row }">
-              <el-progress type="circle" :percentage="deviceExecutePercent(row)"></el-progress>
+              <el-progress v-if="row.status != -1" type="circle" :percentage="deviceExecutePercent(row)"></el-progress>
+              <el-button v-else @click="showCodemirror(row.errMsg)" type="text">error</el-button>
             </template>
           </el-table-column>
           <el-table-column label="设备id" align="center" prop="deviceId" width="100" show-overflow-tooltip />
+          <el-table-column label="code" align="center" width="60">
+            <template scope="{ row }">
+              <el-button type="text" @click="showCodemirror(row.code)" v-if="row.code">查看</el-button>
+            </template>
+          </el-table-column>
           <el-table-column label="开始时间" align="center" prop="startTime" width="100" />
           <el-table-column label="结束时间" align="center" prop="endTime" width="100" />
           <el-table-column label="测试用例" align="center">
@@ -116,6 +128,8 @@
 import { getTestTaskList, deleteTestTask } from '@/api/testTask'
 import { getDeviceTestTaskList, deleteDeviceTestTask } from '@/api/deviceTestTask'
 import Pagination from '@/components/Pagination'
+import 'codemirror/mode/clike/clike.js'
+import 'codemirror/theme/base16-dark.css'
 export default {
   components: {
     Pagination
@@ -123,6 +137,7 @@ export default {
   data() {
     return {
       showDrawer: false,
+      innerDrawer: false,
       testTaskList: [],
       queryTestTaskListForm: {
         pageNum: 1,
@@ -132,7 +147,14 @@ export default {
       total: 0,
       drawerTitle: '',
       testTaskIdInDrawer: undefined,
-      deviceTestTaskList: []
+      deviceTestTaskList: [],
+      codemirrorContent: '',
+      cmOptions: {
+        mode: 'clike',
+        theme: 'base16-dark',
+        lineNumbers: true,
+        line: true
+      }
     }
   },
   computed: {
@@ -145,6 +167,10 @@ export default {
     }
   },
   methods: {
+    showCodemirror(content) {
+      this.codemirrorContent = content
+      this.innerDrawer = true
+    },
     goToReportPage(row) {
       this.$router.push('/testTask/report/' + row.id)
     },
@@ -195,3 +221,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .vue-codemirror >>> .CodeMirror {
+    height: auto;
+  }
+  .vue-codemirror {
+    height: 80%;
+    overflow: auto;
+  }
+</style>
