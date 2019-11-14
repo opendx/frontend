@@ -31,7 +31,7 @@
       </el-select>
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div>
-          <svg-icon icon-class="people" /><span style="font-size: 15px; margin-left: 5px">{{ name }}</span>
+          <i class="el-icon-user-solid" /><span style="font-size: 15px; margin-left: 5px">{{ name }}</span>
         </div>
         <el-dropdown-menu slot="dropdown">
           <a target="_blank" href="https://github.com/opendx">
