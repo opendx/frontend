@@ -23,9 +23,21 @@
         <i class="el-icon-upload" /><div>将apk拖到此处，或<em>点击选择apk</em></div>
       </el-upload>
       <el-button :loading="installBtnLoading" type="primary" size="mini" @click="installApp">{{ installBtnText }}</el-button>
+      <el-divider />
       <!--开启远程调试-->
       <el-button type="primary" size="mini" @click="startOrStopAdbKit">{{ adbKitBtnText }}</el-button>
       <el-tag v-if="adbKitIsStart" type="success">{{ adbkitTip }}</el-tag>
+      <el-divider />
+      <!--切换输入法-->
+      <el-select v-model="ime" @visible-change="selectIme" @change="imeSelected" placeholder="切换输入法" style="width: 100%">
+        <el-option
+          v-for="ime in imeList"
+          :key="ime.value"
+          :label="ime.label"
+          :value="ime.value"
+        />
+      </el-select>
+      <el-divider />
       <el-button slot="reference" size="mini">...</el-button>
     </el-popover>
   </div>
@@ -33,7 +45,7 @@
 
 <script>
 import MobileCapture from '@/pages/mobile/components/MobileCapture'
-import { startAdbKit, stopAdbKit, installApp } from '@/api/agent'
+import { startAdbKit, stopAdbKit, installApp, getImeList, setIme } from '@/api/agent'
 
 export default {
   components: {
@@ -46,7 +58,8 @@ export default {
     return {
       visible: false,
       initMobileCapture: false,
-
+      ime: undefined,
+      imeList: [],
       adbKitBtnText: '开启远程调试',
       adbkitTip: '',
       adbKitIsStart: false,
@@ -79,6 +92,23 @@ export default {
     }
   },
   methods: {
+    selectIme(type) {
+      if (type) {
+        this.fetchImeList()
+      }
+    },
+    imeSelected(ime) {
+      setIme(this.agentIp, this.agentPort, this.deviceId, ime).then(response => {
+        this.$notify.success(response.msg)
+      })
+    },
+    fetchImeList() {
+      getImeList(this.agentIp, this.agentPort, this.deviceId).then(response => {
+        this.imeList = response.data.map(ime => {
+          return { value: ime, label: ime }
+        })
+      })
+    },
     startOrStopAdbKit() {
       if (!this.adbKitIsStart) {
         startAdbKit(this.agentIp, this.agentPort, this.deviceId).then(response => {

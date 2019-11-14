@@ -41,3 +41,20 @@ export function stopAdbKit(agentIp, agentPort, deviceId) {
     url: '/android/' + deviceId + '/adbkit/stop'
   })
 }
+
+export function getImeList(agentIp, agentPort, deviceId) {
+  const request = service(agentIp, agentPort)
+  return request({
+    method: 'get',
+    url: '/android/' + deviceId + '/imeList'
+  })
+}
+
+export function setIme(agentIp, agentPort, deviceId, ime) {
+  const request = service(agentIp, agentPort)
+  return request({
+    method: 'post',
+    url: '/android/' + deviceId + '/ime',
+    params: { ime }
+  })
+}
