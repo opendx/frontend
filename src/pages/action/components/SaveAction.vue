@@ -218,7 +218,7 @@ export default {
       action.javaImports = this.$refs.importList.javaImports
       action.params = this.$refs.paramList.params
       action.localVars = this.$refs.localVarList.localVars
-      action.steps = this.$refs.stepList.selectedSteps.sort((a, b) => a.number - b.number)
+      action.steps = this.$refs.stepList.selectedSteps
       action.projectId = this.$store.state.project.id
       action.platform = this.$store.state.project.platform
       action.returnValue = this.saveActionForm.returnValue

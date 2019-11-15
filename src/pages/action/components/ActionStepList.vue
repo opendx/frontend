@@ -2,7 +2,7 @@
   <div>
     <div ref="closepopover" />
     <el-table :data="steps" border @selection-change="handleSelectionChange">
-      <el-table-column align="center" type="selection" width="30" />
+      <el-table-column align="center" type="selection" width="50" />
       <el-table-column align="center" width="80">
         <template slot="header">
           <el-button type="text" class="el-icon-circle-plus" @click="addStep" />
@@ -78,13 +78,15 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="180">
+      <el-table-column label="操作" align="center" width="120">
         <template scope="scope">
           <el-button-group>
-            <el-button size="mini" @click="addNextStep(scope.$index)">+</el-button>
-            <el-button size="mini" :disabled="moveUpDisable(scope.$index)" @click="moveUp(scope.$index)">↑</el-button>
-            <el-button size="mini" :disabled="moveDownDisable(scope.$index)" @click="moveDown(scope.$index)">↓</el-button>
-            <el-button size="mini" class="el-icon-delete" @click="deleteStep(scope.$index)" />
+            <el-button size="mini" class="el-icon-plus" @click="addNextStep(scope.$index)" />
+            <el-button size="mini" class="el-icon-minus" @click="deleteStep(scope.$index)" />
+          </el-button-group>
+          <el-button-group>
+            <el-button size="mini" class="el-icon-top" :disabled="moveUpDisable(scope.$index)" @click="moveUp(scope.$index)" />
+            <el-button size="mini" class="el-icon-bottom" :disabled="moveDownDisable(scope.$index)" @click="moveDown(scope.$index)" />
           </el-button-group>
         </template>
       </el-table-column>
@@ -280,7 +282,7 @@ export default {
     },
     // 步骤勾选
     handleSelectionChange(val) {
-      this.selectedSteps = this.steps.filter(step => val.indexOf(step) !== -1)
+      this.selectedSteps = this.steps.filter(step => val.indexOf(step) !== -1).sort((a, b) => a.number - b.number)
     },
     selectAction(type) {
       if (type) {
