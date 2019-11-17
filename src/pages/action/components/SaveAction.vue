@@ -232,7 +232,14 @@ export default {
           deviceId: this.$store.state.device.id
         }
       }).then(response => {
-        this.$message.success(response.msg)
+        const printMsgList = response.data
+        const _this = this
+        for (let i = 0; i < printMsgList.length; i++) {
+          // 不延时，message会重叠
+          (function() {
+            setTimeout(() => _this.$message.success(printMsgList[i]), 200 * i)
+          })()
+        }
       }).finally(() => {
         this.debugBtnLoading = false
       })
