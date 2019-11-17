@@ -19,16 +19,22 @@
         </template>
         <template scope="{ row }">
           <el-input v-model="row.name" placeholder="步骤名" style="margin-bottom: 5px" type="textarea" :autosize="{ minRows: 1 }" />
-          <el-select v-model="row.actionId" filterable clearable style="width: 100%" @change="actionSelected($event, row)" @visible-change="selectAction" placeholder="选择action">
-            <el-option v-for="action in selectableActions" :key="action.id" :value="action.id" :label="action.name">
-              <span style="float: left;color: blue" v-if="action.type === 1">[基础组件]</span>
-              <span style="float: left;color: green" v-else-if="action.type === 2">[封装组件]</span>
-              <span style="float: left;color: magenta" v-else-if="action.type === 3">[测试用例]</span>
-              <span style="float: left">{{ returnValueTag(action) }}</span>
-              <span style="float: left">{{ action.name }}</span>
-              <span style="float: right; padding-left: 5px; color: #8492a6; font-size: 13px">{{ action.description }}</span>
-            </el-option>
-          </el-select>
+          <el-cascader
+            v-model="row.actionId"
+            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+            :options="selectableActions"
+            filterable
+            clearable
+            style="width: 100%"
+            :show-all-levels="false"
+            @change="actionSelected($event, row)"
+            placeholder="试试输入click">
+            <template slot-scope="{ node, data }">
+              <span v-if="data.returnValue">{{ returnValue(data) }}</span>
+              <el-divider v-if="data.returnValue" direction="vertical" />
+              <span>{{ data.name }}</span>
+            </template>
+          </el-cascader>
         </template>
       </el-table-column>
       <el-table-column label="Action参数" align="center">
@@ -91,85 +97,46 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- 展示action在java code里如何调用 -->
-    <el-drawer
-      title="Action Detail"
-      :visible.sync="showActionDetail"
-      direction="rtl"
-      :show-close="false"
-      size="90%">
-      <el-table :data="selectableActions.filter(data => !actionDetailSearch || data.name.toLowerCase().includes(actionDetailSearch.toLowerCase()))" height="95%" border>
-        <el-table-column align="center" width="200">
-          <template slot="header" slot-scope="scope">
-            <el-input
-              v-model="actionDetailSearch"
-              size="mini"
-              placeholder="输入关键字搜索"/>
-          </template>
-          <template scope="scope">
-            {{ scope.row.id }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="类型" width="100">
-          <template scope="scope">
-            {{ scope.row.type === 1 ? '基础组件' : scope.row.type === 2 ? '封装组件' : '测试用例' }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" property="name" label="action" width="300" />
-        <el-table-column align="center" property="description" label="描述" />
-        <el-table-column align="center" property="invoke" label="java代码调用" />
-        <el-table-column align="center" label="传参" width="600">
-          <template scope="scope">
-            <el-table :data="scope.row.params" border>
-              <el-table-column align="center" property="name" label="参数名" />
-              <el-table-column align="center" property="type" label="类型" />
-              <el-table-column align="center" property="description" label="描述" />
-              <!-- 先注释吊可能的值，不然table太卡 -->
-              <!--<el-table-column align="center" label="可能的值">-->
-                <!--<template scope="scope2">-->
-                  <!--<el-table :data="scope2.row.possibleValues" border>-->
-                    <!--<el-table-column align="center" property="value" label="值" />-->
-                    <!--<el-table-column align="center" property="description" label="描述" />-->
-                  <!--</el-table>-->
-                <!--</template>-->
-              <!--</el-table-column>-->
-            </el-table>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" property="returnValue" label="返回值" />
-        <el-table-column align="center" property="returnValueDesc" label="返回值描述" />
-      </el-table>
-    </el-drawer>
+    <action-detail :show-action-detail.sync="showActionDetail" :selectable-actions="selectableActions" />
   </div>
 </template>
 
 <script>
 import { getSelectableActions } from '@/api/action'
+import ActionDetail from './ActionDetail'
 export default {
   props: {
     // 当前编辑的actionId
     curActionId: Number
+  },
+  components: {
+    ActionDetail
   },
   data() {
     return {
       steps: [],
       selectedSteps: [],
       selectableActions: [],
-      showActionDetail: false,
-      actionDetailSearch: ''
+      showActionDetail: false
+    }
+  },
+  watch: {
+    curActionId(actionId) {
+      // 编辑action，当前编辑的action不能选择，防止自己选自己陷入死循环
+      this.disableCurActionInSelectableActions(actionId)
     }
   },
   computed: {
     possibleValues() {
       return function(actionId, paramName) {
-        const action = this.selectableActions.filter(action => action.id === actionId)[0]
+        const action = this.findActionInSelectableActions(actionId)
         const possibleValues = action.params.filter(param => param.name === paramName)[0].possibleValues
         return possibleValues
       }
     },
     hasPossibleValue() {
       return function(actionId, paramName) {
-        const action = this.selectableActions.filter(action => action.id === actionId)[0]
+        const action = this.findActionInSelectableActions(actionId)
         if (action && action.params && action.params.length > 0) {
           const param = action.params.filter(param => param.name === paramName)[0]
           if (param && param.possibleValues && param.possibleValues.length > 0) {
@@ -184,7 +151,7 @@ export default {
     },
     paramNameDesc() {
       return function(actionId, paramName) {
-        const action = this.selectableActions.filter(action => action.id === actionId)[0]
+        const action = this.findActionInSelectableActions(actionId)
         if (action && action.params && action.params.length > 0) {
           return action.params.filter(param => param.name === paramName)[0].description
         }
@@ -195,19 +162,19 @@ export default {
         if (!actionId) {
           return true
         } else {
-          const action = this.selectableActions.filter(action => action.id === actionId)[0]
+          const action = this.findActionInSelectableActions(actionId)
           if (action) {
             return action.returnValue === 'void'
           }
         }
       }
     },
-    returnValueTag() {
+    returnValue() {
       return function(action) {
         if (action.returnValueDesc) {
-          return '[' + action.returnValue + ': ' + action.returnValueDesc + ']'
+          return action.returnValue + '(' + action.returnValueDesc + ')'
         } else {
-          return '[' + action.returnValue + ']'
+          return action.returnValue
         }
       }
     },
@@ -284,36 +251,69 @@ export default {
     handleSelectionChange(val) {
       this.selectedSteps = this.steps.filter(step => val.indexOf(step) !== -1).sort((a, b) => a.number - b.number)
     },
-    selectAction(type) {
-      if (type) {
-        this.fetchSelectableActions()
-      }
+    clickPossibleValue(row, paramName, possibleValue) {
+      const paramValue = row.paramValues.filter(paramValue => paramValue.paramName === paramName)[0]
+      paramValue.paramValue = possibleValue
+      this.$refs.closepopover.click()
     },
     fetchSelectableActions() {
       getSelectableActions(this.projectId, this.platform).then(resp => {
-        this.selectableActions = resp.data.filter(action => action.id !== this.curActionId)
+        this.selectableActions = resp.data
       })
     },
     // 选择了一个action或清除
     actionSelected(actionId, step) {
       step.paramValues = []
-      const selectedAction = this.selectableActions.filter(action => action.id === actionId)[0]
-      if (selectedAction) {
-        if (selectedAction.params && selectedAction.params.length > 0) {
-          selectedAction.params.forEach(param => {
-            step.paramValues.push({
-              paramName: param.name,
-              paramType: param.type,
-              paramValue: ''
+      console.log('cascader selected', actionId)
+      if (actionId) {
+        const selectedAction = this.findActionInSelectableActions(actionId)
+        console.log('selected action', selectedAction)
+        if (selectedAction) {
+          if (selectedAction.params && selectedAction.params.length > 0) {
+            selectedAction.params.forEach(param => {
+              step.paramValues.push({
+                paramName: param.name,
+                paramType: param.type,
+                paramValue: ''
+              })
             })
-          })
+          }
         }
       }
     },
-    clickPossibleValue(row, paramName, possibleValue) {
-      const paramValue = row.paramValues.filter(paramValue => paramValue.paramName === paramName)[0]
-      paramValue.paramValue = possibleValue
-      this.$refs.closepopover.click()
+    // 根据actionId递归搜索出action
+    findActionInSelectableActions(actionId) {
+      return this.findAction(this.selectableActions, actionId)
+    },
+    // 在actions里查找action by acitonId
+    findAction(actions, actionId) {
+      for (let i = 0; i < actions.length; i++) {
+        if (actions[i].children) {
+          const action = this.findAction(actions[i].children, actionId)
+          if (action) {
+            return action
+          }
+        } else {
+          if (actions[i].id === actionId) {
+            return actions[i]
+          }
+        }
+      }
+    },
+    disableAction(actions, actionId) {
+      for (let i = 0; i < actions.length; i++) {
+        if (actions[i].children) {
+          this.disableAction(actions[i].children, actionId)
+        } else {
+          if (actions[i].id === actionId) {
+            actions[i].disabled = true
+          }
+        }
+      }
+    },
+    // 禁用当前编辑的action
+    disableCurActionInSelectableActions(actionId) {
+      this.disableAction(this.selectableActions, actionId)
     }
   }
 }
