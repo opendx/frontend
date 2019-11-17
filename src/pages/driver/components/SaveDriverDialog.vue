@@ -27,9 +27,11 @@
       <el-form-item label="devices">
         <el-select v-model="driver.deviceIds" clearable filterable multiple style="width: 100%">
           <el-option v-for="device in devices" :label="device.id" :value="device.id" :key="device.id">
-            <span style="float: left;margin-right: 10px">{{ device.id }}</span>
-            <span style="float: left;margin-right: 10px">{{ device.name }}</span>
-            <span style="float: left">{{ device.systemVersion }}</span>
+            <span>{{ device.id }}</span>
+            <el-divider direction="vertical" />
+            <span>{{ device.name }}</span>
+            <el-divider direction="vertical" />
+            <span>{{ device.systemVersion }}</span>
           </el-option>
         </el-select>
       </el-form-item>

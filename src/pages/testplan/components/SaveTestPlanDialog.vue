@@ -64,9 +64,11 @@
           <el-form-item label="设备" :rules="[{required: true}]">
             <el-select v-model="saveTestPlanForm.deviceIds" clearable filterable multiple style="width: 80%">
               <el-option v-for="device in onlineDevices" :label="device.id" :value="device.id" :key="device.id">
-                <span style="float: left;margin-right: 10px">{{ device.id }}</span>
-                <span style="float: left;margin-right: 10px">{{ device.name }}</span>
-                <span style="float: left">{{ device.systemVersion }}</span>
+                <span>{{ device.id }}</span>
+                <el-divider direction="vertical" />
+                <span>{{ device.name }}</span>
+                <el-divider direction="vertical" />
+                <span>{{ device.systemVersion }}</span>
               </el-option>
             </el-select>
           </el-form-item>
