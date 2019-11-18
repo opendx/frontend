@@ -1,12 +1,12 @@
 <template>
   <div>
     <sticky :z-index="10" class-name="sub-navbar">
+      <div style="float: left;margin-left: 20px">
+        <el-button type="warning" :loading="debugBtnLoading" @click="debugAction">调试(ctrl + d)</el-button>
+        <el-button type="success" @click="saveAction">保存(ctrl + s)</el-button>
+      </div>
       <span class="required" /><el-input v-model="saveActionForm.name" placeholder="action名" style="width: 200px" clearable />
       <el-input v-model="saveActionForm.description" placeholder="描述" style="width: 200px" clearable />
-      <el-button-group>
-        <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" @keyup.enter.native="debugAction">调试</el-button>
-        <el-button type="success" @click="saveAction">保存</el-button>
-      </el-button-group>
       <span v-if="!isTestCase"><!-- 不是测试用例，显示分类，显示page select选择page，以及查看page布局信息的el-icon-view -->
         <el-select v-model="saveActionForm.categoryId" clearable filterable style="width: 200px" placeholder="选择分类">
           <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
@@ -115,12 +115,25 @@ export default {
   },
   destroyed() {
     window.onbeforeunload = null
+    document.onkeydown = null
   },
   mounted() {
     window.onbeforeunload = () => {
       if (this.saveActionFormChanged()) {
         // 刷新或关闭窗口 且 数据发生变化，提示用户
         return '提示'
+      }
+    }
+    document.onkeydown = () => {
+      var event = window.event
+      if (event.keyCode === 83 && event.ctrlKey) {
+        // ctrl + s
+        this.saveAction()
+        event.preventDefault()
+      } else if (event.keyCode === 68 && event.ctrlKey) {
+        // ctrl + d
+        this.debugAction()
+        event.preventDefault()
       }
     }
   },
@@ -201,6 +214,10 @@ export default {
       }
     },
     debugAction() {
+      if (this.debugBtnLoading) {
+        // 防止快捷键重复调试
+        return
+      }
       if (!this.$store.state.device.show) {
         this.$notify.error('先选择一台设备使用后才能调试')
         return
@@ -213,6 +230,7 @@ export default {
         this.$notify.error('appium正在初始化，请稍后')
         return
       }
+      this.debugBtnLoading = true
       const action = {}
       action.name = this.saveActionForm.name
       action.javaImports = this.$refs.importList.javaImports
@@ -223,7 +241,6 @@ export default {
       action.platform = this.$store.state.project.platform
       action.returnValue = this.saveActionForm.returnValue
       action.type = this.isTestCase ? 3 : 2
-      this.debugBtnLoading = true
       debugAction({
         action: action,
         debugInfo: {
