@@ -70,14 +70,10 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column label="赋值" align="center" width="200">
+      <el-table-column label="赋值 & 异常处理" align="center" width="200">
         <template scope="{ row }">
           <el-input v-model="row.evaluation" :disabled="evaluationDisabled(row.actionId)" type="textarea" :autosize="{ minRows: 1 }" />
-        </template>
-      </el-table-column>
-      <el-table-column label="异常处理" align="center" width="170">
-        <template scope="{ row }">
-          <el-select v-model="row.handleException">
+          <el-select v-model="row.handleException" style="margin-top: 5px">
             <el-option label="中断执行" :value="null" />
             <el-option label="忽略，继续执行" :value="0" />
             <el-option label="抛出跳过异常" :value="1" />
@@ -90,7 +86,7 @@
             <el-button size="mini" class="el-icon-plus" @click="addNextStep(scope.$index)" />
             <el-button size="mini" class="el-icon-minus" @click="deleteStep(scope.$index)" />
           </el-button-group>
-          <el-button-group>
+          <el-button-group style="margin-top: 5px">
             <el-button size="mini" class="el-icon-top" :disabled="moveUpDisable(scope.$index)" @click="moveUp(scope.$index)" />
             <el-button size="mini" class="el-icon-bottom" :disabled="moveDownDisable(scope.$index)" @click="moveDown(scope.$index)" />
           </el-button-group>
