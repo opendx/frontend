@@ -1,31 +1,35 @@
 <template>
   <div>
     <sticky :z-index="10" class-name="sub-navbar">
-      <div style="float: left;margin-left: 20px">
-        <el-button type="warning" :loading="debugBtnLoading" @click="debugAction">调试(ctrl + d)</el-button>
-        <el-button type="success" @click="saveAction">保存(ctrl + s)</el-button>
-      </div>
       <span class="required" /><el-input v-model="saveActionForm.name" placeholder="action名" style="width: 200px" clearable />
       <el-input v-model="saveActionForm.description" placeholder="描述" style="width: 200px" clearable />
       <span v-if="!isTestCase"><!-- 不是测试用例，显示分类，显示page select选择page，以及查看page布局信息的el-icon-view -->
         <el-select v-model="saveActionForm.categoryId" clearable filterable style="width: 200px" placeholder="选择分类">
           <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
         </el-select>
-        <el-select v-model="saveActionForm.pageId" clearable filterable style="width: 200px" placeholder="选择page" @change="pageSelected">
+        <el-select v-model="saveActionForm.pageId" clearable filterable style="width: 200px" placeholder="选择page">
           <el-option v-for="page in pages" :key="page.id" :label="page.name" :value="page.id" />
         </el-select>
-        <el-popover trigger="click" placement="left">
-          <div style="width: 1400px;height: 850px">
+        <el-drawer
+          :title="pageName"
+          :visible.sync="showPage"
+          direction="ltr"
+          :show-close="false"
+          @opened="drawerOpened"
+          size="90%">
+          <div style="padding: 10px">
             <mobile-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy="windowHierarchy" :tree-loading="treeLoading" />
           </div>
-          <el-button slot="reference" icon="el-icon-view" :disabled="!saveActionForm.pageId > 0 " />
-        </el-popover>
+        </el-drawer>
+        <el-button icon="el-icon-view" :disabled="!(saveActionForm.pageId > 0)" @click="showPage = true" />
       </span>
       <span v-if="isTestCase"><!-- 测试用例，提供测试集选择 -->
         <el-select v-model="saveActionForm.testSuiteId" clearable filterable style="width: 200px" placeholder="选择测试集">
           <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
         </el-select>
       </span>
+      <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" style="margin-right: -10px">调试(ctrl + d)</el-button>
+      <el-button type="success" @click="saveAction">保存(ctrl + s)</el-button>
     </sticky>
     <div class="app-container">
       <el-tabs tab-position="left">
@@ -110,7 +114,9 @@ export default {
       treeLoading: false,
       // end-传递给AndroidInspctor组件的数据
       // 开始时的表单数据，用于校验表单数据是否有变化
-      startSaveActionFormString: ''
+      startSaveActionFormString: '',
+      pageName: '',
+      showPage: false
     }
   },
   destroyed() {
@@ -151,9 +157,6 @@ export default {
       const editActionId = this.$route.params.actionId
       const { data } = await getActionList({ id: editActionId })
       this.saveActionForm = data[0]
-      if (this.saveActionForm.pageId) { // 编辑时，默认绑定了page，需要初始化布局数据，否则点击右上角眼睛看不到数据
-        this.initPageWindowHierarchyData(this.saveActionForm.pageId)
-      }
       this.$refs.paramList.params = this.saveActionForm.params
       this.$refs.localVarList.localVars = this.saveActionForm.localVars
       this.$refs.stepList.steps = this.saveActionForm.steps
@@ -162,9 +165,6 @@ export default {
       // 复制，传递过来的数据
       if (this.$route.params.name) {
         this.saveActionForm = this.$route.params
-        if (this.saveActionForm.pageId) { // 编辑时，默认绑定了page，需要初始化布局数据，否则点击右上角眼睛看不到数据
-          this.initPageWindowHierarchyData(this.saveActionForm.pageId)
-        }
         this.$refs.paramList.params = this.saveActionForm.params
         this.$refs.localVarList.localVars = this.saveActionForm.localVars
         this.$refs.stepList.steps = this.saveActionForm.steps
@@ -175,13 +175,9 @@ export default {
     this.startSaveActionFormString = JSON.stringify(this.saveActionForm)
   },
   methods: {
-    pageSelected(id) {
-      if (id) {
-        this.initPageWindowHierarchyData(id)
-      }
-    },
-    initPageWindowHierarchyData(pageId) {
-      const currentPage = this.pages.filter(page => page.id === pageId)[0]
+    drawerOpened() {
+      const currentPage = this.pages.filter(page => page.id === this.saveActionForm.pageId)[0]
+      this.pageName = currentPage.name
       this.imgInfo = {
         imgWidth: currentPage.imgWidth,
         imgHeight: currentPage.imgHeight,
