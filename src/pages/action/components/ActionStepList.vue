@@ -121,9 +121,16 @@ export default {
     }
   },
   watch: {
-    curActionId(actionId) {
-      // 编辑action，当前编辑的action不能选择，防止自己选自己陷入死循环
-      this.disableCurActionInSelectableActions(actionId)
+    selectableActions(val) {
+      if (val.length !== 0) {
+        setTimeout(() => {
+          // 编辑action，一开始curActionId是undefined，延迟500ms后再处理
+          if (this.curActionId) {
+            // 编辑action，当前编辑的action不能选择，防止自己选自己陷入死循环
+            this.disableCurActionInSelectableActions(this.curActionId)
+          }
+        }, 500)
+      }
     }
   },
   computed: {
@@ -306,6 +313,7 @@ export default {
           this.disableAction(actions[i].children, actionId)
         } else {
           if (actions[i].id === actionId) {
+            console.log('disable action', actions[i].id)
             actions[i].disabled = true
           }
         }
