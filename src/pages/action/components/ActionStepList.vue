@@ -28,7 +28,7 @@
             style="width: 100%"
             :show-all-levels="false"
             @change="actionSelected($event, row)"
-            placeholder="试试输入click">
+            placeholder="支持模糊搜索">
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
               <el-divider v-if="data.returnValue" direction="vertical" />
@@ -70,19 +70,15 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column label="赋值 & 异常处理" align="center" width="200">
-        <template scope="{ row }">
-          <el-input v-model="row.evaluation" :disabled="evaluationDisabled(row.actionId)" type="textarea" :autosize="{ minRows: 1 }" />
-          <el-select v-model="row.handleException" style="margin-top: 5px">
+      <el-table-column label="操作" align="center" width="200">
+        <template scope="scope">
+          <el-input v-model="scope.row.evaluation" :disabled="evaluationDisabled(scope.row.actionId)" type="textarea" :autosize="{ minRows: 1 }" placeholder="赋值" />
+          <el-select v-model="scope.row.handleException" style="margin-top: 5px">
             <el-option label="中断执行" :value="null" />
             <el-option label="忽略，继续执行" :value="0" />
             <el-option label="抛出跳过异常" :value="1" />
           </el-select>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="120">
-        <template scope="scope">
-          <el-button-group>
+          <el-button-group style="margin-top: 5px">
             <el-button size="mini" class="el-icon-plus" @click="addNextStep(scope.$index)" />
             <el-button size="mini" class="el-icon-minus" @click="deleteStep(scope.$index)" />
           </el-button-group>
