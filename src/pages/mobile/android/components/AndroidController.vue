@@ -68,9 +68,10 @@ export default {
   mounted() {
     this.loading = true
     const canvas = document.getElementById('androidControllerCanvas')
-    const canvasContext = canvas.getContext('2d')
-    // androidWebsocket
+    const g = canvas.getContext('2d')
     const BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+    const URL = window.URL || window.webkitURL
+
     this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/android/' + this.deviceId + '/' + this.username)
     this.androidWebsocket.binaryType = 'blob'
     this.androidWebsocket.onclose = () => {
@@ -82,12 +83,11 @@ export default {
       this.loading = false
     }
     this.androidWebsocket.onmessage = (message) => {
-      if (typeof message.data !== 'string') {
+      if (message.data instanceof Blob) {
         let blob = new Blob([message.data], { type: 'image/jpeg' })
-        const URL = window.URL || window.webkitURL
-        let u = URL.createObjectURL(blob)
+        let url = URL.createObjectURL(blob)
         let img = new Image()
-        img.src = u
+        img.src = url
         img.onload = () => {
           const maxHeight = 800
           let width = img.width
@@ -99,12 +99,15 @@ export default {
 
           canvas.width = width
           canvas.height = height
-          canvasContext.drawImage(img, 0, 0, width, height)
+          g.drawImage(img, 0, 0, width, height)
+
           img.onload = null
           img.src = BLANK_IMG
           img = null
-          u = null
           blob = null
+
+          URL.revokeObjectURL(url)
+          url = null
         }
       } else {
         console.log('androidWebsocket-onmessage', message.data)
