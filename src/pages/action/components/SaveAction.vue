@@ -29,8 +29,8 @@
         </el-select>
       </span>
       <el-button type="warning" :loading="debugBtnLoading" @click="debugAction">调试(ctrl + d)</el-button>
-      <el-radio-group v-model="saveActionForm.status" fill="#454545">
-        <el-radio-button :label="0"><span>禁用</span></el-radio-button>
+      <el-radio-group v-model="saveActionForm.state" fill="#454545">
+        <el-radio-button :label="0">禁用</el-radio-button>
         <el-radio-button :label="1">草稿</el-radio-button>
         <el-radio-button :label="2">发布</el-radio-button>
       </el-radio-group>
@@ -103,7 +103,7 @@ export default {
         projectId: this.$store.state.project.id,
         testSuiteId: undefined,
         categoryId: undefined,
-        status: 2
+        state: 2
       },
       categories: [],
       pages: [],

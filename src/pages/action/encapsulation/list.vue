@@ -47,8 +47,8 @@
         </el-table-column>
         <el-table-column label="状态" align="center" width="120">
           <template scope="{ row }">
-            <el-select v-model="row.status" @change="statusChange(row)">
-              <el-option v-for="status in statusList" :key="status.status" :label="status.name" :value="status.status" />
+            <el-select v-model="row.state" @change="stateChange(row)">
+              <el-option v-for="state in stateList" :key="state.state" :label="state.name" :value="state.state" />
             </el-select>
           </template>
         </el-table-column>
@@ -96,15 +96,15 @@ export default {
         projectId: this.$store.state.project.id,
         pageId: undefined
       },
-      statusList: [
+      stateList: [
         {
-          status: 0,
+          state: 0,
           name: '禁用'
         }, {
-          status: 1,
+          state: 1,
           name: '草稿'
         }, {
-          status: 2,
+          state: 2,
           name: '发布'
         }
       ]
@@ -213,7 +213,7 @@ export default {
         this.fetchActionList()
       })
     },
-    statusChange(row) {
+    stateChange(row) {
       updateAction(row).then(response => {
         this.fetchActionList()
       }).catch(() => {
