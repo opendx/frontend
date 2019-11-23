@@ -28,7 +28,12 @@
           <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
         </el-select>
       </span>
-      <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" style="margin-right: -10px">调试(ctrl + d)</el-button>
+      <el-button type="warning" :loading="debugBtnLoading" @click="debugAction">调试(ctrl + d)</el-button>
+      <el-radio-group v-model="saveActionForm.status" fill="#454545">
+        <el-radio-button :label="0"><span>禁用</span></el-radio-button>
+        <el-radio-button :label="1">草稿</el-radio-button>
+        <el-radio-button :label="2">发布</el-radio-button>
+      </el-radio-group>
       <el-button type="success" @click="saveAction">保存(ctrl + s)</el-button>
     </sticky>
     <div class="app-container">
@@ -97,7 +102,8 @@ export default {
         pageId: undefined,
         projectId: this.$store.state.project.id,
         testSuiteId: undefined,
-        categoryId: undefined
+        categoryId: undefined,
+        status: 2
       },
       categories: [],
       pages: [],
