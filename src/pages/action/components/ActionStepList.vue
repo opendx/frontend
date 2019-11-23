@@ -3,13 +3,14 @@
     <div ref="closepopover" />
     <el-table :data="steps" border @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" width="50" />
-      <el-table-column align="center" width="80">
+      <el-table-column align="center" width="90">
         <template slot="header">
           <el-button type="text" class="el-icon-circle-plus" @click="addStep" />
           <span class="required">步骤</span>
         </template>
         <template scope="scope">
           {{ stepNumber(scope.row, scope.$index + 1) }}
+          <el-switch v-model="scope.row.status" :active-value="1" :inactive-value="0" active-color="#13ce66" />
         </template>
       </el-table-column>
       <el-table-column align="center" width="200">
@@ -241,10 +242,10 @@ export default {
       this.steps.splice(index, 1)
     },
     addStep() {
-      this.steps.push({ paramValues: [], handleException: null })
+      this.steps.push({ paramValues: [], handleException: null, status: 1 })
     },
     addNextStep(index) {
-      this.steps.splice(index + 1, 0, { paramValues: [], handleException: null })
+      this.steps.splice(index + 1, 0, { paramValues: [], handleException: null, status: 1 })
     },
     // 步骤勾选
     handleSelectionChange(val) {
