@@ -225,6 +225,32 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/environment',
+    component: Layout,
+    children: [
+      {
+        path: 'add',
+        component: () => import('@/pages/environment/add'),
+        name: 'AddEnvironment',
+        meta: { title: '添加环境', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'update/:environmentId',
+        component: () => import('@/pages/environment/update'),
+        name: 'UpdateEnvironment',
+        meta: { title: '更新环境', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/pages/environment/list'),
+        name: 'ListEnvironment',
+        meta: { title: '环境', icon: 'environment', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/globalVar',
     component: Layout,
     children: [
