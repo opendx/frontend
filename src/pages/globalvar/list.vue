@@ -6,10 +6,10 @@
       <el-table :data="globalVarList" highlight-current-row border>
         <el-table-column label="变量类型" align="center" prop="type" />
         <el-table-column label="变量名" align="center" prop="name" />
-        <el-table-column label="变量值" align="center">
+        <el-table-column label="变量值" align="center" width="800">
           <template scope="{ row }">
             <el-table :data="row.environmentValues" border fit>
-              <el-table-column label="环境" align="center">
+              <el-table-column label="环境" align="center" width="200">
                 <template scope="{ row }">
                   {{ getEnvironmentNameById(row.environmentId) }}
                 </template>
@@ -60,7 +60,7 @@ export default {
       environmentList: [
         {
           id: -1,
-          name: '默认值'
+          name: '默认'
         }
       ]
     }

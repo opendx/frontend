@@ -62,7 +62,7 @@ export default {
       environmentList: [
         {
           id: -1,
-          name: '默认值'
+          name: '默认'
         }
       ]
     }
