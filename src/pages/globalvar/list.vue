@@ -6,7 +6,18 @@
       <el-table :data="globalVarList" highlight-current-row border>
         <el-table-column label="变量类型" align="center" prop="type" />
         <el-table-column label="变量名" align="center" prop="name" />
-        <el-table-column label="变量值" align="center" prop="value" />
+        <el-table-column label="变量值" align="center">
+          <template scope="{ row }">
+            <el-table :data="row.environmentValues" border fit>
+              <el-table-column label="环境" align="center">
+                <template scope="{ row }">
+                  {{ getEnvironmentNameById(row.environmentId) }}
+                </template>
+              </el-table-column>
+              <el-table-column label="值" align="center" prop="value" />
+            </el-table>
+          </template>
+        </el-table-column>
         <el-table-column label="描述" align="center" prop="description" />
         <el-table-column label="创建时间" align="center">
           <template scope="{ row }">
@@ -30,6 +41,7 @@
 
 <script>
 import { getGlobalVarList, deleteGlobalVar } from '@/api/globalvar'
+import { getEnvironmentList } from '@/api/environment'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -44,10 +56,17 @@ export default {
         projectId: this.$store.state.project.id,
         pageNum: 1,
         pageSize: 10
-      }
+      },
+      environmentList: [
+        {
+          id: -1,
+          name: '默认值'
+        }
+      ]
     }
   },
   created() {
+    this.fetchEnvironmentList()
     this.fetchGlobalVarList()
   },
   methods: {
@@ -74,6 +93,14 @@ export default {
         this.globalVarList = resp.data.data
         this.total = resp.data.total
       })
+    },
+    fetchEnvironmentList() {
+      getEnvironmentList({ projectId: this.$store.state.project.id }).then(response => {
+        this.environmentList = this.environmentList.concat(response.data)
+      })
+    },
+    getEnvironmentNameById(envId) {
+      return this.environmentList.filter(env => env.id === envId)[0].name
     }
   }
 }
