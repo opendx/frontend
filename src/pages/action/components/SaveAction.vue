@@ -51,7 +51,7 @@
           <action-local-var-list ref="localVarList" />
         </el-tab-pane>
         <el-tab-pane label="全局变量">
-          <global-var-list />
+          <global-var-list :environment-list="environmentList" />
         </el-tab-pane>
         <el-tab-pane label="返回值类型">
           <el-input v-model.trim="saveActionForm.returnValue" :disabled="!isAdd" clearable placeholder="返回值类型" />
