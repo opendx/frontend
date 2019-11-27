@@ -11,7 +11,7 @@
             <el-table :data="row.environmentValues" border fit>
               <el-table-column label="环境" align="center" width="200">
                 <template scope="{ row }">
-                  {{ getEnvironmentNameById(row.environmentId) }}
+                  {{ environmentList.filter(env => env.id === row.environmentId)[0].name }}
                 </template>
               </el-table-column>
               <el-table-column label="值" align="center" prop="value" />
@@ -98,9 +98,6 @@ export default {
       getEnvironmentList({ projectId: this.$store.state.project.id }).then(response => {
         this.environmentList = this.environmentList.concat(response.data)
       })
-    },
-    getEnvironmentNameById(envId) {
-      return this.environmentList.filter(env => env.id === envId)[0].name
     }
   }
 }
