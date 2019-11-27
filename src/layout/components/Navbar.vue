@@ -86,6 +86,13 @@ export default {
   created() {
     getProjectList().then(response => {
       this.projectList = response.data
+      // 当前选择的项目不存在，重置回null。如：之前选择了project1，后来project1被删除了
+      if (this.projectId && this.projectList.filter(p => p.id === this.projectId).length === 0) {
+        console.log('重置当前选择的project为null')
+        this.projectId = null
+        this.$store.dispatch('project/setId', null)
+        this.$store.dispatch('project/setPlatform', null)
+      }
       if (this.projectList.length === 0) {
         this.$alert('暂无项目，创建一个项目', '提示', {
           confirmButtonText: '创建',
