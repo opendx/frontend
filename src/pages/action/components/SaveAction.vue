@@ -48,7 +48,7 @@
           <action-param-list ref="paramList" :is-add="isAdd" />
         </el-tab-pane>
         <el-tab-pane label="局部变量">
-          <action-local-var-list ref="localVarList" />
+          <action-local-var-list ref="localVarList" :environment-list="environmentList" />
         </el-tab-pane>
         <el-tab-pane label="全局变量">
           <global-var-list :environment-list="environmentList" />
