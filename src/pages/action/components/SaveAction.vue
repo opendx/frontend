@@ -1,6 +1,13 @@
 <template>
   <div>
     <sticky :z-index="10" class-name="sub-navbar">
+      <div style="float: left;margin-left: 20px">
+        调试环境：
+        <el-select v-model="env" @change="selectedEnv">
+          <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
+        </el-select>
+        <el-button type="warning" :loading="debugBtnLoading" @click="debugAction">调试(ctrl + d)</el-button>
+      </div>
       <span class="required" /><el-input v-model="saveActionForm.name" placeholder="action名" style="width: 200px" clearable />
       <el-input v-model="saveActionForm.description" placeholder="描述" style="width: 200px" clearable />
       <span v-if="!isTestCase"><!-- 不是测试用例，显示分类，显示page select选择page，以及查看page布局信息的el-icon-view -->
@@ -28,8 +35,7 @@
           <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
         </el-select>
       </span>
-      <el-button type="warning" :loading="debugBtnLoading" @click="debugAction">调试(ctrl + d)</el-button>
-      <el-radio-group v-model="saveActionForm.state" fill="#454545">
+      <el-radio-group v-model="saveActionForm.state" fill="#454545" style="margin-top: -1px">
         <el-radio-button :label="0">禁用</el-radio-button>
         <el-radio-button :label="1">草稿</el-radio-button>
         <el-radio-button :label="2">发布</el-radio-button>
@@ -71,6 +77,7 @@ import { getPageList } from '@/api/page'
 import { getCategoryList } from '@/api/category'
 import { getTestSuiteList } from '@/api/testSuite'
 import { addAction, updateAction, getActionList, debugAction } from '@/api/action'
+import { getEnvironmentList } from '@/api/environment'
 export default {
   components: {
     MobileInspector,
@@ -87,6 +94,13 @@ export default {
   },
   data() {
     return {
+      env: this.$store.state.project.env,
+      environmentList: [
+        {
+          id: -1,
+          name: '默认'
+        }
+      ],
       saveActionForm: {
         id: undefined,
         name: '',
@@ -137,7 +151,7 @@ export default {
       }
     }
     document.onkeydown = () => {
-      var event = window.event
+      const event = window.event
       if (event.keyCode === 83 && event.ctrlKey) {
         // ctrl + s
         this.saveAction()
@@ -150,6 +164,7 @@ export default {
     }
   },
   async created() {
+    this.fetchEnvironmentList()
     if (!this.isTestCase) {
       const response = await getCategoryList({ projectId: this.saveActionForm.projectId, type: 2 })
       this.categories = response.data
@@ -269,6 +284,21 @@ export default {
       this.saveActionForm.steps = this.$refs.stepList.steps
       this.saveActionForm.javaImports = this.$refs.importList.javaImports
       return JSON.stringify(this.saveActionForm) !== this.startSaveActionFormString
+    },
+    fetchEnvironmentList() {
+      getEnvironmentList({ projectId: this.$store.state.project.id }).then(response => {
+        this.environmentList = this.environmentList.concat(response.data)
+        // 当前选择的环境不存在，重置回默认。如：之前选择了test环境，后来test环境被删除了
+        if (this.environmentList.filter(env => env.id === this.env).length === 0) {
+          console.log('重置env为-1')
+          this.$store.dispatch('project/setEnv', -1)
+          this.env = -1
+        }
+      })
+    },
+    selectedEnv(envId) {
+      const selectedEnv = this.environmentList.filter(env => env.id === envId)[0]
+      this.$store.dispatch('project/setEnv', selectedEnv.id)
     }
   }
 }
