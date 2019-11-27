@@ -78,13 +78,12 @@ export default {
   data() {
     return {
       projectList: [],
-      projectId: null,
+      projectId: this.$store.state.project.id,
       idleDeviceList: [],
       idleDeviceId: null
     }
   },
   created() {
-    this.projectId = this.$store.state.project.id
     getProjectList().then(response => {
       this.projectList = response.data
       if (this.projectList.length === 0) {
