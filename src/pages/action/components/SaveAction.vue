@@ -262,6 +262,7 @@ export default {
         debugInfo: {
           agentIp: this.$store.state.device.agentIp,
           agentPort: this.$store.state.device.agentPort,
+          env: this.$store.state.project.env,
           deviceId: this.$store.state.device.id
         }
       }).then(response => {
