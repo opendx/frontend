@@ -2,19 +2,18 @@
   <div>
     <sticky :z-index="10" class-name="sub-navbar">
       <div style="float: left;margin-left: 20px">
-        调试环境：
-        <el-select v-model="env" @change="selectedEnv">
+        <el-select v-model="env" @change="selectedEnv" style="width: 150px">
           <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
         </el-select>
         <el-button type="warning" :loading="debugBtnLoading" @click="debugAction">调试(ctrl + d)</el-button>
       </div>
       <span class="required" /><el-input v-model="saveActionForm.name" placeholder="action名" style="width: 200px" clearable />
-      <el-input v-model="saveActionForm.description" placeholder="描述" style="width: 200px" clearable />
+      <el-input v-model="saveActionForm.description" placeholder="描述" style="width: 150px" clearable />
       <span v-if="!isTestCase"><!-- 不是测试用例，显示分类，显示page select选择page，以及查看page布局信息的el-icon-view -->
-        <el-select v-model="saveActionForm.categoryId" clearable filterable style="width: 200px" placeholder="选择分类">
+        <el-select v-model="saveActionForm.categoryId" clearable filterable style="width: 120px" placeholder="选择分类">
           <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
         </el-select>
-        <el-select v-model="saveActionForm.pageId" clearable filterable style="width: 200px" placeholder="选择page">
+        <el-select v-model="saveActionForm.pageId" clearable filterable style="width: 120px" placeholder="选择page">
           <el-option v-for="page in pages" :key="page.id" :label="page.name" :value="page.id" />
         </el-select>
         <el-drawer
