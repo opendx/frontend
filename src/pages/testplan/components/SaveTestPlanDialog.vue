@@ -87,6 +87,34 @@
       </el-col>
       <el-col :span="12">
         <el-form label-width="120px">
+          <el-form-item label="环境" :rules="[{required: true}]">
+            <el-select v-model="saveTestPlanForm.environmentId">
+              <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="设备" :rules="[{required: true}]">
+            <el-select v-model="saveTestPlanForm.deviceIds" clearable filterable multiple style="width: 80%">
+              <el-option v-for="device in onlineDevices" :label="device.id" :value="device.id" :key="device.id">
+                <span>{{ device.id }}</span>
+                <el-divider direction="vertical" />
+                <span>{{ device.name }}</span>
+                <el-divider direction="vertical" />
+                <span>{{ device.systemVersion }}</span>
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="定时任务" :rules="[{required: true}]">
+            <el-switch v-model="saveTestPlanForm.enableSchedule" :active-value="1" :inactive-value="0" />
+          </el-form-item>
+          <el-form-item label="cron表达式">
+            <el-input v-model="saveTestPlanForm.cronExpression" clearable />
+          </el-form-item>
+          <el-form-item label="是否录制视频" :rules="[{required: true}]">
+            <el-switch v-model="saveTestPlanForm.enableRecordVideo" :active-value="1" :inactive-value="0" />
+          </el-form-item>
+          <el-form-item label="失败重试次数" :rules="[{required: true}]">
+            <el-input v-model="saveTestPlanForm.failRetryCount" clearable />
+          </el-form-item>
           <el-form-item label="用例分发策略" :rules="[{required: true}]">
             <el-radio v-model="saveTestPlanForm.runMode" :label="1">
               兼容模式
@@ -100,23 +128,6 @@
                 <i class="el-icon-question" slot="reference" />
               </el-popover>
             </el-radio>
-          </el-form-item>
-          <el-form-item label="设备" :rules="[{required: true}]">
-            <el-select v-model="saveTestPlanForm.deviceIds" clearable filterable multiple style="width: 80%">
-              <el-option v-for="device in onlineDevices" :label="device.id" :value="device.id" :key="device.id">
-                <span>{{ device.id }}</span>
-                <el-divider direction="vertical" />
-                <span>{{ device.name }}</span>
-                <el-divider direction="vertical" />
-                <span>{{ device.systemVersion }}</span>
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="定时任务">
-            <el-switch v-model="saveTestPlanForm.enableSchedule" :active-value="1" :inactive-value="0" />
-          </el-form-item>
-          <el-form-item label="cron表达式">
-            <el-input v-model="saveTestPlanForm.cronExpression" clearable />
           </el-form-item>
         </el-form>
       </el-col>
@@ -132,6 +143,7 @@ import { getSelectableActions } from '@/api/action'
 import { getTestSuiteList } from '@/api/testSuite'
 import { addTestPlan, updateTestPlan, getTestPlanList } from '@/api/testPlan'
 import { getOnlineDevices } from '@/api/device'
+import { getEnvironmentList } from '@/api/environment'
 
 export default {
   props: {
@@ -145,6 +157,7 @@ export default {
         name: '',
         description: '',
         projectId: this.$store.state.project.id,
+        environmentId: -1,
         beforeClass: null,
         beforeMethod: null,
         afterClass: null,
@@ -153,11 +166,19 @@ export default {
         deviceIds: [],
         runMode: 1,
         cronExpression: undefined,
-        enableSchedule: 0
+        enableSchedule: 0,
+        enableRecordVideo: 1,
+        failRetryCount: 0
       },
       selectableActions: [],
       testSuites: [],
-      onlineDevices: []
+      onlineDevices: [],
+      environmentList: [
+        {
+          id: -1,
+          name: '默认'
+        }
+      ]
     }
   },
   computed: {
@@ -203,6 +224,11 @@ export default {
       getTestSuiteList({ projectId: this.projectId }).then(response => {
         this.testSuites = response.data
       })
+    },
+    fetchEnvironmentList() {
+      getEnvironmentList({ projectId: this.$store.state.project.id }).then(response => {
+        this.environmentList = this.environmentList.concat(response.data)
+      })
     }
   },
   created() {
@@ -211,6 +237,7 @@ export default {
     })
     this.fetchSelectableActions()
     this.fetchTestSuiteList()
+    this.fetchEnvironmentList()
     if (!this.isAdd) {
       const testPlanId = this.$route.params.testPlanId
       getTestPlanList({ id: testPlanId }).then(response => {
