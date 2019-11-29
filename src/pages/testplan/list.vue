@@ -9,6 +9,11 @@
           <div v-for="deviceId in row.deviceIds" :key="deviceId">{{ deviceId }}</div>
         </template>
       </el-table-column>
+      <el-table-column label="录制视频" align="center">
+        <template scope="scope">
+          {{ scope.enableRecordVideo === 1 ? '开启' : '关闭' }}
+        </template>
+      </el-table-column>
       <el-table-column label="定时任务" align="center" prop="description">
         <template scope="{ row }">
           {{ row.enableSchedule === 1 ?  '开启' : '关闭' }}

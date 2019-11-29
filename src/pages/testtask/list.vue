@@ -9,7 +9,11 @@
           </template>
         </el-table-column>
         <el-table-column label="完成时间" prop="finishTime" align="center"></el-table-column>
-        <el-table-column label="测试计划" prop="testPlanName" align="center"></el-table-column>
+        <el-table-column label="测试计划" align="center">
+          <template scope="{ row }">
+            {{ row.testPlan.name }}
+          </template>
+        </el-table-column>
         <el-table-column label="通过用例数" align="center">
           <template scope="scope">
             {{ scope.row.status === 0 ? '-' : scope.row.passCaseCount }}

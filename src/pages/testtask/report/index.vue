@@ -13,7 +13,11 @@
           </template>
         </el-table-column>
         <el-table-column label="项目" prop="projectName" align="center" />
-        <el-table-column label="测试计划" prop="testPlanName" align="center" />
+        <el-table-column label="测试计划" align="center">
+          <template scope="{ row }">
+            {{ row.testPlan.name }}
+          </template>
+        </el-table-column>
         <el-table-column label="任务提交人" prop="commitorNickName" align="center" />
         <el-table-column label="提交时间" prop="commitTime" align="center" />
         <el-table-column label="完成时间" prop="finishTime" align="center" />
