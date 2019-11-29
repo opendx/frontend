@@ -9,11 +9,11 @@
           <el-tag size="small" style="color: black; background-color: white; margin-right: 5px">
             {{ testcaseTitle(testcase) }}
           </el-tag>
-          <el-tag @click="$router.push('/action/testcase/update/'+testcase.id)" size="small" type="info">查看用例</el-tag>
+          <el-tag @click="$router.push('/action/testcase/update/'+testcase.id)" size="small" type="primary">查看用例</el-tag>
         </template>
         <el-row :gutter="2">
           <el-col :span="4">
-            <video :src="testcase.videoUrl" width="100%" controls="controls">浏览器不支持video标签</video>
+            <video v-if="testcase.videoUrl" :src="testcase.videoUrl" width="100%" controls="controls">浏览器不支持video标签</video>
           </el-col>
           <el-col :span="12">
             <el-table :data="testcase.steps" border max-height="700">
