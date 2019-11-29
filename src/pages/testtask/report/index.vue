@@ -13,6 +13,7 @@
           </template>
         </el-table-column>
         <el-table-column label="项目" prop="projectName" align="center" />
+        <el-table-column label="环境" prop="environmentName" align="center" />
         <el-table-column label="测试计划" align="center">
           <template scope="{ row }">
             {{ row.testPlan.name }}
