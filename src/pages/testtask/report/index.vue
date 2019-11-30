@@ -24,6 +24,11 @@
             {{ row.testPlan.enableRecordVideo === 1 ? '开启' : '关闭' }}
           </template>
         </el-table-column>
+        <el-table-column label="失败重试次数" align="center">
+          <template scope="{ row }">
+            {{ row.testPlan.failRetryCount }}
+          </template>
+        </el-table-column>
         <el-table-column label="任务提交人" prop="commitorNickName" align="center" />
         <el-table-column label="提交时间" prop="commitTime" align="center" />
         <el-table-column label="完成时间" prop="finishTime" align="center" />

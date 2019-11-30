@@ -21,6 +21,7 @@
           {{ row.enableRecordVideo === 1 ? '开启' : '关闭' }}
         </template>
       </el-table-column>
+      <el-table-column label="失败重试次数" align="center" prop="failRetryCount"></el-table-column>
       <el-table-column label="定时任务" align="center" prop="description">
         <template scope="{ row }">
           {{ row.enableSchedule === 1 ?  '开启' : '关闭' }}
