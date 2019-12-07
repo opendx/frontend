@@ -210,7 +210,7 @@ export const constantRoutes = [
         hidden: true
       },
       {
-        path: 'update',
+        path: 'update/:projectId',
         component: () => import('@/pages/project/update'),
         name: 'UpdateProject',
         meta: { title: '更新项目', noCache: true },

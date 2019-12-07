@@ -23,7 +23,7 @@
   </el-dialog>
 </template>
 <script>
-import { addProject, updateProject } from '@/api/project'
+import { addProject, updateProject, getProjectList } from '@/api/project'
 
 export default {
   props: {
@@ -56,7 +56,9 @@ export default {
   },
   created() {
     if (!this.isAdd) {
-      this.project = this.$route.params
+      getProjectList({ id: this.$route.params.projectId }).then(response => {
+        this.project = response.data[0]
+      })
     }
   },
   methods: {

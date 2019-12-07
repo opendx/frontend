@@ -1,12 +1,14 @@
 <template>
   <div class="app-container">
-    <!--查询-->
     <div>
+      <el-button @click="$router.push('/project/add')">添加项目</el-button>
+    </div>
+    <!--查询-->
+    <div style="margin-top: 10px">
       <el-select v-model="queryForm.platform" placeholder="平台" clearable>
         <el-option v-for="platform in platforms" :key="platform.type" :label="platform.name" :value="platform.type" />
       </el-select>
       <el-button type="primary" class="el-icon-search" @click="onQueryBtnClick" />
-      <el-button @click="$router.push('/project/add')" style="float: right">添加项目</el-button>
     </div>
     <!-- 列表 -->
     <div style="margin-top: 10px">
@@ -23,7 +25,7 @@
             {{ row.creatorNickName + ' ' + row.createTime }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="操作" align="center">
           <template scope="{ row }">
             <el-button type="primary" class="el-icon-edit" @click="updateProject(row)" />
             <el-button type="danger" class="el-icon-delete" @click="deleteProject(row)" />
@@ -77,13 +79,10 @@ export default {
       this.fetchProjectList()
     },
     updateProject(project) {
-      this.$router.push({
-        name: 'UpdateProject',
-        params: project
-      })
+      this.$router.push('/project/update/' + project.id)
     },
     deleteProject(project) {
-      this.$confirm('删除该项目？', '提示', {
+      this.$confirm('删除' + project.name, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
