@@ -30,7 +30,7 @@
         <el-table-column label="操作" width="150" align="center">
           <template scope="{ row }">
             <el-button type="primary" class="el-icon-edit" @click="updatePage(row)" />
-            <el-button type="danger" class="el-icon-delete" @click="deletePage(row.id)" />
+            <el-button type="danger" class="el-icon-delete" @click="deletePage(row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -65,15 +65,12 @@ export default {
       queryPageListForm: {
         pageNum: 1,
         pageSize: 10,
-        projectId: this.$store.state.project.id, // 这里不能用computed里的projectId，会拿到undefined
+        projectId: this.$store.state.project.id,
         categoryId: undefined
       }
     }
   },
   computed: {
-    projectId() {
-      return this.$store.state.project.id
-    },
     pageCategoryListWithoutTotal() {
       return this.pageCategoryList.filter(category => category.name !== '全部')
     }
@@ -85,7 +82,7 @@ export default {
   methods: {
     fetchCategoryList() {
       getCategoryList({
-        projectId: this.projectId,
+        projectId: this.$store.state.project.id,
         type: 1 // page
       }).then(response => {
         this.pageCategoryList = this.pageCategoryList.concat(response.data)
@@ -120,13 +117,13 @@ export default {
         })
       })
     },
-    deletePage(id) {
-      this.$confirm('删除该Page？', '提示', {
+    deletePage(page) {
+      this.$confirm('删除' + page.name, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deletePage(id).then(response => {
+        deletePage(page.id).then(response => {
           this.$notify.success(response.msg)
           this.fetchPageList()
         })

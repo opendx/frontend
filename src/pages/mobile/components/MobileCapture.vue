@@ -76,6 +76,7 @@ export default {
       this.$router.push({
         name: 'AddPage',
         params: {
+          projectId: this.$store.state.project.id,
           imgUrl: this.imgInfo.imgUrl,
           imgHeight: this.imgInfo.imgHeight,
           imgWidth: this.imgInfo.imgWidth,
