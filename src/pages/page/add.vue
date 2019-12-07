@@ -1,14 +1,14 @@
 <template>
   <div class="app-container">
-    <save-device-page-form :is-add="true" />
+    <save-device-page :is-add="true" />
   </div>
 </template>
 
 <script>
-import SaveDevicePageForm from './components/SaveDevicePageForm'
+import SaveDevicePage from './components/SaveDevicePage'
 export default {
   components: {
-    SaveDevicePageForm
+    SaveDevicePage
   }
 }
 </script>

@@ -42,7 +42,7 @@
 </template>
 <script>
 
-import { addPage, updatePage } from '@/api/page'
+import { addPage, updatePage, getPageList } from '@/api/page'
 import { getCategoryList } from '@/api/category'
 
 export default {
@@ -54,7 +54,7 @@ export default {
       savePageForm: {
         id: undefined,
         name: '',
-        projectId: undefined,
+        projectId: this.$store.state.project.id,
         categoryId: undefined,
         description: '',
         imgUrl: '',
@@ -66,17 +66,15 @@ export default {
       pageCategoryList: []
     }
   },
-  computed: {
-    projectId() {
-      return this.$store.state.project.id
-    }
-  },
   created() {
     if (!this.isAdd) {
       this.fetchPageCategoryList() // 防止el-select只显示category id
+      getPageList({ id: this.$route.params.pageId }).then(response => {
+        this.savePageForm = response.data[0]
+      })
+    } else {
+      this.savePageForm = this.$route.params
     }
-    this.savePageForm = this.$route.params
-    this.savePageForm.projectId = this.projectId
   },
   methods: {
     savePage() {
@@ -104,7 +102,7 @@ export default {
     },
     fetchPageCategoryList() {
       getCategoryList({
-        projectId: this.projectId,
+        projectId: this.$store.state.project.id,
         type: 1 // pageCategory
       }).then(response => {
         this.pageCategoryList = response.data

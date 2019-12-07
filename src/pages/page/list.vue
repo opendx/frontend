@@ -133,10 +133,7 @@ export default {
       })
     },
     updatePage(page) {
-      this.$router.push({
-        name: 'UpdatePage',
-        params: page
-      })
+      this.$router.push('/page/update/' + page.id)
     },
     categoryChange(row) {
       if (row.categoryId === '') { // 清除分类
