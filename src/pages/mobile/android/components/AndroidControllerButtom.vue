@@ -10,14 +10,15 @@
     </el-popover>
 
     <el-button-group>
-      <el-button size="mini" @click="clickMenu" :disabled="!$store.state.device.appiumSessionId">Menu</el-button>
       <el-button size="mini" @click="clickHome" :disabled="!$store.state.device.appiumSessionId">Home</el-button>
       <el-button size="mini" @click="clickBack" :disabled="!$store.state.device.appiumSessionId">Back</el-button>
-      <el-button size="mini" @click="clickPower" :disabled="!$store.state.device.appiumSessionId">Power</el-button>
       <el-button size="mini" @click="clickClose">Close</el-button>
     </el-button-group>
 
     <el-popover placement="left" trigger="click">
+      <el-button size="mini" @click="clickMenu" :disabled="!$store.state.device.appiumSessionId">Menu</el-button>
+      <el-button size="mini" @click="clickPower" :disabled="!$store.state.device.appiumSessionId">Power</el-button>
+      <el-divider />
       <!-- 安装APP -->
       <el-upload drag action="/" :on-change="onChange" :multiple="false" :auto-upload="false">
         <i class="el-icon-upload" /><div>将apk拖到此处，或<em>点击选择apk</em></div>

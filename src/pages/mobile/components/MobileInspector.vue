@@ -1,12 +1,11 @@
 <template>
   <div>
     <!--gutter 列的间距-->
-    <el-row style="height: 820px">
+    <el-row style="height: 600px">
       <!--左侧图片-->
       <el-col :span="8" align="center" style="height: 100%;overflow: auto">
-        <!--先写死400px-->
-        <canvas :id="canvasId" :width="imgInfo.imgWidth" :height="imgInfo.imgHeight" style="width: 400px;position: absolute" />
-        <img :src="imgInfo.imgUrl" style="width: 400px">
+        <canvas :id="canvasId" :width="imgInfo.imgWidth" :height="imgInfo.imgHeight" style="width: 250px;position: absolute" />
+        <img :src="imgInfo.imgUrl" style="width: 250px">
       </el-col>
       <!--中间布局树-->
       <el-col v-if="!isWebView" :span="9" align="center" style="height: 100%;overflow: auto">
@@ -72,8 +71,7 @@ export default {
   },
   watch: {
     imgInfo() {
-      // 宽度先写死400
-      this.scale = (this.imgInfo.imgWidth) / 400
+      this.scale = (this.imgInfo.imgWidth) / 250
       console.log('scale', this.scale)
     },
     windowHierarchy() {

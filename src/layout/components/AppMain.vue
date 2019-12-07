@@ -7,8 +7,8 @@
         </keep-alive>
       </transition>
     </div>
-    <!--这里先写死420-->
-    <div v-if="showDevice" style="width: 420px;height:100%;position: fixed;top: 55px;right: 5px">
+    <!--todo 先写死-->
+    <div v-if="showDevice" style="width: 300px;height:100%;position: fixed;top: 55px;right: 10px;overflow: auto;">
       <android-controller v-if="platform === 1" />
       <ios-controller v-else />
     </div>
@@ -27,8 +27,8 @@ export default {
   },
   computed: {
     leftStyle() {
-      // 这里先写死425
-      return this.$store.state.device.show ? 'width: calc(100% - 425px)' : ''
+      // todo 先写死
+      return this.$store.state.device.show ? 'width: calc(100% - 320px)' : ''
     },
     showDevice() {
       return this.$store.state.device.show

@@ -11,7 +11,7 @@
 
     <el-button-group>
       <el-button size="mini" @click="clickHome" :disabled="!$store.state.device.appiumSessionId">Home</el-button>
-      <el-button size="mini" @click="recreateImg">Reconnect</el-button>
+      <el-button size="mini" @click="recreateImg">Retry</el-button>
       <el-button size="mini" @click="clickClose">Close</el-button>
     </el-button-group>
 

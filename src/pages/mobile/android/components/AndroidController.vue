@@ -89,17 +89,9 @@ export default {
         let img = new Image()
         img.src = url
         img.onload = () => {
-          const maxHeight = 800
-          let width = img.width
-          let height = img.height
-          if (height > maxHeight) {
-            width = Math.round(maxHeight * (width / height))
-            height = maxHeight
-          }
-
-          canvas.width = width
-          canvas.height = height
-          g.drawImage(img, 0, 0, width, height)
+          canvas.width = img.width
+          canvas.height = img.height
+          g.drawImage(img, 0, 0)
 
           img.onload = null
           img.src = BLANK_IMG
