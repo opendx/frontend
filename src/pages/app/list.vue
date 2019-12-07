@@ -87,13 +87,10 @@ export default {
   },
   methods: {
     updateApp(app) {
-      this.$router.push({
-        name: 'UpdateApp',
-        params: app
-      })
+      this.$router.push('/app/update/' + app.id)
     },
     deleteApp(app) {
-      this.$confirm('删除该app？', '提示', {
+      this.$confirm('删除' + app.name, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

@@ -44,7 +44,7 @@
   </el-dialog>
 </template>
 <script>
-import { addDriver, updateDriver } from '@/api/driver'
+import { addDriver, updateDriver, getDriverList } from '@/api/driver'
 import { getDeviceList } from '@/api/device'
 
 export default {
@@ -81,7 +81,9 @@ export default {
   },
   created() {
     if (!this.isAdd) {
-      this.driver = this.$route.params
+      getDriverList({ id: this.$route.params.driverId }).then(response => {
+        this.driver = response.data[0]
+      })
     }
     getDeviceList().then(response => {
       this.devices = response.data

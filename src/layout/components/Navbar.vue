@@ -13,7 +13,7 @@
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
       </template>
-      <el-select v-model="idleDeviceId" placeholder="选择手机" style="top: -15px" size="mini" @visible-change="selectIdleDevice" @change="selectedIdleDevice">
+      <el-select v-model="idleDeviceId" placeholder="选择手机" style="top: -18px" size="mini" @visible-change="selectIdleDevice" @change="selectedIdleDevice">
         <el-option v-for="device in idleDeviceList" :label="device.id" :value="device.id" :key="device.id">
           <span>{{ device.id }}</span>
           <el-divider direction="vertical" />
@@ -22,7 +22,7 @@
           <span>{{ device.systemVersion }}</span>
         </el-option>
       </el-select>
-      <el-select v-model="projectId" placeholder="选择项目" style="top: -15px" size="mini" @visible-change="selectProject" @change="selectedProject">
+      <el-select v-model="projectId" placeholder="选择项目" style="top: -18px" size="mini" @visible-change="selectProject" @change="selectedProject">
         <el-option
           v-for="project in projectList"
           :key="project.id"

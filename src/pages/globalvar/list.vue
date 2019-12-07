@@ -24,7 +24,7 @@
             {{ row.creatorNickName + ' ' + row.createTime }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="操作" width="150" align="center">
           <template scope="{ row }">
             <el-button type="primary" class="el-icon-edit" @click="updateGlobalVar(row)" />
             <el-button type="danger" class="el-icon-delete" @click="deleteGlobalVar(row)" />
@@ -71,13 +71,10 @@ export default {
   },
   methods: {
     updateGlobalVar(globalVar) {
-      this.$router.push({
-        name: 'UpdateGlobalVar',
-        params: globalVar
-      })
+      this.$router.push('/globalVar/update/' + globalVar.id)
     },
     deleteGlobalVar(globalVar) {
-      this.$confirm('删除该变量？', '提示', {
+      this.$confirm('删除' + globalVar.name, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

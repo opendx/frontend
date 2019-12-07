@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" :visible="true" :show-close="false" width="1400px">
+  <el-dialog :title="title" :visible="true" :show-close="false" width="1200px">
     <el-row :gutter="20">
       <el-col :span="12">
         <el-form label-width="120px">

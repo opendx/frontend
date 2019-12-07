@@ -26,7 +26,7 @@
 </template>
 <script>
 
-import { uploadApp, updateApp } from '@/api/app'
+import { uploadApp, updateApp, getAppList } from '@/api/app'
 
 export default {
   props: {
@@ -57,7 +57,9 @@ export default {
   },
   created() {
     if (!this.isAdd) {
-      this.app = this.$route.params
+      getAppList({ id: this.$route.params.appId }).then(response => {
+        this.app = response.data[0]
+      })
     }
   },
   methods: {

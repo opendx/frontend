@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" :visible="true" :show-close="false">
+  <el-dialog :title="title" :visible="true" :show-close="false" width="940px">
     <el-form :data="globalVar" label-width="100px">
       <el-form-item label="变量类型" :rules="[{required: true}]">
         <el-input v-model.trim="globalVar.type" clearable style="width: 300px" :disabled="!isAdd" />
@@ -19,7 +19,7 @@
           </el-col>
           <el-col :span="4">
             <el-button style="margin-left: 5px" @click="addEnvironmentValue">+</el-button>
-            <el-button style="margin-left: 1px" @click="delEnvironmentValue(index)" :disabled="index === 0">-</el-button>
+            <el-button style="margin-left: 0px" @click="delEnvironmentValue(index)" :disabled="index === 0">-</el-button>
           </el-col>
         </el-row>
       </el-form-item>
@@ -36,7 +36,7 @@
 </template>
 <script>
 
-import { addGlobalVar, updateGlobalVar } from '@/api/globalvar'
+import { addGlobalVar, updateGlobalVar, getGlobalVarList } from '@/api/globalvar'
 import { getEnvironmentList } from '@/api/environment'
 
 export default {
@@ -69,7 +69,9 @@ export default {
   },
   created() {
     if (!this.isAdd) {
-      this.globalVar = this.$route.params
+      getGlobalVarList({ id: this.$route.params.globalVarId }).then(response => {
+        this.globalVar = response.data[0]
+      })
     }
     this.fetchEnvironmentList()
   },

@@ -146,7 +146,7 @@ export const constantRoutes = [
         hidden: true
       },
       {
-        path: 'update',
+        path: 'update/:appId',
         component: () => import('@/pages/app/update'),
         name: 'UpdateApp',
         meta: { title: '更新app', noCache: true },
@@ -184,7 +184,7 @@ export const constantRoutes = [
         hidden: true
       },
       {
-        path: 'update',
+        path: 'update/:driverId',
         component: () => import('@/pages/driver/update'),
         name: 'UpdateDriver',
         meta: { title: '更新Driver', noCache: true },
@@ -262,7 +262,7 @@ export const constantRoutes = [
         hidden: true
       },
       {
-        path: 'update',
+        path: 'update/:globalVarId',
         component: () => import('@/pages/globalvar/update'),
         name: 'UpdateGlobalVar',
         meta: { title: '更新全局变量', noCache: true },

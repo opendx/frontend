@@ -20,7 +20,7 @@
                   {{ row.platform === 1 ? 'windows' : row.platform === 2 ? 'linux' : 'mac' }}
                 </template>
               </el-table-column>
-              <el-table-column label="下载地址" align="center" prop="downloadUrl" />
+              <el-table-column label="下载地址" align="center" prop="downloadUrl" show-overflow-tooltip  />
             </el-table>
           </template>
         </el-table-column>
@@ -73,13 +73,10 @@ export default {
   },
   methods: {
     updateDriver(driver) {
-      this.$router.push({
-        name: 'UpdateDriver',
-        params: driver
-      })
+      this.$router.push('/driver/update/' + driver.id)
     },
     deleteDriver(driver) {
-      this.$confirm('删除该Driver？', '提示', {
+      this.$confirm('删除' + driver.version, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
