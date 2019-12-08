@@ -4,15 +4,15 @@
     <el-form label-width="100px">
       <el-form-item label="元素">
         <el-button @click="addElement">+</el-button>
-        <el-row :gutter="5" v-for="(element, index) in savePageForm.elements" :key="element.name" style="margin-top: 3px">
+        <el-row :gutter="5" v-for="(element, index) in savePageForm.elements" :key="index" style="margin-top: 3px">
           <el-col :span="5">
             <el-input v-model.trim="element.name" clearable placeholder="元素名"/>
           </el-col>
-          <el-col :span="4">
-            <el-input v-model.trim="element.findBy" clearable placeholder="findBy"/>
+          <el-col :span="5">
+            <el-cascader v-model="element.findBy" :options="findBys" placeholder="findBy" style="width: 100%"/>
           </el-col>
-          <el-col :span="14">
-            <el-input v-model.trim="element.value" clearable placeholder="value"/>
+          <el-col :span="13">
+            <el-input v-model.trim="element.value" clearable placeholder="findValue"/>
           </el-col>
           <el-col :span="1">
             <el-button @click="delElement(index)">-</el-button>
@@ -100,6 +100,83 @@ export default {
         imgHeight: this.savePageForm.imgHeight,
         imgUrl: this.savePageForm.imgUrl
       }
+    },
+    findBys() {
+      const findBys = [{
+        value: '@AndroidFindBy',
+        label: 'AndroidFindBy',
+        children: [{
+          value: 'uiAutomator',
+          label: 'uiAutomator'
+        }, {
+          value: 'accessibility',
+          label: 'accessibility'
+        }, {
+          value: 'id',
+          label: 'id'
+        }, {
+          value: 'xpath',
+          label: 'xpath'
+        }]
+      }, {
+        value: '@iOSXCUITFindBy',
+        label: 'iOSFindBy',
+        children: [{
+          value: 'iOSClassChain',
+          label: 'iOSClassChain'
+        }, {
+          value: 'iOSNsPredicate',
+          label: 'iOSNsPredicate'
+        }, {
+          value: 'accessibility',
+          label: 'accessibility'
+        }, {
+          value: 'id',
+          label: 'id'
+        }, {
+          value: 'xpath',
+          label: 'xpath'
+        }]
+      }, {
+        value: '@FindBy',
+        label: 'WebFindBy',
+        children: [{
+          value: 'id',
+          label: 'id'
+        }, {
+          value: 'name',
+          label: 'name'
+        }, {
+          value: 'className',
+          label: 'className'
+        }, {
+          value: 'css',
+          label: 'css'
+        }, {
+          value: 'tagName',
+          label: 'tagName'
+        }, {
+          value: 'linkText',
+          label: 'linkText'
+        }, {
+          value: 'partialLinkText',
+          label: 'partialLinkText'
+        }, {
+          value: 'xpath',
+          label: 'xpath'
+        }]
+      }]
+      if (this.$store.state.project.platform === 1) {
+        // 移除iOS
+        findBys.splice(1, 1)
+      } else if (this.$store.state.project.platform === 2) {
+        // 移除android
+        findBys.splice(0, 1)
+      } else {
+        // 移除android ios
+        findBys.splice(0, 2)
+      }
+      return findBys
     }
   },
   created() {
@@ -150,7 +227,7 @@ export default {
     addElement() {
       this.savePageForm.elements.push({
         name: '',
-        findBy: '',
+        findBy: [],
         value: ''
       })
     },
