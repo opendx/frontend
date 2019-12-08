@@ -27,7 +27,7 @@
             <mobile-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy="windowHierarchy" :tree-loading="treeLoading" />
           </div>
         </el-drawer>
-        <el-button icon="el-icon-view" :disabled="!(saveActionForm.pageId > 0)" @click="showPage = true" />
+        <el-button :disabled="!(saveActionForm.pageId > 0)" @click="showPage = true">查看page</el-button>
       </span>
       <span v-if="isTestCase"><!-- 测试用例，提供测试集选择 -->
         <el-select v-model="saveActionForm.testSuiteId" clearable filterable style="width: 200px" placeholder="选择测试集">

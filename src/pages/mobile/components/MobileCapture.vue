@@ -81,7 +81,8 @@ export default {
           imgHeight: this.imgInfo.imgHeight,
           imgWidth: this.imgInfo.imgWidth,
           deviceId: this.deviceId,
-          windowHierarchy: this.windowHierarchy
+          windowHierarchy: this.windowHierarchy,
+          elements: []
         }
       })
     }

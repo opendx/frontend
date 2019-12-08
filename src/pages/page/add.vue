@@ -1,14 +1,12 @@
 <template>
-  <div class="app-container">
-    <save-device-page :is-add="true" />
-  </div>
+  <save-page-dialog :is-add="true" />
 </template>
 
 <script>
-import SaveDevicePage from './components/SaveDevicePage'
+import SavePageDialog from './components/SavePageDialog'
 export default {
   components: {
-    SaveDevicePage
+    SavePageDialog
   }
 }
 </script>
