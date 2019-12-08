@@ -133,7 +133,6 @@
       </el-col>
     </el-row>
     <div slot="footer">
-      <el-button @click="cancel">取 消</el-button>
       <el-button type="primary" @click="saveTestPlan">保 存</el-button>
     </div>
   </el-dialog>
@@ -199,19 +198,20 @@ export default {
     }
   },
   methods: {
-    cancel() {
+    saveTestPlanSuccess(msg) {
+      this.$notify.success(msg)
+      // 关闭当前tagview
+      this.$store.state.tagsView.visitedViews.splice(this.$store.state.tagsView.visitedViews.findIndex(item => item.path === this.$route.path), 1)
       this.$router.back()
     },
     saveTestPlan() {
       if (this.isAdd) {
         addTestPlan(this.saveTestPlanForm).then(response => {
-          this.$notify.success(response.msg)
-          this.$router.push('/testPlan/list')
+          this.saveTestPlanSuccess(response.msg)
         })
       } else {
         updateTestPlan(this.saveTestPlanForm).then(response => {
-          this.$notify.success(response.msg)
-          this.$router.push('/testPlan/list')
+          this.saveTestPlanSuccess(response.msg)
         })
       }
     },

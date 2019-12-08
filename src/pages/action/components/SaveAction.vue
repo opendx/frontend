@@ -213,21 +213,19 @@ export default {
 
       if (this.isAdd) {
         addAction(this.saveActionForm).then(response => {
-          this.onSaveSuccess(response)
+          this.onSaveSuccess(response.msg)
         })
       } else {
         updateAction(this.saveActionForm).then(response => {
-          this.onSaveSuccess(response)
+          this.onSaveSuccess(response.msg)
         })
       }
     },
-    onSaveSuccess(response) {
-      this.$notify.success(response.msg)
-      if (this.isTestCase) {
-        this.$router.push('/action/testcase/list')
-      } else {
-        this.$router.push('/action/encapsulation/list')
-      }
+    onSaveSuccess(msg) {
+      this.$notify.success(msg)
+      // 关闭当前tagview
+      this.$store.state.tagsView.visitedViews.splice(this.$store.state.tagsView.visitedViews.findIndex(item => item.path === this.$route.path), 1)
+      this.$router.back()
     },
     debugAction() {
       if (this.debugBtnLoading) {

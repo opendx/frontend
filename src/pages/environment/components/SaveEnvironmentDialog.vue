@@ -10,7 +10,6 @@
     </el-form>
 
     <span slot="footer">
-      <el-button @click="cancel">取 消</el-button>
       <el-button type="primary" @click="saveEnvironment">保 存</el-button>
     </span>
   </el-dialog>
@@ -42,24 +41,20 @@ export default {
     }
   },
   methods: {
-    cancel() {
+    saveEnvironmentSuccess(msg) {
+      this.$notify.success(msg)
+      // 关闭当前tagview
+      this.$store.state.tagsView.visitedViews.splice(this.$store.state.tagsView.visitedViews.findIndex(item => item.path === this.$route.path), 1)
       this.$router.back()
-    },
-    goToEnvironmentListPage() {
-      this.$router.push({
-        path: '/environment/list'
-      })
     },
     saveEnvironment() {
       if (this.isAdd) {
         addEnvironment(this.environment).then(response => {
-          this.$notify.success(response.msg)
-          this.goToEnvironmentListPage()
+          this.saveEnvironmentSuccess(response.msg)
         })
       } else {
         updateEnvironment(this.environment).then(response => {
-          this.$notify.success(response.msg)
-          this.goToEnvironmentListPage()
+          this.saveEnvironmentSuccess(response.msg)
         })
       }
     }

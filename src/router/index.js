@@ -331,14 +331,14 @@ export const constantRoutes = [
         path: 'add',
         component: () => import('@/pages/action/encapsulation/add'),
         name: 'EncapsulationActionAdd',
-        meta: { title: '添加Action', noCache: true },
+        meta: { title: '添加Action', noCache: false },
         hidden: true
       },
       {
         path: 'update/:actionId',
         component: () => import('@/pages/action/encapsulation/update'),
         name: 'EncapsulationActionUpdate',
-        meta: { title: '更新Action', noCache: true },
+        meta: { title: '更新Action', noCache: false },
         hidden: true
       },
       {
@@ -357,14 +357,14 @@ export const constantRoutes = [
         path: 'add',
         component: () => import('@/pages/action/testcase/add'),
         name: 'TestcaseActionAdd',
-        meta: { title: '添加测试用例', noCache: true },
+        meta: { title: '添加测试用例', noCache: false },
         hidden: true
       },
       {
         path: 'update/:actionId',
         component: () => import('@/pages/action/testcase/update'),
         name: 'TestcaseActionUpdate',
-        meta: { title: '更新测试用例', noCache: true },
+        meta: { title: '更新测试用例', noCache: false },
         hidden: true
       },
       {

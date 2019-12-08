@@ -17,7 +17,6 @@
     </el-form>
 
     <span slot="footer">
-      <el-button v-if="showCancel" @click="cancel">取 消</el-button>
       <el-button type="primary" @click="saveProject">保 存</el-button>
     </span>
   </el-dialog>
@@ -27,11 +26,7 @@ import { addProject, updateProject, getProjectList } from '@/api/project'
 
 export default {
   props: {
-    isAdd: Boolean,
-    showCancel: {
-      type: Boolean,
-      default: true
-    }
+    isAdd: Boolean
   },
   data() {
     return {
@@ -62,24 +57,20 @@ export default {
     }
   },
   methods: {
-    cancel() {
+    saveProjectSuccess(msg) {
+      this.$notify.success(msg)
+      // 关闭当前tagview
+      this.$store.state.tagsView.visitedViews.splice(this.$store.state.tagsView.visitedViews.findIndex(item => item.path === this.$route.path), 1)
       this.$router.back()
-    },
-    goToProjectListPage() {
-      this.$router.push({
-        path: '/project/list'
-      })
     },
     saveProject() {
       if (this.isAdd) {
         addProject(this.project).then(response => {
-          this.$notify.success(response.msg)
-          this.goToProjectListPage()
+          this.saveProjectSuccess(response.msg)
         })
       } else {
         updateProject(this.project).then(response => {
-          this.$notify.success(response.msg)
-          this.goToProjectListPage()
+          this.saveProjectSuccess(response.msg)
         })
       }
     }

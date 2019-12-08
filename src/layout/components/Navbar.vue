@@ -99,10 +99,7 @@ export default {
           showClose: false,
           callback: () => {
             this.$router.push({
-              name: 'AddProject',
-              params: {
-                showCancel: false
-              }
+              name: 'AddProject'
             })
           }
         })

@@ -7,7 +7,6 @@
     </el-form>
 
     <div slot="footer">
-      <el-button @click="cancel">取 消</el-button>
       <el-button type="primary" @click="saveCategory">保 存</el-button>
     </div>
   </el-dialog>
@@ -33,13 +32,12 @@ export default {
     }
   },
   methods: {
-    cancel() {
-      this.$router.back()
-    },
     saveCategory() {
       if (this.isAdd) {
         addCategory(this.category).then(response => {
           this.$notify.success(response.msg)
+          // 关闭当前tagview
+          this.$store.state.tagsView.visitedViews.splice(this.$store.state.tagsView.visitedViews.findIndex(item => item.path === this.$route.path), 1)
           this.$router.back()
         })
       }

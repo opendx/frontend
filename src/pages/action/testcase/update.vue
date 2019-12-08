@@ -8,6 +8,7 @@
 import SaveAction from '../components/SaveAction'
 
 export default {
+  name: 'TestcaseActionUpdate',
   components: {
     SaveAction
   }

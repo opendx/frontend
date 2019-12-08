@@ -38,7 +38,6 @@
     </el-form>
 
     <span slot="footer">
-      <el-button @click="cancel">取 消</el-button>
       <el-button type="primary" @click="saveDriver">保 存</el-button>
     </span>
   </el-dialog>
@@ -97,24 +96,20 @@ export default {
       }
       url.downloadUrl = response.data.downloadURL
     },
-    cancel() {
+    saveDriverSuccess(msg) {
+      this.$notify.success(msg)
+      // 关闭当前tagview
+      this.$store.state.tagsView.visitedViews.splice(this.$store.state.tagsView.visitedViews.findIndex(item => item.path === this.$route.path), 1)
       this.$router.back()
-    },
-    goToDriverListPage() {
-      this.$router.push({
-        path: '/driver/list'
-      })
     },
     saveDriver() {
       if (this.isAdd) {
         addDriver(this.driver).then(response => {
-          this.$notify.success(response.msg)
-          this.goToDriverListPage()
+          this.saveDriverSuccess(response.msg)
         })
       } else {
         updateDriver(this.driver).then(response => {
-          this.$notify.success(response.msg)
-          this.goToDriverListPage()
+          this.saveDriverSuccess(response.msg)
         })
       }
     }
