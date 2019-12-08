@@ -1,15 +1,12 @@
 <template>
-  <el-dialog :title="title" :visible="true" :show-close="false">
-    <el-form :data="category" label-width="100px">
-      <el-form-item label="分类名" :rules="[{required: true}]">
-        <el-input v-model.trim="category.name" clearable style="width: 300px" />
-      </el-form-item>
-    </el-form>
-
-    <div slot="footer">
+  <el-form :data="category" label-width="100px">
+    <el-form-item label="分类名" :rules="[{required: true}]">
+      <el-input v-model.trim="category.name" clearable style="width: 300px" />
+    </el-form-item>
+    <el-form-item>
       <el-button type="primary" @click="saveCategory">保 存</el-button>
-    </div>
-  </el-dialog>
+    </el-form-item>
+  </el-form>
 </template>
 <script>
 
@@ -22,7 +19,6 @@ export default {
   },
   data() {
     return {
-      title: this.isAdd ? '添加分类' : '更新分类',
       category: {
         id: undefined,
         name: '',

@@ -1,12 +1,15 @@
 <template>
-  <save-test-suite-dialog :is-add="true" />
+  <div class="app-container">
+    <save-test-suite :is-add="true" />
+  </div>
 </template>
 
 <script>
-import SaveTestSuiteDialog from './components/SaveTestSuiteDialog'
+import SaveTestSuite from './components/SaveTestSuite'
 export default {
+  name: 'AddTestSuite',
   components: {
-    SaveTestSuiteDialog
+    SaveTestSuite
   }
 }
 </script>

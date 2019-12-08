@@ -1,12 +1,15 @@
 <template>
-  <save-project-dialog :is-add="false" />
+  <div class="app-container">
+    <save-project :is-add="false" />
+  </div>
 </template>
 
 <script>
-import SaveProjectDialog from './components/SaveProjectDialog'
+import SaveProject from './components/SaveProject'
 export default {
+  name: 'UpdateProject',
   components: {
-    SaveProjectDialog
+    SaveProject
   }
 }
 </script>

@@ -12,7 +12,7 @@
         <settings />
       </right-panel>
     </div>
-    <div v-if="!$store.state.project.id" style="position: fixed;width: 100%;height: 100%;top:50px;z-index: 1200;">
+    <div v-if="!($route.path === '/project/add') && (!$store.state.project.id)" style="position: fixed;width: 100%;height: 100%;top:50px;z-index: 1200;">
       <el-card shadow="always" style="width: 400px;margin:200px auto;text-align: center">
         右上角选择项目后，才能继续操作
       </el-card>

@@ -1,12 +1,15 @@
 <template>
-  <save-category-dialog :is-add="true" :type="1" />
+  <div class="app-container">
+    <save-category :is-add="true" :type="1" />
+  </div>
 </template>
 
 <script>
-import SaveCategoryDialog from './components/SaveCategoryDialog'
+import SaveCategory from './components/SaveCategory'
 export default {
+  name: 'AddPageCategory',
   components: {
-    SaveCategoryDialog
+    SaveCategory
   }
 }
 </script>

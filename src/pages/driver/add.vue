@@ -1,12 +1,15 @@
 <template>
-  <save-driver-dialog :is-add="true" />
+  <div class="app-container">
+    <save-driver :is-add="true" />
+  </div>
 </template>
 
 <script>
-import SaveDriverDialog from './components/SaveDriverDialog'
+import SaveDriver from './components/SaveDriver'
 export default {
+  name: 'AddDriver',
   components: {
-    SaveDriverDialog
+    SaveDriver
   }
 }
 </script>

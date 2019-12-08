@@ -1,12 +1,15 @@
 <template>
-  <save-page-dialog :is-add="true" />
+  <div class="app-container">
+    <save-page :is-add="true" />
+  </div>
 </template>
 
 <script>
-import SavePageDialog from './components/SavePageDialog'
+import SavePage from './components/SavePage'
 export default {
+  name: 'AddPage',
   components: {
-    SavePageDialog
+    SavePage
   }
 }
 </script>

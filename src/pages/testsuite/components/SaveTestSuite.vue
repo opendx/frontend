@@ -1,16 +1,12 @@
 <template>
-  <el-dialog :title="title" :visible="true" :show-close="false">
-    <el-form :data="testSuite" label-width="100px">
-      <el-form-item label="测试集名" :rules="[{required: true}]">
-        <el-input v-model.trim="testSuite.name" clearable style="width: 300px" />
-      </el-form-item>
-    </el-form>
-
-    <div slot="footer">
-      <el-button @click="cancel">取 消</el-button>
+  <el-form :data="testSuite" label-width="100px">
+    <el-form-item label="测试集名" :rules="[{required: true}]">
+      <el-input v-model.trim="testSuite.name" clearable style="width: 300px" />
+    </el-form-item>
+    <el-form-item>
       <el-button type="primary" @click="saveTestSuite">保 存</el-button>
-    </div>
-  </el-dialog>
+    </el-form-item>
+  </el-form>
 </template>
 <script>
 
@@ -22,7 +18,6 @@ export default {
   },
   data() {
     return {
-      title: this.isAdd ? '添加测试集' : '更新测试集',
       testSuite: {
         id: undefined,
         name: '',
@@ -32,13 +27,12 @@ export default {
     }
   },
   methods: {
-    cancel() {
-      this.$router.back()
-    },
     saveTestSuite() {
       if (this.isAdd) {
         addTestSuite(this.testSuite).then(response => {
           this.$notify.success(response.msg)
+          // 关闭当前tagview
+          this.$store.dispatch('tagsView/delView', this.$store.state.tagsView.visitedViews.filter(item => item.path === this.$route.path)[0])
           this.$router.back()
         })
       }

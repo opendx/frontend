@@ -1,12 +1,15 @@
 <template>
-  <save-global-var-dialog :is-add="true" />
+  <div class="app-container">
+    <save-global-var :is-add="true" />
+  </div>
 </template>
 
 <script>
-import SaveGlobalVarDialog from './components/SaveGlobalVarDialog'
+import SaveGlobalVar from './components/SaveGlobalVar'
 export default {
+  name: 'AddGlobalVar',
   components: {
-    SaveGlobalVarDialog
+    SaveGlobalVar
   }
 }
 </script>

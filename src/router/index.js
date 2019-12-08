@@ -180,14 +180,14 @@ export const constantRoutes = [
         path: 'add',
         component: () => import('@/pages/driver/add'),
         name: 'AddDriver',
-        meta: { title: '添加Driver', noCache: true },
+        meta: { title: '添加Driver', noCache: false },
         hidden: true
       },
       {
         path: 'update/:driverId',
         component: () => import('@/pages/driver/update'),
         name: 'UpdateDriver',
-        meta: { title: '更新Driver', noCache: true },
+        meta: { title: '更新Driver', noCache: false },
         hidden: true
       },
       {
@@ -206,14 +206,14 @@ export const constantRoutes = [
         path: 'add',
         component: () => import('@/pages/project/add'),
         name: 'AddProject',
-        meta: { title: '添加项目', noCache: true },
+        meta: { title: '添加项目', noCache: false },
         hidden: true
       },
       {
         path: 'update/:projectId',
         component: () => import('@/pages/project/update'),
         name: 'UpdateProject',
-        meta: { title: '更新项目', noCache: true },
+        meta: { title: '更新项目', noCache: false },
         hidden: true
       },
       {
@@ -232,14 +232,14 @@ export const constantRoutes = [
         path: 'add',
         component: () => import('@/pages/environment/add'),
         name: 'AddEnvironment',
-        meta: { title: '添加环境', noCache: true },
+        meta: { title: '添加环境', noCache: false },
         hidden: true
       },
       {
         path: 'update/:environmentId',
         component: () => import('@/pages/environment/update'),
         name: 'UpdateEnvironment',
-        meta: { title: '更新环境', noCache: true },
+        meta: { title: '更新环境', noCache: false },
         hidden: true
       },
       {
@@ -258,14 +258,14 @@ export const constantRoutes = [
         path: 'add',
         component: () => import('@/pages/globalvar/add'),
         name: 'AddGlobalVar',
-        meta: { title: '添加全局变量', noCache: true },
+        meta: { title: '添加全局变量', noCache: false },
         hidden: true
       },
       {
         path: 'update/:globalVarId',
         component: () => import('@/pages/globalvar/update'),
         name: 'UpdateGlobalVar',
-        meta: { title: '更新全局变量', noCache: true },
+        meta: { title: '更新全局变量', noCache: false },
         hidden: true
       },
       {
@@ -284,14 +284,14 @@ export const constantRoutes = [
         path: 'add',
         component: () => import('@/pages/page/add'),
         name: 'AddPage',
-        meta: { title: '添加Page', noCache: true },
+        meta: { title: '添加Page', noCache: false },
         hidden: true
       },
       {
         path: 'update/:pageId',
         component: () => import('@/pages/page/update'),
         name: 'UpdatePage',
-        meta: { title: '更新Page', noCache: true },
+        meta: { title: '更新Page', noCache: false },
         hidden: true
       },
       {
@@ -311,14 +311,14 @@ export const constantRoutes = [
         path: 'addPageCategory',
         component: () => import('@/pages/category/addPageCategory'),
         name: 'AddPageCategory',
-        meta: { title: '添加Page分类', noCache: true },
+        meta: { title: '添加Page分类', noCache: false },
         hidden: true
       },
       {
         path: 'addActionCategory',
         component: () => import('@/pages/category/addActionCategory'),
         name: 'AddActionCategory',
-        meta: { title: '添加Action分类', noCache: true },
+        meta: { title: '添加Action分类', noCache: false },
         hidden: true
       }
     ]
@@ -384,7 +384,7 @@ export const constantRoutes = [
         path: 'add',
         component: () => import('@/pages/testsuite/add'),
         name: 'AddTestSuite',
-        meta: { title: '添加测试集', noCache: true },
+        meta: { title: '添加测试集', noCache: false },
         hidden: true
       }
     ]
@@ -397,14 +397,14 @@ export const constantRoutes = [
         path: 'add',
         component: () => import('@/pages/testplan/add'),
         name: 'TestPlanAdd',
-        meta: { title: '添加测试计划', noCache: true },
+        meta: { title: '添加测试计划', noCache: false },
         hidden: true
       },
       {
         path: 'update/:testPlanId',
         component: () => import('@/pages/testplan/update'),
         name: 'TestPlanUpdate',
-        meta: { title: '更新测试计划', noCache: true },
+        meta: { title: '更新测试计划', noCache: false },
         hidden: true
       },
       {

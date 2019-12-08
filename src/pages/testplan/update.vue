@@ -1,12 +1,15 @@
 <template>
-  <save-test-plan-dialog :is-add="false" />
+  <div class="app-container">
+    <save-test-plan :is-add="false" />
+  </div>
 </template>
 
 <script>
-import SaveTestPlanDialog from './components/SaveTestPlanDialog'
+import SaveTestPlan from './components/SaveTestPlan'
 export default {
+  name: 'TestPlanUpdate',
   components: {
-    SaveTestPlanDialog
+    SaveTestPlan
   }
 }
 </script>

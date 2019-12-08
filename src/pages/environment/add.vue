@@ -1,12 +1,15 @@
 <template>
-  <save-environment-dialog :is-add="true" />
+  <div class="app-container">
+    <save-environment :is-add="true" />
+  </div>
 </template>
 
 <script>
-import SaveEnvironmentDialog from './components/SaveEnvironmentDialog'
+import SaveEnvironment from './components/SaveEnvironment'
 export default {
+  name: 'AddEnvironment',
   components: {
-    SaveEnvironmentDialog
+    SaveEnvironment
   }
 }
 </script>

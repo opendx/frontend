@@ -1,25 +1,22 @@
 <template>
-  <el-dialog :title="title" :visible="true" :show-close="false">
-    <el-form :data="project" label-width="60px">
-      <el-form-item label="名称" :rules="[{required: true}]">
-        <el-input v-model.trim="project.name" clearable style="width: 300px" />
-      </el-form-item>
-      <el-form-item label="平台" :rules="[{required: true}]">
-        <el-radio-group v-model="project.platform" :disabled="!isAdd">
-          <el-radio v-for="platform in platforms" :key="platform.type" :label="platform.type">
-            {{ platform.name }}
-          </el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="描述">
-        <el-input v-model.trim="project.description" type="textarea" style="width: 300px" />
-      </el-form-item>
-    </el-form>
-
-    <span slot="footer">
+  <el-form :data="project" label-width="60px">
+    <el-form-item label="名称" :rules="[{required: true}]">
+      <el-input v-model.trim="project.name" clearable style="width: 300px" />
+    </el-form-item>
+    <el-form-item label="平台" :rules="[{required: true}]">
+      <el-radio-group v-model="project.platform" :disabled="!isAdd">
+        <el-radio v-for="platform in platforms" :key="platform.type" :label="platform.type">
+          {{ platform.name }}
+        </el-radio>
+      </el-radio-group>
+    </el-form-item>
+    <el-form-item label="描述">
+      <el-input v-model.trim="project.description" type="textarea" style="width: 300px" />
+    </el-form-item>
+    <el-form-item>
       <el-button type="primary" @click="saveProject">保 存</el-button>
-    </span>
-  </el-dialog>
+    </el-form-item>
+  </el-form>
 </template>
 <script>
 import { addProject, updateProject, getProjectList } from '@/api/project'
@@ -30,7 +27,6 @@ export default {
   },
   data() {
     return {
-      title: this.isAdd ? '添加项目' : '更新项目',
       platforms: [
         {
           type: 1,

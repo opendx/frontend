@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" :visible="true" :show-close="false" width="1300px">
+  <div>
     <mobile-inspector canvas-id="page-canvas" :img-info="imgInfo" :window-hierarchy="savePageForm.windowHierarchy" :tree-loading="false" />
     <el-form label-width="100px">
       <el-form-item label="元素">
@@ -37,6 +37,9 @@
           <el-form-item label="设备id">
             <el-input v-model="savePageForm.deviceId" clearable :disabled="isAdd" />
           </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="savePage">保 存</el-button>
+          </el-form-item>
         </el-form>
       </el-col>
       <el-col :span="12">
@@ -56,10 +59,7 @@
         </el-form>
       </el-col>
     </el-row>
-    <div slot="footer">
-      <el-button type="primary" @click="savePage">保 存</el-button>
-    </div>
-  </el-dialog>
+  </div>
 </template>
 <script>
 
@@ -76,7 +76,6 @@ export default {
   },
   data() {
     return {
-      title: this.isAdd ? '添加Page' : '更新Page',
       savePageForm: {
         id: undefined,
         name: '',
