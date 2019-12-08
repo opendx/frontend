@@ -148,6 +148,9 @@ export default {
       this.selectedNode.xpath_lite = getXPathLite(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
       if (this.isAndroid) {
         this.selectedNode.uiautomator = getAndroidUiautomator(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
+        if (this.selectedNode.uiautomator) {
+          this.selectedNode.uiautomator = this.selectedNode.uiautomator.replace(/'/g, '\\"')
+        }
       } else if (this.isIos) {
         this.selectedNode.iOSNsPredicateString = getIOSNsPredicateString(this.treeData[0], this.getNodePath(this.treeData[0], this.selectedNode.id))
       }
