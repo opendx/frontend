@@ -192,20 +192,20 @@ export default {
     }
   },
   methods: {
+    savePageSuccess(msg) {
+      this.$notify.success(msg)
+      // 关闭当前tagview
+      this.$store.dispatch('tagsView/delView', this.$store.state.tagsView.visitedViews.filter(item => item.path === this.$route.path)[0])
+      this.$router.back()
+    },
     savePage() {
       if (this.isAdd) {
         addPage(this.savePageForm).then(response => {
-          this.$notify.success(response.msg)
-          this.$router.push({
-            path: '/page/list'
-          })
+          this.savePageSuccess(response.msg)
         })
       } else {
         updatePage(this.savePageForm).then(response => {
-          this.$notify.success(response.msg)
-          this.$router.push({
-            path: '/page/list'
-          })
+          this.savePageSuccess(response.msg)
         })
       }
     },
