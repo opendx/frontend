@@ -1,12 +1,15 @@
 <template>
-  <save-app-dialog :is-add="true" />
+  <div class="app-container">
+    <save-app :is-add="true" />
+  </div>
 </template>
 
 <script>
-import SaveAppDialog from './components/SaveAppDialog'
+import SaveApp from './components/SaveApp'
 export default {
+  name: 'AddApp',
   components: {
-    SaveAppDialog
+    SaveApp
   }
 }
 </script>

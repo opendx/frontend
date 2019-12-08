@@ -1,28 +1,24 @@
 <template>
-  <el-dialog :title="title" :visible="true" :show-close="false">
-    <el-form :data="app" label-width="80px" label-position="left">
-      <el-form-item label="平台" :rules="[{required: true}]">
-        <el-radio-group v-model="app.platform" :disabled="!isAdd">
-          <el-radio v-for="platform in platforms" :key="platform.type" :label="platform.type">
-            {{ platform.name }}
-          </el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="app" :rules="[{required: true}]" v-if="isAdd">
-        <el-upload drag action="/" :on-change="onChange" :multiple="false" :auto-upload="false">
-          <i class="el-icon-upload" /><div>将app拖到此处，或<em>点击选择app</em></div>
-        </el-upload>
-      </el-form-item>
-      <el-form-item label="app名" :rules="[{required: true}]">
-        <el-input v-model.trim="app.name" clearable />
-      </el-form-item>
-    </el-form>
-
-    <div slot="footer">
-      <el-button @click="cancel">取 消</el-button>
+  <el-form :data="app" label-width="80px" label-position="left">
+    <el-form-item label="平台" :rules="[{required: true}]">
+      <el-radio-group v-model="app.platform" :disabled="!isAdd">
+        <el-radio v-for="platform in platforms" :key="platform.type" :label="platform.type">
+          {{ platform.name }}
+        </el-radio>
+      </el-radio-group>
+    </el-form-item>
+    <el-form-item label="app" :rules="[{required: true}]" v-if="isAdd">
+      <el-upload drag action="/" :on-change="onChange" :multiple="false" :auto-upload="false">
+        <i class="el-icon-upload" /><div>将app拖到此处，或<em>点击选择app</em></div>
+      </el-upload>
+    </el-form-item>
+    <el-form-item label="app名" :rules="[{required: true}]">
+      <el-input v-model.trim="app.name" clearable style="width: 300px" />
+    </el-form-item>
+    <el-form-item>
       <el-button type="primary" @click="saveApp" :loading="saveBtnLoading">保 存</el-button>
-    </div>
-  </el-dialog>
+    </el-form-item>
+  </el-form>
 </template>
 <script>
 
@@ -34,7 +30,6 @@ export default {
   },
   data() {
     return {
-      title: this.isAdd ? '添加app' : '更新app',
       platforms: [
         {
           type: 1,
@@ -63,17 +58,15 @@ export default {
     }
   },
   methods: {
-    cancel() {
-      this.$router.back()
-    },
-    goToAppListPage() {
-      this.$router.push({
-        path: '/app/list'
-      })
-    },
     // 选择app
     onChange(file) {
       this.choosedApp = file
+    },
+    saveAppSuccess(msg) {
+      this.$notify.success(msg)
+      // 关闭当前tagview
+      this.$store.dispatch('tagsView/delView', this.$store.state.tagsView.visitedViews.filter(item => item.path === this.$route.path)[0])
+      this.$router.back()
     },
     saveApp() {
       this.saveBtnLoading = true
@@ -91,15 +84,13 @@ export default {
           }
         }
         uploadApp(formData).then(response => {
-          this.$notify.success(response.msg)
-          this.goToAppListPage()
+          this.saveAppSuccess(response.msg)
         }).finally(() => {
           this.saveBtnLoading = false
         })
       } else {
         updateApp(this.app).then(response => {
-          this.$notify.success(response.msg)
-          this.goToAppListPage()
+          this.saveAppSuccess(response.msg)
         }).finally(() => {
           this.saveBtnLoading = false
         })

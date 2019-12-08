@@ -213,18 +213,18 @@ export default {
 
       if (this.isAdd) {
         addAction(this.saveActionForm).then(response => {
-          this.onSaveSuccess(response.msg)
+          this.saveActionSuccess(response.msg)
         })
       } else {
         updateAction(this.saveActionForm).then(response => {
-          this.onSaveSuccess(response.msg)
+          this.saveActionSuccess(response.msg)
         })
       }
     },
-    onSaveSuccess(msg) {
+    saveActionSuccess(msg) {
       this.$notify.success(msg)
       // 关闭当前tagview
-      this.$store.state.tagsView.visitedViews.splice(this.$store.state.tagsView.visitedViews.findIndex(item => item.path === this.$route.path), 1)
+      this.$store.dispatch('tagsView/delView', this.$store.state.tagsView.visitedViews.filter(item => item.path === this.$route.path)[0])
       this.$router.back()
     },
     debugAction() {

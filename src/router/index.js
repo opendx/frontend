@@ -142,14 +142,14 @@ export const constantRoutes = [
         path: 'add',
         component: () => import('@/pages/app/add'),
         name: 'AddApp',
-        meta: { title: '添加App', noCache: true },
+        meta: { title: '添加App', noCache: false },
         hidden: true
       },
       {
         path: 'update/:appId',
         component: () => import('@/pages/app/update'),
         name: 'UpdateApp',
-        meta: { title: '更新app', noCache: true },
+        meta: { title: '更新app', noCache: false },
         hidden: true
       },
       {
