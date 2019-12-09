@@ -37,7 +37,7 @@
         <template scope="{ row }">
           <el-button type="success" @click="commitTestPlan(row.id)">提交测试</el-button>
           <el-button type="primary" class="el-icon-edit" @click="goToUpdateTestPlanPage(row.id)" />
-          <el-button type="danger" class="el-icon-delete" @click="deleteTestPlan(row.id)" />
+          <el-button type="danger" class="el-icon-delete" @click="deleteTestPlan(row)" />
         </template>
       </el-table-column>
     </el-table>
@@ -82,13 +82,13 @@ export default {
         this.total = response.data.total
       })
     },
-    deleteTestPlan(id) {
-      this.$confirm('删除该TestPlan？', '提示', {
+    deleteTestPlan(testPlan) {
+      this.$confirm('删除' + testPlan.name, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteTestPlan(id).then(response => {
+        deleteTestPlan(testPlan.id).then(response => {
           this.$notify.success(response.msg)
           this.fetchTestPlanList()
         })

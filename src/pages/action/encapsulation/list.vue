@@ -56,7 +56,7 @@
           <template scope="{ row }">
             <el-button type="success" @click="copyAction(row)">复制</el-button>
             <el-button type="primary" class="el-icon-edit" @click="updateAction(row.id)" />
-            <el-button type="danger" class="el-icon-delete" @click="deleteAction(row.id)" />
+            <el-button type="danger" class="el-icon-delete" @click="deleteAction(row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -182,13 +182,13 @@ export default {
         })
       })
     },
-    deleteAction(id) {
-      this.$confirm('删除该Action？', '提示', {
+    deleteAction(action) {
+      this.$confirm('删除' + action.name, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteAction(id).then(response => {
+        deleteAction(action.id).then(response => {
           this.$notify.success(response.msg)
           this.fetchActionList()
         })

@@ -190,7 +190,7 @@ export default {
       })
     },
     deleteTestTask(testTask) {
-      this.$confirm('删除该测试任务？', '提示', {
+      this.$confirm('删除测试任务id: ' + testTask.id, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -202,7 +202,7 @@ export default {
       })
     },
     deleteDeviceTestTask(deviceTestTask) {
-      this.$confirm('删除该测试任务？', '提示', {
+      this.$confirm('删除' + deviceTestTask.deviceId + '测试任务', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

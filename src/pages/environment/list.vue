@@ -54,7 +54,7 @@ export default {
       this.$router.push('/environment/update/' + environment.id)
     },
     deleteEnvironment(environment) {
-      this.$confirm('删除该环境？', '提示', {
+      this.$confirm('删除' + environment.name, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
