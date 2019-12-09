@@ -6,7 +6,7 @@
       <el-table-column align="center" label="全局变量值" width="900">
         <template scope="{ row }">
           <el-table :data="row.environmentValues" border fit>
-            <el-table-column label="环境" align="center" width="200">
+            <el-table-column label="环境" align="center" width="200" show-overflow-tooltip>
               <template scope="{ row }">
                 {{ environmentList.filter(env => env.id === row.environmentId)[0].name }}
               </template>
@@ -15,7 +15,7 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column align="center" property="description" label="描述" />
+      <el-table-column align="center" property="description" label="描述" show-overflow-tooltip />
     </el-table>
   </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table :data="params" border height="250">
-      <el-table-column align="center">
+      <el-table-column align="center" width="200">
         <template slot="header">
           <el-button type="text" :disabled="!isAdd" class="el-icon-circle-plus" @click="addParam" />
           方法参数类型

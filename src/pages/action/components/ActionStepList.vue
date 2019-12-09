@@ -38,7 +38,7 @@
           </el-cascader>
         </template>
       </el-table-column>
-      <el-table-column label="Action参数" align="center">
+      <el-table-column label="Action参数" align="center" min-width="300">
         <template scope="{ row }">
           <el-table :data="row.paramValues" border>
             <el-table-column label="参数名" align="center" width="150" show-overflow-tooltip>
