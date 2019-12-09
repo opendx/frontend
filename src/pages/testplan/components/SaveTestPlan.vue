@@ -12,7 +12,7 @@
           <el-cascader
             v-model="saveTestPlanForm.beforeClass"
             :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
-            :options="selectableActions"
+            :options="actions"
             filterable
             clearable
             :show-all-levels="false">
@@ -28,7 +28,7 @@
           <el-cascader
             v-model="saveTestPlanForm.beforeMethod"
             :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
-            :options="selectableActions"
+            :options="actions"
             filterable
             clearable
             :show-all-levels="false">
@@ -44,7 +44,7 @@
           <el-cascader
             v-model="saveTestPlanForm.afterMethod"
             :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
-            :options="selectableActions"
+            :options="actions"
             filterable
             clearable
             :show-all-levels="false">
@@ -60,7 +60,7 @@
           <el-cascader
             v-model="saveTestPlanForm.afterClass"
             :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
-            :options="selectableActions"
+            :options="actions"
             filterable
             clearable
             :show-all-levels="false">
@@ -136,7 +136,7 @@
   </el-row>
 </template>
 <script>
-import { getSelectableActions } from '@/api/action'
+import { getActionCascader } from '@/api/action'
 import { getTestSuiteList } from '@/api/testSuite'
 import { addTestPlan, updateTestPlan, getTestPlanList } from '@/api/testPlan'
 import { getOnlineDevices } from '@/api/device'
@@ -166,7 +166,7 @@ export default {
         enableRecordVideo: 1,
         failRetryCount: 0
       },
-      selectableActions: [],
+      actions: [],
       testSuites: [],
       onlineDevices: [],
       environmentList: [
@@ -212,9 +212,9 @@ export default {
         })
       }
     },
-    fetchSelectableActions() {
-      getSelectableActions(this.projectId, this.platform).then(response => {
-        this.selectableActions = response.data
+    fetchActionCascader() {
+      getActionCascader(this.projectId, this.platform).then(response => {
+        this.actions = response.data
       })
     },
     fetchTestSuiteList() {
@@ -223,21 +223,23 @@ export default {
       })
     },
     fetchEnvironmentList() {
-      getEnvironmentList({ projectId: this.$store.state.project.id }).then(response => {
+      getEnvironmentList({ projectId: this.projectId }).then(response => {
         this.environmentList = this.environmentList.concat(response.data)
+      })
+    },
+    fetchOnlineDevices() {
+      getOnlineDevices(this.platform).then(response => {
+        this.onlineDevices = response.data
       })
     }
   },
   created() {
-    getOnlineDevices(this.platform).then(response => {
-      this.onlineDevices = response.data
-    })
-    this.fetchSelectableActions()
+    this.fetchOnlineDevices()
+    this.fetchActionCascader()
     this.fetchTestSuiteList()
     this.fetchEnvironmentList()
     if (!this.isAdd) {
-      const testPlanId = this.$route.params.testPlanId
-      getTestPlanList({ id: testPlanId }).then(response => {
+      getTestPlanList({ id: this.$route.params.testPlanId }).then(response => {
         this.saveTestPlanForm = response.data[0]
       })
     }

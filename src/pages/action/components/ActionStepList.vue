@@ -29,6 +29,7 @@
             style="width: 100%"
             :show-all-levels="false"
             @change="actionSelected($event, row)"
+            @visible-change="actionSelectChange"
             placeholder="支持模糊搜索">
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
@@ -95,7 +96,7 @@
 </template>
 
 <script>
-import { getSelectableActions } from '@/api/action'
+import { getActionCascader } from '@/api/action'
 import ActionDetail from './ActionDetail'
 export default {
   props: {
@@ -204,7 +205,7 @@ export default {
     }
   },
   created() {
-    this.fetchSelectableActions()
+    this.fetchActionCascader()
   },
   methods: {
     isImg(value) {
@@ -256,8 +257,13 @@ export default {
       paramValue.paramValue = possibleValue
       this.$refs.closepopover.click()
     },
-    fetchSelectableActions() {
-      getSelectableActions(this.projectId, this.platform).then(resp => {
+    actionSelectChange(type) {
+      if (type) {
+        this.fetchActionCascader()
+      }
+    },
+    fetchActionCascader() {
+      getActionCascader(this.projectId, this.platform).then(resp => {
         this.selectableActions = resp.data
       })
     },

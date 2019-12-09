@@ -30,3 +30,13 @@ export function updatePage(data) {
     data
   })
 }
+
+export function getPageCascader(projectId) {
+  return request({
+    method: 'get',
+    url: '/page/cascader',
+    params: {
+      projectId: projectId
+    }
+  })
+}

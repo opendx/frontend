@@ -24,7 +24,7 @@
       </div>
     </el-form-item>
     <el-form-item label="devices">
-      <el-select v-model="driver.deviceIds" clearable filterable multiple style="width: 100%">
+      <el-select v-model="driver.deviceIds" @visible-change="deviceSelectChange" clearable filterable multiple style="width: 100%">
         <el-option v-for="device in devices" :label="device.id" :value="device.id" :key="device.id">
           <span>{{ device.id }}</span>
           <el-divider direction="vertical" />
@@ -80,11 +80,18 @@ export default {
         this.driver = response.data[0]
       })
     }
-    getDeviceList().then(response => {
-      this.devices = response.data
-    })
   },
   methods: {
+    deviceSelectChange(type) {
+      if (type) {
+        this.fetDeviceList()
+      }
+    },
+    fetDeviceList() {
+      getDeviceList().then(response => {
+        this.devices = response.data
+      })
+    },
     onFileUploadSuccess(response, file, fileList, url) {
       if (response.status !== 1) {
         this.$message.error(response.msg)

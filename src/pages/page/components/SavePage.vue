@@ -27,7 +27,7 @@
             <el-input v-model="savePageForm.name" clearable />
           </el-form-item>
           <el-form-item label="分类">
-            <el-select v-model="savePageForm.categoryId" clearable filterable @visible-change="getPageCategoryList" placeholder="选择分类">
+            <el-select v-model="savePageForm.categoryId" clearable filterable @visible-change="pageCategorySelectChange" placeholder="选择分类">
               <el-option v-for="category in pageCategoryList" :key="category.id" :value="category.id" :label="category.name" />
             </el-select>
           </el-form-item>
@@ -179,8 +179,8 @@ export default {
     }
   },
   created() {
+    this.fetchPageCategoryList() // 防止el-select只显示category id
     if (!this.isAdd) {
-      this.fetchPageCategoryList() // 防止el-select只显示category id
       getPageList({ id: this.$route.params.pageId }).then(response => {
         this.savePageForm = response.data[0]
       })
@@ -210,8 +210,8 @@ export default {
       }
     },
     // el-select实时获取最新的page分类
-    getPageCategoryList(type) {
-      if (type === true) {
+    pageCategorySelectChange(type) {
+      if (type) {
         this.fetchPageCategoryList()
       }
     },

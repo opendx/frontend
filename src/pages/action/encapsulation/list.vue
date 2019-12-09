@@ -30,9 +30,18 @@
         <el-table-column label="描述" align="center" prop="description" show-overflow-tooltip />
         <el-table-column label="Page" align="center" width="200">
           <template scope="{ row }">
-            <el-select v-model="row.pageId" clearable filterable @change="pageChange(row)" placeholder="选择Page">
-              <el-option v-for="page in pageList" :key="page.id" :label="page.name" :value="page.id" />
-            </el-select>
+            <el-cascader
+              v-model="row.pageId"
+              :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+              @change="pageChange(row)"
+              :options="pageList"
+              filterable
+              clearable
+              style="width: 100%"
+              size="mini"
+              :show-all-levels="false"
+              placeholder="选择page">
+            </el-cascader>
           </template>
         </el-table-column>
         <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
@@ -72,7 +81,7 @@
 
 import { getCategoryList, deleteCategory } from '@/api/category'
 import { getActionList, deleteAction, updateAction } from '@/api/action'
-import { getPageList } from '@/api/page'
+import { getPageCascader } from '@/api/page'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -119,7 +128,7 @@ export default {
     }
   },
   created() {
-    this.fetchPageList()
+    this.fetchPageCascader()
     this.fetchCategoryList()
     this.fetchActionList()
   },
@@ -155,8 +164,8 @@ export default {
       this.actionList = data.data
       this.total = data.total
     },
-    async fetchPageList() {
-      const { data } = await getPageList({ projectId: this.projectId })
+    async fetchPageCascader() {
+      const { data } = await getPageCascader(this.projectId)
       this.pageList = data
     },
     onTabClick(tab) {
@@ -206,9 +215,6 @@ export default {
       })
     },
     pageChange(row) {
-      if (row.pageId === '') { // 清除Page
-        row.pageId = null
-      }
       updateAction(row).then(response => {
         this.fetchActionList()
       })

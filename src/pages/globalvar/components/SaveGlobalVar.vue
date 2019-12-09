@@ -9,7 +9,7 @@
     <el-form-item label="变量值" :rules="[{required: true}]">
       <el-row :gutter="12" v-for="(environmentValue, index) in globalVar.environmentValues" :key="index" style="margin-bottom: 5px">
         <el-col :span="6">
-          <el-select v-model="environmentValue.environmentId" placeholder="选择环境" style="width: 100%">
+          <el-select v-model="environmentValue.environmentId" @visible-change="envSelectChange" placeholder="选择环境" style="width: 100%">
             <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
           </el-select>
         </el-col>
@@ -63,14 +63,19 @@ export default {
     }
   },
   created() {
+    this.fetchEnvironmentList()
     if (!this.isAdd) {
       getGlobalVarList({ id: this.$route.params.globalVarId }).then(response => {
         this.globalVar = response.data[0]
       })
     }
-    this.fetchEnvironmentList()
   },
   methods: {
+    envSelectChange(type) {
+      if (type) {
+        this.fetchEnvironmentList()
+      }
+    },
     saveGlobalVarSuccess(msg) {
       this.$notify.success(msg)
       // 关闭当前tagview
@@ -90,7 +95,12 @@ export default {
     },
     fetchEnvironmentList() {
       getEnvironmentList({ projectId: this.$store.state.project.id }).then(response => {
-        this.environmentList = this.environmentList.concat(response.data)
+        this.environmentList = [
+          {
+            id: -1,
+            name: '默认'
+          }
+        ].concat(response.data)
       })
     },
     addEnvironmentValue() {

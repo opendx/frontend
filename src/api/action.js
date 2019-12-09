@@ -31,10 +31,14 @@ export function deleteAction(actionId) {
   })
 }
 
-export function getSelectableActions(projectId, platform) {
+export function getActionCascader(projectId, platform) {
   return request({
     method: 'get',
-    url: '/action/selectable/project/' + projectId + '/platform/' + platform
+    url: '/action/cascader',
+    params: {
+      projectId: projectId,
+      platform: platform
+    }
   })
 }
 

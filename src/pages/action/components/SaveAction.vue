@@ -1,45 +1,40 @@
 <template>
   <div>
     <sticky :z-index="10" class-name="sub-navbar">
-      <div style="float: left;margin-left: 20px">
-        <el-select v-model="env" @change="selectedEnv" style="width: 150px">
+      <div style="float: left;margin-left: 5px">
+        <el-select v-model="env" @change="selectedEnv" @visible-change="envSelectChange" style="width: 100px" size="mini">
           <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
         </el-select>
-        <el-button type="warning" :loading="debugBtnLoading" @click="debugAction">调试(ctrl + d)</el-button>
+        <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" size="mini" title="ctrl + d">调试</el-button>
       </div>
-      <span class="required" /><el-input v-model="saveActionForm.name" placeholder="action名" style="width: 200px" clearable />
-      <el-input v-model="saveActionForm.description" placeholder="描述" style="width: 150px" clearable />
-      <span v-if="!isTestCase"><!-- 不是测试用例，显示分类，显示page select选择page，以及查看page布局信息的el-icon-view -->
-        <el-select v-model="saveActionForm.categoryId" clearable filterable style="width: 120px" placeholder="选择分类">
+      <span class="required" /><el-input v-model="saveActionForm.name" placeholder="action名" style="width: 200px" clearable size="mini" />
+      <el-input v-model="saveActionForm.description" placeholder="描述" style="width: 150px" clearable size="mini" />
+      <span v-if="!isTestCase"><!-- 不是测试用例，可以绑定分类和page -->
+        <el-select v-model="saveActionForm.categoryId" @visible-change="actionCategorySelectChange" clearable filterable style="width: 120px" placeholder="选择分类" size="mini">
           <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
         </el-select>
-        <el-select v-model="saveActionForm.pageId" clearable filterable style="width: 120px" placeholder="选择page">
-          <el-option v-for="page in pages" :key="page.id" :label="page.name" :value="page.id" />
-        </el-select>
-        <el-drawer
-          :title="pageName"
-          :visible.sync="showPage"
-          direction="ltr"
-          :show-close="false"
-          @opened="drawerOpened"
-          size="90%">
-          <div style="padding: 10px">
-            <mobile-inspector :canvas-id="canvasId" :img-info="imgInfo" :window-hierarchy="windowHierarchy" :tree-loading="treeLoading" />
-          </div>
-        </el-drawer>
-        <el-button :disabled="!(saveActionForm.pageId > 0)" @click="showPage = true">查看page</el-button>
+        <el-cascader
+          v-model="saveActionForm.pageId"
+          :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+          :options="pages"
+          filterable
+          clearable
+          style="width: 150px"
+          size="mini"
+          :show-all-levels="false"
+          @visible-change="pageSelectChange"
+          placeholder="选择page">
+        </el-cascader>
       </span>
-      <span v-if="isTestCase"><!-- 测试用例，提供测试集选择 -->
-        <el-select v-model="saveActionForm.testSuiteId" clearable filterable style="width: 200px" placeholder="选择测试集">
+      <span v-if="isTestCase"><!-- 测试用例，可以绑定测试集 -->
+        <el-select v-model="saveActionForm.testSuiteId" @visible-change="testsuiteSelectChange" clearable filterable style="width: 200px" placeholder="选择测试集" size="mini">
           <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
         </el-select>
       </span>
-      <el-radio-group v-model="saveActionForm.state" fill="#454545" style="margin-top: -1px">
-        <el-radio-button :label="0">禁用</el-radio-button>
-        <el-radio-button :label="1">草稿</el-radio-button>
-        <el-radio-button :label="2">发布</el-radio-button>
-      </el-radio-group>
-      <el-button type="success" @click="saveAction">保存(ctrl + s)</el-button>
+      <el-select v-model="saveActionForm.state" size="mini" style="width: 80px">
+        <el-option v-for="state in stateList" :key="state.state" :label="state.name" :value="state.state" />
+      </el-select>
+      <el-button type="success" @click="saveAction" title="ctrl + s" size="mini">保存</el-button>
     </sticky>
     <div class="app-container">
       <el-tabs tab-position="left">
@@ -65,21 +60,19 @@
   </div>
 </template>
 <script>
-import MobileInspector from '@/pages/mobile/components/MobileInspector'
 import ActionImportList from '../components/ActionImportList'
 import ActionParamList from '../components/ActionParamList'
 import ActionLocalVarList from '../components/ActionLocalVarList'
 import GlobalVarList from '../components/GlobalVarList'
 import ActionStepList from '../components/ActionStepList'
 import Sticky from '@/components/Sticky'
-import { getPageList } from '@/api/page'
+import { getPageCascader } from '@/api/page'
 import { getCategoryList } from '@/api/category'
 import { getTestSuiteList } from '@/api/testSuite'
 import { addAction, updateAction, getActionList, debugAction } from '@/api/action'
 import { getEnvironmentList } from '@/api/environment'
 export default {
   components: {
-    MobileInspector,
     ActionImportList,
     ActionParamList,
     ActionLocalVarList,
@@ -98,6 +91,18 @@ export default {
         {
           id: -1,
           name: '默认'
+        }
+      ],
+      stateList: [
+        {
+          state: 0,
+          name: '禁用'
+        }, {
+          state: 1,
+          name: '草稿'
+        }, {
+          state: 2,
+          name: '发布'
         }
       ],
       saveActionForm: {
@@ -122,20 +127,8 @@ export default {
       pages: [],
       testSuites: [],
       debugBtnLoading: false,
-      // start-传递给AndroidInspctor组件的数据
-      canvasId: 'page-action-canvas',
-      imgInfo: {
-        imgWidth: null,
-        imgHeight: null,
-        imgUrl: null
-      },
-      windowHierarchy: null,
-      treeLoading: false,
-      // end-传递给AndroidInspctor组件的数据
       // 开始时的表单数据，用于校验表单数据是否有变化
-      startSaveActionFormString: '',
-      pageName: '',
-      showPage: false
+      startSaveActionFormString: ''
     }
   },
   destroyed() {
@@ -162,48 +155,71 @@ export default {
       }
     }
   },
-  async created() {
+  created() {
     this.fetchEnvironmentList()
-    if (!this.isTestCase) {
-      const response = await getCategoryList({ projectId: this.saveActionForm.projectId, type: 2 })
-      this.categories = response.data
-      const { data } = await getPageList({ projectId: this.saveActionForm.projectId })
-      this.pages = data
+    if (this.isTestCase) {
+      this.fetTestSuiteList()
     } else {
-      const { data } = await getTestSuiteList({ projectId: this.saveActionForm.projectId })
-      this.testSuites = data
+      this.fetActionCategoryList()
+      this.fetchPageCascader()
     }
-    if (!this.isAdd) {
-      const editActionId = this.$route.params.actionId
-      const { data } = await getActionList({ id: editActionId })
-      this.saveActionForm = data[0]
-      this.$refs.paramList.params = this.saveActionForm.params
-      this.$refs.localVarList.localVars = this.saveActionForm.localVars
-      this.$refs.stepList.steps = this.saveActionForm.steps
-      this.$refs.importList.javaImports = this.saveActionForm.javaImports
-    } else {
+    if (this.isAdd) {
       // 复制，传递过来的数据
       if (this.$route.params.name) {
-        this.saveActionForm = this.$route.params
+        setTimeout(() => {
+          // 这里不用异步会出问题
+          this.saveActionForm = this.$route.params
+          this.$refs.paramList.params = this.saveActionForm.params
+          this.$refs.localVarList.localVars = this.saveActionForm.localVars
+          this.$refs.stepList.steps = this.saveActionForm.steps
+          this.$refs.importList.javaImports = this.saveActionForm.javaImports
+          // 记录开始时的表单数据
+          this.startSaveActionFormString = JSON.stringify(this.saveActionForm)
+        }, 100)
+      }
+    } else {
+      // 编辑action
+      getActionList({ id: this.$route.params.actionId }).then(response => {
+        this.saveActionForm = response.data[0]
         this.$refs.paramList.params = this.saveActionForm.params
         this.$refs.localVarList.localVars = this.saveActionForm.localVars
         this.$refs.stepList.steps = this.saveActionForm.steps
         this.$refs.importList.javaImports = this.saveActionForm.javaImports
-      }
+        // 记录开始时的表单数据
+        this.startSaveActionFormString = JSON.stringify(this.saveActionForm)
+      })
     }
-    // 记录开始时的表单数据
-    this.startSaveActionFormString = JSON.stringify(this.saveActionForm)
   },
   methods: {
-    drawerOpened() {
-      const currentPage = this.pages.filter(page => page.id === this.saveActionForm.pageId)[0]
-      this.pageName = currentPage.name
-      this.imgInfo = {
-        imgWidth: currentPage.imgWidth,
-        imgHeight: currentPage.imgHeight,
-        imgUrl: currentPage.imgUrl
+    testsuiteSelectChange(type) {
+      if (type) {
+        this.fetTestSuiteList()
       }
-      this.windowHierarchy = currentPage.windowHierarchy
+    },
+    fetTestSuiteList() {
+      getTestSuiteList({ projectId: this.saveActionForm.projectId }).then(response => {
+        this.testSuites = response.data
+      })
+    },
+    pageSelectChange(type) {
+      if (type) {
+        this.fetchPageCascader()
+      }
+    },
+    fetchPageCascader() {
+      getPageCascader(this.saveActionForm.projectId).then(response => {
+        this.pages = response.data
+      })
+    },
+    actionCategorySelectChange(type) {
+      if (type) {
+        this.fetActionCategoryList()
+      }
+    },
+    fetActionCategoryList() {
+      getCategoryList({ projectId: this.saveActionForm.projectId, type: 2 }).then(response => {
+        this.categories = response.data
+      })
     },
     saveAction() {
       this.saveActionForm.params = this.$refs.paramList.params
@@ -283,9 +299,19 @@ export default {
       this.saveActionForm.javaImports = this.$refs.importList.javaImports
       return JSON.stringify(this.saveActionForm) !== this.startSaveActionFormString
     },
+    envSelectChange(type) {
+      if (type) {
+        this.fetchEnvironmentList()
+      }
+    },
     fetchEnvironmentList() {
       getEnvironmentList({ projectId: this.$store.state.project.id }).then(response => {
-        this.environmentList = this.environmentList.concat(response.data)
+        this.environmentList = [
+          {
+            id: -1,
+            name: '默认'
+          }
+        ].concat(response.data)
         // 当前选择的环境不存在，重置回默认。如：之前选择了test环境，后来test环境被删除了
         if (this.environmentList.filter(env => env.id === this.env).length === 0) {
           console.log('重置env为-1')
