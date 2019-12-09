@@ -4,14 +4,14 @@
     <!-- 列表 -->
     <div style="margin-top: 10px">
       <el-table :data="environmentList" highlight-current-row border>
-        <el-table-column label="环境名" align="center" prop="name" />
-        <el-table-column label="描述" align="center" prop="description" />
-        <el-table-column label="创建时间" align="center">
+        <el-table-column label="环境名" align="center" prop="name" show-overflow-tooltip />
+        <el-table-column label="描述" align="center" prop="description" show-overflow-tooltip />
+        <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.creatorNickName + ' ' + row.createTime }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="操作" width="150" align="center">
           <template scope="{ row }">
             <el-button type="primary" class="el-icon-edit" @click="updateEnvironment(row)" />
             <el-button type="danger" class="el-icon-delete" @click="deleteEnvironment(row)" />

@@ -6,16 +6,16 @@
     <!-- 列表 -->
     <div style="margin-top: 10px">
       <el-table :data="driverList" highlight-current-row border>
-        <el-table-column label="类型" align="center">
+        <el-table-column label="类型" align="center" width="100" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.type === 1 ? 'chromedriver' : 'todo' }}
           </template>
         </el-table-column>
-        <el-table-column label="version" align="center" prop="version" />
-        <el-table-column label="urls" align="center">
+        <el-table-column label="version" align="center" prop="version" width="100" show-overflow-tooltip />
+        <el-table-column label="urls" align="center" min-width="300">
           <template scope="{ row }">
             <el-table :data="row.urls" border>
-              <el-table-column label="平台" align="center">
+              <el-table-column label="平台" align="center" width="100" show-overflow-tooltip>
                 <template scope="{ row }">
                   {{ row.platform === 1 ? 'windows' : row.platform === 2 ? 'linux' : 'mac' }}
                 </template>
@@ -24,17 +24,17 @@
             </el-table>
           </template>
         </el-table-column>
-        <el-table-column label="devices" align="center">
+        <el-table-column label="devices" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
             <div v-for="deviceId in row.deviceIds" :key="deviceId">{{ deviceId }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center">
+        <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.creatorNickName + ' ' + row.createTime }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="操作" width="150" align="center">
           <template scope="{ row }">
             <el-button type="primary" class="el-icon-edit" @click="updateDriver(row)" />
             <el-button type="danger" class="el-icon-delete" @click="deleteDriver(row)" />

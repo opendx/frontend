@@ -9,7 +9,7 @@
     </el-form-item>
     <el-form-item label="app" :rules="[{required: true}]" v-if="isAdd">
       <el-upload drag action="/" :on-change="onChange" :multiple="false" :auto-upload="false">
-        <i class="el-icon-upload" /><div>将app拖到此处，或<em>点击选择app</em></div>
+        <i class="el-icon-upload" /><div>将app拖到此处，或点击选择app</div>
       </el-upload>
     </el-form-item>
     <el-form-item label="app名" :rules="[{required: true}]">

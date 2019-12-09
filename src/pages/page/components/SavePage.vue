@@ -1,7 +1,7 @@
 <template>
   <div>
     <mobile-inspector canvas-id="page-canvas" :img-info="imgInfo" :window-hierarchy="savePageForm.windowHierarchy" :tree-loading="false" />
-    <el-form label-width="100px">
+    <el-form label-width="80px">
       <el-form-item label="元素">
         <el-button @click="addElement">+</el-button>
         <el-row :gutter="5" v-for="(element, index) in savePageForm.elements" :key="index" style="margin-top: 3px">
@@ -22,7 +22,7 @@
     </el-form>
     <el-row :gutter="10">
       <el-col :span="12">
-        <el-form label-width="100px">
+        <el-form label-width="80px">
           <el-form-item label="page名" :rules="[{required: true}]">
             <el-input v-model="savePageForm.name" clearable />
           </el-form-item>

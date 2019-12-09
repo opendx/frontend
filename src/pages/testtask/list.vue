@@ -3,38 +3,38 @@
     <div>
       <el-button @click="fetchTestTaskList" style="margin-bottom: 10px">刷新</el-button>
       <el-table :data="testTaskList" border fit>
-        <el-table-column label="提交时间" align="center" width="200">
+        <el-table-column label="提交时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.creatorNickName + ' ' + row.commitTime }}
           </template>
         </el-table-column>
-        <el-table-column label="完成时间" prop="finishTime" align="center"></el-table-column>
-        <el-table-column label="测试计划" align="center">
+        <el-table-column label="完成时间" prop="finishTime" align="center" width="150" show-overflow-tooltip />
+        <el-table-column label="测试计划" align="center" min-width="150" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.testPlan.name }}
           </template>
         </el-table-column>
-        <el-table-column label="通过用例数" align="center">
+        <el-table-column label="通过" align="center" width="100">
           <template scope="scope">
             {{ scope.row.status === 0 ? '-' : scope.row.passCaseCount }}
           </template>
         </el-table-column>
-        <el-table-column label="失败用例数" align="center">
+        <el-table-column label="失败" align="center" width="100">
           <template scope="scope">
             {{ scope.row.status === 0 ? '-' : scope.row.failCaseCount }}
           </template>
         </el-table-column>
-        <el-table-column label="跳过用例数" align="center">
+        <el-table-column label="跳过" align="center" width="100">
           <template scope="scope">
             {{ scope.row.status === 0 ? '-' : scope.row.skipCaseCount }}
           </template>
         </el-table-column>
-        <el-table-column label="状态" align="center">
+        <el-table-column label="状态" align="center" width="100">
           <template scope="scope">
             {{ scope.row.status === 0 ? '未完成' : '已完成' }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="350" align="center">
+        <el-table-column label="操作" width="280" align="center">
           <template scope="{ row }">
             <el-button type="primary" @click="onDeviceTestTaskBtnClick(row)">查看进度</el-button>
             <!--未完成disable-->
@@ -82,8 +82,8 @@
               <el-button type="text" @click="showCodemirror(row.code)" v-if="row.code">查看</el-button>
             </template>
           </el-table-column>
-          <el-table-column label="开始时间" align="center" prop="startTime" width="100" />
-          <el-table-column label="结束时间" align="center" prop="endTime" width="100" />
+          <el-table-column label="开始时间" align="center" prop="startTime" width="150" show-overflow-tooltip />
+          <el-table-column label="结束时间" align="center" prop="endTime" width="150" show-overflow-tooltip />
           <el-table-column label="测试用例" align="center">
             <template scope="{ row }">
               <el-table :data="row.testcases" border max-height="400px">
@@ -109,9 +109,9 @@
                     <el-table :data="row.steps" border>
                       <el-table-column label="#" prop="number" align="center" width="50" />
                       <el-table-column label="步骤名" prop="name" align="center" show-overflow-tooltip />
-                      <el-table-column label="开始时间" prop="startTime" align="center" />
-                      <el-table-column label="结束时间" prop="endTime" align="center" />
-                      <el-table-column label="耗时" align="center" width="100">
+                      <el-table-column label="开始时间" prop="startTime" align="center" width="150" show-overflow-tooltip />
+                      <el-table-column label="结束时间" prop="endTime" align="center" width="150" show-overflow-tooltip />
+                      <el-table-column label="耗时" align="center" width="100" show-overflow-tooltip>
                         <template scope="{ row }">
                           {{ row.endTime ? parseInt(new Date(row.endTime) - new Date(row.startTime)) / 1000 + '秒' : '-' }}
                         </template>

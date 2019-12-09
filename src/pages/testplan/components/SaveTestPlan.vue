@@ -73,7 +73,7 @@
           <span style="margin-left: 10px;font-size: 10px;color: #8c939d">所有测试用例执行后执行的操作</span>
         </el-form-item>
         <el-form-item label="测试集" :rules="[{required: true}]">
-          <el-select v-model="saveTestPlanForm.testSuites" multiple :rules="[{required: true}]">
+          <el-select v-model="saveTestPlanForm.testSuites" multiple :rules="[{required: true}]" style="width: 100%">
             <el-option
               v-for="testSuite in testSuites"
               :label="testSuite.name"
@@ -92,7 +92,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="设备" :rules="[{required: true}]">
-          <el-select v-model="saveTestPlanForm.deviceIds" clearable filterable multiple style="width: 80%">
+          <el-select v-model="saveTestPlanForm.deviceIds" clearable filterable multiple style="width: 100%">
             <el-option v-for="device in onlineDevices" :label="device.id" :value="device.id" :key="device.id">
               <span>{{ device.id }}</span>
               <el-divider direction="vertical" />

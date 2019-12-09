@@ -20,11 +20,11 @@
           <el-button>{{ url.platform === 1 ? 'windows' : url.platform === 2 ? 'linux' : 'mac' }} - 点击上传</el-button>
           {{ url.downloadUrl }}
         </el-upload>
-        <el-divider></el-divider>
+        <el-divider />
       </div>
     </el-form-item>
     <el-form-item label="devices">
-      <el-select v-model="driver.deviceIds" clearable filterable multiple>
+      <el-select v-model="driver.deviceIds" clearable filterable multiple style="width: 100%">
         <el-option v-for="device in devices" :label="device.id" :value="device.id" :key="device.id">
           <span>{{ device.id }}</span>
           <el-divider direction="vertical" />

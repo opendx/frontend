@@ -7,21 +7,21 @@
           <div class="circle"/>
         </template>
       </el-table-column>
-      <el-table-column label="操作系统" property="osName" align="center" />
-      <el-table-column label="appium版本" property="appiumVersion" align="center" />
-      <el-table-column label="java版本" property="javaVersion" align="center" />
-      <el-table-column label="host" align="center">
+      <el-table-column label="操作系统" property="osName" align="center" width="150" show-overflow-tooltip />
+      <el-table-column label="appium版本" property="appiumVersion" align="center" width="100" show-overflow-tooltip />
+      <el-table-column label="java版本" property="javaVersion" align="center" width="100" show-overflow-tooltip />
+      <el-table-column label="地址" align="center" width="180" show-overflow-tooltip>
         <template scope="{ row }">
           {{ row.ip + ':' + row.port }}
         </template>
       </el-table-column>
       <el-table-column label="设备" align="center">
         <template scope="{ row }">
-          <el-table :data="row.devices" size="mini" border>
-            <el-table-column label="设备id" prop="id" align="center" />
-            <el-table-column label="设备名" prop="name" align="center" />
-            <el-table-column label="系统" prop="systemVersion" align="center" />
-            <el-table-column label="设备状态" align="center">
+          <el-table :data="row.devices" border>
+            <el-table-column label="设备id" prop="id" align="center" show-overflow-tooltip />
+            <el-table-column label="设备名" prop="name" align="center" show-overflow-tooltip />
+            <el-table-column label="系统" prop="systemVersion" align="center" show-overflow-tooltip />
+            <el-table-column label="设备状态" align="center" show-overflow-tooltip>
               <template scope="device_scope">
                 {{ device_scope.row.status === 2 ? '在线闲置': '[' + device_scope.row.username + ']使用中' }}
               </template>

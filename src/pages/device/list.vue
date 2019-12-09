@@ -10,23 +10,23 @@
     <!--列表-->
     <div style="margin-top: 10px">
       <el-table :data="deviceList" highlight-current-row border>
-        <el-table-column label="设备" align="center" width="120px">
+        <el-table-column label="设备" align="center" width="120">
           <template scope="{ row }">
             <img :src="row.imgUrl" width="100px">
           </template>
         </el-table-column>
-        <el-table-column label="设备id" align="center" prop="id" />
-        <el-table-column label="设备名" align="center" prop="name" />
-        <el-table-column label="系统版本" align="center" prop="systemVersion" width="80px" />
-        <el-table-column label="分辨率" align="center" width="100">
+        <el-table-column label="设备id" align="center" prop="id" show-overflow-tooltip />
+        <el-table-column label="设备名" align="center" prop="name" show-overflow-tooltip />
+        <el-table-column label="系统版本" align="center" prop="systemVersion" width="80" show-overflow-tooltip />
+        <el-table-column label="分辨率" align="center" width="100" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.screenHeight + 'x' + row.screenWidth }}
           </template>
         </el-table-column>
-        <el-table-column label="cpu" align="center" prop="cpuInfo" />
-        <el-table-column label="内存" align="center" prop="memSize" width="80" />
-        <el-table-column label="agent ip" align="center" prop="agentIp" />
-        <el-table-column label="操作" align="center">
+        <el-table-column label="cpu" align="center" prop="cpuInfo" show-overflow-tooltip />
+        <el-table-column label="内存" align="center" prop="memSize" width="80" show-overflow-tooltip />
+        <el-table-column label="agent ip" align="center" prop="agentIp" width="150" show-overflow-tooltip />
+        <el-table-column label="操作" align="center" show-overflow-tooltip>
           <template scope="{ row }">
             <el-button :type="row.status | btnType" :disabled="row.status | btnDisabled" @click="useDevice(row)">{{ row | btnText }}</el-button>
           </template>

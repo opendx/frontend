@@ -13,33 +13,33 @@
     <!--action列表-->
     <div>
       <el-table :data="actionList" highlight-current-row border>
-        <el-table-column label="测试用例" align="center" prop="name" />
-        <el-table-column label="描述" align="center" prop="description" />
-        <el-table-column label="测试集" align="center">
+        <el-table-column label="测试集" align="center" width="200">
           <template scope="{ row }">
             <el-select v-model="row.testSuiteId" clearable filterable @change="testSuiteChange(row)" placeholder="选择测试集">
               <el-option v-for="testSuite in testSuiteListWithoutTotal" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center">
+        <el-table-column label="测试用例" align="center" prop="name" min-width="200" show-overflow-tooltip />
+        <el-table-column label="描述" align="center" prop="description" show-overflow-tooltip />
+        <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.creatorNickName + ' ' + row.createTime }}
           </template>
         </el-table-column>
-        <el-table-column label="更新时间" align="center">
+        <el-table-column label="更新时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
             {{ (row.updatorNickName ? row.updatorNickName : '') + ' ' + (row.updateTime ? row.updateTime : '') }}
           </template>
         </el-table-column>
-        <el-table-column label="状态" align="center" width="120">
+        <el-table-column label="状态" align="center" width="100">
           <template scope="{ row }">
             <el-select v-model="row.state" @change="stateChange(row)">
               <el-option v-for="state in stateList" :key="state.state" :label="state.name" :value="state.state" />
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="250" align="center">
+        <el-table-column label="操作" width="200" align="center">
           <template scope="{ row }">
             <el-button type="success" @click="copyAction(row)">复制</el-button>
             <el-button type="primary" class="el-icon-edit" @click="updateAction(row.id)" />

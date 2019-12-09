@@ -17,21 +17,21 @@
             {{ row.platform === 1 ? 'Android' : 'iOS' }}
           </template>
         </el-table-column>
-        <el-table-column label="App名" property="name" align="center" />
+        <el-table-column label="App名" property="name" align="center" show-overflow-tooltip />
         <el-table-column label="下载地址" align="center" width="100">
           <template scope="{ row }">
             <el-button type="text" slot="append" v-clipboard:copy="row.downloadUrl" v-clipboard:success="onCopy">复制</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="Version" property="version" align="center" width="100" />
-        <el-table-column v-if="queryForm.platform === 1" label="PackageName" property="packageName" align="center" />
-        <el-table-column v-if="queryForm.platform === 1" label="LaunchActivity" property="launchActivity" align="center" />
-        <el-table-column label="上传时间" align="center" width="200">
+        <el-table-column label="Version" property="version" align="center" width="100" show-overflow-tooltip />
+        <el-table-column v-if="queryForm.platform === 1" label="PackageName" property="packageName" align="center" show-overflow-tooltip />
+        <el-table-column v-if="queryForm.platform === 1" label="LaunchActivity" property="launchActivity" align="center" show-overflow-tooltip />
+        <el-table-column label="上传时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.uploadorNickName + ' ' + row.uploadTime }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="300">
+        <el-table-column label="操作" align="center" width="250">
           <template scope="{ row }">
             <el-button v-if="queryForm.platform === 1 && (!row.packageName || !row.launchActivity || !row.version)" @click="aaptDumpBadging(row)" title="获取Version PackageName LaunchActivity" :loading="aaptDumpBadgingBtnLoading">aapt dump</el-button>
             <el-button type="primary" class="el-icon-edit" @click="updateApp(row)" />

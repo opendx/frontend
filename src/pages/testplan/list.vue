@@ -2,38 +2,38 @@
   <div class="app-container">
     <el-button @click="$router.push('/testplan/add')" style="margin-bottom: 10px">添加测试计划</el-button>
     <el-table :data="testPlanList" border fit>
-      <el-table-column label="环境" align="center">
+      <el-table-column label="环境" align="center" width="200">
         <template scope="{ row }">
           <el-select v-model="row.environmentId" @change="environmentChange(row)">
             <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="测试计划" align="center" prop="name"></el-table-column>
-      <el-table-column label="描述" align="center" prop="description"></el-table-column>
-      <el-table-column label="设备" align="center">
+      <el-table-column label="测试计划" align="center" prop="name" min-width="100" show-overflow-tooltip />
+      <el-table-column label="描述" align="center" prop="description" />
+      <el-table-column label="设备" align="center" width="200" show-overflow-tooltip>
         <template scope="{ row }">
           <div v-for="deviceId in row.deviceIds" :key="deviceId">{{ deviceId }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="录制视频" align="center">
+      <el-table-column label="录制视频" align="center" width="80">
         <template scope="{ row }">
           {{ row.enableRecordVideo === 1 ? '开启' : '关闭' }}
         </template>
       </el-table-column>
-      <el-table-column label="失败重试次数" align="center" prop="failRetryCount"></el-table-column>
-      <el-table-column label="定时任务" align="center" prop="description">
+      <el-table-column label="失败重试次数" align="center" prop="failRetryCount" width="100" />
+      <el-table-column label="定时任务" align="center" prop="description" width="80">
         <template scope="{ row }">
           {{ row.enableSchedule === 1 ?  '开启' : '关闭' }}
         </template>
       </el-table-column>
-      <el-table-column label="cron表达式" align="center" prop="cronExpression"></el-table-column>
-      <el-table-column label="创建时间" align="center">
+      <el-table-column label="cron表达式" align="center" prop="cronExpression" width="150" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
         <template scope="{ row }">
           {{ row.creatorNickName + ' ' + row.createTime }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="300">
+      <el-table-column label="操作" align="center" width="230">
         <template scope="{ row }">
           <el-button type="success" @click="commitTestPlan(row.id)">提交测试</el-button>
           <el-button type="primary" class="el-icon-edit" @click="goToUpdateTestPlanPage(row.id)" />

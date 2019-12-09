@@ -1,5 +1,5 @@
 <template>
-  <el-form :data="category" label-width="100px">
+  <el-form :data="category" label-width="80px">
     <el-form-item label="分类名" :rules="[{required: true}]">
       <el-input v-model.trim="category.name" clearable style="width: 300px" />
     </el-form-item>

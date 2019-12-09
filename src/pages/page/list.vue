@@ -8,21 +8,21 @@
     <!--page列表-->
     <div>
       <el-table :data="pageList" highlight-current-row border>
-        <el-table-column label="分类" align="center">
+        <el-table-column label="分类" align="center" width="200">
           <template scope="{ row }">
             <el-select v-model="row.categoryId" clearable filterable @change="categoryChange(row)" placeholder="选择分类">
               <el-option v-for="category in pageCategoryListWithoutTotal" :key="category.id" :value="category.id" :label="category.name" />
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="page" align="center" width="120px">
+        <el-table-column label="page" align="center" width="120">
           <template scope="{ row }">
             <img v-if="row.imgUrl" :src="row.imgUrl" width="100px">
           </template>
         </el-table-column>
-        <el-table-column label="page名" align="center" property="name" />
-        <el-table-column label="描述" align="center" property="description" />
-        <el-table-column label="创建时间" align="center">
+        <el-table-column label="page名" align="center" property="name" show-overflow-tooltip />
+        <el-table-column label="描述" align="center" property="description" show-overflow-tooltip />
+        <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.creatorNickName + ' ' + row.createTime }}
           </template>
