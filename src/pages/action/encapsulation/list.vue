@@ -5,9 +5,16 @@
       <el-button @click="$router.push('/action/encapsulation/add')">添加Action</el-button>
     </div>
     <div style="margin-bottom: 10px">
-      <el-select v-model="queryActionListForm.pageId" clearable filterable placeholder="选择Page">
-        <el-option v-for="page in pageList" :key="page.id" :label="page.name" :value="page.id" />
-      </el-select>
+      <el-cascader
+        v-model="queryActionListForm.pageId"
+        :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+        :options="pageList"
+        filterable
+        clearable
+        style="width: 200px"
+        :show-all-levels="false"
+        placeholder="选择page">
+      </el-cascader>
       <el-button type="primary" class="el-icon-search" @click="onQueryBtnClick" />
     </div>
     <!--action分类-->
