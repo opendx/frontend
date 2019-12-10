@@ -4,17 +4,18 @@
     <el-form label-width="80px">
       <el-form-item label="元素">
         <el-button @click="addElement">+</el-button>
-        <el-row :gutter="5" v-for="(element, index) in savePageForm.elements" :key="index" style="margin-top: 3px">
+        <el-row :gutter="12" v-for="(element, index) in savePageForm.elements" :key="index" style="margin-top: 3px">
           <el-col :span="5">
             <el-input v-model.trim="element.name" clearable placeholder="元素名"/>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="4">
             <el-cascader v-model="element.findBy" :options="findBys" placeholder="findBy" style="width: 100%"/>
           </el-col>
-          <el-col :span="13">
+          <el-col :span="11">
             <el-input v-model.trim="element.value" clearable placeholder="findValue"/>
           </el-col>
-          <el-col :span="1">
+          <el-col :span="4">
+            <el-button v-clipboard:copy="savePageForm.name + '_' + element.name" v-clipboard:success="onCopy">复制</el-button>
             <el-button @click="delElement(index)">-</el-button>
           </el-col>
         </el-row>
@@ -66,8 +67,12 @@
 import { addPage, updatePage, getPageList } from '@/api/page'
 import { getCategoryList } from '@/api/category'
 import MobileInspector from '@/pages/mobile/components/MobileInspector'
+import clipboard from '@/directive/clipboard/index.js'
 
 export default {
+  directives: {
+    clipboard
+  },
   props: {
     isAdd: Boolean
   },
@@ -192,11 +197,16 @@ export default {
     }
   },
   methods: {
+    onCopy(e) {
+      this.$notify.success(e.text + '复制成功')
+    },
     savePageSuccess(msg) {
       this.$notify.success(msg)
-      // 关闭当前tagview
-      this.$store.dispatch('tagsView/delView', this.$store.state.tagsView.visitedViews.filter(item => item.path === this.$route.path)[0])
-      this.$router.back()
+      if (this.isAdd) {
+        // 关闭当前tagview
+        this.$store.dispatch('tagsView/delView', this.$store.state.tagsView.visitedViews.filter(item => item.path === this.$route.path)[0])
+        this.$router.back()
+      }
     },
     savePage() {
       if (this.isAdd) {
