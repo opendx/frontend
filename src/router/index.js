@@ -429,7 +429,7 @@ export const constantRoutes = [
         path: 'report/:testTaskId',
         component: () => import('@/pages/testtask/report/index'),
         name: 'ReportTestTask',
-        meta: { title: '测试报告', noCache: true },
+        meta: { title: '测试报告', noCache: false },
         hidden: true
       }
     ]

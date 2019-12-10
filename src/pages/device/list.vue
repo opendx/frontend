@@ -108,7 +108,6 @@ export default {
         this.$store.dispatch('device/setShow', true)
       })
     },
-
     fetchDeviceList() {
       getDeviceList(this.queryForm).then(response => {
         this.deviceList = response.data.data

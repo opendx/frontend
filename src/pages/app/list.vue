@@ -24,8 +24,8 @@
           </template>
         </el-table-column>
         <el-table-column label="Version" property="version" align="center" width="100" show-overflow-tooltip />
-        <el-table-column v-if="queryForm.platform === 1" label="PackageName" property="packageName" align="center" show-overflow-tooltip />
-        <el-table-column v-if="queryForm.platform === 1" label="LaunchActivity" property="launchActivity" align="center" show-overflow-tooltip />
+        <el-table-column label="PackageName" property="packageName" align="center" show-overflow-tooltip />
+        <el-table-column label="LaunchActivity" property="launchActivity" align="center" show-overflow-tooltip />
         <el-table-column label="上传时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.uploadorNickName + ' ' + row.uploadTime }}
@@ -33,7 +33,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="250">
           <template scope="{ row }">
-            <el-button v-if="queryForm.platform === 1 && (!row.packageName || !row.launchActivity || !row.version)" @click="aaptDumpBadging(row)" title="获取Version PackageName LaunchActivity" :loading="aaptDumpBadgingBtnLoading">aapt dump</el-button>
+            <el-button v-if="row.platform === 1 && (!row.packageName || !row.launchActivity || !row.version)" @click="aaptDumpBadging(row)" title="获取Version PackageName LaunchActivity" :loading="aaptDumpBadgingBtnLoading">aapt dump</el-button>
             <el-button type="primary" class="el-icon-edit" @click="updateApp(row)" />
             <el-button type="danger" class="el-icon-delete" @click="deleteApp(row)" />
           </template>
@@ -78,7 +78,7 @@ export default {
         projectId: this.$store.state.project.id,
         pageNum: 1,
         pageSize: 10,
-        platform: 1
+        platform: null
       }
     }
   },

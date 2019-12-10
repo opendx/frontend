@@ -59,6 +59,7 @@ import { getTestTaskSummary } from '@/api/testTask'
 import TestCase from './components/TestCase'
 
 export default {
+  name: 'ReportTestTask',
   components: {
     TestCase
   },

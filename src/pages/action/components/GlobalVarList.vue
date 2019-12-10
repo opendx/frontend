@@ -1,7 +1,15 @@
 <template>
   <div>
     <el-table :data="globalVarList" border height="250">
-      <el-table-column align="center" property="type" label="全局变量类型" />
+      <el-table-column align="center" width="200">
+        <template slot="header">
+          <el-button type="text" class="el-icon-refresh" @click="fetchGlobalVarList" />
+          全局变量类型
+        </template>
+        <template scope="{ row }">
+          {{ row.type }}
+        </template>
+      </el-table-column>
       <el-table-column align="center" property="name" label="全局变量名" />
       <el-table-column align="center" label="全局变量值" width="900">
         <template scope="{ row }">
@@ -31,19 +39,17 @@ export default {
       globalVarList: []
     }
   },
-  computed: {
-    projectId() {
-      return this.$store.state.project.id
-    }
-  },
   created() {
-    getGlobalVarList({
-      projectId: this.projectId
-    }).then(response => {
-      this.globalVarList = response.data
-    })
+    this.fetchGlobalVarList()
   },
   methods: {
+    fetchGlobalVarList() {
+      getGlobalVarList({
+        projectId: this.$store.state.project.id
+      }).then(response => {
+        this.globalVarList = response.data
+      })
+    }
   }
 }
 </script>

@@ -176,6 +176,9 @@ export default {
           // 记录开始时的表单数据
           this.startSaveActionFormString = JSON.stringify(this.saveActionForm)
         }, 100)
+      } else {
+        // 记录开始时的表单数据
+        this.startSaveActionFormString = JSON.stringify(this.saveActionForm)
       }
     } else {
       // 编辑action

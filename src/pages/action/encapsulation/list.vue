@@ -38,7 +38,6 @@
               filterable
               clearable
               style="width: 100%"
-              size="mini"
               :show-all-levels="false"
               placeholder="选择page">
             </el-cascader>
@@ -215,6 +214,9 @@ export default {
       })
     },
     pageChange(row) {
+      if (row.pageId === '') {
+        row.pageId = null
+      }
       updateAction(row).then(response => {
         this.fetchActionList()
       })

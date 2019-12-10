@@ -15,6 +15,7 @@
             :options="actions"
             filterable
             clearable
+            @visible-change="actionSelectChange"
             :show-all-levels="false">
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
@@ -31,6 +32,7 @@
             :options="actions"
             filterable
             clearable
+            @visible-change="actionSelectChange"
             :show-all-levels="false">
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
@@ -47,6 +49,7 @@
             :options="actions"
             filterable
             clearable
+            @visible-change="actionSelectChange"
             :show-all-levels="false">
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
@@ -63,6 +66,7 @@
             :options="actions"
             filterable
             clearable
+            @visible-change="actionSelectChange"
             :show-all-levels="false">
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
@@ -73,7 +77,7 @@
           <span style="margin-left: 10px;font-size: 10px;color: #8c939d">所有测试用例执行后执行的操作</span>
         </el-form-item>
         <el-form-item label="测试集" :rules="[{required: true}]">
-          <el-select v-model="saveTestPlanForm.testSuites" multiple :rules="[{required: true}]" style="width: 100%">
+          <el-select v-model="saveTestPlanForm.testSuites" @visible-change="testSuiteSelectChange" multiple filterable clearable :rules="[{required: true}]" style="width: 100%">
             <el-option
               v-for="testSuite in testSuites"
               :label="testSuite.name"
@@ -87,12 +91,12 @@
     <el-col :span="12">
       <el-form label-width="120px">
         <el-form-item label="环境" :rules="[{required: true}]">
-          <el-select v-model="saveTestPlanForm.environmentId">
+          <el-select v-model="saveTestPlanForm.environmentId" @visible-change="envSelectChange">
             <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
           </el-select>
         </el-form-item>
         <el-form-item label="设备" :rules="[{required: true}]">
-          <el-select v-model="saveTestPlanForm.deviceIds" clearable filterable multiple style="width: 100%">
+          <el-select v-model="saveTestPlanForm.deviceIds" @visible-change="deviceSelectChange" clearable filterable multiple style="width: 100%">
             <el-option v-for="device in onlineDevices" :label="device.id" :value="device.id" :key="device.id">
               <span>{{ device.id }}</span>
               <el-divider direction="vertical" />
@@ -212,20 +216,45 @@ export default {
         })
       }
     },
+    actionSelectChange(type) {
+      if (type) {
+        this.fetchActionCascader()
+      }
+    },
     fetchActionCascader() {
       getActionCascader(this.projectId, this.platform).then(response => {
         this.actions = response.data
       })
+    },
+    testSuiteSelectChange(type) {
+      if (type) {
+        this.fetchTestSuiteList()
+      }
     },
     fetchTestSuiteList() {
       getTestSuiteList({ projectId: this.projectId }).then(response => {
         this.testSuites = response.data
       })
     },
+    envSelectChange(type) {
+      if (type) {
+        this.fetchEnvironmentList()
+      }
+    },
     fetchEnvironmentList() {
       getEnvironmentList({ projectId: this.projectId }).then(response => {
-        this.environmentList = this.environmentList.concat(response.data)
+        this.environmentList = [
+          {
+            id: -1,
+            name: '默认'
+          }
+        ].concat(response.data)
       })
+    },
+    deviceSelectChange(type) {
+      if (type) {
+        this.fetchOnlineDevices()
+      }
     },
     fetchOnlineDevices() {
       getOnlineDevices(this.platform).then(response => {

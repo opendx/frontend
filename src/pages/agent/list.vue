@@ -22,8 +22,8 @@
             <el-table-column label="设备名" prop="name" align="center" show-overflow-tooltip />
             <el-table-column label="系统" prop="systemVersion" align="center" show-overflow-tooltip />
             <el-table-column label="设备状态" align="center" show-overflow-tooltip>
-              <template scope="device_scope">
-                {{ device_scope.row.status === 2 ? '在线闲置': '[' + device_scope.row.username + ']使用中' }}
+              <template scope="{ row }">
+                {{ row.status === 2 ? '在线闲置': '[' + row.username + ']使用中' }}
               </template>
             </el-table-column>
           </el-table>
