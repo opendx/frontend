@@ -1,11 +1,11 @@
 <template>
   <section class="app-main">
     <div :style="leftStyle">
-      <transition name="fade-transform" mode="out-in">
-        <keep-alive :include="cachedViews">
-          <router-view :key="key" />
-        </keep-alive>
-      </transition>
+      <!--<transition name="fade-transform" mode="out-in">-->
+      <keep-alive :include="cachedViews">
+        <router-view :key="key" />
+      </keep-alive>
+      <!--</transition>-->
     </div>
     <!--todo 先写死-->
     <div v-if="showDevice" style="width: 300px;height:100%;position: fixed;top: 85px;right: 10px;overflow: auto;">
