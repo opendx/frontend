@@ -5,27 +5,25 @@
     direction="rtl"
     :show-close="false"
     size="50%">
-    <div style="padding: 5px; height: 100%">
+    <div style="padding: 5px; font-size: 8px">
       <el-input placeholder="输入关键字进行过滤" v-model="actionTreeFilterText" clearable style="width: 40%;margin-bottom: 10px" />
-      <div style="height: 70%;overflow: auto">
-        <el-tree
-          :data="selectableActions"
-          :props="{ children: 'children', label: 'name' }"
-          default-expand-all
-          :filter-node-method="filterNode"
-          ref="tree">
-          <span slot-scope="{ node, data }">
-            <span>{{ node.label }}</span>
-            <el-button type="text" v-if="node.isLeaf" @click="showInnerDrawer(data)">查看详情</el-button>
-          </span>
-        </el-tree>
-      </div>
+      <el-tree
+        :data="selectableActions"
+        :props="{ children: 'children', label: 'name' }"
+        default-expand-all
+        :filter-node-method="filterNode"
+        ref="tree">
+        <span slot-scope="{ node, data }">
+          <span>{{ node.label }}</span>
+          <el-button type="text" v-if="node.isLeaf" @click="showInnerDrawer(data)">查看详情</el-button>
+        </span>
+      </el-tree>
     </div>
     <el-drawer
       size="40%"
       :append-to-body="true"
       :visible.sync="innerDrawer">
-      <codemirror v-model="codemirrorContent" :options="cmOptions"></codemirror>
+      <codemirror v-model="codemirrorContent" :options="cmOptions" />
     </el-drawer>
   </el-drawer>
 </template>
@@ -84,12 +82,12 @@ export default {
   }
 }
 </script>
-<style scoped>
-  .vue-codemirror >>> .CodeMirror {
+<style>
+  .CodeMirror {
     height: auto;
   }
-  .vue-codemirror {
-    height: 70%;
+  .el-drawer__body {
+    height: 100%;
     overflow: auto;
   }
 </style>

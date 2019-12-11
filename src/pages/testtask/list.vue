@@ -59,11 +59,11 @@
         size="60%"
         :append-to-body="true"
         :visible.sync="innerDrawer">
-        <codemirror v-model="codemirrorContent" :options="cmOptions"></codemirror>
+        <codemirror v-model="codemirrorContent" :options="cmOptions" />
       </el-drawer>
       <div style="padding: 5px">
         <el-button @click="fetchDeviceTestTask(testTaskIdInDrawer)" size="mini" style="margin-bottom: 5px">刷新</el-button>
-        <el-table :data="deviceTestTaskList" border max-height="800px">
+        <el-table :data="deviceTestTaskList" border>
           <el-table-column label="操作" width="80" align="center">
             <template scope="{ row }">
               <!-- status:-1出错不能执行 status:0未开始执行 -->
@@ -226,12 +226,12 @@ export default {
 }
 </script>
 
-<style scoped>
-  .vue-codemirror >>> .CodeMirror {
+<style>
+  .CodeMirror {
     height: auto;
   }
-  .vue-codemirror {
-    height: 80%;
+  .el-drawer__body {
+    height: 100%;
     overflow: auto;
   }
 </style>

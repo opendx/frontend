@@ -1,18 +1,18 @@
 <template>
   <div>
     <!--gutter 列的间距-->
-    <el-row style="height: 600px">
+    <el-row :style="{ height: height + 'px' }">
       <!--左侧图片-->
-      <el-col :span="8" align="center" style="height: 100%;overflow: auto">
-        <canvas :id="canvasId" :width="imgInfo.imgWidth" :height="imgInfo.imgHeight" style="width: 250px;position: absolute" />
-        <img :src="imgInfo.imgUrl" style="width: 250px">
+      <el-col :span="10" align="center" style="height: 100%">
+        <canvas :id="canvasId" :width="imgInfo.imgWidth" :height="imgInfo.imgHeight" style="height: 100%;position: absolute" />
+        <img :src="imgInfo.imgUrl" style="height: 100%">
       </el-col>
       <!--中间布局树-->
-      <el-col v-if="!isWebView" :span="9" align="center" style="height: 100%;overflow: auto">
+      <el-col v-if="!isWebView" :span="8" align="center" style="height: 100%;overflow: auto">
         <el-tree ref="tree" v-loading="treeLoading" :data="treeData" :props="defaultProps" highlight-current :expand-on-click-node="false" node-key="id" :default-expanded-keys="currentExpandedKey" @node-click="nodeClick" />
       </el-col>
       <!--右侧控件信息-->
-      <el-col v-if="!isWebView" :span="7" style="height: 100%;overflow: auto">
+      <el-col v-if="!isWebView" :span="6" style="height: 100%;overflow: auto;font-size: 12px">
         <ul style="list-style: none;word-break: break-all;padding: 0px">
           <li v-for="(value,key) in nodeDetail" :key="key" style="border-bottom: 1px solid #eee">
             <label style="width: 100px;display: inline-block;">{{ key }}</label>
@@ -21,7 +21,7 @@
         </ul>
       </el-col>
       <!--WebView-->
-      <el-col v-if="isWebView" :span="16" align="center" style="height: 100%;">
+      <el-col v-if="isWebView" :span="14" align="center" style="height: 100%;">
         <iframe :srcdoc="windowHierarchy" width="100%" height="100%"></iframe>
       </el-col>
     </el-row>
@@ -45,6 +45,7 @@ export default {
   },
   data() {
     return {
+      height: 500,
       canvasCtx: null,
       // 比例 手机屏幕宽度/画布像素宽度，如:1080/400
       scale: null,
@@ -71,7 +72,7 @@ export default {
   },
   watch: {
     imgInfo() {
-      this.scale = (this.imgInfo.imgWidth) / 250
+      this.scale = (this.imgInfo.imgHeight) / this.height
       console.log('scale', this.scale)
     },
     windowHierarchy() {
@@ -262,5 +263,8 @@ export default {
   .el-tree>.el-tree-node {
     min-width: 100%;
     display: inline-block;
+  }
+  .el-tree-node__label {
+    font-size: 12px;
   }
 </style>

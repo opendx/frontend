@@ -15,7 +15,7 @@
           <el-col :span="4">
             <video v-if="testcase.videoUrl" :src="testcase.videoUrl" width="100%" controls="controls">浏览器不支持video标签</video>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="13">
             <el-table :data="testcase.steps" border max-height="700">
               <el-table-column prop="number" label="步骤" align="center" width="70" />
               <el-table-column prop="name" label="步骤名" align="center" min-width="100" show-overflow-tooltip />
@@ -35,10 +35,10 @@
               </el-table-column>
             </el-table>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="7">
             <el-col>
               <el-col :span="8">
-                <img v-if="testcase.failImgUrl" :src="testcase.failImgUrl" width="100%"/>
+                <img v-if="testcase.failImgUrl" :src="testcase.failImgUrl" width="100%" />
               </el-col>
               <el-col :span="16">
                 <div style="color:red;max-height: 700px;overflow: auto" v-if="testcase.failInfo">{{ testcase.failInfo }}</div>

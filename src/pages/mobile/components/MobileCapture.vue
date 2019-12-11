@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 1000px">
+  <div style="width: 1200px">
     <i class="el-icon-refresh" style="font-size: 20px;color: green;cursor: pointer" title="重新获取" @click="refresh" />
     <i class="el-icon-circle-plus" style="font-size: 20px;color: black;cursor: pointer" title="添加page" @click="addPage" />
     <!-- inspector -->
