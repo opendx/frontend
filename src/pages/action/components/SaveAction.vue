@@ -116,7 +116,7 @@ export default {
         localVars: [],
         steps: [],
         javaImports: [],
-        platform: this.$store.state.project.platform,
+        platforms: [this.$store.state.project.platform],
         pageId: undefined,
         projectId: this.$store.state.project.id,
         testSuiteId: undefined,
@@ -266,14 +266,14 @@ export default {
       this.debugBtnLoading = true
       const action = {}
       action.name = this.saveActionForm.name
+      action.projectId = this.saveActionForm.projectId
+      action.platforms = this.saveActionForm.platforms
+      action.returnValue = this.saveActionForm.returnValue
+      action.type = this.saveActionForm.type
       action.javaImports = this.$refs.importList.javaImports
       action.params = this.$refs.paramList.params
       action.localVars = this.$refs.localVarList.localVars
       action.steps = this.$refs.stepList.selectedSteps
-      action.projectId = this.$store.state.project.id
-      action.platform = this.$store.state.project.platform
-      action.returnValue = this.saveActionForm.returnValue
-      action.type = this.isTestCase ? 3 : 2
       debugAction({
         action: action,
         debugInfo: {

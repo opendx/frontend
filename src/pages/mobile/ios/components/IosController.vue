@@ -75,7 +75,7 @@ export default {
     this.loading = true
 
     // iosWebsocket
-    this.iosWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/ios/' + this.deviceId + '/' + this.username)
+    this.iosWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/ios/' + this.deviceId + '/user/' + this.username + '/platform/' + this.$store.state.project.platform)
     this.iosWebsocket.onclose = () => {
       this.showAlert = true
       this.loading = false
