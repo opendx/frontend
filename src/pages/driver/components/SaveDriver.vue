@@ -71,7 +71,7 @@ export default {
         deviceIds: []
       },
       devices: [],
-      uploadUrl: process.env.VUE_APP_BASE_API + '/upload/file'
+      uploadUrl: process.env.VUE_APP_BASE_API + '/upload/file?fileType=4'
     }
   },
   created() {
