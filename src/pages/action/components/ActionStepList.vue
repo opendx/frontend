@@ -80,6 +80,7 @@
             <el-option label="忽略，继续执行" :value="0" />
             <el-option label="抛出跳过异常" :value="1" />
           </el-select>
+          <el-button size="mini" style="width: 100%;margin-top: 5px" @click="copyStep(scope.$index, scope.row)">复制</el-button>
           <el-button-group style="margin-top: 5px">
             <el-button size="mini" class="el-icon-plus" @click="addNextStep(scope.$index)" />
             <el-button size="mini" class="el-icon-minus" @click="deleteStep(scope.$index)" />
@@ -247,6 +248,11 @@ export default {
     },
     addNextStep(index) {
       this.steps.splice(index + 1, 0, { paramValues: [], handleException: null, status: 1 })
+    },
+    copyStep(index, row) {
+      const _row = JSON.parse(JSON.stringify(row))
+      delete _row.number
+      this.steps.splice(index, 0, _row)
     },
     // 步骤勾选
     handleSelectionChange(val) {
