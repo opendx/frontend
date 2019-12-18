@@ -4,19 +4,23 @@
     <el-form label-width="80px">
       <el-form-item label="元素">
         <el-button @click="addElement">+</el-button>
-        <el-row :gutter="12" v-for="(element, index) in savePageForm.elements" :key="index" style="margin-top: 3px">
-          <el-col :span="5">
-            <el-input v-model.trim="element.name" clearable placeholder="元素名"/>
+        <el-row :gutter="2" v-for="(element, index) in savePageForm.elements" :key="index" style="margin-top: 3px">
+          <el-col :span="6">
+            <el-input v-model.trim="element.name" clearable placeholder="元素名">
+              <template slot="prepend">WebElement</template>
+            </el-input>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="5">
             <el-cascader v-model="element.findBy" :options="findBys" placeholder="findBy" style="width: 100%"/>
           </el-col>
-          <el-col :span="11">
-            <el-input v-model.trim="element.value" clearable placeholder="findValue"/>
+          <el-col :span="10">
+            <el-input v-model.trim="element.value" clearable placeholder="value"/>
           </el-col>
-          <el-col :span="4">
-            <el-button v-clipboard:copy="savePageForm.name + '_' + element.name" v-clipboard:success="onCopy">复制</el-button>
-            <el-button @click="delElement(index)">-</el-button>
+          <el-col :span="3">
+            <el-button-group>
+              <el-button v-clipboard:copy="savePageForm.name + '_' + element.name" v-clipboard:success="onCopy">引用</el-button>
+              <el-button @click="delElement(index)">删除</el-button>
+            </el-button-group>
           </el-col>
         </el-row>
       </el-form-item>
