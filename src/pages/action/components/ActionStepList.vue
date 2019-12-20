@@ -115,19 +115,6 @@ export default {
       showActionDetail: false
     }
   },
-  watch: {
-    selectableActions(val) {
-      if (val.length !== 0) {
-        setTimeout(() => {
-          // 编辑action，一开始curActionId是undefined，延迟500ms后再处理
-          if (this.curActionId) {
-            // 编辑action，当前编辑的action不能选择，防止自己选自己陷入死循环
-            this.disableCurActionInSelectableActions(this.curActionId)
-          }
-        }, 500)
-      }
-    }
-  },
   computed: {
     possibleValues() {
       return function(actionId, paramName) {
@@ -271,6 +258,10 @@ export default {
     fetchActionCascader() {
       getActionCascader(this.projectId, this.platform).then(resp => {
         this.selectableActions = resp.data
+        if (this.curActionId) {
+          this.disableCurActionInSelectableActions(this.curActionId)
+        }
+        this.$emit('selectableActionsChange', this.selectableActions)
       })
     },
     // 选择了一个action或清除
