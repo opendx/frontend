@@ -15,8 +15,7 @@
             :options="actions"
             filterable
             clearable
-            @visible-change="actionSelectChange"
-            :show-all-levels="false">
+            @visible-change="actionSelectChange">
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
               <el-divider v-if="data.returnValue" direction="vertical" />
@@ -32,8 +31,7 @@
             :options="actions"
             filterable
             clearable
-            @visible-change="actionSelectChange"
-            :show-all-levels="false">
+            @visible-change="actionSelectChange">
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
               <el-divider v-if="data.returnValue" direction="vertical" />
@@ -49,8 +47,7 @@
             :options="actions"
             filterable
             clearable
-            @visible-change="actionSelectChange"
-            :show-all-levels="false">
+            @visible-change="actionSelectChange">
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
               <el-divider v-if="data.returnValue" direction="vertical" />
@@ -66,8 +63,7 @@
             :options="actions"
             filterable
             clearable
-            @visible-change="actionSelectChange"
-            :show-all-levels="false">
+            @visible-change="actionSelectChange">
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
               <el-divider v-if="data.returnValue" direction="vertical" />

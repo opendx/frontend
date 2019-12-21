@@ -11,8 +11,7 @@
         :options="pageList"
         filterable
         clearable
-        style="width: 200px"
-        :show-all-levels="false"
+        style="width: 300px"
         placeholder="选择page">
       </el-cascader>
       <el-button type="primary" class="el-icon-search" @click="onQueryBtnClick" />
@@ -35,7 +34,7 @@
         </el-table-column>
         <el-table-column label="Action名" align="center" prop="name" min-width="200" show-overflow-tooltip />
         <el-table-column label="描述" align="center" prop="description" show-overflow-tooltip />
-        <el-table-column label="Page" align="center" width="200">
+        <el-table-column label="Page" align="center" width="300">
           <template scope="{ row }">
             <el-cascader
               v-model="row.pageId"
@@ -45,7 +44,6 @@
               filterable
               clearable
               style="width: 100%"
-              :show-all-levels="false"
               placeholder="选择page">
             </el-cascader>
           </template>

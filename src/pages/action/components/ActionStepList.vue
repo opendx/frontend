@@ -258,7 +258,7 @@ export default {
     fetchActionCascader() {
       getActionCascader(this.projectId, this.platform).then(resp => {
         this.selectableActions = resp.data
-        if (this.curActionId) {
+        if (this.curActionId) { // 编辑action时，第一次拿不到curActionId
           this.disableCurActionInSelectableActions(this.curActionId)
         }
         this.$emit('selectableActionsChange', this.selectableActions)

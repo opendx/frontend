@@ -2,42 +2,59 @@
   <div>
     <sticky :z-index="10" class-name="sub-navbar">
       <div style="float: left;margin-left: 5px">
-        <el-select v-model="env" @change="selectedEnv" @visible-change="envSelectChange" style="width: 100px" size="mini">
+        <el-select v-model="env" @change="selectedEnv" @visible-change="envSelectChange" style="width: 200px" size="mini">
           <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
         </el-select>
-        <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" size="mini" title="ctrl + d">调试</el-button>
+        <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" size="mini">调试(ctrl+d)</el-button>
       </div>
-      <span class="required" /><el-input v-model="saveActionForm.name" placeholder="action名" style="width: 200px" clearable size="mini" />
-      <el-input v-model="saveActionForm.description" placeholder="描述" style="width: 150px" clearable size="mini" />
-      <span v-if="!isTestCase"><!-- 不是测试用例，可以绑定分类和page -->
-        <el-select v-model="saveActionForm.categoryId" @visible-change="actionCategorySelectChange" clearable filterable style="width: 120px" placeholder="选择分类" size="mini">
-          <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
-        </el-select>
-        <el-cascader
-          v-model="saveActionForm.pageId"
-          :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
-          :options="pages"
-          filterable
-          clearable
-          style="width: 150px"
-          size="mini"
-          :show-all-levels="false"
-          @visible-change="pageSelectChange"
-          placeholder="选择page">
-        </el-cascader>
-      </span>
-      <span v-if="isTestCase"><!-- 测试用例，可以绑定测试集 -->
-        <el-select v-model="saveActionForm.testSuiteId" @visible-change="testsuiteSelectChange" clearable filterable style="width: 200px" placeholder="选择测试集" size="mini">
-          <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
-        </el-select>
-      </span>
+      <span class="required" /><el-input v-model="saveActionForm.name" placeholder="名称" style="width: 300px" clearable size="mini" />
       <el-select v-model="saveActionForm.state" size="mini" style="width: 80px">
         <el-option v-for="state in stateList" :key="state.state" :label="state.name" :value="state.state" />
       </el-select>
-      <el-button type="success" @click="saveAction" title="ctrl + s" size="mini">保存</el-button>
+      <el-button type="success" @click="saveAction" size="mini">保存(ctrl+s)</el-button>
     </sticky>
     <div class="app-container">
       <el-tabs tab-position="left">
+        <el-tab-pane label="信息">
+          <el-form label-width="100px" label-position="left">
+            <el-form-item label="所属分类" v-if="!isTestCase">
+              <el-select v-model="saveActionForm.categoryId" @visible-change="actionCategorySelectChange" clearable filterable style="width: 500px" placeholder="选择分类">
+                <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="所属Page" v-if="!isTestCase">
+              <el-cascader
+                v-model="saveActionForm.pageId"
+                :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+                :options="pages"
+                filterable
+                clearable
+                style="width: 500px"
+                @visible-change="pageSelectChange"
+                placeholder="选择page">
+              </el-cascader>
+            </el-form-item>
+            <el-form-item label="所属测试集" v-if="isTestCase">
+              <el-select v-model="saveActionForm.testSuiteId" @visible-change="testsuiteSelectChange" clearable filterable style="width: 500px" placeholder="选择测试集">
+                <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="依赖用例" v-if="isTestCase">
+              <el-cascader
+                v-model="saveActionForm.depends"
+                :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true }"
+                :options="dependsOptions"
+                filterable
+                clearable
+                style="width: 500px"
+                placeholder="选择用例">
+              </el-cascader>
+            </el-form-item>
+            <el-form-item label="描述">
+              <el-input v-model="saveActionForm.description" type="textarea" style="width: 500px" />
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
         <el-tab-pane label="方法参数">
           <action-param-list ref="paramList" :is-add="isAdd" />
         </el-tab-pane>
@@ -55,7 +72,7 @@
           <action-import-list ref="importList" />
         </el-tab-pane>
       </el-tabs>
-      <action-step-list ref="stepList" style="margin-top: 5px" :cur-action-id="saveActionForm.id" />
+      <action-step-list ref="stepList" style="margin-top: 5px" :cur-action-id="saveActionForm.id" @selectableActionsChange="onSelectableActionsChange" />
     </div>
   </div>
 </template>
@@ -121,14 +138,16 @@ export default {
         projectId: this.$store.state.project.id,
         testSuiteId: undefined,
         categoryId: undefined,
-        state: 2
+        state: 2,
+        depends: undefined
       },
       categories: [],
       pages: [],
       testSuites: [],
       debugBtnLoading: false,
       // 开始时的表单数据，用于校验表单数据是否有变化
-      startSaveActionFormString: ''
+      startSaveActionFormString: '',
+      dependsOptions: []
     }
   },
   destroyed() {
@@ -194,6 +213,15 @@ export default {
     }
   },
   methods: {
+    onSelectableActionsChange(selectableActions) {
+      if (this.dependsOptions.length > 0) { // cascader组件有问题，只用一次step传过来的值，否则会出现
+        return
+      }
+      const testcases = selectableActions.filter(a => a.name === '测试用例')
+      if (testcases.length > 0) {
+        this.dependsOptions = testcases[0].children
+      }
+    },
     testsuiteSelectChange(type) {
       if (type) {
         this.fetTestSuiteList()
