@@ -22,6 +22,20 @@
         </el-table-column>
         <el-table-column label="测试用例" align="center" prop="name" min-width="200" show-overflow-tooltip />
         <el-table-column label="描述" align="center" prop="description" show-overflow-tooltip />
+        <el-table-column label="依赖用例" align="center" width="300px">
+          <template scope="{ row }">
+            <el-cascader
+              v-model="row.depends"
+              :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true }"
+              :options="dependsOptions"
+              filterable
+              clearable
+              style="width: 100%"
+              @change="dependsChange(row)"
+              placeholder="选择依赖用例">
+            </el-cascader>
+          </template>
+        </el-table-column>
         <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.creatorNickName + ' ' + row.createTime }}
@@ -57,7 +71,7 @@
 
 <script>
 
-import { getActionList, deleteAction, updateAction } from '@/api/action'
+import { getActionList, deleteAction, updateAction, getActionCascader } from '@/api/action'
 import Pagination from '@/components/Pagination'
 import { getTestSuiteList, deleteTestSuite } from '@/api/testSuite'
 
@@ -92,12 +106,16 @@ export default {
           state: 2,
           name: '发布'
         }
-      ]
+      ],
+      dependsOptions: []
     }
   },
   computed: {
     projectId() {
       return this.$store.state.project.id
+    },
+    platform() {
+      return this.$store.state.project.platform
     },
     testSuiteListWithoutTotal() {
       return this.testSuiteList.filter(suite => suite.name !== '全部')
@@ -106,8 +124,17 @@ export default {
   created() {
     this.fetchTestSuiteList()
     this.fetchActionList()
+    this.fetchActionCascader()
   },
   methods: {
+    fetchActionCascader() {
+      getActionCascader(this.projectId, this.platform).then(resp => {
+        const testcases = resp.data.filter(a => a.name === '测试用例')
+        if (testcases.length > 0) {
+          this.dependsOptions = testcases[0].children
+        }
+      })
+    },
     copyAction(action) {
       const _action = JSON.parse(JSON.stringify(action))
       delete _action.id
@@ -182,6 +209,13 @@ export default {
         this.fetchActionList()
       }).catch(() => {
         // 修改失败，重刷，否则当前select选择的值是错误的
+        this.fetchActionList()
+      })
+    },
+    dependsChange(row) {
+      updateAction(row).then(response => {
+        this.fetchActionList()
+      }).catch(() => {
         this.fetchActionList()
       })
     }
