@@ -13,9 +13,9 @@
     <!-- 列表 -->
     <div style="margin-top: 10px">
       <el-table :data="projectList" highlight-current-row border>
-        <el-table-column label="平台" align="center" width="100">
+        <el-table-column label="平台" align="center" width="200">
           <template scope="{ row }">
-            {{ row.platform === 1 ? 'Android' : 'iOS' }}
+            {{ platforms.filter(p => p.type === row.platform)[0].name }}
           </template>
         </el-table-column>
         <el-table-column label="项目名称" align="center" prop="name" show-overflow-tooltip />
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-
+import { platforms } from '@/utils/project'
 import { getProjectList, deleteProject } from '@/api/project'
 import Pagination from '@/components/Pagination'
 
@@ -51,16 +51,7 @@ export default {
   },
   data() {
     return {
-      platforms: [
-        {
-          type: 1,
-          name: 'Android'
-        },
-        {
-          type: 2,
-          name: 'iOS'
-        }
-      ],
+      platforms: platforms,
       projectList: [],
       total: 0,
       queryForm: {

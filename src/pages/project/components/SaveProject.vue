@@ -20,28 +20,14 @@
 </template>
 <script>
 import { addProject, updateProject, getProjectList } from '@/api/project'
-
+import { platforms } from '@/utils/project'
 export default {
   props: {
     isAdd: Boolean
   },
   data() {
     return {
-      platforms: [
-        {
-          type: 1,
-          name: 'Android'
-        }, {
-          type: 2,
-          name: 'iOS'
-        }, {
-          type: 3,
-          name: 'Android-微信web'
-        }, {
-          type: 4,
-          name: 'Android-微信小程序'
-        }
-      ],
+      platforms: platforms,
       project: {
         id: null,
         name: '',

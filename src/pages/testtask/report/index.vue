@@ -5,11 +5,9 @@
         概况
       </span>
       <el-table :data="testTaskSummary" border>
-        <el-table-column label="类型" align="center" width="50">
+        <el-table-column label="平台" align="center">
           <template scope="{ row }">
-            <svg-icon v-if="row.platform === 1" icon-class="android" />
-            <svg-icon v-else-if="row.platform === 2" icon-class="ios" />
-            <svg-icon v-else icon-class="web"/>
+            {{ platforms.filter(p => p.type === row.platform)[0].name }}
           </template>
         </el-table-column>
         <el-table-column label="项目" prop="projectName" align="center" min-width="100" show-overflow-tooltip />
@@ -17,16 +15,6 @@
         <el-table-column label="测试计划" align="center" min-width="100" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.testPlan.name }}
-          </template>
-        </el-table-column>
-        <el-table-column label="录制视频" align="center" width="80">
-          <template scope="{ row }">
-            {{ row.testPlan.enableRecordVideo === 1 ? '开启' : '关闭' }}
-          </template>
-        </el-table-column>
-        <el-table-column label="失败重试次数" align="center" width="100">
-          <template scope="{ row }">
-            {{ row.testPlan.failRetryCount }}
           </template>
         </el-table-column>
         <el-table-column label="提交人" prop="commitorNickName" align="center" min-width="100" show-overflow-tooltip />
@@ -37,7 +25,7 @@
         <el-table-column label="跳过" prop="skipCaseCount" align="center" width="100" show-overflow-tooltip />
         <el-table-column label="通过率" prop="passPercent" align="center" width="100" show-overflow-tooltip/>
       </el-table>
-      <el-table :data="deviceTestTaskSummary" border style="margin-top: 5px">
+      <el-table :data="deviceTestTaskSummary" border style="margin-top: 10px">
         <el-table-column label="deviceId" prop="deviceId" align="center" show-overflow-tooltip />
         <el-table-column label="执行用例数" prop="testcaseTotal" align="center" show-overflow-tooltip />
         <el-table-column label="通过" prop="passTestcaseCount" align="center" show-overflow-tooltip />
@@ -64,6 +52,7 @@
 import { getDeviceTestTaskList } from '@/api/deviceTestTask'
 import { getTestTaskSummary } from '@/api/testTask'
 import TestCase from './components/TestCase'
+import { platforms } from '@/utils/project'
 
 export default {
   name: 'ReportTestTask',
@@ -72,6 +61,7 @@ export default {
   },
   data() {
     return {
+      platforms: platforms,
       testTaskId: this.$route.params.testTaskId,
       deviceTestTaskList: [],
       testTaskSummary: [],
