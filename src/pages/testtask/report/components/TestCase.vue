@@ -7,7 +7,13 @@
             {{ testcase.status === 0 ? '失败' : testcase.status === 1 ? '成功' : '跳过' }}
           </el-tag>
           <el-tag size="small" style="color: black; background-color: white; margin-right: 5px">
-            {{ testcaseTitle(testcase) }}
+            {{ testcase.name }}
+            <el-divider direction="vertical" />
+            {{ testcase.startTime }}
+            <el-divider direction="vertical" />
+            {{ testcase.endTime }}
+            <el-divider direction="vertical" />
+            耗时: {{ parseInt(new Date(testcase.endTime) - new Date(testcase.startTime)) / 1000 + ' 秒' }}
           </el-tag>
           <el-tag @click="$router.push('/action/testcase/update/'+testcase.id)" size="small" type="primary">查看用例</el-tag>
         </template>
@@ -55,14 +61,6 @@
 export default {
   props: {
     data: Array
-  },
-  computed: {
-    testcaseTitle() {
-      return function(testcase) {
-        const spendTimeSec = parseInt(new Date(testcase.endTime) - new Date(testcase.startTime)) / 1000
-        return '【' + testcase.startTime + ' - ' + testcase.endTime + ' - 耗时' + spendTimeSec + '秒】【' + testcase.name + '】'
-      }
-    }
   }
 }
 </script>

@@ -37,6 +37,13 @@
         <el-table-column label="跳过" prop="skipCaseCount" align="center" width="100" show-overflow-tooltip />
         <el-table-column label="通过率" prop="passPercent" align="center" width="100" show-overflow-tooltip/>
       </el-table>
+      <el-table :data="deviceTestTaskSummary" border style="margin-top: 5px">
+        <el-table-column label="deviceId" prop="deviceId" align="center" show-overflow-tooltip />
+        <el-table-column label="执行用例数" prop="testcaseTotal" align="center" show-overflow-tooltip />
+        <el-table-column label="通过" prop="passTestcaseCount" align="center" show-overflow-tooltip />
+        <el-table-column label="失败" prop="failTestcaseCount" align="center" show-overflow-tooltip />
+        <el-table-column label="跳过" prop="skipTestcaseCount" align="center" show-overflow-tooltip />
+      </el-table>
     </el-card>
 
     <el-card style="margin-top: 10px">
@@ -67,12 +74,26 @@ export default {
     return {
       testTaskId: this.$route.params.testTaskId,
       deviceTestTaskList: [],
-      testTaskSummary: []
+      testTaskSummary: [],
+      deviceTestTaskSummary: []
     }
   },
   created() {
     getDeviceTestTaskList({ testTaskId: this.testTaskId }).then(response => {
-      this.deviceTestTaskList = response.data
+      const deviceTestTasks = response.data
+      deviceTestTasks.forEach(deviceTestTask => {
+        deviceTestTask.testcases.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
+      })
+      this.deviceTestTaskList = deviceTestTasks
+      this.deviceTestTaskSummary = deviceTestTasks.map(deviceTestTask => {
+        return {
+          deviceId: deviceTestTask.deviceId,
+          testcaseTotal: deviceTestTask.testcases.length,
+          passTestcaseCount: deviceTestTask.testcases.filter(tc => tc.status === 1).length,
+          failTestcaseCount: deviceTestTask.testcases.filter(tc => tc.status === 0).length,
+          skipTestcaseCount: deviceTestTask.testcases.filter(tc => tc.status === 2).length
+        }
+      })
     })
     getTestTaskSummary(this.testTaskId).then(response => {
       this.testTaskSummary.push(response.data)
