@@ -174,7 +174,8 @@ export default {
           label: 'xpath'
         }]
       }]
-      if (this.$store.state.project.platform === 1) {
+      const platform = this.$store.state.project.platform
+      if (platform === 1 || platform === 3 || platform === 4) {
         // 移除iOS
         findBys.splice(1, 1)
       } else if (this.$store.state.project.platform === 2) {
