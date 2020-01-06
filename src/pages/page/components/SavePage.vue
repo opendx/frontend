@@ -178,7 +178,7 @@ export default {
       if (platform === 1 || platform === 3 || platform === 4) {
         // 移除iOS
         findBys.splice(1, 1)
-      } else if (this.$store.state.project.platform === 2) {
+      } else if (platform === 2) {
         // 移除android
         findBys.splice(0, 1)
       } else {
