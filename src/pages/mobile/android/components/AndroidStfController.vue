@@ -76,7 +76,7 @@ export default {
     if (platform !== 1 && platform !== 3 && platform !== 4) {
       platform = 1
     }
-    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/android/' + this.deviceId + '/user/' + this.username + '/platform/' + platform)
+    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/stf/android/' + this.deviceId + '/user/' + this.username + '/platform/' + platform)
     this.androidWebsocket.binaryType = 'blob'
     this.androidWebsocket.onclose = () => {
       this.showAlert = true
@@ -109,7 +109,7 @@ export default {
         console.log('androidWebsocket-onmessage', message.data)
         if (message.data && message.data.indexOf('appiumSessionId') !== -1) {
           this.loading = false
-          this.$store.dispatch('device/setAppiumSessionId', JSON.parse(message.data).data.appiumSessionId)
+          this.$store.dispatch('device/setAppiumSessionId', JSON.parse(message.data).appiumSessionId)
         }
       }
     }
