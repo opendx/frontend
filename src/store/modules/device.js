@@ -4,6 +4,7 @@ const state = {
   agentPort: null,
   id: null,
   platform: null,
+  systemVersion: null,
   port: null,
   appiumSessionId: null
 }
@@ -17,6 +18,7 @@ const mutations = {
       state.agentPort = null
       state.id = null
       state.platform = null
+      state.systemVersion = null
       state.port = null
       state.appiumSessionId = null
     }
@@ -32,6 +34,9 @@ const mutations = {
   },
   SET_PLATFORM(state, platform) {
     state.platform = platform
+  },
+  SET_SYSTEM_VERSION(state, systemVersion) {
+    state.systemVersion = systemVersion
   },
   SET_PORT(state, port) {
     state.port = port
@@ -56,6 +61,9 @@ const actions = {
   },
   setPlatform({ commit }, platform) {
     commit('SET_PLATFORM', platform)
+  },
+  setSystemVersion({ commit }, systemVersion) {
+    commit('SET_SYSTEM_VERSION', systemVersion)
   },
   setPort({ commit }, port) {
     commit('SET_PORT', port)

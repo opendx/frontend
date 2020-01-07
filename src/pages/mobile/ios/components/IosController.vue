@@ -92,7 +92,7 @@ export default {
         this.loading = false
       } else {
         if (data.indexOf('appiumSessionId') !== -1) {
-          const d = JSON.parse(data).data
+          const d = JSON.parse(data)
           this.$store.dispatch('device/setAppiumSessionId', d.appiumSessionId)
           this.mjpegServerPort = d.mjpegServerPort
           this.displayWidth = d.displayWidth
