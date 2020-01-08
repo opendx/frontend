@@ -8,10 +8,7 @@
       type="error"
       show-icon
     />
-    <!--画布-->
-    <div align="center">
-      <canvas id="androidControllerCanvas" />
-    </div>
+    <div id="canvas-container" />
     <div style="margin-top: 2px" align="center">
       <android-controller-buttom :android-websocket="androidWebsocket" />
     </div>
@@ -31,16 +28,10 @@ export default {
       showAlert: false,
       androidWebsocket: null,
       touchDown: {
-        operation: 'd',
-        percentOfX: 0.5,
-        percentOfY: 0.5,
-        pressure: 50
+        operation: 'd'
       },
       touchMove: {
-        operation: 'm',
-        percentOfX: 0.5,
-        percentOfY: 0.5,
-        pressure: 50
+        operation: 'm'
       },
       touchUp: {
         operation: 'u'
@@ -67,10 +58,12 @@ export default {
   },
   mounted() {
     this.loading = true
-    const canvas = document.getElementById('androidControllerCanvas')
-    const g = canvas.getContext('2d')
-    const BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
-    const URL = window.URL || window.webkitURL
+    const player = new Player()
+    const canvas = player.canvas
+    document.getElementById('canvas-container').appendChild(canvas)
+
+    player.onPictureDecoded = (buffer, width, height) => {
+    }
 
     let platform = this.$store.state.project.platform
     // platform: 1.android 3.android wxtools 4.android wx appbrand
@@ -78,8 +71,8 @@ export default {
       platform = 1
     }
 
-    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/stf/android/' + this.deviceId + '/user/' + this.username + '/platform/' + platform)
-    this.androidWebsocket.binaryType = 'blob'
+    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/scrcpy/android/' + this.deviceId + '/user/' + this.username + '/platform/' + platform)
+    this.androidWebsocket.binaryType = 'arraybuffer'
     this.androidWebsocket.onclose = () => {
       this.showAlert = true
       this.loading = false
@@ -89,24 +82,8 @@ export default {
       this.loading = false
     }
     this.androidWebsocket.onmessage = (message) => {
-      if (message.data instanceof Blob) {
-        let blob = new Blob([message.data], { type: 'image/jpeg' })
-        let url = URL.createObjectURL(blob)
-        let img = new Image()
-        img.src = url
-        img.onload = () => {
-          canvas.width = img.width
-          canvas.height = img.height
-          g.drawImage(img, 0, 0)
-
-          img.onload = null
-          img.src = BLANK_IMG
-          img = null
-          blob = null
-
-          URL.revokeObjectURL(url)
-          url = null
-        }
+      if (message.data instanceof ArrayBuffer) {
+        player.decode(new Uint8Array(message.data));
       } else {
         console.log('androidWebsocket-onmessage', message.data)
         if (message.data && message.data.indexOf('appiumSessionId') !== -1) {
@@ -117,45 +94,49 @@ export default {
     }
     let isMouseDown = false
     // 当鼠标处于按下的状态移出画布,这个时候体验不好，需要在移出的时候，发送鼠标抬起事件,并将鼠标状态设为抬起
-    canvas.onmouseleave = () => {
+    canvas.onmouseleave = (e) => {
       if (isMouseDown) {
+        this.touchUp.x = e.offsetX
+        this.touchUp.y = e.offsetY
+        this.touchUp.width = canvas.offsetWidth
+        this.touchUp.height = canvas.offsetHeight
         this.androidWebsocket.send(JSON.stringify(this.touchUp))
         isMouseDown = false
       }
     }
-    // 当鼠标按下时，将按下的XY坐标发送给服务器处理，XY坐标为相对比例，如：0.5,0.5 则代表屏幕中心
+    // 当鼠标按下时
     canvas.onmousedown = (e) => {
       isMouseDown = true
-      this.touchDown.percentOfX = this.getPercentOfX(e, canvas)
-      this.touchDown.percentOfY = this.getPercentOfY(e, canvas)
+      this.touchDown.x = e.offsetX
+      this.touchDown.y = e.offsetY
+      this.touchDown.width = canvas.offsetWidth
+      this.touchDown.height = canvas.offsetHeight
       this.androidWebsocket.send(JSON.stringify(this.touchDown))
     }
     // 鼠标抬起
-    canvas.onmouseup = () => {
+    canvas.onmouseup = (e) => {
       isMouseDown = false
+      this.touchUp.x = e.offsetX
+      this.touchUp.y = e.offsetY
+      this.touchUp.width = canvas.offsetWidth
+      this.touchUp.height = canvas.offsetHeight
       this.androidWebsocket.send(JSON.stringify(this.touchUp))
     }
     // 鼠标移动
     canvas.onmousemove = (e) => {
       // 鼠标按下才发送移动事件,防止在画布上移动鼠标也发送移动事件
       if (isMouseDown) {
-        this.touchMove.percentOfX = this.getPercentOfX(e, canvas)
-        this.touchMove.percentOfY = this.getPercentOfY(e, canvas)
+        this.touchMove.x = e.offsetX
+        this.touchMove.y = e.offsetY
+        this.touchMove.width = canvas.offsetWidth
+        this.touchMove.height = canvas.offsetHeight
         this.androidWebsocket.send(JSON.stringify(this.touchMove))
       }
     }
   },
   methods: {
-    getPercentOfX(event, canvas) {
-      const offsetX = event.offsetX
-      const offsetWidth = canvas.offsetWidth
-      return offsetX / offsetWidth
-    },
-    getPercentOfY(event, canvas) {
-      const offsetY = event.offsetY
-      const offsetHeight = canvas.offsetHeight
-      return offsetY / offsetHeight
-    }
   }
 }
 </script>
+<style>
+</style>
