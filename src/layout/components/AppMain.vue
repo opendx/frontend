@@ -8,7 +8,7 @@
       <!--</transition>-->
     </div>
     <!--todo 先写死-->
-    <div v-if="showDevice" style="width: 400px;height: calc(100% - 85px);position: fixed;top: 85px;right: 10px;overflow: auto;">
+    <div v-if="showDevice" style="width: 350px;height: calc(100% - 85px);position: fixed;top: 85px;right: 10px;overflow: auto;">
       <android-stf-controller v-if="screenType === 'stf'" />
       <android-scrcpy-controller v-else-if="screenType === 'scrcpy'" />
       <ios-controller v-else-if="screenType === 'ios'" />
@@ -31,7 +31,7 @@ export default {
   computed: {
     leftStyle() {
       // todo 先写死
-      return this.$store.state.device.show ? 'width: calc(100% - 420px)' : ''
+      return this.$store.state.device.show ? 'width: calc(100% - 370px)' : ''
     },
     showDevice() {
       return this.$store.state.device.show
