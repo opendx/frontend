@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" element-loading-text="正在初始化.... 请确保屏幕处于解锁显示状态">
+  <div v-loading="loading" element-loading-text="正在初始化.... 请确保屏幕处于解锁显示状态" style="width: 100%">
     <el-alert
       v-if="showAlert"
       style="position: fixed"
@@ -9,8 +9,8 @@
       show-icon
     />
     <!--画布-->
-    <div align="center">
-      <canvas id="androidControllerCanvas" />
+    <div style="width: 100%">
+      <canvas id="stfCanvas" />
     </div>
     <div style="margin-top: 2px" align="center">
       <android-controller-buttom :android-websocket="androidWebsocket" />
@@ -67,7 +67,7 @@ export default {
   },
   mounted() {
     this.loading = true
-    const canvas = document.getElementById('androidControllerCanvas')
+    const canvas = document.getElementById('stfCanvas')
     const g = canvas.getContext('2d')
     const BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
     const URL = window.URL || window.webkitURL
@@ -159,3 +159,8 @@ export default {
   }
 }
 </script>
+<style>
+  #stfCanvas {
+    width: 100%;
+  }
+</style>

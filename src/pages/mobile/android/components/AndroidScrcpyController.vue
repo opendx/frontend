@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" element-loading-text="正在初始化.... 请确保屏幕处于解锁显示状态">
+  <div v-loading="loading" element-loading-text="正在初始化.... 请确保屏幕处于解锁显示状态" style="width: 100%">
     <el-alert
       v-if="showAlert"
       style="position: fixed"
@@ -8,7 +8,7 @@
       type="error"
       show-icon
     />
-    <div id="canvas-container" />
+    <div id="canvas-container" style="width: 100%" />
     <div style="margin-top: 2px" align="center">
       <android-controller-buttom :android-websocket="androidWebsocket" />
     </div>
@@ -56,14 +56,12 @@ export default {
   beforeDestroy() {
     this.androidWebsocket.close()
   },
-  mounted() {
+  mounted: function () {
     this.loading = true
     const player = new Player()
     const canvas = player.canvas
+    canvas.setAttribute('id', 'scrcpyCanvas') // style width: 100%;
     document.getElementById('canvas-container').appendChild(canvas)
-
-    player.onPictureDecoded = (buffer, width, height) => {
-    }
 
     let platform = this.$store.state.project.platform
     // platform: 1.android 3.android wxtools 4.android wx appbrand
@@ -83,7 +81,7 @@ export default {
     }
     this.androidWebsocket.onmessage = (message) => {
       if (message.data instanceof ArrayBuffer) {
-        player.decode(new Uint8Array(message.data));
+        player.decode(new Uint8Array(message.data))
       } else {
         console.log('androidWebsocket-onmessage', message.data)
         if (message.data && message.data.indexOf('appiumSessionId') !== -1) {
@@ -96,10 +94,11 @@ export default {
     // 当鼠标处于按下的状态移出画布,这个时候体验不好，需要在移出的时候，发送鼠标抬起事件,并将鼠标状态设为抬起
     canvas.onmouseleave = (e) => {
       if (isMouseDown) {
-        this.touchUp.x = e.offsetX
-        this.touchUp.y = e.offsetY
-        this.touchUp.width = canvas.offsetWidth
-        this.touchUp.height = canvas.offsetHeight
+        const rect = canvas.getBoundingClientRect()
+        this.touchUp.x = parseInt((e.clientX - rect.left) / rect.width * canvas.width)
+        this.touchUp.y = parseInt((e.clientY - rect.top) / rect.height * canvas.height)
+        this.touchUp.width = canvas.width
+        this.touchUp.height = canvas.height
         this.androidWebsocket.send(JSON.stringify(this.touchUp))
         isMouseDown = false
       }
@@ -107,36 +106,40 @@ export default {
     // 当鼠标按下时
     canvas.onmousedown = (e) => {
       isMouseDown = true
-      this.touchDown.x = e.offsetX
-      this.touchDown.y = e.offsetY
-      this.touchDown.width = canvas.offsetWidth
-      this.touchDown.height = canvas.offsetHeight
+      const rect = canvas.getBoundingClientRect()
+      this.touchDown.x = parseInt((e.clientX - rect.left) / rect.width * canvas.width)
+      this.touchDown.y = parseInt((e.clientY - rect.top) / rect.height * canvas.height)
+      this.touchDown.width = canvas.width
+      this.touchDown.height = canvas.height
       this.androidWebsocket.send(JSON.stringify(this.touchDown))
     }
     // 鼠标抬起
     canvas.onmouseup = (e) => {
       isMouseDown = false
-      this.touchUp.x = e.offsetX
-      this.touchUp.y = e.offsetY
-      this.touchUp.width = canvas.offsetWidth
-      this.touchUp.height = canvas.offsetHeight
+      const rect = canvas.getBoundingClientRect()
+      this.touchUp.x = parseInt((e.clientX - rect.left) / rect.width * canvas.width)
+      this.touchUp.y = parseInt((e.clientY - rect.top) / rect.height * canvas.height)
+      this.touchUp.width = canvas.width
+      this.touchUp.height = canvas.height
       this.androidWebsocket.send(JSON.stringify(this.touchUp))
     }
     // 鼠标移动
     canvas.onmousemove = (e) => {
       // 鼠标按下才发送移动事件,防止在画布上移动鼠标也发送移动事件
       if (isMouseDown) {
-        this.touchMove.x = e.offsetX
-        this.touchMove.y = e.offsetY
-        this.touchMove.width = canvas.offsetWidth
-        this.touchMove.height = canvas.offsetHeight
+        const rect = canvas.getBoundingClientRect()
+        this.touchMove.x = parseInt((e.clientX - rect.left) / rect.width * canvas.width)
+        this.touchMove.y = parseInt((e.clientY - rect.top) / rect.height * canvas.height)
+        this.touchMove.width = canvas.width
+        this.touchMove.height = canvas.height
         this.androidWebsocket.send(JSON.stringify(this.touchMove))
       }
     }
-  },
-  methods: {
   }
 }
 </script>
 <style>
+  #scrcpyCanvas {
+    width: 100%;
+  }
 </style>
