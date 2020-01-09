@@ -32,14 +32,10 @@ export default {
       androidWebsocket: null,
       touchDown: {
         operation: 'd',
-        percentOfX: 0.5,
-        percentOfY: 0.5,
         pressure: 50
       },
       touchMove: {
         operation: 'm',
-        percentOfX: 0.5,
-        percentOfY: 0.5,
         pressure: 50
       },
       touchUp: {
@@ -126,8 +122,11 @@ export default {
     // 当鼠标按下时，将按下的XY坐标发送给服务器处理，XY坐标为相对比例，如：0.5,0.5 则代表屏幕中心
     canvas.onmousedown = (e) => {
       isMouseDown = true
-      this.touchDown.percentOfX = this.getPercentOfX(e, canvas)
-      this.touchDown.percentOfY = this.getPercentOfY(e, canvas)
+      const rect = canvas.getBoundingClientRect()
+      this.touchDown.x = parseInt((e.clientX - rect.left) / rect.width * canvas.width)
+      this.touchDown.y = parseInt((e.clientY - rect.top) / rect.height * canvas.height)
+      this.touchDown.width = canvas.width
+      this.touchDown.height = canvas.height
       this.androidWebsocket.send(JSON.stringify(this.touchDown))
     }
     // 鼠标抬起
@@ -139,22 +138,13 @@ export default {
     canvas.onmousemove = (e) => {
       // 鼠标按下才发送移动事件,防止在画布上移动鼠标也发送移动事件
       if (isMouseDown) {
-        this.touchMove.percentOfX = this.getPercentOfX(e, canvas)
-        this.touchMove.percentOfY = this.getPercentOfY(e, canvas)
+        const rect = canvas.getBoundingClientRect()
+        this.touchMove.x = parseInt((e.clientX - rect.left) / rect.width * canvas.width)
+        this.touchMove.y = parseInt((e.clientY - rect.top) / rect.height * canvas.height)
+        this.touchMove.width = canvas.width
+        this.touchMove.height = canvas.height
         this.androidWebsocket.send(JSON.stringify(this.touchMove))
       }
-    }
-  },
-  methods: {
-    getPercentOfX(event, canvas) {
-      const offsetX = event.offsetX
-      const offsetWidth = canvas.offsetWidth
-      return offsetX / offsetWidth
-    },
-    getPercentOfY(event, canvas) {
-      const offsetY = event.offsetY
-      const offsetHeight = canvas.offsetHeight
-      return offsetY / offsetHeight
     }
   }
 }
