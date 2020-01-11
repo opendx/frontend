@@ -103,7 +103,7 @@ export default {
         isMouseDown = false
       }
     }
-    // 当鼠标按下时
+    // 鼠标按下
     canvas.onmousedown = (e) => {
       isMouseDown = true
       const rect = canvas.getBoundingClientRect()

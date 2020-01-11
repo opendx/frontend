@@ -10,7 +10,7 @@
     />
     <!--画布-->
     <div style="width: 100%">
-      <canvas id="stfCanvas" />
+      <canvas id="stfCanvas" style="width: 100%" />
     </div>
     <div style="margin-top: 2px" align="center">
       <android-controller-buttom :android-websocket="androidWebsocket" />
@@ -119,7 +119,7 @@ export default {
         isMouseDown = false
       }
     }
-    // 当鼠标按下时，将按下的XY坐标发送给服务器处理，XY坐标为相对比例，如：0.5,0.5 则代表屏幕中心
+    // 鼠标按下
     canvas.onmousedown = (e) => {
       isMouseDown = true
       const rect = canvas.getBoundingClientRect()
@@ -149,8 +149,3 @@ export default {
   }
 }
 </script>
-<style>
-  #stfCanvas {
-    width: 100%;
-  }
-</style>
