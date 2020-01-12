@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mobile-inspector canvas-id="page-canvas" :img-info="imgInfo" :window-hierarchy="savePageForm.windowHierarchy" :tree-loading="false" />
+    <mobile-inspector canvas-id="page-canvas" :window-info="windowInfo" :window-hierarchy="savePageForm.windowHierarchy" :tree-loading="false" />
     <el-form label-width="80px">
       <el-form-item label="元素">
         <el-button @click="addElement">+</el-button>
@@ -52,11 +52,14 @@
           <el-form-item label="图片下载地址">
             <el-input v-model="savePageForm.imgUrl" clearable :disabled="isAdd" />
           </el-form-item>
-          <el-form-item label="图片高">
-            <el-input v-model="savePageForm.imgHeight" clearable :disabled="isAdd" />
+          <el-form-item label="window高">
+            <el-input v-model="savePageForm.windowHeight" clearable :disabled="isAdd" />
           </el-form-item>
-          <el-form-item label="图片宽">
-            <el-input v-model="savePageForm.imgWidth" clearable :disabled="isAdd" />
+          <el-form-item label="window宽">
+            <el-input v-model="savePageForm.windowWidth" clearable :disabled="isAdd" />
+          </el-form-item>
+          <el-form-item label="window方向">
+            <el-input v-model="savePageForm.windowOrientation" clearable :disabled="isAdd" />
           </el-form-item>
           <el-form-item label="图片布局">
             <el-input v-model="savePageForm.windowHierarchy" clearable :disabled="isAdd" />
@@ -92,8 +95,9 @@ export default {
         categoryId: undefined,
         description: '',
         imgUrl: '',
-        imgHeight: undefined,
-        imgWidth: undefined,
+        windowHeight: undefined,
+        windowWidth: undefined,
+        windowOrientation: undefined,
         deviceId: undefined,
         windowHierarchy: '',
         elements: []
@@ -102,10 +106,11 @@ export default {
     }
   },
   computed: {
-    imgInfo() {
+    windowInfo() {
       return {
-        imgWidth: this.savePageForm.imgWidth,
-        imgHeight: this.savePageForm.imgHeight,
+        windowWidth: this.savePageForm.windowWidth,
+        windowHeight: this.savePageForm.windowHeight,
+        windowOrientation: this.savePageForm.windowOrientation,
         imgUrl: this.savePageForm.imgUrl
       }
     },

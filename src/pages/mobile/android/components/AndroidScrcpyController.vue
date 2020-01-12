@@ -56,7 +56,7 @@ export default {
   beforeDestroy() {
     this.androidWebsocket.close()
   },
-  mounted: function () {
+  mounted() {
     this.loading = true
     const player = new Player()
     const canvas = player.canvas

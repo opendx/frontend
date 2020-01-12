@@ -1,18 +1,17 @@
 <template>
   <div>
     <!--gutter 列的间距-->
-    <el-row :style="{ height: height + 'px' }">
+    <el-row style="width: 1200px; height: 700px; overflow: auto">
       <!--左侧图片-->
-      <el-col :span="10" align="center" style="height: 100%">
-        <canvas :id="canvasId" :width="imgInfo.imgWidth" :height="imgInfo.imgHeight" style="height: 100%;position: absolute" />
-        <img :src="imgInfo.imgUrl" style="height: 100%">
+      <el-col :span="6" style="width: 300px; height: 100%; overflow: auto">
+        <canvas :id="canvasId" style="width: 100%" />
       </el-col>
       <!--中间布局树-->
-      <el-col v-if="!isWebView" :span="8" align="center" style="height: 100%;overflow: auto">
+      <el-col v-if="!isWebView" :span="12" style="width: 600px; height: 100%; overflow: auto">
         <el-tree ref="tree" v-loading="treeLoading" :data="treeData" :props="defaultProps" highlight-current :expand-on-click-node="false" node-key="id" :default-expanded-keys="currentExpandedKey" @node-click="nodeClick" />
       </el-col>
       <!--右侧控件信息-->
-      <el-col v-if="!isWebView" :span="6" style="height: 100%;overflow: auto;font-size: 12px">
+      <el-col v-if="!isWebView" :span="6" style="font-size: 12px; width: 300px; height: 100%; overflow: auto">
         <ul style="list-style: none;word-break: break-all;padding: 0px">
           <li v-for="(value,key) in nodeDetail" :key="key" style="border-bottom: 1px solid #eee">
             <label style="width: 100px;display: inline-block;">{{ key }}</label>
@@ -21,7 +20,7 @@
         </ul>
       </el-col>
       <!--WebView-->
-      <el-col v-if="isWebView" :span="14" align="center" style="height: 100%;">
+      <el-col v-if="isWebView" :span="18" align="center" style="width: 900px; height: 100%; overflow: auto">
         <iframe :srcdoc="windowHierarchy" width="100%" height="100%"></iframe>
       </el-col>
     </el-row>
@@ -39,16 +38,15 @@ export default {
   },
   props: {
     canvasId: String,
-    imgInfo: Object,
+    windowInfo: Object,
     windowHierarchy: String,
     treeLoading: Boolean
   },
   data() {
     return {
-      height: 500,
+      img: null,
+      canvas: null,
       canvasCtx: null,
-      // 比例 手机屏幕宽度/画布像素宽度，如:1080/400
-      scale: null,
 
       defaultProps: {
         children: 'nodes',
@@ -71,9 +69,24 @@ export default {
     }
   },
   watch: {
-    imgInfo() {
-      this.scale = (this.imgInfo.imgHeight) / this.height
-      console.log('scale', this.scale)
+    windowInfo() {
+      this.img = new Image()
+      this.img.src = this.windowInfo.imgUrl
+
+      this.img.onload = () => {
+        let scale
+        if (this.windowInfo.windowOrientation === 'portrait') { // 竖屏以window宽为准，window高不包含虚拟按键
+          scale = this.windowInfo.windowWidth / this.img.width
+        } else {
+          scale = this.windowInfo.windowHeight / this.img.height
+        }
+        console.log('scale', scale)
+
+        this.canvas.width = parseInt(this.img.width * scale)
+        this.canvas.height = parseInt(this.img.height * scale)
+
+        this.canvasCtx.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, this.canvas.width, this.canvas.height)
+      }
     },
     windowHierarchy() {
       if (!this.windowHierarchy) {
@@ -106,8 +119,6 @@ export default {
       this.currentExpandedKey = []
       this.allNodes = []
       this.nodeIndex = 0
-      // 清除上一次的红色区域
-      this.canvasCtx.clearRect(0, 0, this.imgInfo.imgWidth, this.imgInfo.imgHeight)
       // from macaca Inspector start https://github.com/macacajs/app-inspector/blob/master/lib/android.js
       const matchedNode = _.findLast(windowHierarchyJson.hierarchy, i => {
         return (
@@ -130,10 +141,13 @@ export default {
       }
       // 1.重新绘制红色区域
       // 清除上一次的红色区域
-      this.canvasCtx.clearRect(0, 0, this.imgInfo.imgWidth, this.imgInfo.imgHeight)
+      this.canvas.height = this.canvas.height // 重置canvas
+      this.canvasCtx.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, this.canvas.width, this.canvas.height)
+
       if (this.isWebView) {
         return
       }
+
       this.canvasCtx.fillStyle = 'red'
       // 透明度
       this.canvasCtx.globalAlpha = 0.5
@@ -171,18 +185,20 @@ export default {
   mounted() {
     // init canvas
     const canvas = document.getElementById(this.canvasId)
+    this.canvas = canvas
     this.canvasCtx = canvas.getContext('2d')
     // 点击左侧屏幕截图
     canvas.onmousedown = e => {
-      const deviceX = (e.clientX - canvas.getBoundingClientRect().left) * this.scale
-      const deviceY = (e.clientY - canvas.getBoundingClientRect().top) * this.scale
-      console.log('点击手机屏幕:' + deviceX + ',' + deviceY)
+      const rect = canvas.getBoundingClientRect()
+      const x = parseInt((e.clientX - rect.left) / rect.width * canvas.width)
+      const y = parseInt((e.clientY - rect.top) / rect.height * canvas.height)
+      console.log('点击手机屏幕:' + x + ',' + y)
 
       // 最小面积的节点
       let leastNode = {}
       // 选出最小面积的节点
       this.allNodes.forEach(item => {
-        if (deviceX >= item.bounds[0] && deviceY >= item.bounds[1] && deviceX <= item.bounds[0] + item.bounds[2] && deviceY <= item.bounds[1] + item.bounds[3]) {
+        if (x >= item.bounds[0] && y >= item.bounds[1] && x <= item.bounds[0] + item.bounds[2] && y <= item.bounds[1] + item.bounds[3]) {
           if (leastNode.id) {
             if (leastNode.bounds[2] * leastNode.bounds[3] >= item.bounds[2] * item.bounds[3]) {
               leastNode = item

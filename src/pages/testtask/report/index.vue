@@ -27,6 +27,9 @@
       </el-table>
       <el-table :data="deviceTestTaskSummary" border style="margin-top: 10px">
         <el-table-column label="deviceId" prop="deviceId" align="center" show-overflow-tooltip />
+        <el-table-column label="开始时间" prop="startTime" align="center" show-overflow-tooltip />
+        <el-table-column label="结束时间" prop="endTime" align="center" show-overflow-tooltip />
+        <el-table-column label="耗时" prop="spendTimeInSeconds" align="center" show-overflow-tooltip />
         <el-table-column label="执行用例数" prop="testcaseTotal" align="center" show-overflow-tooltip />
         <el-table-column label="通过" prop="passTestcaseCount" align="center" show-overflow-tooltip />
         <el-table-column label="失败" prop="failTestcaseCount" align="center" show-overflow-tooltip />
@@ -79,6 +82,9 @@ export default {
         return {
           deviceId: deviceTestTask.deviceId,
           testcaseTotal: deviceTestTask.testcases.length,
+          startTime: deviceTestTask.startTime,
+          endTime: deviceTestTask.endTime,
+          spendTimeInSeconds: parseInt(new Date(deviceTestTask.endTime) - new Date(deviceTestTask.startTime)) / 1000 + '秒',
           passTestcaseCount: deviceTestTask.testcases.filter(tc => tc.status === 1).length,
           failTestcaseCount: deviceTestTask.testcases.filter(tc => tc.status === 0).length,
           skipTestcaseCount: deviceTestTask.testcases.filter(tc => tc.status === 2).length

@@ -83,15 +83,13 @@ export default {
         const d = JSON.parse(data)
         this.$store.dispatch('device/setAppiumSessionId', d.appiumSessionId)
         this.mjpegServerPort = d.mjpegServerPort
+        this.showImg = true
+        this.loading = false
         setTimeout(() => {
-          this.showImg = true
-          this.loading = false
-          setTimeout(() => {
-            const img = document.getElementById('iosImg')
-            canvas.width = img.width
-            canvas.height = img.height
-          }, 500)
-        }, 1000)
+          const img = document.getElementById('iosImg')
+          canvas.width = img.width
+          canvas.height = img.height
+        }, 500)
       }
     }
     let isMouseDown = false

@@ -1,9 +1,7 @@
 <template>
   <div>
     <el-popover v-model="visible" placement="left" trigger="click">
-      <div v-if="initMobileCapture">
-        <mobile-capture @closeMobileCapture="visible = false" />
-      </div>
+      <mobile-capture v-if="initMobileCapture" @closeMobileCapture="visible = false" />
       <el-button slot="reference" :disabled="!$store.state.device.appiumSessionId" @click="initMobileCapture = true" size="mini">
         <svg-icon icon-class="capture" />
       </el-button>
