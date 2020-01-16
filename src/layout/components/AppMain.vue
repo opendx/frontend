@@ -40,7 +40,7 @@ export default {
       const platform = this.$store.state.device.platform
       const systemVersion = this.$store.state.device.systemVersion
       if (platform === 1) {
-        if (parseInt(systemVersion[0]) >= 5) {
+        if (parseInt(systemVersion) >= 5) {
           // 版本5以上 scrcpy
           return 'scrcpy'
         } else {
