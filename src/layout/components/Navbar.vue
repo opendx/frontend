@@ -147,6 +147,7 @@ export default {
         this.$store.dispatch('device/setAgentPort', device.agentPort)
         this.$store.dispatch('device/setId', device.id)
         this.$store.dispatch('device/setPlatform', device.platform)
+        this.$store.dispatch('device/setSystemVersion', device.systemVersion)
         this.$store.dispatch('device/setShow', true)
       })
     }
