@@ -57,7 +57,8 @@ export default {
         mode: 'javascript',
         theme: 'base16-dark',
         lineNumbers: true,
-        line: true
+        line: true,
+        readOnly: true
       }
     }
   },
