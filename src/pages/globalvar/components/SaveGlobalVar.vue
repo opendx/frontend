@@ -1,10 +1,10 @@
 <template>
   <el-form :data="globalVar" label-width="100px">
     <el-form-item label="变量类型" :rules="[{required: true}]">
-      <el-input v-model.trim="globalVar.type" clearable style="width: 300px" :disabled="!isAdd" />
+      <el-input v-model.trim="globalVar.type" clearable style="width: 300px" />
     </el-form-item>
     <el-form-item label="变量名" :rules="[{required: true}]">
-      <el-input v-model.trim="globalVar.name" clearable style="width: 300px" :disabled="!isAdd" />
+      <el-input v-model.trim="globalVar.name" clearable style="width: 300px" />
     </el-form-item>
     <el-form-item label="变量值" :rules="[{required: true}]">
       <el-row :gutter="12" v-for="(environmentValue, index) in globalVar.environmentValues" :key="index" style="margin-bottom: 5px">
