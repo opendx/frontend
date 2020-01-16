@@ -58,7 +58,7 @@
             <img :src="testcase.failImgUrl" width="100%" />
           </div>
           <div v-if="testcase.failInfo" style="width: 950px; float:left">
-            <codemirror style="width: 100%" v-model="testcase.failInfo" :options="cmOptions" />
+            <codemirror v-model="testcase.failInfo" :options="cmOptions" />
           </div>
         </div>
       </div>

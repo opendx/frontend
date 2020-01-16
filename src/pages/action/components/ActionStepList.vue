@@ -42,7 +42,7 @@
       <el-table-column label="Action参数" align="center" min-width="300">
         <template scope="{ row }">
           <el-table :data="row.paramValues" border>
-            <el-table-column label="参数名" align="center" width="150" show-overflow-tooltip>
+            <el-table-column label="参数名" width="150" show-overflow-tooltip>
               <template scope="scope_paramValues">
                 <el-popover placement="top-start" trigger="click">
                   {{ paramNameDesc(row.actionId, scope_paramValues.row.paramName) }}
@@ -58,15 +58,18 @@
                 </el-popover>
               </template>
             </el-table-column>
-            <el-table-column label="参数类型" align="center" width="100" show-overflow-tooltip>
+            <el-table-column label="参数类型" width="100" show-overflow-tooltip>
               <template scope="scope_paramValues">
                 {{ scope_paramValues.row.paramType }}
               </template>
             </el-table-column>
-            <el-table-column label="参数值" align="center">
+            <el-table-column label="参数值">
               <template scope="scope_paramValues">
-                <el-input v-model="scope_paramValues.row.paramValue" @paste.native="onpaste($event, scope_paramValues)" type="textarea" :autosize="{ minRows: 1, maxRows: 10 }"/>
-                <img v-if="isImg(scope_paramValues.row.paramValue)" :src="scope_paramValues.row.paramValue" />
+                <div v-if="row.actionId !== 1">
+                  <el-input v-model="scope_paramValues.row.paramValue" @paste.native="onpaste($event, scope_paramValues)" type="textarea" :autosize="{ minRows: 1, maxRows: 10 }"/>
+                  <img v-if="isImg(scope_paramValues.row.paramValue)" :src="scope_paramValues.row.paramValue" />
+                </div>
+                <codemirror v-else v-model="scope_paramValues.row.paramValue" :options="cmOptions" />
               </template>
             </el-table-column>
           </el-table>
@@ -99,6 +102,8 @@
 <script>
 import { getActionCascader } from '@/api/action'
 import ActionDetail from './ActionDetail'
+import 'codemirror/mode/clike/clike.js'
+import 'codemirror/theme/base16-dark.css'
 export default {
   props: {
     // 当前编辑的actionId
@@ -112,7 +117,13 @@ export default {
       steps: [],
       selectedSteps: [],
       selectableActions: [],
-      showActionDetail: false
+      showActionDetail: false,
+      cmOptions: {
+        mode: 'text/x-java',
+        theme: 'base16-dark',
+        lineNumbers: true,
+        line: true
+      },
     }
   },
   computed: {
