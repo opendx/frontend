@@ -103,7 +103,6 @@
 import { getActionCascader } from '@/api/action'
 import ActionDetail from './ActionDetail'
 import 'codemirror/mode/clike/clike.js'
-import 'codemirror/theme/base16-dark.css'
 export default {
   props: {
     // 当前编辑的actionId
@@ -120,7 +119,7 @@ export default {
       showActionDetail: false,
       cmOptions: {
         mode: 'text/x-java',
-        theme: 'base16-dark',
+        theme: 'default',
         lineNumbers: true,
         line: true
       },

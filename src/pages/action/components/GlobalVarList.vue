@@ -11,7 +11,7 @@
         </template>
       </el-table-column>
       <el-table-column align="center" property="name" label="全局变量名" />
-      <el-table-column align="center" label="全局变量值" width="900">
+      <el-table-column align="center" label="全局变量值" width="800">
         <template scope="{ row }">
           <el-table :data="row.environmentValues" border fit>
             <el-table-column label="环境" align="center" width="200" show-overflow-tooltip>
