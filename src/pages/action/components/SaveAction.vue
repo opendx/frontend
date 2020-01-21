@@ -68,8 +68,19 @@
           <el-input v-model.trim="saveActionForm.returnValue" clearable placeholder="返回值类型" />
           <el-input v-model="saveActionForm.returnValueDesc" clearable placeholder="描述" style="margin-top: 5px" />
         </el-tab-pane>
-        <el-tab-pane label="import">
+        <el-tab-pane label="import java类">
           <action-import-list ref="importList" />
+        </el-tab-pane>
+        <el-tab-pane label="import action">
+          <el-cascader
+            v-model="saveActionForm.actionImports"
+            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true }"
+            :options="importActionOptions"
+            filterable
+            clearable
+            style="width: 500px"
+            placeholder="import action">
+          </el-cascader>
         </el-tab-pane>
       </el-tabs>
       <action-step-list ref="stepList" style="margin-top: 5px" :cur-action-id="saveActionForm.id" @selectableActionsChange="onSelectableActionsChange" />
@@ -133,6 +144,7 @@ export default {
         localVars: [],
         steps: [],
         javaImports: [],
+        actionImports: [],
         platforms: [this.$store.state.project.platform],
         pageId: undefined,
         projectId: this.$store.state.project.id,
@@ -147,7 +159,8 @@ export default {
       debugBtnLoading: false,
       // 开始时的表单数据，用于校验表单数据是否有变化
       startSaveActionFormString: '',
-      dependsOptions: []
+      dependsOptions: [],
+      importActionOptions: []
     }
   },
   destroyed() {
@@ -216,6 +229,11 @@ export default {
     onSelectableActionsChange(selectableActions) {
       if (this.dependsOptions.length > 0) { // cascader组件有问题，只用一次step传过来的值，否则会出现
         return
+      }
+      console.log('selectableActions', selectableActions)
+      const actionsWithoutBasicAction = selectableActions.filter(a => a.name !== '基础组件')
+      if (actionsWithoutBasicAction.length > 0) {
+        this.importActionOptions = actionsWithoutBasicAction
       }
       const testcases = selectableActions.filter(a => a.name === '测试用例')
       if (testcases.length > 0) {
@@ -299,6 +317,7 @@ export default {
       action.returnValue = this.saveActionForm.returnValue
       action.type = this.saveActionForm.type
       action.javaImports = this.$refs.importList.javaImports
+      action.actionImports = this.saveActionForm.actionImports
       action.params = this.$refs.paramList.params
       action.localVars = this.$refs.localVarList.localVars
       action.steps = this.$refs.stepList.selectedSteps
