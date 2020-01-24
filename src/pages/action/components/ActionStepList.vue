@@ -79,9 +79,9 @@
         <template scope="scope">
           <el-input v-model="scope.row.evaluation" :disabled="evaluationDisabled(scope.row.actionId)" type="textarea" :autosize="{ minRows: 1 }" placeholder="赋值" />
           <el-select v-model="scope.row.handleException" style="margin-top: 5px">
-            <el-option label="中断执行" :value="null" />
-            <el-option label="忽略，继续执行" :value="0" />
-            <el-option label="抛出跳过异常" :value="1" />
+            <el-option label="失败时:中断执行" :value="null" />
+            <el-option label="失败时:忽略，继续执行" :value="0" />
+            <el-option label="失败时:抛出跳过异常" :value="1" />
           </el-select>
           <el-button size="mini" style="width: 100%;margin-top: 5px" @click="copyStep(scope.$index, scope.row)">复制</el-button>
           <el-button-group style="margin-top: 5px">

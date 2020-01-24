@@ -16,6 +16,7 @@
         <span slot-scope="{ node, data }">
           <span>{{ node.label }}</span>
           <el-button type="text" v-if="node.isLeaf" @click="showInnerDrawer(data)">查看详情</el-button>
+          <el-button type="text" v-clipboard:copy="copyJavaInvoke(data)" v-clipboard:success="onCopy" v-if="node.isLeaf" >复制java调用</el-button>
         </span>
       </el-tree>
     </div>
@@ -31,10 +32,14 @@
 <script>
 import 'codemirror/mode/javascript/javascript.js'
 import 'codemirror/theme/base16-dark.css'
+import clipboard from '@/directive/clipboard/index.js'
 export default {
   props: {
     selectableActions: Array,
     showActionDetail: Boolean
+  },
+  directives: {
+    clipboard
   },
   watch: {
     actionTreeFilterText(val) {
@@ -69,16 +74,24 @@ export default {
     },
     showInnerDrawer(action) {
       this.innerDrawer = true
-      const content = {
-        id: action.id,
-        name: action.name,
-        description: action.description,
-        returnValue: action.returnValue,
-        returnValueDesc: action.returnValueDesc,
-        invoke: action.invoke,
-        params: action.params
+      this.codemirrorContent = JSON.stringify(action, null, '\t')
+    },
+    copyJavaInvoke(action) {
+      let params = ''
+      if (action.params && action.params.length > 0) {
+        params = action.params.map(p => p.type + ' ' + p.name).join(',')
       }
-      this.codemirrorContent = JSON.stringify(content, null, '\t')
+
+      let methodName = ''
+      if (action.type === 1) { // 基础组件
+        methodName = action.invoke
+      } else {
+        methodName = 'action_' + action.id
+      }
+      return methodName + '(' + params + ')'
+    },
+    onCopy(e) {
+      this.$notify.success(e.text + '复制成功')
     }
   }
 }

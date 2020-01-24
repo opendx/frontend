@@ -6,6 +6,8 @@
           <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
         </el-select>
         <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" size="mini">调试(ctrl+d)</el-button>
+        <el-button style="margin-left: -1px" v-show="code" @click="showCode = true" size="mini">code</el-button>
+        <debug-action-code :code="code" :visible.sync="showCode" />
       </div>
       <span class="required" /><el-input v-model="saveActionForm.name" placeholder="名称" style="width: 300px" clearable size="mini" />
       <el-select v-model="saveActionForm.state" size="mini" style="width: 80px">
@@ -93,6 +95,7 @@ import ActionParamList from '../components/ActionParamList'
 import ActionLocalVarList from '../components/ActionLocalVarList'
 import GlobalVarList from '../components/GlobalVarList'
 import ActionStepList from '../components/ActionStepList'
+import DebugActionCode from '../components/DebugActionCode'
 import Sticky from '@/components/Sticky'
 import { getPageCascader } from '@/api/page'
 import { getCategoryList } from '@/api/category'
@@ -106,6 +109,7 @@ export default {
     ActionLocalVarList,
     GlobalVarList,
     ActionStepList,
+    DebugActionCode,
     Sticky
   },
   props: {
@@ -160,7 +164,9 @@ export default {
       // 开始时的表单数据，用于校验表单数据是否有变化
       startSaveActionFormString: '',
       dependsOptions: [],
-      importActionOptions: []
+      importActionOptions: [],
+      showCode: false,
+      code: ''
     }
   },
   destroyed() {
@@ -330,14 +336,10 @@ export default {
           deviceId: this.$store.state.device.id
         }
       }).then(response => {
-        const printMsgList = response.data
-        const _this = this
-        for (let i = 0; i < printMsgList.length; i++) {
-          // 不延时，message会重叠
-          (function() {
-            setTimeout(() => _this.$message.success(printMsgList[i]), 200 * i)
-          })()
-        }
+        this.$message.success(response.msg)
+        this.code = response.data.code
+      }).catch(response => {
+        this.code = response.data.code
       }).finally(() => {
         this.debugBtnLoading = false
       })
