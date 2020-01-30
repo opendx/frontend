@@ -16,8 +16,8 @@
       <el-button type="success" @click="saveAction" size="mini">保存(ctrl+s)</el-button>
     </sticky>
     <div class="app-container">
-      <el-tabs tab-position="left">
-        <el-tab-pane label="信息">
+      <el-tabs tab-position="top">
+        <el-tab-pane label="更多信息">
           <el-form label-width="100px" label-position="left">
             <el-form-item label="所属分类" v-if="!isTestCase">
               <el-select v-model="saveActionForm.categoryId" @visible-change="actionCategorySelectChange" clearable filterable style="width: 500px" placeholder="选择分类">
@@ -68,7 +68,7 @@
         </el-tab-pane>
         <el-tab-pane label="返回值类型">
           <el-input v-model.trim="saveActionForm.returnValue" clearable placeholder="返回值类型" />
-          <el-input v-model="saveActionForm.returnValueDesc" clearable placeholder="描述" style="margin-top: 5px" />
+          <el-input v-model="saveActionForm.returnValueDesc" clearable placeholder="返回值描述" style="margin-top: 5px" />
         </el-tab-pane>
         <el-tab-pane label="import java类">
           <action-import-list ref="importList" />
@@ -80,7 +80,7 @@
             :options="importActionOptions"
             filterable
             clearable
-            style="width: 500px"
+            style="width: 100%"
             placeholder="import action">
           </el-cascader>
         </el-tab-pane>
