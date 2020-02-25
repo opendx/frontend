@@ -13,18 +13,10 @@
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
       </template>
-      <el-select v-model="idleDeviceId" placeholder="选择手机" style="top: -18px" size="mini" @visible-change="selectIdleDevice" @change="selectedIdleDevice">
-        <el-option v-for="device in idleDeviceList" :label="device.id" :value="device.id" :key="device.id">
-          <span>{{ device.id }}</span>
-          <el-divider direction="vertical" />
-          <span>{{ device.name }}</span>
-          <el-divider direction="vertical" />
-          <span>{{ device.systemVersion }}</span>
-        </el-option>
-      </el-select>
-      <el-select v-model="projectId" placeholder="选择项目" style="top: -18px" size="mini" @visible-change="selectProject" @change="selectedProject">
+      <span class="right-menu-item" style="margin-right: -16px; font-size: 12px; color: #2d2f33">当前项目:</span>
+      <el-select v-model="projectId" placeholder="选择项目" class="right-menu-item" size="mini" @change="selectedUserProject">
         <el-option
-          v-for="project in projectList"
+          v-for="project in userProjects"
           :key="project.id"
           :label="project.name"
           :value="project.id"
@@ -55,8 +47,6 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
-import { getProjectList } from '@/api/project'
-import { getDeviceList, deviceStart } from '@/api/device'
 
 export default {
   components: {
@@ -72,39 +62,54 @@ export default {
       'sidebar',
       'name',
       'avatar',
-      'device'
+      'device',
+      'projectId',
+      'userProjects',
+      'roles'
     ])
   },
   data() {
     return {
-      projectList: [],
-      projectId: this.$store.state.project.id,
-      idleDeviceList: [],
-      idleDeviceId: null
     }
   },
   created() {
-    getProjectList().then(response => {
-      this.projectList = response.data
-      // 当前选择的项目不存在，重置回null。如：之前选择了project1，后来project1被删除了
-      if (this.projectId && this.projectList.filter(p => p.id === this.projectId).length === 0) {
-        console.log('重置当前选择的project为null')
-        this.projectId = null
-        this.$store.dispatch('project/setId', null)
-        this.$store.dispatch('project/setPlatform', null)
-      }
-      if (this.projectList.length === 0) {
-        this.$alert('暂无项目，创建一个项目', '提示', {
-          confirmButtonText: '创建',
+    if (this.userProjects.length === 0) { // 未分配项目
+      if (this.roles.indexOf('admin') === -1) { // 非管理员
+        this.$alert('未加入任何项目，请联系管理员添加', '提示', {
           showClose: false,
+          center: true,
+          confirmButtonText: '登出',
           callback: () => {
-            this.$router.push({
-              name: 'AddProject'
-            })
+            this.logout()
+          }
+        })
+      } else {
+        this.$alert('未加入任何项目', '提示', {
+          confirmButtonText: '创建项目',
+          cancelButtonText: '加入项目',
+          showCancelButton: true,
+          callback: (action) => {
+            if (action === 'confirm') {
+              this.$router.push({
+                name: 'AddProject'
+              })
+            } else {
+              this.$router.push({
+                name: 'UserList'
+              })
+            }
           }
         })
       }
-    })
+    } else { // 用户已分配项目
+      if (this.projectId && this.userProjects.filter(p => p.id === this.projectId).length !== 0) { // 当前选择的项目在用户分配的项目中
+        return
+      }
+      // 取第一个项目，作为当前项目
+      const projet = this.userProjects[0]
+      this.$store.dispatch('project/setId', projet.id)
+      this.$store.dispatch('project/setPlatform', projet.platform)
+    }
   },
   methods: {
     toggleSideBar() {
@@ -114,42 +119,10 @@ export default {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
-    selectProject(type) {
-      if (type) {
-        // el-select展开
-        getProjectList().then(response => {
-          this.projectList = response.data
-        })
-      }
-    },
-    selectedProject(projectId) {
-      const selectedProject = this.projectList.filter(project => project.id === projectId)[0]
+    selectedUserProject(projectId) {
+      const selectedProject = this.userProjects.filter(project => project.id === projectId)[0]
       this.$store.dispatch('project/setId', selectedProject.id)
       this.$store.dispatch('project/setPlatform', selectedProject.platform)
-    },
-    selectIdleDevice(type) {
-      if (type) {
-        // status: 2 在线闲置
-        getDeviceList({ status: 2 }).then(response => {
-          this.idleDeviceList = response.data
-        })
-      }
-    },
-    selectedIdleDevice(idleDeviceId) {
-      this.idleDeviceId = null
-      if (this.$store.state.device.show) {
-        this.$notify.error('只能使用一台手机')
-        return
-      }
-      deviceStart(idleDeviceId).then(() => {
-        const device = this.idleDeviceList.filter(idleDevice => idleDevice.id === idleDeviceId)[0]
-        this.$store.dispatch('device/setAgentIp', device.agentIp)
-        this.$store.dispatch('device/setAgentPort', device.agentPort)
-        this.$store.dispatch('device/setId', device.id)
-        this.$store.dispatch('device/setPlatform', device.platform)
-        this.$store.dispatch('device/setSystemVersion', device.systemVersion)
-        this.$store.dispatch('device/setShow', true)
-      })
     }
   }
 }

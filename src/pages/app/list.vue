@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div style="margin-bottom: 10px">
-      <el-button @click="$router.push('/app/add')">添加app</el-button>
+      <el-button @click="$router.push({ name: 'AddApp' })">添加app</el-button>
     </div>
     <div style="margin-bottom: 10px">
       <el-select v-model="queryForm.platform">
@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     updateApp(app) {
-      this.$router.push('/app/update/' + app.id)
+      this.$router.push({ name: 'UpdateApp', params: { appId: app.id }})
     },
     deleteApp(app) {
       this.$confirm('删除' + app.name, '提示', {

@@ -57,7 +57,7 @@ import TestCase from './components/TestCase'
 import { platforms } from '@/utils/project'
 
 export default {
-  name: 'ReportTestTask',
+  name: 'TestTaskReport',
   components: {
     TestCase
   },

@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <div style="margin-bottom: 10px">
-      <el-button @click="$router.push('/testSuite/add')">添加测试集</el-button>
-      <el-button @click="$router.push('/action/testcase/add')">添加测试用例</el-button>
+      <el-button @click="$router.push({ name: 'AddTestSuite' })">添加测试集</el-button>
+      <el-button @click="$router.push({ name: 'AddTestcaseAction' })">添加测试用例</el-button>
     </div>
     <!--testSuite-->
     <div>
@@ -145,7 +145,7 @@ export default {
       delete _action.updatorUid
       delete _action.updatorNickName
       this.$router.push({
-        name: 'TestcaseActionAdd',
+        name: 'AddTestcaseAction',
         params: _action
       })
     },
@@ -194,7 +194,7 @@ export default {
       })
     },
     updateAction(id) {
-      this.$router.push('/action/testcase/update/' + id)
+      this.$router.push({ name: 'UpdateTestcaseAction', params: { actionId: id }})
     },
     testSuiteChange(row) {
       if (row.testSuiteId === '') { // 清除测试集

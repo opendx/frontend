@@ -7,7 +7,7 @@
 <script>
 import SaveTestPlan from './components/SaveTestPlan'
 export default {
-  name: 'TestPlanUpdate',
+  name: 'UpdateTestPlan',
   components: {
     SaveTestPlan
   }

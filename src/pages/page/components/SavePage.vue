@@ -49,8 +49,8 @@
       </el-col>
       <el-col :span="12">
         <el-form label-width="100px">
-          <el-form-item label="图片下载地址">
-            <el-input v-model="savePageForm.imgUrl" clearable :disabled="isAdd" />
+          <el-form-item label="图片名">
+            <el-input v-model="savePageForm.imgPath" clearable :disabled="isAdd" />
           </el-form-item>
           <el-form-item label="window高">
             <el-input v-model="savePageForm.windowHeight" clearable :disabled="isAdd" />
@@ -94,6 +94,7 @@ export default {
         projectId: this.$store.state.project.id,
         categoryId: undefined,
         description: '',
+        imgPath: '',
         imgUrl: '',
         windowHeight: undefined,
         windowWidth: undefined,

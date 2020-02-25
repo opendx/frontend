@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import logo from '@/assets/logo.png'
 export default {
   name: 'SidebarLogo',
   props: {
@@ -25,7 +26,7 @@ export default {
   data() {
     return {
       title: 'DaXiang',
-      logo: '/favicon.ico'
+      logo: logo
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button @click="$router.push('/testplan/add')" style="margin-bottom: 10px">添加测试计划</el-button>
+    <el-button @click="$router.push({ name: 'AddTestPlan' })" style="margin-bottom: 10px">添加测试计划</el-button>
     <el-table :data="testPlanList" border fit>
       <el-table-column label="环境" align="center" width="200">
         <template scope="{ row }">
@@ -95,12 +95,12 @@ export default {
       })
     },
     goToUpdateTestPlanPage(id) {
-      this.$router.push('/testPlan/update/' + id)
+      this.$router.push({ name: 'UpdateTestPlan', params: { testPlanId: id }})
     },
     commitTestPlan(id) {
       commitTestTask({ testPlanId: id }).then(response => {
         this.$notify.success(response.msg)
-        this.$router.push('/testTask/list')
+        this.$router.push({ name: 'TestTaskList' })
       })
     },
     fetchEnvironmentList() {

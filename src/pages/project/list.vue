@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div>
-      <el-button @click="$router.push('/project/add')">添加项目</el-button>
+      <el-button @click="$router.push({ name: 'AddProject' })">添加项目</el-button>
     </div>
     <!--查询-->
     <div style="margin-top: 10px">
@@ -70,7 +70,7 @@ export default {
       this.fetchProjectList()
     },
     updateProject(project) {
-      this.$router.push('/project/update/' + project.id)
+      this.$router.push({ name: 'UpdateProject', params: { projectId: project.id }})
     },
     deleteProject(project) {
       this.$confirm('删除' + project.name, '提示', {

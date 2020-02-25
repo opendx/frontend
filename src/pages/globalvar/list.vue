@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button @click="$router.push('/globalVar/add')" style="margin-bottom: 10px">添加全局变量</el-button>
+    <el-button @click="$router.push({ name: 'AddGlobalVar' })" style="margin-bottom: 10px">添加全局变量</el-button>
     <!-- 列表 -->
     <div>
       <el-table :data="globalVarList" highlight-current-row border>
@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     updateGlobalVar(globalVar) {
-      this.$router.push('/globalVar/update/' + globalVar.id)
+      this.$router.push({ name: 'UpdateGlobalVar', params: { globalVarId: globalVar.id }})
     },
     deleteGlobalVar(globalVar) {
       this.$confirm('删除' + globalVar.name, '提示', {

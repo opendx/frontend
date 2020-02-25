@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button @click="$router.push('/category/addPageCategory')" style="margin-bottom: 10px">添加分类</el-button>
+    <el-button @click="$router.push({ name: 'AddPageCategory' })" style="margin-bottom: 10px">添加分类</el-button>
     <!--page分类-->
     <el-tabs type="card" v-model="selectedCategoryName" @tab-remove="deletePageCategory" @tab-click="onTabClick">
       <el-tab-pane v-for="category in pageCategoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'" />
@@ -130,7 +130,7 @@ export default {
       })
     },
     updatePage(page) {
-      this.$router.push('/page/update/' + page.id)
+      this.$router.push({ name: 'UpdatePage', params: { pageId: page.id }})
     },
     categoryChange(row) {
       if (row.categoryId === '') { // 清除分类

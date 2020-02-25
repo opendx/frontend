@@ -11,14 +11,14 @@
       </el-radio-group>
     </el-form-item>
     <el-form-item label="上传">
-      <div v-for="url in driver.urls" :key="url.platform">
+      <div v-for="driverFile in driver.files" :key="driverFile.platform">
         <el-upload
           :action="uploadUrl"
           :limit="1"
           :multiple="false"
-          :on-success="(response, file, fileList) => onFileUploadSuccess(response, file, fileList, url)">
-          <el-button>{{ url.platform === 1 ? 'windows' : url.platform === 2 ? 'linux' : 'mac' }} - 点击上传</el-button>
-          {{ url.downloadUrl }}
+          :on-success="(response, file, fileList) => onFileUploadSuccess(response, file, fileList, driverFile)">
+          <el-button>{{ driverFile.platform === 1 ? 'windows' : driverFile.platform === 2 ? 'linux' : 'mac' }} - 点击上传</el-button>
+          {{ driverFile.filePath }}
         </el-upload>
         <el-divider />
       </div>
@@ -56,16 +56,16 @@ export default {
         id: undefined,
         version: '',
         type: 1, // 默认是chromedriver
-        urls: [
+        files: [
           {
             platform: 1, // windows
-            downloadUrl: ''
+            filePath: ''
           }, {
             platform: 2, // linux
-            downloadUrl: ''
+            filePath: ''
           }, {
             platform: 3, // mac
-            downloadUrl: ''
+            filePath: ''
           }
         ],
         deviceIds: []
@@ -92,12 +92,12 @@ export default {
         this.devices = response.data
       })
     },
-    onFileUploadSuccess(response, file, fileList, url) {
+    onFileUploadSuccess(response, file, fileList, driverFile) {
       if (response.status !== 1) {
         this.$message.error(response.msg)
         return
       }
-      url.downloadUrl = response.data.downloadURL
+      driverFile.filePath = response.data.filePath
     },
     saveDriverSuccess(msg) {
       this.$notify.success(msg)

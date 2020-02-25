@@ -7,7 +7,7 @@
 <script>
 import SaveTestPlan from './components/SaveTestPlan'
 export default {
-  name: 'TestPlanAdd',
+  name: 'AddTestPlan',
   components: {
     SaveTestPlan
   }

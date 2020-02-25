@@ -176,8 +176,8 @@ export default {
       this.codemirrorContent = content
       this.innerDrawer = true
     },
-    goToReportPage(row) {
-      this.$router.push('/testTask/report/' + row.id)
+    goToReportPage(testTask) {
+      this.$router.push({ name: 'TestTaskReport', params: { testTaskId: testTask.id }})
     },
     fetchDeviceTestTask(testTaskId) {
       getDeviceTestTaskList({ testTaskId: testTaskId }).then(response => {

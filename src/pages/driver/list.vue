@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div>
-      <el-button @click="$router.push('/driver/add')">添加driver</el-button>
+      <el-button @click="$router.push({ name: 'AddDriver' })">添加driver</el-button>
     </div>
     <!-- 列表 -->
     <div style="margin-top: 10px">
@@ -12,9 +12,9 @@
           </template>
         </el-table-column>
         <el-table-column label="version" align="center" prop="version" width="100" show-overflow-tooltip />
-        <el-table-column label="urls" align="center" min-width="300">
+        <el-table-column label="files" align="center" min-width="300">
           <template scope="{ row }">
-            <el-table :data="row.urls" border>
+            <el-table :data="row.files" border>
               <el-table-column label="平台" align="center" width="100" show-overflow-tooltip>
                 <template scope="{ row }">
                   {{ row.platform === 1 ? 'windows' : row.platform === 2 ? 'linux' : 'mac' }}
@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     updateDriver(driver) {
-      this.$router.push('/driver/update/' + driver.id)
+      this.$router.push({ name: 'UpdateDriver', params: { driverId: driver.id }})
     },
     deleteDriver(driver) {
       this.$confirm('删除' + driver.version, '提示', {

@@ -24,7 +24,8 @@ export default {
         windowWidth: null,
         windowHeight: null,
         windowOrientation: null,
-        imgUrl: null
+        imgUrl: null,
+        imgPath: null
       },
       treeLoading: false
     }
@@ -46,13 +47,7 @@ export default {
   methods: {
     fetchScreenShot() {
       screenshot(this.agentIp, this.agentPort, this.deviceId).then(response => {
-        const data = response.data
-        this.windowInfo = {
-          windowWidth: data.windowWidth,
-          windowHeight: data.windowHeight,
-          windowOrientation: data.windowOrientation,
-          imgUrl: data.downloadURL
-        }
+        this.windowInfo = response.data
       })
     },
     fetchWindowHierarchy() {
@@ -77,6 +72,7 @@ export default {
         params: {
           projectId: this.$store.state.project.id,
           imgUrl: this.windowInfo.imgUrl,
+          imgPath: this.windowInfo.imgPath,
           windowHeight: this.windowInfo.windowHeight,
           windowWidth: this.windowInfo.windowWidth,
           windowOrientation: this.windowInfo.windowOrientation,

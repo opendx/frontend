@@ -7,7 +7,8 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  projects: []
 }
 
 const mutations = {
@@ -25,6 +26,9 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_PROJECTS: (state, projects) => {
+    state.projects = projects
   }
 }
 
@@ -54,7 +58,11 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar, introduction } = data
+        const { nickName, avatar, introduction, projects } = data
+        const roles = data.roles.map(role => role.name)
+        data.roles = roles
+
+        console.log('userInfo', data)
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
@@ -62,7 +70,8 @@ const actions = {
         }
 
         commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
+        commit('SET_PROJECTS', projects)
+        commit('SET_NAME', nickName)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
         resolve(data)

@@ -19,7 +19,7 @@
       <el-table-column label="操作" align="center">
         <template scope="{ row }">
           <el-button @click="clickDetailInfo(row)" size="small" type="text">详细信息</el-button>
-          <el-button @click="$router.push('/action/testcase/update/'+row.id)" size="small" type="text">编辑用例</el-button>
+          <el-button @click="$router.push({ name: 'UpdateTestcaseAction', params: { actionId: row.id }})" size="small" type="text">编辑用例</el-button>
         </template>
       </el-table-column>
     </el-table>

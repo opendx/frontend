@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <div style="margin-bottom: 10px">
-      <el-button @click="$router.push('/category/addActionCategory')">添加分类</el-button>
-      <el-button @click="$router.push('/action/encapsulation/add')">添加Action</el-button>
+      <el-button @click="$router.push({ name: 'AddActionCategory' })">添加分类</el-button>
+      <el-button @click="$router.push({ name: 'AddEncapsulationAction' })">添加Action</el-button>
     </div>
     <div style="margin-bottom: 10px">
       <el-cascader
@@ -147,7 +147,7 @@ export default {
       delete _action.updatorUid
       delete _action.updatorNickName
       this.$router.push({
-        name: 'EncapsulationActionAdd',
+        name: 'AddEncapsulationAction',
         params: _action
       })
     },
@@ -208,7 +208,7 @@ export default {
       })
     },
     updateAction(id) {
-      this.$router.push('/action/encapsulation/update/' + id)
+      this.$router.push({ name: 'UpdateEncapsulationAction', params: { actionId: id }})
     },
     categoryChange(row) {
       if (row.categoryId === '') { // 清除分类

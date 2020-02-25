@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button @click="$router.push('/environment/add')">添加环境</el-button>
+    <el-button @click="$router.push({ name: 'AddEnvironment' })">添加环境</el-button>
     <!-- 列表 -->
     <div style="margin-top: 10px">
       <el-table :data="environmentList" highlight-current-row border>
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     updateEnvironment(environment) {
-      this.$router.push('/environment/update/' + environment.id)
+      this.$router.push({ name: 'UpdateEnvironment', params: { environmentId: environment.id }})
     },
     deleteEnvironment(environment) {
       this.$confirm('删除' + environment.name, '提示', {

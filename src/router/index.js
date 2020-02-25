@@ -122,21 +122,31 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
+
+]
+
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [
   {
     path: '/agent',
     component: Layout,
+    meta: { icon: 'node', roles: ['agent'] },
     children: [
       {
         path: 'list',
         component: () => import('@/pages/agent/list'),
-        name: 'ListAgent',
-        meta: { title: 'Agent', icon: 'node', noCache: true }
+        name: 'AgentList',
+        meta: { title: 'Agent', noCache: true }
       }
     ]
   },
   {
     path: '/app',
     component: Layout,
+    meta: { icon: 'app', roles: ['app'] },
     children: [
       {
         path: 'add',
@@ -155,26 +165,28 @@ export const constantRoutes = [
       {
         path: 'list',
         component: () => import('@/pages/app/list'),
-        name: 'ListApp',
-        meta: { title: 'App', icon: 'app', noCache: true }
+        name: 'AppList',
+        meta: { title: 'App', noCache: true }
       }
     ]
   },
   {
     path: '/device',
     component: Layout,
+    meta: { icon: 'device', roles: ['device'] },
     children: [
       {
         path: 'list',
         component: () => import('@/pages/device/list'),
-        name: 'ListDevice',
-        meta: { title: '设备', icon: 'device', noCache: true }
+        name: 'DeviceList',
+        meta: { title: '设备', noCache: true }
       }
     ]
   },
   {
     path: '/driver',
     component: Layout,
+    meta: { icon: 'chrome', roles: ['driver'] },
     children: [
       {
         path: 'add',
@@ -193,40 +205,15 @@ export const constantRoutes = [
       {
         path: 'list',
         component: () => import('@/pages/driver/list'),
-        name: 'ListDriver',
-        meta: { title: 'Driver', icon: 'chrome', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/project',
-    component: Layout,
-    children: [
-      {
-        path: 'add',
-        component: () => import('@/pages/project/add'),
-        name: 'AddProject',
-        meta: { title: '添加项目', noCache: false },
-        hidden: true
-      },
-      {
-        path: 'update/:projectId',
-        component: () => import('@/pages/project/update'),
-        name: 'UpdateProject',
-        meta: { title: '更新项目', noCache: false },
-        hidden: true
-      },
-      {
-        path: 'list',
-        component: () => import('@/pages/project/list'),
-        name: 'ListProject',
-        meta: { title: '项目', icon: 'project', noCache: true }
+        name: 'DriverList',
+        meta: { title: 'Driver', noCache: true }
       }
     ]
   },
   {
     path: '/environment',
     component: Layout,
+    meta: { icon: 'environment', roles: ['environment'] },
     children: [
       {
         path: 'add',
@@ -245,14 +232,15 @@ export const constantRoutes = [
       {
         path: 'list',
         component: () => import('@/pages/environment/list'),
-        name: 'ListEnvironment',
-        meta: { title: '环境', icon: 'environment', noCache: true }
+        name: 'EnvironmentList',
+        meta: { title: '环境', noCache: true }
       }
     ]
   },
   {
     path: '/globalVar',
     component: Layout,
+    meta: { icon: 'globalvar' ,roles: ['globalVar'] },
     children: [
       {
         path: 'add',
@@ -271,14 +259,15 @@ export const constantRoutes = [
       {
         path: 'list',
         component: () => import('@/pages/globalvar/list'),
-        name: 'ListGlobalVar',
-        meta: { title: '全局变量', icon: 'globalvar', noCache: true }
+        name: 'GlobalVarList',
+        meta: { title: '全局变量', noCache: true }
       }
     ]
   },
   {
     path: '/page',
     component: Layout,
+    meta: { icon: 'page' ,roles: ['page'] },
     children: [
       {
         path: 'add',
@@ -297,15 +286,14 @@ export const constantRoutes = [
       {
         path: 'list',
         component: () => import('@/pages/page/list'),
-        name: 'ListPage',
-        meta: { title: 'Page', icon: 'page', noCache: true }
+        name: 'PageList',
+        meta: { title: 'Page', noCache: true }
       }
     ]
   },
   {
     path: '/category',
     component: Layout,
-    name: 'Category',
     children: [
       {
         path: 'addPageCategory',
@@ -326,18 +314,19 @@ export const constantRoutes = [
   {
     path: '/action/encapsulation',
     component: Layout,
+    meta: { icon: 'module', roles: ['action'] },
     children: [
       {
         path: 'add',
         component: () => import('@/pages/action/encapsulation/add'),
-        name: 'EncapsulationActionAdd',
+        name: 'AddEncapsulationAction',
         meta: { title: '添加Action', noCache: false },
         hidden: true
       },
       {
         path: 'update/:actionId',
         component: () => import('@/pages/action/encapsulation/update'),
-        name: 'EncapsulationActionUpdate',
+        name: 'UpdateEncapsulationAction',
         meta: { title: '更新Action', noCache: false },
         hidden: true
       },
@@ -345,25 +334,26 @@ export const constantRoutes = [
         path: 'list',
         component: () => import('@/pages/action/encapsulation/list'),
         name: 'EncapsulationActionList',
-        meta: { title: 'Action', icon: 'module', noCache: true }
+        meta: { title: 'Action', noCache: true }
       }
     ]
   },
   {
     path: '/action/testcase',
     component: Layout,
+    meta: { icon: 'testcase', roles: ['testcase'] },
     children: [
       {
         path: 'add',
         component: () => import('@/pages/action/testcase/add'),
-        name: 'TestcaseActionAdd',
+        name: 'AddTestcaseAction',
         meta: { title: '添加测试用例', noCache: false },
         hidden: true
       },
       {
         path: 'update/:actionId',
         component: () => import('@/pages/action/testcase/update'),
-        name: 'TestcaseActionUpdate',
+        name: 'UpdateTestcaseAction',
         meta: { title: '更新测试用例', noCache: false },
         hidden: true
       },
@@ -371,14 +361,13 @@ export const constantRoutes = [
         path: 'list',
         component: () => import('@/pages/action/testcase/list'),
         name: 'TestcaseActionList',
-        meta: { title: '测试用例', icon: 'testcase', noCache: true }
+        meta: { title: '测试用例', noCache: true }
       }
     ]
   },
   {
     path: '/testSuite',
     component: Layout,
-    name: 'TestSuite',
     children: [
       {
         path: 'add',
@@ -392,18 +381,19 @@ export const constantRoutes = [
   {
     path: '/testPlan',
     component: Layout,
+    meta: { icon: 'testplan', roles: ['testPlan'] },
     children: [
       {
         path: 'add',
         component: () => import('@/pages/testplan/add'),
-        name: 'TestPlanAdd',
+        name: 'AddTestPlan',
         meta: { title: '添加测试计划', noCache: false },
         hidden: true
       },
       {
         path: 'update/:testPlanId',
         component: () => import('@/pages/testplan/update'),
-        name: 'TestPlanUpdate',
+        name: 'UpdateTestPlan',
         meta: { title: '更新测试计划', noCache: false },
         hidden: true
       },
@@ -411,36 +401,77 @@ export const constantRoutes = [
         path: 'list',
         component: () => import('@/pages/testplan/list'),
         name: 'TestPlanList',
-        meta: { title: '测试计划', icon: 'testplan', noCache: true }
+        meta: { title: '测试计划', noCache: true }
       }
     ]
   },
   {
     path: '/testTask',
     component: Layout,
+    meta: { icon: 'testtask', roles: ['testTask'] },
     children: [
       {
         path: 'list',
         component: () => import('@/pages/testtask/list'),
-        name: 'ListTestTask',
-        meta: { title: '测试任务', icon: 'testtask', noCache: true }
+        name: 'TestTaskList',
+        meta: { title: '测试任务', noCache: true }
       },
       {
         path: 'report/:testTaskId',
         component: () => import('@/pages/testtask/report/index'),
-        name: 'ReportTestTask',
+        name: 'TestTaskReport',
         meta: { title: '测试报告', noCache: false },
         hidden: true
       }
     ]
-  }
-]
-
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
-export const asyncRoutes = [
+  },
+  {
+    path: '/system',
+    component: Layout,
+    meta: { title: '系统管理', icon: 'setting', roles: ['admin'] },
+    children: [
+      {
+        path: 'user/add',
+        component: () => import('@/pages/user/add'),
+        name: 'AddUser',
+        meta: { title: '添加用户', noCache: false },
+        hidden: true
+      },
+      {
+        path: 'user/update/:userId',
+        component: () => import('@/pages/user/update'),
+        name: 'UpdateUser',
+        meta: { title: '更新用户', noCache: false },
+        hidden: true
+      },
+      {
+        path: 'user/list',
+        component: () => import('@/pages/user/list'),
+        name: 'UserList',
+        meta: { title: '用户', icon: 'user', noCache: true }
+      },
+      {
+        path: 'project/add',
+        component: () => import('@/pages/project/add'),
+        name: 'AddProject',
+        meta: { title: '添加项目', noCache: false },
+        hidden: true
+      },
+      {
+        path: 'project/update/:projectId',
+        component: () => import('@/pages/project/update'),
+        name: 'UpdateProject',
+        meta: { title: '更新项目', noCache: false },
+        hidden: true
+      },
+      {
+        path: 'project/list',
+        component: () => import('@/pages/project/list'),
+        name: 'ProjectList',
+        meta: { title: '项目', icon: 'project', noCache: true }
+      }
+    ]
+  },
   // {
   //   path: '/permission',
   //   component: Layout,
