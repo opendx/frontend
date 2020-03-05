@@ -16,45 +16,51 @@
       <el-button type="success" @click="saveAction" size="mini">保存(ctrl+s)</el-button>
     </sticky>
     <div class="app-container">
-      <el-tabs tab-position="top">
+      <el-tabs tab-position="top" type="border-card">
         <el-tab-pane label="更多信息">
-          <el-form label-width="100px" label-position="left">
-            <el-form-item label="所属分类" v-if="!isTestCase">
-              <el-select v-model="saveActionForm.categoryId" @visible-change="actionCategorySelectChange" clearable filterable style="width: 500px" placeholder="选择分类">
-                <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="所属Page" v-if="!isTestCase">
-              <el-cascader
-                v-model="saveActionForm.pageId"
-                :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
-                :options="pages"
-                filterable
-                clearable
-                style="width: 500px"
-                @visible-change="pageSelectChange"
-                placeholder="选择page">
-              </el-cascader>
-            </el-form-item>
-            <el-form-item label="所属测试集" v-if="isTestCase">
-              <el-select v-model="saveActionForm.testSuiteId" @visible-change="testsuiteSelectChange" clearable filterable style="width: 500px" placeholder="选择测试集">
-                <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="依赖用例" v-if="isTestCase">
-              <el-cascader
-                v-model="saveActionForm.depends"
-                :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true }"
-                :options="dependsOptions"
-                filterable
-                clearable
-                style="width: 500px"
-                placeholder="选择用例">
-              </el-cascader>
-            </el-form-item>
-            <el-form-item label="描述">
-              <el-input v-model="saveActionForm.description" type="textarea" style="width: 500px" />
-            </el-form-item>
+          <el-form label-width="100px" label-position="right">
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="所属分类" v-if="!isTestCase">
+                  <el-select v-model="saveActionForm.categoryId" @visible-change="actionCategorySelectChange" clearable filterable style="width: 100%" placeholder="选择分类">
+                    <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="所属Page" v-if="!isTestCase">
+                  <el-cascader
+                    v-model="saveActionForm.pageId"
+                    :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+                    :options="pages"
+                    filterable
+                    clearable
+                    style="width: 100%"
+                    @visible-change="pageSelectChange"
+                    placeholder="选择page">
+                  </el-cascader>
+                </el-form-item>
+                <el-form-item label="所属测试集" v-if="isTestCase">
+                  <el-select v-model="saveActionForm.testSuiteId" @visible-change="testsuiteSelectChange" clearable filterable style="width: 100%" placeholder="选择测试集">
+                    <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="依赖用例" v-if="isTestCase">
+                  <el-cascader
+                    v-model="saveActionForm.depends"
+                    :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true }"
+                    :options="dependsOptions"
+                    filterable
+                    clearable
+                    style="width: 100%"
+                    placeholder="选择用例">
+                  </el-cascader>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="描述">
+                  <el-input v-model="saveActionForm.description" type="textarea" />
+                </el-form-item>
+              </el-col>
+            </el-row>
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="方法参数">
@@ -67,10 +73,14 @@
           <global-var-list :environment-list="environmentList" />
         </el-tab-pane>
         <el-tab-pane label="返回值类型">
-          <el-input v-model.trim="saveActionForm.returnValue" clearable placeholder="返回值类型" />
-          <el-input v-model="saveActionForm.returnValueDesc" clearable placeholder="返回值描述" style="margin-top: 5px" />
+          <el-input v-model.trim="saveActionForm.returnValue" clearable>
+            <el-button slot="prepend">类型</el-button>
+          </el-input>
+          <el-input v-model="saveActionForm.returnValueDesc" clearable style="margin-top: 5px">
+            <el-button slot="prepend">描述</el-button>
+          </el-input>
         </el-tab-pane>
-        <el-tab-pane label="import java类">
+        <el-tab-pane label="import java">
           <action-import-list ref="importList" />
         </el-tab-pane>
         <el-tab-pane label="import action">
@@ -81,11 +91,13 @@
             filterable
             clearable
             style="width: 100%"
-            placeholder="import action">
+            placeholder="选择要导入的action">
           </el-cascader>
         </el-tab-pane>
       </el-tabs>
-      <action-step-list ref="stepList" style="margin-top: 5px" :cur-action-id="saveActionForm.id" @selectableActionsChange="onSelectableActionsChange" />
+      <el-card shadow="always" style="margin-top: 5px">
+        <action-step-list ref="stepList" :cur-action-id="saveActionForm.id" @selectableActionsChange="onSelectableActionsChange" />
+      </el-card>
     </div>
   </div>
 </template>

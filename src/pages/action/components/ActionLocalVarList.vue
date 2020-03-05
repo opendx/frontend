@@ -10,32 +10,27 @@
           <el-input v-model.trim="row.type" clearable />
         </template>
       </el-table-column>
-      <el-table-column label="局部变量名" align="center" min-width="200">
+      <el-table-column label="局部变量名" align="center" width="200">
         <template scope="{ row }">
           <el-input v-model.trim="row.name" clearable />
         </template>
       </el-table-column>
-      <el-table-column label="局部变量值" align="center" width="920">
+      <el-table-column label="局部变量值" align="center" min-width="500">
         <template scope="{ row }">
-          <el-row :gutter="5" v-for="(environmentValue, index) in row.environmentValues" :key="environmentValue.environmentId" style="margin-bottom: 5px">
-            <el-col :span="5">
-              <el-select v-model="environmentValue.environmentId" placeholder="选择环境" style="width: 100%">
+          <div v-for="(environmentValue, index) in row.environmentValues" :key="environmentValue.environmentId" style="margin-bottom: 5px">
+            <el-input v-model.trim="environmentValue.value" clearable>
+              <el-select slot="prepend" v-model="environmentValue.environmentId" placeholder="选择环境" style="width: 180px">
                 <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
               </el-select>
-            </el-col>
-            <el-col :span="16">
-              <el-input v-model.trim="environmentValue.value" clearable/>
-            </el-col>
-            <el-col :span="3">
-              <el-button @click="addEnvironmentValue(row)">+</el-button>
-              <el-button @click="delEnvironmentValue(row, index)" :disabled="index === 0">-</el-button>
-            </el-col>
-          </el-row>
+              <el-button slot="append" @click="addEnvironmentValue(row)">+</el-button>
+              <el-button slot="append" @click="delEnvironmentValue(row, index)" :disabled="index === 0">-</el-button>
+            </el-input>
+          </div>
         </template>
       </el-table-column>
-      <el-table-column label="描述" align="center" min-width="200">
+      <el-table-column label="描述" align="center" width="150">
         <template scope="{ row }">
-          <el-input v-model.trim="row.description" clearable />
+          <el-input type="textarea" v-model.trim="row.description" clearable />
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="50">

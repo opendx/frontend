@@ -4,9 +4,9 @@
     <!-- 列表 -->
     <div>
       <el-table :data="globalVarList" highlight-current-row border>
-        <el-table-column label="变量类型" align="center" prop="type" width="120" show-overflow-tooltip />
-        <el-table-column label="变量名" align="center" prop="name" width="200" show-overflow-tooltip />
-        <el-table-column label="变量值" align="center" min-width="500">
+        <el-table-column label="变量类型" align="center" prop="type" width="180" show-overflow-tooltip />
+        <el-table-column label="变量名" align="center" prop="name" width="180" show-overflow-tooltip />
+        <el-table-column label="变量值" align="center">
           <template scope="{ row }">
             <el-table :data="row.environmentValues" border fit>
               <el-table-column label="环境" align="center" width="150" show-overflow-tooltip>
@@ -18,7 +18,7 @@
             </el-table>
           </template>
         </el-table-column>
-        <el-table-column label="描述" align="center" prop="description" width="100" show-overflow-tooltip />
+        <el-table-column label="描述" align="center" prop="description" width="150" show-overflow-tooltip />
         <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.creatorNickName + ' ' + row.createTime }}

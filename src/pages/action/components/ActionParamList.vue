@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table :data="params" border>
-      <el-table-column align="center" width="200">
+      <el-table-column align="center" width="250">
         <template slot="header">
           <el-button type="text" class="el-icon-circle-plus" @click="addParam" />
           方法参数类型
@@ -17,7 +17,7 @@
       </el-table-column>
       <el-table-column label="描述" align="center">
         <template scope="{ row }">
-          <el-input v-model.trim="row.description" clearable />
+          <el-input type="textarea" v-model.trim="row.description" clearable />
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="50">

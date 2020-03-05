@@ -7,20 +7,15 @@
       <el-input v-model.trim="globalVar.name" clearable style="width: 300px" />
     </el-form-item>
     <el-form-item label="变量值" :rules="[{required: true}]">
-      <el-row :gutter="12" v-for="(environmentValue, index) in globalVar.environmentValues" :key="index" style="margin-bottom: 5px">
-        <el-col :span="6">
-          <el-select v-model="environmentValue.environmentId" @visible-change="envSelectChange" placeholder="选择环境" style="width: 100%">
+      <div v-for="(environmentValue, index) in globalVar.environmentValues" :key="index" style="margin-bottom: 5px">
+        <el-input v-model.trim="environmentValue.value" clearable>
+          <el-select slot="prepend" v-model="environmentValue.environmentId" @visible-change="envSelectChange" placeholder="选择环境" style="width: 200px">
             <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
           </el-select>
-        </el-col>
-        <el-col :span="12">
-          <el-input v-model.trim="environmentValue.value" clearable />
-        </el-col>
-        <el-col :span="5">
-          <el-button @click="addEnvironmentValue">+</el-button>
-          <el-button @click="delEnvironmentValue(index)" :disabled="index === 0">-</el-button>
-        </el-col>
-      </el-row>
+          <el-button slot="append" @click="addEnvironmentValue">+</el-button>
+          <el-button slot="append" @click="delEnvironmentValue(index)" :disabled="index === 0">-</el-button>
+        </el-input>
+      </div>
     </el-form-item>
     <el-form-item label="描述">
       <el-input v-model.trim="globalVar.description" type="textarea" style="width: 300px" />
