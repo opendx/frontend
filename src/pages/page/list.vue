@@ -2,43 +2,38 @@
   <div class="app-container">
     <el-button @click="$router.push({ name: 'AddPageCategory' })" style="margin-bottom: 10px">添加分类</el-button>
     <!--page分类-->
-    <el-tabs type="card" v-model="selectedCategoryName" @tab-remove="deletePageCategory" @tab-click="onTabClick">
-      <el-tab-pane v-for="category in pageCategoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'" />
+    <el-tabs type="border-card" v-model="selectedCategoryName" @tab-remove="deletePageCategory" @tab-click="onTabClick">
+      <el-tab-pane v-for="category in pageCategoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'">
+        <el-table :data="pageList" highlight-current-row border>
+          <el-table-column label="分类" align="center" width="200">
+            <template scope="{ row }">
+              <el-select v-model="row.categoryId" clearable filterable @change="categoryChange(row)" placeholder="选择分类">
+                <el-option v-for="category in pageCategoryListWithoutTotal" :key="category.id" :value="category.id" :label="category.name" />
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column label="page" align="center" width="120">
+            <template scope="{ row }">
+              <img v-if="row.imgUrl" :src="row.imgUrl" width="100px">
+            </template>
+          </el-table-column>
+          <el-table-column label="page名" align="center" property="name" show-overflow-tooltip />
+          <el-table-column label="描述" align="center" property="description" show-overflow-tooltip />
+          <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
+            <template scope="{ row }">
+              {{ row.creatorNickName + ' ' + row.createTime }}
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="150" align="center">
+            <template scope="{ row }">
+              <el-button type="primary" class="el-icon-edit" @click="updatePage(row)" />
+              <el-button type="danger" class="el-icon-delete" @click="deletePage(row)" />
+            </template>
+          </el-table-column>
+        </el-table>
+        <pagination v-show="total>0" :total="total" :page.sync="queryPageListForm.pageNum" :limit.sync="queryPageListForm.pageSize" @pagination="fetchPageList" />
+      </el-tab-pane>
     </el-tabs>
-    <!--page列表-->
-    <div>
-      <el-table :data="pageList" highlight-current-row border>
-        <el-table-column label="分类" align="center" width="200">
-          <template scope="{ row }">
-            <el-select v-model="row.categoryId" clearable filterable @change="categoryChange(row)" placeholder="选择分类">
-              <el-option v-for="category in pageCategoryListWithoutTotal" :key="category.id" :value="category.id" :label="category.name" />
-            </el-select>
-          </template>
-        </el-table-column>
-        <el-table-column label="page" align="center" width="120">
-          <template scope="{ row }">
-            <img v-if="row.imgUrl" :src="row.imgUrl" width="100px">
-          </template>
-        </el-table-column>
-        <el-table-column label="page名" align="center" property="name" show-overflow-tooltip />
-        <el-table-column label="描述" align="center" property="description" show-overflow-tooltip />
-        <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
-          <template scope="{ row }">
-            {{ row.creatorNickName + ' ' + row.createTime }}
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="150" align="center">
-          <template scope="{ row }">
-            <el-button type="primary" class="el-icon-edit" @click="updatePage(row)" />
-            <el-button type="danger" class="el-icon-delete" @click="deletePage(row)" />
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <!--分页-->
-    <div>
-      <pagination v-show="total>0" :total="total" :page.sync="queryPageListForm.pageNum" :limit.sync="queryPageListForm.pageSize" @pagination="fetchPageList" />
-    </div>
   </div>
 </template>
 
