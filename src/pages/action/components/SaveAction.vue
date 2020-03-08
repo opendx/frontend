@@ -328,6 +328,7 @@ export default {
         return
       }
       this.debugBtnLoading = true
+      this.code = ''
       const action = {}
       action.name = this.saveActionForm.name
       action.projectId = this.saveActionForm.projectId
