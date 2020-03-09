@@ -32,6 +32,7 @@
             <el-select v-model="savePageForm.categoryId" clearable filterable @visible-change="pageCategorySelectChange" placeholder="选择分类">
               <el-option v-for="category in pageCategoryList" :key="category.id" :value="category.id" :label="category.name" />
             </el-select>
+            <el-button @click="$router.push({ name: 'AddPageCategory' })">+</el-button>
           </el-form-item>
           <el-form-item label="描述">
             <el-input v-model="savePageForm.description" clearable />

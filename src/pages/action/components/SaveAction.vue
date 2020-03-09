@@ -22,9 +22,10 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="所属分类" v-if="!isTestCase">
-                  <el-select v-model="saveActionForm.categoryId" @visible-change="actionCategorySelectChange" clearable filterable style="width: 100%" placeholder="选择分类">
+                  <el-select v-model="saveActionForm.categoryId" @visible-change="actionCategorySelectChange" clearable filterable style="width: 80%" placeholder="选择分类">
                     <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
                   </el-select>
+                  <el-button @click="$router.push({ name: 'AddActionCategory' })">+</el-button>
                 </el-form-item>
                 <el-form-item label="所属Page" v-if="!isTestCase">
                   <el-cascader
@@ -39,9 +40,10 @@
                   </el-cascader>
                 </el-form-item>
                 <el-form-item label="所属测试集" v-if="isTestCase">
-                  <el-select v-model="saveActionForm.testSuiteId" @visible-change="testsuiteSelectChange" clearable filterable style="width: 100%" placeholder="选择测试集">
+                  <el-select v-model="saveActionForm.testSuiteId" @visible-change="testsuiteSelectChange" clearable filterable style="width: 80%" placeholder="选择测试集">
                     <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
                   </el-select>
+                  <el-button @click="$router.push({ name: 'AddTestSuite' })">+</el-button>
                 </el-form-item>
                 <el-form-item label="依赖用例" v-if="isTestCase">
                   <el-cascader
