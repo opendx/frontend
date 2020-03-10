@@ -78,7 +78,8 @@ export default {
           windowOrientation: this.windowInfo.windowOrientation,
           deviceId: this.deviceId,
           windowHierarchy: this.windowHierarchy,
-          elements: []
+          elements: [],
+          bys: []
         }
       })
     }

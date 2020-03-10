@@ -11,12 +11,31 @@
             </el-input>
           </el-col>
           <el-col :span="6">
-            <el-cascader v-model="element.findBy" :options="findBys" placeholder="findBy" style="width: 100%"/>
+            <el-cascader v-model="element.findBy" :options="findBys" placeholder="定位方式" style="width: 100%" />
           </el-col>
           <el-col :span="12">
             <el-input v-model.trim="element.value" clearable placeholder="value">
               <el-button slot="append" v-clipboard:copy="savePageForm.name + '_' + element.name" v-clipboard:success="onCopy">引用</el-button>
               <el-button slot="append" @click="delElement(index)">删除</el-button>
+            </el-input>
+          </el-col>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="By">
+        <el-button @click="addBy">+</el-button>
+        <el-row :gutter="2" v-for="(by, index) in savePageForm.bys" :key="index" style="margin-top: 3px">
+          <el-col :span="6">
+            <el-input v-model.trim="by.name" clearable placeholder="By">
+              <template slot="prepend">By</template>
+            </el-input>
+          </el-col>
+          <el-col :span="6">
+            <el-cascader v-model="by.findBy" :options="bys" placeholder="定位方式" style="width: 100%" />
+          </el-col>
+          <el-col :span="12">
+            <el-input v-model.trim="by.value" clearable placeholder="value">
+              <el-button slot="append" v-clipboard:copy="savePageForm.name + '_' + by.name" v-clipboard:success="onCopy">引用</el-button>
+              <el-button slot="append" @click="delBy(index)">删除</el-button>
             </el-input>
           </el-col>
         </el-row>
@@ -47,7 +66,7 @@
       </el-col>
       <el-col :span="12">
         <el-form label-width="100px">
-          <el-form-item label="图片名">
+          <el-form-item label="图片Path">
             <el-input v-model="savePageForm.imgPath" clearable :disabled="isAdd" />
           </el-form-item>
           <el-form-item label="window高">
@@ -99,7 +118,8 @@ export default {
         windowOrientation: undefined,
         deviceId: undefined,
         windowHierarchy: '',
-        elements: []
+        elements: [],
+        bys: []
       },
       pageCategoryList: []
     }
@@ -190,6 +210,53 @@ export default {
         findBys.splice(0, 2)
       }
       return findBys
+    },
+    bys() {
+      const bys = [{
+        value: 'MobileBy',
+        label: 'MobileBy',
+        children: [{
+          value: 'id',
+          label: 'id'
+        }, {
+          value: 'AccessibilityId',
+          label: 'AccessibilityId'
+        }, {
+          value: 'xpath',
+          label: 'xpath'
+        }, {
+          value: 'AndroidUIAutomator',
+          label: 'AndroidUIAutomator'
+        }, {
+          value: 'iOSClassChain',
+          label: 'iOSClassChain'
+        }, {
+          value: 'iOSNsPredicateString',
+          label: 'iOSNsPredicateString'
+        }, {
+          value: 'image',
+          label: 'image'
+        }, {
+          value: 'className',
+          label: 'className'
+        }, {
+          value: 'name',
+          label: 'name'
+        }, {
+          value: 'cssSelector',
+          label: 'cssSelector'
+        }, {
+          value: 'linkText',
+          label: 'linkText'
+        }, {
+          value: 'partialLinkText',
+          label: 'partialLinkText'
+        }, {
+          value: 'tagName',
+          label: 'tagName'
+        }]
+      }]
+      return bys
     }
   },
   created() {
@@ -249,8 +316,18 @@ export default {
         value: ''
       })
     },
+    addBy() {
+      this.savePageForm.bys.push({
+        name: '',
+        findBy: [],
+        value: ''
+      })
+    },
     delElement(index) {
       this.savePageForm.elements.splice(index, 1)
+    },
+    delBy(index) {
+      this.savePageForm.bys.splice(index, 1)
     }
   }
 }

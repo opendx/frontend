@@ -12,7 +12,7 @@
       <el-table :data="deviceList" highlight-current-row border>
         <el-table-column label="设备" align="center" width="120">
           <template scope="{ row }">
-            <img :src="row.imgUrl" width="100px">
+            <el-image :src="row.imgUrl" :preview-src-list="[row.imgUrl]" width="100px" />
           </template>
         </el-table-column>
         <el-table-column label="设备id" align="center" prop="id" show-overflow-tooltip />

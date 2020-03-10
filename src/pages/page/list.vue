@@ -14,7 +14,7 @@
           </el-table-column>
           <el-table-column label="page" align="center" width="120">
             <template scope="{ row }">
-              <img v-if="row.imgUrl" :src="row.imgUrl" width="100px">
+              <el-image v-if="row.imgUrl" :src="row.imgUrl" :preview-src-list="[row.imgUrl]" width="100px" />
             </template>
           </el-table-column>
           <el-table-column label="page名" align="center" property="name" show-overflow-tooltip />

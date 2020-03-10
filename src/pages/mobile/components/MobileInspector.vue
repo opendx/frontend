@@ -1,22 +1,25 @@
 <template>
   <div>
+    <el-image-viewer v-if="showImageViewer" :url-list="[windowInfo.imgUrl]" :on-close="closeImageViewer" />
     <!--gutter 列的间距-->
     <el-row :gutter="2">
       <!--左侧图片-->
       <el-col :span="8" style="max-height:650px; overflow: auto">
+        <i style="background-color: #fff; position: fixed" class="el-icon-full-screen" @click="showImageViewer = true" />
         <canvas :id="canvasId" style="width: 100%" />
       </el-col>
       <!--中间布局树-->
       <el-col v-if="!isWebView" :span="10" style="max-height:650px; overflow: auto">
-        <el-tree ref="tree"
-                 v-loading="treeLoading"
-                 :data="treeData"
-                 :props="defaultProps"
-                 highlight-current
-                 :expand-on-click-node="false"
-                 node-key="id"
-                 :default-expanded-keys="currentExpandedKey"
-                 @node-click="nodeClick"
+        <el-tree
+          ref="tree"
+          v-loading="treeLoading"
+          :data="treeData"
+          :props="defaultProps"
+          highlight-current
+          :expand-on-click-node="false"
+          node-key="id"
+          :default-expanded-keys="currentExpandedKey"
+          @node-click="nodeClick"
         />
       </el-col>
       <!--右侧控件信息-->
@@ -37,11 +40,13 @@
 </template>
 
 <script>
+import ElImageViewer from 'element-ui/packages/image/src/image-viewer'
 import _ from 'lodash'
 import { getXPath, getXPathLite, getAndroidUiautomator, getIOSNsPredicateString } from '@/utils/xpath'
 import clipboard from '@/directive/clipboard/index.js'
 
 export default {
+  components: {ElImageViewer},
   directives: {
     clipboard
   },
@@ -53,6 +58,8 @@ export default {
   },
   data() {
     return {
+      showImageViewer: false,
+
       img: null,
       canvas: null,
       canvasCtx: null,
@@ -222,6 +229,9 @@ export default {
     }
   },
   methods: {
+    closeImageViewer() {
+      this.showImageViewer = false
+    },
     // 点击复制到粘贴板
     onCopy() {
       this.$notify.success('复制成功')

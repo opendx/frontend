@@ -66,8 +66,19 @@
             <el-table-column label="参数值">
               <template scope="scope_paramValues">
                 <div v-if="row.actionId !== 1">
-                  <el-input v-model="scope_paramValues.row.paramValue" @paste.native="onpaste($event, scope_paramValues)" type="textarea" :autosize="{ minRows: 1, maxRows: 10 }"/>
-                  <img v-if="isImg(scope_paramValues.row.paramValue)" :src="scope_paramValues.row.paramValue" />
+                  <el-input
+                    :style="{ width: isBase64Png(scope_paramValues.row.paramValue) ? 'calc(100% - 160px)' : '100%' }"
+                    v-model="scope_paramValues.row.paramValue"
+                    @paste.native="onpaste($event, scope_paramValues)"
+                    type="textarea"
+                    :autosize="{ minRows: 1, maxRows: 10 }"
+                  />
+                  <el-image
+                    v-if="isBase64Png(scope_paramValues.row.paramValue)"
+                    style="width: 150px"
+                    :src="base64PngSrcPrefix + scope_paramValues.row.paramValue"
+                    :preview-src-list="[base64PngSrcPrefix + scope_paramValues.row.paramValue]"
+                  />
                 </div>
                 <codemirror v-else v-model="scope_paramValues.row.paramValue" :options="cmOptions" />
               </template>
@@ -113,6 +124,8 @@ export default {
   },
   data() {
     return {
+      base64PngSrcPrefix: 'data:image/png;base64,',
+      base64PngPrefix: 'iVBORw0KGgoAAAANSUhEUgAA',
       steps: [],
       selectedSteps: [],
       selectableActions: [],
@@ -206,16 +219,10 @@ export default {
     this.fetchActionCascader()
   },
   methods: {
-    isImg(value) {
-      if (value) {
-        // 简单粗暴判断是否是base64
-        return value.startsWith('data:image/')
-      } else {
-        return false
-      }
+    isBase64Png(value) {
+      return value ? value.startsWith(this.base64PngPrefix) : false
     },
     onpaste(e, scope) {
-      console.log('paramValue onpaste')
       if (!(e.clipboardData && e.clipboardData.items)) {
         return
       }
@@ -226,7 +233,8 @@ export default {
         const imgFile = item.getAsFile()
         const reader = new FileReader()
         reader.onload = e => {
-          scope.row.paramValue = e.target.result
+          // data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA
+          scope.row.paramValue = e.target.result.substring(22)
         }
         reader.readAsDataURL(imgFile)
       }
