@@ -18,13 +18,13 @@
     </div>
     <!--action分类-->
     <div>
-      <el-tabs type="border-card" v-model="selectedCategoryName" @tab-remove="deleteActionCategory" @tab-click="onTabClick">
-        <el-tab-pane v-for="category in actionCategoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'">
+      <el-tabs type="border-card" v-model="selectedCategoryName" @tab-remove="deleteCategory" @tab-click="onTabClick">
+        <el-tab-pane v-for="category in categoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'">
           <el-table :data="actionList" highlight-current-row border>
             <el-table-column label="分类" align="center" width="200">
               <template scope="{ row }">
                 <el-select v-model="row.categoryId" clearable filterable @change="categoryChange(row)" placeholder="选择分类">
-                  <el-option v-for="category in actionCategoryListWithoutTotal" :key="category.id" :label="category.name" :value="category.id" />
+                  <el-option v-for="category in categoryListWithoutTotal" :key="category.id" :label="category.name" :value="category.id" />
                 </el-select>
               </template>
             </el-table-column>
@@ -91,9 +91,8 @@ export default {
     return {
       selectedCategoryName: '全部',
       pageList: [],
-      actionCategoryList: [{
-        name: '全部',
-        id: undefined
+      categoryList: [{
+        name: '全部'
       }],
       actionList: [],
       total: 0,
@@ -122,8 +121,8 @@ export default {
     projectId() {
       return this.$store.state.project.id
     },
-    actionCategoryListWithoutTotal() {
-      return this.actionCategoryList.filter(category => category.name !== '全部')
+    categoryListWithoutTotal() {
+      return this.categoryList.filter(category => category.name !== '全部')
     }
   },
   created() {
@@ -155,7 +154,7 @@ export default {
         projectId: this.projectId,
         type: 2 // action
       }).then(response => {
-        this.actionCategoryList = this.actionCategoryList.concat(response.data)
+        this.categoryList = this.categoryList.concat(response.data)
       })
     },
     async fetchActionList() {
@@ -168,24 +167,25 @@ export default {
       this.pageList = data
     },
     onTabClick(tab) {
-      const activedCategory = this.actionCategoryList.filter(category => category.name === tab.label)[0]
+      const activedCategory = this.categoryList.filter(category => category.name === tab.label)[0]
       this.queryActionListForm.categoryId = activedCategory.id
       this.queryActionListForm.pageNum = 1
       this.fetchActionList()
     },
-    deleteActionCategory(name) {
+    deleteCategory(name) {
       this.$confirm('删除' + name + '？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        const category = this.actionCategoryList.filter(category => category.name === name)[0]
+        const category = this.categoryList.filter(category => category.name === name)[0]
         deleteCategory(category.id).then(response => {
           this.$notify.success(response.msg)
           // 移除tab，切换到全部，重新请求全部数据
-          this.actionCategoryList.splice(this.actionCategoryList.indexOf(category), 1)
+          this.categoryList.splice(this.categoryList.indexOf(category), 1)
           this.selectedCategoryName = '全部'
           this.queryActionListForm.categoryId = undefined
+          this.queryActionListForm.pageNum = 1
           this.fetchActionList()
         })
       })

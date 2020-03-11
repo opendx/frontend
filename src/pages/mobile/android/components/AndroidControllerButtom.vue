@@ -1,11 +1,13 @@
 <template>
   <div>
     <el-popover v-model="visible" placement="left" trigger="click">
-      <mobile-capture style="width: 1000px; height: 650px" v-if="initMobileCapture" @closeMobileCapture="visible = false" />
+      <mobile-capture style="width: 1200px; height: 680px" v-if="initMobileCapture" @closeMobileCapture="visible = false" />
       <el-button slot="reference" :disabled="!$store.state.device.appiumSessionId" @click="initMobileCapture = true" size="mini">
         <svg-icon icon-class="capture" />
       </el-button>
     </el-popover>
+
+    <screenshot-viewer />
 
     <el-button-group>
       <el-button size="mini" @click="clickHome" :disabled="!$store.state.device.appiumSessionId">Home</el-button>
@@ -45,9 +47,11 @@
 <script>
 import MobileCapture from '@/pages/mobile/components/MobileCapture'
 import { startAdbKit, stopAdbKit, installApp, getImeList, setIme } from '@/api/agent'
+import ScreenshotViewer from '@/pages/mobile/components/ScreenshotViewer'
 
 export default {
   components: {
+    ScreenshotViewer,
     MobileCapture
   },
   props: {

@@ -1,5 +1,11 @@
 <template>
   <el-form :data="globalVar" label-width="100px">
+    <el-form-item label="所属分类">
+      <el-select v-model="globalVar.categoryId" @visible-change="categorySelectChange" clearable filterable placeholder="选择分类">
+        <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
+      </el-select>
+      <el-button @click="$router.push({ name: 'AddGlobalVarCategory' })">+</el-button>
+    </el-form-item>
     <el-form-item label="变量类型" :rules="[{required: true}]">
       <el-input v-model.trim="globalVar.type" clearable style="width: 300px" />
     </el-form-item>
@@ -28,6 +34,7 @@
 <script>
 
 import { addGlobalVar, updateGlobalVar, getGlobalVarList } from '@/api/globalvar'
+import { getCategoryList } from '@/api/category'
 import { getEnvironmentList } from '@/api/environment'
 
 export default {
@@ -47,6 +54,7 @@ export default {
           }
         ],
         description: '',
+        categoryId: undefined,
         projectId: this.$store.state.project.id
       },
       environmentList: [
@@ -54,11 +62,13 @@ export default {
           id: -1,
           name: '默认'
         }
-      ]
+      ],
+      categories: []
     }
   },
   created() {
     this.fetchEnvironmentList()
+    this.fetchCategoryList()
     if (!this.isAdd) {
       getGlobalVarList({ id: this.$route.params.globalVarId }).then(response => {
         this.globalVar = response.data[0]
@@ -66,6 +76,16 @@ export default {
     }
   },
   methods: {
+    fetchCategoryList() {
+      getCategoryList({ projectId: this.globalVar.projectId, type: 3 }).then(response => {
+        this.categories = response.data
+      })
+    },
+    categorySelectChange(type) {
+      if (type) {
+        this.fetchCategoryList()
+      }
+    },
     envSelectChange(type) {
       if (type) {
         this.fetchEnvironmentList()

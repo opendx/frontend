@@ -1,7 +1,7 @@
 <template>
   <div>
     <div ref="closepopover" />
-    <el-table :data="steps" border @selection-change="handleSelectionChange">
+    <el-table ref="table" :data="steps" border @selection-change="handleSelectionChange" :max-height="tableHeight">
       <el-table-column align="center" type="selection" width="50" />
       <el-table-column align="center" width="90">
         <template slot="header">
@@ -136,6 +136,7 @@ export default {
         lineNumbers: true,
         line: true
       },
+      tableHeight: 100
     }
   },
   computed: {
@@ -217,6 +218,15 @@ export default {
   },
   created() {
     this.fetchActionCascader()
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 5
+
+      window.onresize = () => {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 5
+      }
+    })
   },
   methods: {
     isBase64Png(value) {

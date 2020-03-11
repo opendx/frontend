@@ -1,12 +1,11 @@
 <template>
   <el-drawer
-    title="Action Detail"
     :visible.sync="outerDrawer"
     direction="rtl"
-    :show-close="false"
+    :with-header="false"
     size="50%">
     <div style="padding: 5px; font-size: 8px">
-      <el-input placeholder="输入关键字进行过滤" v-model="actionTreeFilterText" clearable style="width: 40%;margin-bottom: 10px" />
+      <el-input placeholder="输入关键字进行过滤" v-model="actionTreeFilterText" clearable style="width: 40%" />
       <el-tree
         :data="selectableActions"
         :props="{ children: 'children', label: 'name' }"
@@ -22,6 +21,7 @@
     </div>
     <el-drawer
       size="40%"
+      :with-header="false"
       :append-to-body="true"
       :visible.sync="innerDrawer">
       <codemirror v-model="codemirrorContent" :options="cmOptions" />

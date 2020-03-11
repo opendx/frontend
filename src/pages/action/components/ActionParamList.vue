@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="params" border>
+    <el-table :data="params" border max-height="500">
       <el-table-column align="center" width="250">
         <template slot="header">
           <el-button type="text" class="el-icon-circle-plus" @click="addParam" />

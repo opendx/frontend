@@ -1,10 +1,8 @@
 <template>
   <el-drawer
-    title="code"
     :visible.sync="drawerVisible"
     direction="rtl"
-    destroy-on-close
-    :show-close="false"
+    :with-header="false"
     size="50%">
     <div style="padding: 5px; font-size: 8px">
       <codemirror v-model="code" :options="cmOptions" />

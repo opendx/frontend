@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="localVars" border>
+    <el-table :data="localVars" border max-height="500">
       <el-table-column align="center" width="200">
         <template slot="header">
           <el-button type="text" class="el-icon-circle-plus" @click="addLocalVar" />

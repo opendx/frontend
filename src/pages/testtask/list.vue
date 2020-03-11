@@ -51,12 +51,13 @@
     </div>
     <!--设备测试任务-->
     <el-drawer
-      :title="drawerTitle"
+      :with-header="false"
       :visible.sync="showDrawer"
       direction="rtl"
       size="95%">
       <el-drawer
         size="60%"
+        :with-header="false"
         :append-to-body="true"
         :visible.sync="innerDrawer">
         <codemirror v-model="codemirrorContent" :options="cmOptions" />
@@ -149,7 +150,6 @@ export default {
         projectId: this.$store.state.project.id // 这里不能用computed里的projectId，会拿到undefined
       },
       total: 0,
-      drawerTitle: '',
       testTaskIdInDrawer: undefined,
       deviceTestTaskList: [],
       codemirrorContent: '',
@@ -216,7 +216,6 @@ export default {
     },
     onDeviceTestTaskBtnClick(testTask) {
       this.showDrawer = true
-      this.drawerTitle = testTask.name
       this.testTaskIdInDrawer = testTask.id
       this.fetchDeviceTestTask(this.testTaskIdInDrawer)
     }

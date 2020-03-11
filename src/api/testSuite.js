@@ -15,6 +15,14 @@ export function deleteTestSuite(id) {
   })
 }
 
+export function updateTestSuite(data) {
+  return request({
+    method: 'post',
+    url: '/testSuite/update',
+    data
+  })
+}
+
 export function getTestSuiteList(params) {
   return request({
     method: 'post',

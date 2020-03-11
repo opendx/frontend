@@ -296,17 +296,31 @@ export const asyncRoutes = [
     component: Layout,
     children: [
       {
-        path: 'addPageCategory',
+        path: 'page/add',
         component: () => import('@/pages/category/addPageCategory'),
         name: 'AddPageCategory',
         meta: { title: '添加Page分类', noCache: false },
         hidden: true
       },
       {
-        path: 'addActionCategory',
+        path: 'action/add',
         component: () => import('@/pages/category/addActionCategory'),
         name: 'AddActionCategory',
         meta: { title: '添加Action分类', noCache: false },
+        hidden: true
+      },
+      {
+        path: 'globalVar/add',
+        component: () => import('@/pages/category/addGlobalVarCategory'),
+        name: 'AddGlobalVarCategory',
+        meta: { title: '添加全局变量分类', noCache: false },
+        hidden: true
+      },
+      {
+        path: 'testcase/add',
+        component: () => import('@/pages/category/addTestcaseCategory'),
+        name: 'AddTestcaseCategory',
+        meta: { title: '添加测试用例分类', noCache: false },
         hidden: true
       }
     ]
@@ -368,6 +382,7 @@ export const asyncRoutes = [
   {
     path: '/testSuite',
     component: Layout,
+    meta: { icon: 'testsuite', roles: ['testSuite'] },
     children: [
       {
         path: 'add',
@@ -375,6 +390,19 @@ export const asyncRoutes = [
         name: 'AddTestSuite',
         meta: { title: '添加测试集', noCache: false },
         hidden: true
+      },
+      {
+        path: 'update/:testSuiteId',
+        component: () => import('@/pages/testsuite/update'),
+        name: 'UpdateTestSuite',
+        meta: { title: '更新测试集', noCache: false },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/pages/testsuite/list'),
+        name: 'TestSuiteList',
+        meta: { title: '测试集', noCache: true }
       }
     ]
   },

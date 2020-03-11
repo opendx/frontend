@@ -1,105 +1,105 @@
 <template>
-  <div>
-    <sticky :z-index="10" class-name="sub-navbar">
-      <div style="float: left;margin-left: 5px">
-        <el-select v-model="env" @change="selectedEnv" @visible-change="envSelectChange" style="width: 200px" size="mini">
-          <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
-        </el-select>
-        <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" size="mini">调试(ctrl+d)</el-button>
-        <el-button style="margin-left: -1px" v-show="code" @click="showCode = true" size="mini">code</el-button>
-        <debug-action-code :code="code" :visible.sync="showCode" />
-      </div>
-      <span class="required" /><el-input v-model="saveActionForm.name" placeholder="名称" style="width: 300px" clearable size="mini" />
-      <el-select v-model="saveActionForm.state" size="mini" style="width: 80px">
-        <el-option v-for="state in stateList" :key="state.state" :label="state.name" :value="state.state" />
-      </el-select>
-      <el-button type="success" @click="saveAction" size="mini">保存(ctrl+s)</el-button>
-    </sticky>
-    <div class="app-container">
-      <el-tabs tab-position="top" type="border-card">
-        <el-tab-pane label="更多信息">
-          <el-form label-width="100px" label-position="right">
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="所属分类" v-if="!isTestCase">
-                  <el-select v-model="saveActionForm.categoryId" @visible-change="actionCategorySelectChange" clearable filterable style="width: 80%" placeholder="选择分类">
-                    <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
-                  </el-select>
-                  <el-button @click="$router.push({ name: 'AddActionCategory' })">+</el-button>
-                </el-form-item>
-                <el-form-item label="所属Page" v-if="!isTestCase">
+  <div style="padding: 5px">
+    <div>
+      <el-row>
+        <el-col :span="10">
+          <el-select v-model="env" @change="selectedEnv" @visible-change="envSelectChange" style="width: 180px" size="mini">
+            <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
+          </el-select>
+          <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" size="mini">调试(ctrl+d)</el-button>
+          <el-button style="margin-left: -1px" v-show="code" @click="showCode = true" size="mini">code</el-button>
+          <debug-action-code :code="code" :visible.sync="showCode" />
+        </el-col>
+        <el-col :span="14">
+          <div style="float:right">
+            <span class="required" /><el-input v-model="saveActionForm.name" placeholder="名称" style="width: 280px" clearable size="mini" />
+            <el-select v-model="saveActionForm.state" size="mini" style="width: 80px">
+              <el-option v-for="state in stateList" :key="state.state" :label="state.name" :value="state.state" />
+            </el-select>
+            <el-button type="success" @click="saveAction" size="mini">保存(ctrl+s)</el-button>
+            <el-popover
+              placement="left"
+              width="1200"
+              trigger="click">
+              <el-form label-width="100px" label-position="right">
+                <el-row>
+                  <el-col :span="12">
+                    <el-form-item label="所属分类">
+                      <el-select v-model="saveActionForm.categoryId" @visible-change="actionCategorySelectChange" clearable filterable style="width: 80%" placeholder="选择分类">
+                        <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
+                      </el-select>
+                      <el-button @click="addCategory">+</el-button>
+                    </el-form-item>
+                    <el-form-item label="所属Page" v-if="!isTestCase">
+                      <el-cascader
+                        v-model="saveActionForm.pageId"
+                        :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+                        :options="pages"
+                        filterable
+                        clearable
+                        style="width: 100%"
+                        @visible-change="pageSelectChange"
+                        placeholder="选择page">
+                      </el-cascader>
+                    </el-form-item>
+                    <el-form-item label="依赖用例" v-if="isTestCase">
+                      <el-cascader
+                        v-model="saveActionForm.depends"
+                        :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true }"
+                        :options="dependsOptions"
+                        filterable
+                        clearable
+                        style="width: 100%"
+                        placeholder="选择用例">
+                      </el-cascader>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="描述">
+                      <el-input v-model="saveActionForm.description" type="textarea" :autosize="{ minRows: 4 }" />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-form>
+              <el-tabs tab-position="top" type="border-card">
+                <el-tab-pane label="方法参数">
+                  <action-param-list ref="paramList" :is-add="isAdd" />
+                </el-tab-pane>
+                <el-tab-pane label="局部变量">
+                  <action-local-var-list ref="localVarList" :environment-list="environmentList" />
+                </el-tab-pane>
+                <el-tab-pane label="返回值类型">
+                  <el-input v-model.trim="saveActionForm.returnValue" clearable>
+                    <el-button slot="prepend">类型</el-button>
+                  </el-input>
+                  <el-input v-model="saveActionForm.returnValueDesc" clearable style="margin-top: 5px">
+                    <el-button slot="prepend">描述</el-button>
+                  </el-input>
+                </el-tab-pane>
+                <el-tab-pane label="import java">
+                  <action-import-list ref="importList" />
+                </el-tab-pane>
+                <el-tab-pane label="import action">
                   <el-cascader
-                    v-model="saveActionForm.pageId"
-                    :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
-                    :options="pages"
-                    filterable
-                    clearable
-                    style="width: 100%"
-                    @visible-change="pageSelectChange"
-                    placeholder="选择page">
-                  </el-cascader>
-                </el-form-item>
-                <el-form-item label="所属测试集" v-if="isTestCase">
-                  <el-select v-model="saveActionForm.testSuiteId" @visible-change="testsuiteSelectChange" clearable filterable style="width: 80%" placeholder="选择测试集">
-                    <el-option v-for="testSuite in testSuites" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
-                  </el-select>
-                  <el-button @click="$router.push({ name: 'AddTestSuite' })">+</el-button>
-                </el-form-item>
-                <el-form-item label="依赖用例" v-if="isTestCase">
-                  <el-cascader
-                    v-model="saveActionForm.depends"
+                    v-model="saveActionForm.actionImports"
                     :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true }"
-                    :options="dependsOptions"
+                    :options="importActionOptions"
                     filterable
                     clearable
                     style="width: 100%"
-                    placeholder="选择用例">
+                    placeholder="选择要导入的action">
                   </el-cascader>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="描述">
-                  <el-input v-model="saveActionForm.description" type="textarea" />
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="方法参数">
-          <action-param-list ref="paramList" :is-add="isAdd" />
-        </el-tab-pane>
-        <el-tab-pane label="局部变量">
-          <action-local-var-list ref="localVarList" :environment-list="environmentList" />
-        </el-tab-pane>
-        <el-tab-pane label="全局变量">
-          <global-var-list :environment-list="environmentList" />
-        </el-tab-pane>
-        <el-tab-pane label="返回值类型">
-          <el-input v-model.trim="saveActionForm.returnValue" clearable>
-            <el-button slot="prepend">类型</el-button>
-          </el-input>
-          <el-input v-model="saveActionForm.returnValueDesc" clearable style="margin-top: 5px">
-            <el-button slot="prepend">描述</el-button>
-          </el-input>
-        </el-tab-pane>
-        <el-tab-pane label="import java">
-          <action-import-list ref="importList" />
-        </el-tab-pane>
-        <el-tab-pane label="import action">
-          <el-cascader
-            v-model="saveActionForm.actionImports"
-            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true }"
-            :options="importActionOptions"
-            filterable
-            clearable
-            style="width: 100%"
-            placeholder="选择要导入的action">
-          </el-cascader>
-        </el-tab-pane>
-      </el-tabs>
-      <el-card shadow="always" style="margin-top: 5px">
-        <action-step-list ref="stepList" :cur-action-id="saveActionForm.id" @selectableActionsChange="onSelectableActionsChange" />
-      </el-card>
+                </el-tab-pane>
+              </el-tabs>
+              <el-button style="margin-left: -1px" type="primary" slot="reference" size="mini">更多</el-button>
+            </el-popover>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+
+    <div style="margin-top: 5px">
+      <action-step-list ref="stepList" :cur-action-id="saveActionForm.id" @selectableActionsChange="onSelectableActionsChange" />
     </div>
   </div>
 </template>
@@ -107,13 +107,10 @@
 import ActionImportList from '../components/ActionImportList'
 import ActionParamList from '../components/ActionParamList'
 import ActionLocalVarList from '../components/ActionLocalVarList'
-import GlobalVarList from '../components/GlobalVarList'
 import ActionStepList from '../components/ActionStepList'
 import DebugActionCode from '../components/DebugActionCode'
-import Sticky from '@/components/Sticky'
 import { getPageCascader } from '@/api/page'
 import { getCategoryList } from '@/api/category'
-import { getTestSuiteList } from '@/api/testSuite'
 import { addAction, updateAction, getActionList, debugAction } from '@/api/action'
 import { getEnvironmentList } from '@/api/environment'
 export default {
@@ -121,10 +118,8 @@ export default {
     ActionImportList,
     ActionParamList,
     ActionLocalVarList,
-    GlobalVarList,
     ActionStepList,
     DebugActionCode,
-    Sticky
   },
   props: {
     isAdd: Boolean,
@@ -166,14 +161,12 @@ export default {
         platforms: [this.$store.state.project.platform],
         pageId: undefined,
         projectId: this.$store.state.project.id,
-        testSuiteId: undefined,
         categoryId: undefined,
         state: 2,
         depends: undefined
       },
       categories: [],
       pages: [],
-      testSuites: [],
       debugBtnLoading: false,
       // 开始时的表单数据，用于校验表单数据是否有变化
       startSaveActionFormString: '',
@@ -209,10 +202,8 @@ export default {
   },
   created() {
     this.fetchEnvironmentList()
-    if (this.isTestCase) {
-      this.fetTestSuiteList()
-    } else {
-      this.fetActionCategoryList()
+    this.fetchActionCategoryList()
+    if (!this.isTestCase) {
       this.fetchPageCascader()
     }
     if (this.isAdd) {
@@ -260,16 +251,6 @@ export default {
         this.dependsOptions = testcases[0].children
       }
     },
-    testsuiteSelectChange(type) {
-      if (type) {
-        this.fetTestSuiteList()
-      }
-    },
-    fetTestSuiteList() {
-      getTestSuiteList({ projectId: this.saveActionForm.projectId }).then(response => {
-        this.testSuites = response.data
-      })
-    },
     pageSelectChange(type) {
       if (type) {
         this.fetchPageCascader()
@@ -282,11 +263,15 @@ export default {
     },
     actionCategorySelectChange(type) {
       if (type) {
-        this.fetActionCategoryList()
+        this.fetchActionCategoryList()
       }
     },
-    fetActionCategoryList() {
-      getCategoryList({ projectId: this.saveActionForm.projectId, type: 2 }).then(response => {
+    fetchActionCategoryList() {
+      let type = 2
+      if (this.isTestCase) {
+        type = 4
+      }
+      getCategoryList({ projectId: this.saveActionForm.projectId, type: type }).then(response => {
         this.categories = response.data
       })
     },
@@ -390,6 +375,13 @@ export default {
     selectedEnv(envId) {
       const selectedEnv = this.environmentList.filter(env => env.id === envId)[0]
       this.$store.dispatch('project/setEnv', selectedEnv.id)
+    },
+    addCategory() {
+      if (this.isTestCase) {
+        this.$router.push({ name: 'AddTestcaseCategory' })
+      } else {
+        this.$router.push({ name: 'AddActionCategory' })
+      }
     }
   }
 }

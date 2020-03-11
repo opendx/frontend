@@ -117,13 +117,13 @@
         <el-form-item label="用例分发策略" :rules="[{required: true}]">
           <el-radio v-model="saveTestPlanForm.runMode" :label="1">
             兼容模式
-            <el-popover placement="top-start" trigger="hover" content="所有设备并行执行同一份用例">
+            <el-popover placement="top" trigger="hover" content="所有设备并行执行同一份用例">
               <i class="el-icon-question" slot="reference" />
             </el-popover>
           </el-radio>
           <el-radio v-model="saveTestPlanForm.runMode" :label="2">
             高效模式
-            <el-popover placement="top-start" trigger="hover" content="用例平均分配给所有设备并行执行">
+            <el-popover placement="top" trigger="hover" content="用例平均分配给所有设备并行执行">
               <i class="el-icon-question" slot="reference" />
             </el-popover>
           </el-radio>

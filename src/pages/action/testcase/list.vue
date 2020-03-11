@@ -1,18 +1,17 @@
 <template>
   <div class="app-container">
     <div style="margin-bottom: 10px">
-      <el-button @click="$router.push({ name: 'AddTestSuite' })">添加测试集</el-button>
+      <el-button @click="$router.push({ name: 'AddTestcaseCategory' })">添加分类</el-button>
       <el-button @click="$router.push({ name: 'AddTestcaseAction' })">添加测试用例</el-button>
     </div>
-    <!--testSuite-->
     <div>
-      <el-tabs type="border-card" v-model="selectedTestSuiteName" @tab-remove="deleteTestSuite" @tab-click="onTabClick">
-        <el-tab-pane v-for="testSuite in testSuiteList" :key="testSuite.id" :label="testSuite.name" :name="testSuite.name" :closable="testSuite.name !== '全部'">
+      <el-tabs type="border-card" v-model="selectedCategoryName" @tab-remove="deleteCategory" @tab-click="onTabClick">
+        <el-tab-pane v-for="category in categoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'">
           <el-table :data="actionList" highlight-current-row border>
-            <el-table-column label="测试集" align="center" width="200">
+            <el-table-column label="分类" align="center" width="200">
               <template scope="{ row }">
-                <el-select v-model="row.testSuiteId" clearable filterable @change="testSuiteChange(row)" placeholder="选择测试集">
-                  <el-option v-for="testSuite in testSuiteListWithoutTotal" :key="testSuite.id" :label="testSuite.name" :value="testSuite.id" />
+                <el-select v-model="row.categoryId" clearable filterable @change="categoryChange(row)" placeholder="选择分类">
+                  <el-option v-for="category in categoryListWithoutTotal" :key="category.id" :label="category.name" :value="category.id" />
                 </el-select>
               </template>
             </el-table-column>
@@ -65,10 +64,9 @@
 </template>
 
 <script>
-
+import { getCategoryList, deleteCategory } from '@/api/category'
 import { getActionList, deleteAction, updateAction, getActionCascader } from '@/api/action'
 import Pagination from '@/components/Pagination'
-import { getTestSuiteList, deleteTestSuite } from '@/api/testSuite'
 
 export default {
   components: {
@@ -76,10 +74,9 @@ export default {
   },
   data() {
     return {
-      selectedTestSuiteName: '全部',
-      testSuiteList: [{
-        name: '全部',
-        id: undefined
+      selectedCategoryName: '全部',
+      categoryList: [{
+        name: '全部'
       }],
       actionList: [],
       total: 0,
@@ -88,7 +85,6 @@ export default {
         pageSize: 10,
         type: 3,
         projectId: this.$store.state.project.id,
-        testSuiteId: undefined
       },
       stateList: [
         {
@@ -112,12 +108,12 @@ export default {
     platform() {
       return this.$store.state.project.platform
     },
-    testSuiteListWithoutTotal() {
-      return this.testSuiteList.filter(suite => suite.name !== '全部')
+    categoryListWithoutTotal() {
+      return this.categoryList.filter(category => category.name !== '全部')
     }
   },
   created() {
-    this.fetchTestSuiteList()
+    this.fetchCategoryList()
     this.fetchActionList()
     this.fetchActionCascader()
   },
@@ -149,29 +145,34 @@ export default {
       this.actionList = data.data
       this.total = data.total
     },
-    async fetchTestSuiteList() {
-      const { data } = await getTestSuiteList({ projectId: this.projectId })
-      this.testSuiteList = this.testSuiteList.concat(data)
+    fetchCategoryList() {
+      getCategoryList({
+        projectId: this.projectId,
+        type: 4 // 测试用例
+      }).then(response => {
+        this.categoryList = this.categoryList.concat(response.data)
+      })
     },
     onTabClick(tab) {
-      const activedTestSuite = this.testSuiteList.filter(testSuite => testSuite.name === tab.label)[0]
-      this.queryActionListForm.testSuiteId = activedTestSuite.id
+      const activedCategory = this.categoryList.filter(category => category.name === tab.label)[0]
+      this.queryActionListForm.categoryId = activedCategory.id
       this.queryActionListForm.pageNum = 1
       this.fetchActionList()
     },
-    deleteTestSuite(name) {
+    deleteCategory(name) {
       this.$confirm('删除' + name + '？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        const testSuite = this.testSuiteList.filter(testSuite => testSuite.name === name)[0]
-        deleteTestSuite(testSuite.id).then(response => {
+        const category = this.categoryList.filter(category => category.name === name)[0]
+        deleteCategory(category.id).then(response => {
           this.$notify.success(response.msg)
           // 移除tab，切换到全部，重新请求全部数据
-          this.testSuiteList.splice(this.testSuiteList.indexOf(testSuite), 1)
-          this.selectedTestSuiteName = '全部'
-          this.queryActionListForm.testSuiteId = undefined
+          this.categoryList.splice(this.categoryList.indexOf(category), 1)
+          this.selectedCategoryName = '全部'
+          this.queryActionListForm.categoryId = undefined
+          this.queryActionListForm.pageNum = 1
           this.fetchActionList()
         })
       })
@@ -191,9 +192,9 @@ export default {
     updateAction(id) {
       this.$router.push({ name: 'UpdateTestcaseAction', params: { actionId: id }})
     },
-    testSuiteChange(row) {
-      if (row.testSuiteId === '') { // 清除测试集
-        row.testSuiteId = null
+    categoryChange(row) {
+      if (row.categoryId === '') { // 清除分类
+        row.categoryId = null
       }
       updateAction(row).then(response => {
         this.fetchActionList()

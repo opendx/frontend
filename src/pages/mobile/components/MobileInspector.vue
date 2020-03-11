@@ -4,7 +4,7 @@
     <!--gutter 列的间距-->
     <el-row :gutter="2">
       <!--左侧图片-->
-      <el-col :span="8" style="max-height:650px; overflow: auto">
+      <el-col :span="6" style="max-height:650px; overflow: auto">
         <i style="background-color: #fff; position: fixed" class="el-icon-full-screen" @click="showImageViewer = true" />
         <canvas :id="canvasId" style="width: 100%" />
       </el-col>
@@ -23,7 +23,7 @@
         />
       </el-col>
       <!--右侧控件信息-->
-      <el-col v-if="!isWebView" :span="6" style="max-height:650px; overflow: auto">
+      <el-col v-if="!isWebView" :span="8" style="max-height:650px; overflow: auto">
         <ul style="list-style: none;word-break: break-all;padding: 0px;font-size: 13px;">
           <li v-for="(value,key) in nodeDetail" :key="key" style="border-bottom: 1px solid #eee">
             <label style="width: 100px;display: inline-block;">{{ key }}</label>
@@ -32,7 +32,7 @@
         </ul>
       </el-col>
       <!--WebView-->
-      <el-col v-if="isWebView" :span="16" align="center" style="max-height:650px; overflow: auto">
+      <el-col v-if="isWebView" :span="18" align="center" style="max-height:650px; overflow: auto">
         <iframe :srcdoc="windowHierarchy" width="100%" height="100%"></iframe>
       </el-col>
     </el-row>

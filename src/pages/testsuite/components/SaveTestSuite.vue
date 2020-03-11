@@ -3,6 +3,22 @@
     <el-form-item label="测试集名" :rules="[{required: true}]">
       <el-input v-model.trim="testSuite.name" clearable style="width: 300px" />
     </el-form-item>
+    <el-form-item label="描述">
+      <el-input type="textarea" v-model.trim="testSuite.description" clearable style="width: 300px" />
+    </el-form-item>
+    <el-form-item label="测试用例" :rules="[{required: true}]">
+      <el-tree
+        :data="treeData"
+        show-checkbox
+        :props="{ children: 'children', label: 'name' }"
+        default-expand-all
+        node-key="id"
+        :default-checked-keys="testSuite.testcases"
+        ref="tree"
+        highlight-current>
+      </el-tree>
+    </el-form-item>
+
     <el-form-item>
       <el-button type="primary" @click="saveTestSuite">保 存</el-button>
     </el-form-item>
@@ -10,7 +26,8 @@
 </template>
 <script>
 
-import { addTestSuite } from '@/api/testSuite'
+import { addTestSuite, updateTestSuite, getTestSuiteList } from '@/api/testSuite'
+import { getActionCascader } from '@/api/action'
 
 export default {
   props: {
@@ -22,20 +39,60 @@ export default {
         id: undefined,
         name: '',
         description: '',
+        testcases: [],
         projectId: this.$store.state.project.id
+      },
+      treeData: []
+    }
+  },
+  computed: {
+    projectId() {
+      return this.$store.state.project.id
+    },
+    platform() {
+      return this.$store.state.project.platform
+    }
+  },
+  created() {
+    this.fetchActionCascader()
+    if (!this.isAdd) {
+      // 编辑
+      getTestSuiteList({ id: this.$route.params.testSuiteId }).then(response => {
+        this.testSuite = response.data[0]
+      })
+    } else {
+      // 复制
+      if (this.$route.params.name) {
+        this.testSuite = this.$route.params
       }
     }
   },
   methods: {
+    fetchActionCascader() {
+      getActionCascader(this.projectId, this.platform).then(resp => {
+        const testcases = resp.data.filter(a => a.name === '测试用例')
+        this.treeData = testcases
+      })
+    },
     saveTestSuite() {
+      // 获取当前选中的叶子节点
+      this.testSuite.testcases = this.$refs.tree.getCheckedKeys().filter(key => key) // 过滤掉空值
+
       if (this.isAdd) {
         addTestSuite(this.testSuite).then(response => {
-          this.$notify.success(response.msg)
-          // 关闭当前tagview
-          this.$store.dispatch('tagsView/delView', this.$store.state.tagsView.visitedViews.filter(item => item.path === this.$route.path)[0])
-          this.$router.back()
+          this.saveTestSuiteSuccess(response.msg)
+        })
+      } else {
+        updateTestSuite(this.testSuite).then(response => {
+          this.saveTestSuiteSuccess(response.msg)
         })
       }
+    },
+    saveTestSuiteSuccess(msg) {
+      this.$notify.success(msg)
+      // 关闭当前tagview
+      this.$store.dispatch('tagsView/delView', this.$store.state.tagsView.visitedViews.filter(item => item.path === this.$route.path)[0])
+      this.$router.back()
     }
   }
 }

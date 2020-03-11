@@ -1,6 +1,6 @@
 <template>
   <section class="app-main">
-    <div :style="leftStyle">
+    <div :style="leftStyle" style="height: 100%; overflow: auto">
       <!--<transition name="fade-transform" mode="out-in">-->
       <keep-alive :include="cachedViews">
         <router-view :key="key" />
@@ -8,7 +8,7 @@
       <!--</transition>-->
     </div>
     <!--todo 先写死-->
-    <div v-if="showDevice" style="width: 350px;height: calc(100% - 85px);position: fixed;top: 85px;right: 10px;overflow: auto;">
+    <div v-if="showDevice" style="width: 350px;height: calc(100% - 84px);position: absolute;top: 84px;right: 10px;overflow: auto;">
       <android-stf-controller v-if="screenType === 'stf'" />
       <android-scrcpy-controller v-else-if="screenType === 'scrcpy'" />
       <ios-controller v-else-if="screenType === 'ios'" />
@@ -31,7 +31,7 @@ export default {
   computed: {
     leftStyle() {
       // todo 先写死
-      return this.$store.state.device.show ? 'width: calc(100% - 370px)' : ''
+      return this.$store.state.device.show ? 'width: calc(100% - 360px)' : ''
     },
     showDevice() {
       return this.$store.state.device.show
@@ -64,8 +64,7 @@ export default {
 
 <style lang="scss" scoped>
 .app-main {
-  /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
+  height: 100%;
   width: 100%;
   position: relative;
   overflow: hidden;
