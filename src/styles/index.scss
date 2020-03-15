@@ -189,3 +189,9 @@ aside {
 .multiselect--active {
   z-index: 1000 !important;
 }
+
+.required:before {
+  content: '*';
+  color: #ff4949;
+  margin-right: 4px;
+}

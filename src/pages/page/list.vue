@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button @click="$router.push({ name: 'AddPageCategory' })" style="margin-bottom: 10px">添加分类</el-button>
+    <el-button @click="$router.push({ name: 'AddPageCategory' })">添加分类</el-button>
 
     <el-tabs v-model="selectedCategoryName" @tab-remove="deleteCategory" @tab-click="onTabClick">
       <el-tab-pane v-for="category in categoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'" />

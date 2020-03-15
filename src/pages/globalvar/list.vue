@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div style="margin-bottom: 10px">
+    <div>
       <el-button @click="$router.push({ name: 'AddGlobalVarCategory' })">添加分类</el-button>
       <el-button @click="$router.push({ name: 'AddGlobalVar' })" style="margin-bottom: 10px">添加全局变量</el-button>
     </div>

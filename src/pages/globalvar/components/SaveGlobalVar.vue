@@ -13,15 +13,28 @@
       <el-input v-model.trim="globalVar.name" clearable style="width: 300px" />
     </el-form-item>
     <el-form-item label="变量值" :rules="[{required: true}]">
-      <div v-for="(environmentValue, index) in globalVar.environmentValues" :key="index" style="margin-bottom: 5px">
-        <el-input v-model.trim="environmentValue.value" clearable>
-          <el-select slot="prepend" v-model="environmentValue.environmentId" @visible-change="envSelectChange" placeholder="选择环境" style="width: 200px">
-            <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
-          </el-select>
-          <el-button slot="append" @click="addEnvironmentValue">+</el-button>
-          <el-button slot="append" @click="delEnvironmentValue(index)" :disabled="index === 0">-</el-button>
-        </el-input>
-      </div>
+      <el-table :data="globalVar.environmentValues" border>
+        <el-table-column align="center" label="环境" width="200">
+          <template scope="{ row }">
+            <el-select v-model="row.environmentId" @visible-change="envSelectChange" placeholder="选择环境" style="width: 100%">
+              <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="值">
+          <template scope="{ row }">
+            <image-input v-model.trim="row.value" />
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="操作" width="100">
+          <template scope="scope">
+            <el-button-group>
+              <el-button @click="addEnvironmentValue(scope.$index)">+</el-button>
+              <el-button @click="delEnvironmentValue(scope.$index)" :disabled="scope.$index === 0">-</el-button>
+            </el-button-group>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-form-item>
     <el-form-item label="描述">
       <el-input v-model.trim="globalVar.description" type="textarea" style="width: 300px" />
@@ -36,10 +49,14 @@
 import { addGlobalVar, updateGlobalVar, getGlobalVarList } from '@/api/globalvar'
 import { getCategoryList } from '@/api/category'
 import { getEnvironmentList } from '@/api/environment'
+import ImageInput from '@/components/ImageInput'
 
 export default {
   props: {
     isAdd: Boolean
+  },
+  components: {
+    ImageInput
   },
   data() {
     return {
@@ -118,8 +135,8 @@ export default {
         ].concat(response.data)
       })
     },
-    addEnvironmentValue() {
-      this.globalVar.environmentValues.push({
+    addEnvironmentValue(index) {
+      this.globalVar.environmentValues.splice(index + 1, 0, {
         environmentId: undefined,
         value: ''
       })

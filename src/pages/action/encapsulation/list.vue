@@ -4,7 +4,7 @@
       <el-button @click="$router.push({ name: 'AddActionCategory' })">添加分类</el-button>
       <el-button @click="$router.push({ name: 'AddEncapsulationAction' })">添加Action</el-button>
     </div>
-    <div style="margin-bottom: 10px">
+    <div>
       <el-cascader
         v-model="queryActionListForm.pageId"
         :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, expandTrigger: 'hover' }"

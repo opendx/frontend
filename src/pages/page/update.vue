@@ -1,7 +1,5 @@
 <template>
-  <div class="app-container">
-    <save-page :is-add="false" />
-  </div>
+  <save-page :is-add="false" />
 </template>
 
 <script>

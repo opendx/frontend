@@ -66,19 +66,7 @@
             <el-table-column label="参数值">
               <template scope="scope_paramValues">
                 <div v-if="row.actionId !== 1">
-                  <el-input
-                    :style="{ width: isBase64Png(scope_paramValues.row.paramValue) ? 'calc(100% - 160px)' : '100%' }"
-                    v-model="scope_paramValues.row.paramValue"
-                    @paste.native="onpaste($event, scope_paramValues)"
-                    type="textarea"
-                    :autosize="{ minRows: 1, maxRows: 10 }"
-                  />
-                  <el-image
-                    v-if="isBase64Png(scope_paramValues.row.paramValue)"
-                    style="width: 150px"
-                    :src="base64PngSrcPrefix + scope_paramValues.row.paramValue"
-                    :preview-src-list="[base64PngSrcPrefix + scope_paramValues.row.paramValue]"
-                  />
+                  <image-input v-model="scope_paramValues.row.paramValue" />
                 </div>
                 <codemirror v-else v-model="scope_paramValues.row.paramValue" :options="cmOptions" />
               </template>
@@ -88,7 +76,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="200">
         <template scope="scope">
-          <el-input v-model="scope.row.evaluation" :disabled="evaluationDisabled(scope.row.actionId)" type="textarea" :autosize="{ minRows: 1 }" placeholder="赋值" />
+          <el-input v-model="scope.row.evaluation" type="textarea" :autosize="{ minRows: 1 }" placeholder="赋值" />
           <el-select v-model="scope.row.handleException" style="margin-top: 5px">
             <el-option label="失败时:中断执行" :value="null" />
             <el-option label="失败时:忽略，继续执行" :value="0" />
@@ -114,18 +102,18 @@
 import { getActionCascader } from '@/api/action'
 import ActionDetail from './ActionDetail'
 import 'codemirror/mode/clike/clike.js'
+import ImageInput from '@/components/ImageInput'
 export default {
   props: {
     // 当前编辑的actionId
     curActionId: Number
   },
   components: {
-    ActionDetail
+    ActionDetail,
+    ImageInput
   },
   data() {
     return {
-      base64PngSrcPrefix: 'data:image/png;base64,',
-      base64PngPrefix: 'iVBORw0KGgoAAAANSUhEUgAA',
       steps: [],
       selectedSteps: [],
       selectableActions: [],
@@ -167,18 +155,6 @@ export default {
         const action = this.findActionInSelectableActions(actionId)
         if (action && action.params && action.params.length > 0) {
           return action.params.filter(param => param.name === paramName)[0].description
-        }
-      }
-    },
-    evaluationDisabled() {
-      return function(actionId) {
-        if (!actionId) {
-          return true
-        } else {
-          const action = this.findActionInSelectableActions(actionId)
-          if (action) {
-            return action.returnValue === 'void'
-          }
         }
       }
     },
@@ -229,26 +205,6 @@ export default {
     })
   },
   methods: {
-    isBase64Png(value) {
-      return value ? value.startsWith(this.base64PngPrefix) : false
-    },
-    onpaste(e, scope) {
-      if (!(e.clipboardData && e.clipboardData.items)) {
-        return
-      }
-      const item = e.clipboardData.items[0]
-      // 判断是否为图片数据
-      if (item && item.kind === 'file' && item.type.match(/^image\//i)) {
-        console.log('paste img to base64')
-        const imgFile = item.getAsFile()
-        const reader = new FileReader()
-        reader.onload = e => {
-          // data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA
-          scope.row.paramValue = e.target.result.substring(22)
-        }
-        reader.readAsDataURL(imgFile)
-      }
-    },
     moveUp(index) {
       this.steps[index - 1] = this.steps.splice(index, 1, this.steps[index - 1])[0]
     },

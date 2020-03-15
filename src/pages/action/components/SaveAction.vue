@@ -386,10 +386,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-  .required:before {
-    content: '*';
-    color: #ff4949;
-    margin-right: 4px;
-  }
-</style>

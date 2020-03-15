@@ -1,93 +1,130 @@
 <template>
-  <div>
-    <el-popover placement="right" trigger="click">
-      <mobile-inspector style="width: 1200px; height: 650px" canvas-id="page-canvas" :window-info="windowInfo" :window-hierarchy="savePageForm.windowHierarchy" :tree-loading="false" />
-      <el-button icon="el-icon-search" size="mini" slot="reference">Inspector</el-button>
-    </el-popover>
-    <el-form label-width="80px" style="margin-top: 5px">
-      <el-form-item label="元素">
-        <el-button @click="addElement">+</el-button>
-        <el-row :gutter="2" v-for="(element, index) in savePageForm.elements" :key="index" style="margin-top: 3px">
-          <el-col :span="6">
-            <el-input v-model.trim="element.name" clearable placeholder="元素名">
-              <template slot="prepend">WebElement</template>
-            </el-input>
-          </el-col>
-          <el-col :span="6">
-            <el-cascader v-model="element.findBy" :options="findBys" placeholder="定位方式" style="width: 100%" :props="{ expandTrigger: 'hover' }" />
-          </el-col>
-          <el-col :span="12">
-            <el-input v-model.trim="element.value" clearable placeholder="value">
-              <el-button slot="append" v-clipboard:copy="savePageForm.name + '_' + element.name" v-clipboard:success="onCopy">引用</el-button>
-              <el-button slot="append" @click="delElement(index)">删除</el-button>
-            </el-input>
-          </el-col>
-        </el-row>
-      </el-form-item>
-      <el-form-item label="By">
-        <el-button @click="addBy">+</el-button>
-        <el-row :gutter="2" v-for="(by, index) in savePageForm.bys" :key="index" style="margin-top: 3px">
-          <el-col :span="6">
-            <el-input v-model.trim="by.name" clearable placeholder="By">
-              <template slot="prepend">By</template>
-            </el-input>
-          </el-col>
-          <el-col :span="6">
-            <el-cascader v-model="by.findBy" :options="bys" placeholder="定位方式" style="width: 100%" :props="{ expandTrigger: 'hover' }" />
-          </el-col>
-          <el-col :span="12">
-            <el-input v-model.trim="by.value" clearable placeholder="value">
-              <el-button slot="append" v-clipboard:copy="savePageForm.name + '_' + by.name" v-clipboard:success="onCopy">引用</el-button>
-              <el-button slot="append" @click="delBy(index)">删除</el-button>
-            </el-input>
-          </el-col>
-        </el-row>
-      </el-form-item>
-    </el-form>
-    <el-row :gutter="10">
-      <el-col :span="12">
+  <el-container style="height: 100%">
+    <el-container>
+      <el-header height="50px">
+        <el-popover placement="right" trigger="click">
+          <mobile-inspector style="width: 1200px; height: 650px" canvas-id="page-canvas" :window-info="windowInfo" :window-hierarchy="savePageForm.windowHierarchy" :tree-loading="false" />
+          <el-button icon="el-icon-search" slot="reference">Inspector</el-button>
+        </el-popover>
+
+        <el-button @click="$router.push({ name: 'AddPageCategory' })">添加分类</el-button>
+        <el-select v-model="savePageForm.categoryId" clearable filterable @visible-change="pageCategorySelectChange" placeholder="选择分类">
+          <el-option v-for="category in pageCategoryList" :key="category.id" :value="category.id" :label="category.name" />
+        </el-select>
+
+        <span style="margin-left: 10px" class="required"/><el-input v-model="savePageForm.name" clearable style="width: 200px" placeholder="page名" />
+        <el-button type="primary" @click="savePage">保 存</el-button>
+      </el-header>
+
+      <el-main>
         <el-form label-width="80px">
-          <el-form-item label="page名" :rules="[{required: true}]">
-            <el-input v-model="savePageForm.name" clearable />
-          </el-form-item>
-          <el-form-item label="分类">
-            <el-select v-model="savePageForm.categoryId" clearable filterable @visible-change="pageCategorySelectChange" placeholder="选择分类">
-              <el-option v-for="category in pageCategoryList" :key="category.id" :value="category.id" :label="category.name" />
-            </el-select>
-            <el-button @click="$router.push({ name: 'AddPageCategory' })">+</el-button>
-          </el-form-item>
           <el-form-item label="描述">
-            <el-input v-model="savePageForm.description" type="textarea" :autosize="{ minRows: 6 }" clearable />
+            <el-input v-model="savePageForm.description" type="textarea" :autosize="{ minRows: 1 }" clearable />
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="savePage">保 存</el-button>
+          <el-form-item label="元素">
+            <el-button @click="addElement" style="margin-bottom: 5px">+</el-button>
+            <el-table :data="savePageForm.elements" border>
+              <el-table-column align="center" label="WebElement">
+                <template scope="{ row }">
+                  <el-input v-model.trim="row.name" clearable />
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="定位方式">
+                <template scope="{ row }">
+                  <el-cascader
+                    v-model="row.findBy"
+                    :options="findBys"
+                    style="width: 100%"
+                    :props="{ expandTrigger: 'hover' }"
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="值">
+                <template scope="{ row }">
+                  <image-input v-model="row.value" />
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="描述">
+                <template scope="{ row }">
+                  <el-input v-model="row.description" type="textarea" />
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="操作" width="150">
+                <template scope="scope">
+                  <el-button v-clipboard:copy="savePageForm.name + '_' + scope.row.name" v-clipboard:success="onCopy">引用</el-button>
+                  <el-button @click="delElement(scope.$index)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-form-item>
+          <el-form-item label="By">
+            <el-button @click="addBy" style="margin-bottom: 5px">+</el-button>
+            <el-table :data="savePageForm.bys" border>
+              <el-table-column align="center" label="By">
+                <template scope="{ row }">
+                  <el-input v-model.trim="row.name" clearable />
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="定位方式">
+                <template scope="{ row }">
+                  <el-cascader
+                    v-model="row.findBy"
+                    :options="bys"
+                    style="width: 100%"
+                    :props="{ expandTrigger: 'hover' }" />
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="值">
+                <template scope="{ row }">
+                  <image-input v-model="row.value" />
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="描述">
+                <template scope="{ row }">
+                  <el-input v-model="row.description" type="textarea" />
+                </template>
+              </el-table-column>
+              <el-table-column align="center" label="操作" width="150">
+                <template scope="scope">
+                  <el-button v-clipboard:copy="savePageForm.name + '_' + scope.row.name" v-clipboard:success="onCopy">引用</el-button>
+                  <el-button @click="delBy(scope.$index)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
           </el-form-item>
         </el-form>
-      </el-col>
-      <el-col :span="12">
-        <el-form label-width="100px">
-          <el-form-item label="图片Path">
-            <el-input v-model="savePageForm.imgPath" clearable :disabled="isAdd" />
-          </el-form-item>
-          <el-form-item label="设备id">
-            <el-input v-model="savePageForm.deviceId" clearable :disabled="isAdd" />
-          </el-form-item>
-          <el-form-item label="window高">
-            <el-input v-model="savePageForm.windowHeight" clearable :disabled="isAdd" />
-          </el-form-item>
-          <el-form-item label="window宽">
-            <el-input v-model="savePageForm.windowWidth" clearable :disabled="isAdd" />
-          </el-form-item>
-          <el-form-item label="window方向">
-            <el-input v-model="savePageForm.windowOrientation" clearable :disabled="isAdd" />
-          </el-form-item>
-          <el-form-item label="图片布局">
-            <el-input v-model="savePageForm.windowHierarchy" clearable :disabled="isAdd" />
-          </el-form-item>
-        </el-form>
-      </el-col>
-    </el-row>
-  </div>
+
+        <el-row :gutter="10">
+          <el-col :span="12">
+            <el-form label-width="80px">
+              <el-form-item label="图片Path">
+                <el-input v-model="savePageForm.imgPath" clearable :disabled="isAdd" />
+              </el-form-item>
+              <el-form-item label="图片布局">
+                <el-input v-model="savePageForm.windowHierarchy" clearable :disabled="isAdd" />
+              </el-form-item>
+              <el-form-item label="设备id">
+                <el-input v-model="savePageForm.deviceId" clearable :disabled="isAdd" />
+              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col :span="12">
+            <el-form label-width="100px">
+              <el-form-item label="window高">
+                <el-input v-model="savePageForm.windowHeight" clearable :disabled="isAdd" />
+              </el-form-item>
+              <el-form-item label="window宽">
+                <el-input v-model="savePageForm.windowWidth" clearable :disabled="isAdd" />
+              </el-form-item>
+              <el-form-item label="window方向">
+                <el-input v-model="savePageForm.windowOrientation" clearable :disabled="isAdd" />
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-row>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 <script>
 
@@ -95,6 +132,7 @@ import { addPage, updatePage, getPageList } from '@/api/page'
 import { getCategoryList } from '@/api/category'
 import MobileInspector from '@/pages/mobile/components/MobileInspector'
 import clipboard from '@/directive/clipboard/index.js'
+import ImageInput from '@/components/ImageInput'
 
 export default {
   directives: {
@@ -104,7 +142,8 @@ export default {
     isAdd: Boolean
   },
   components: {
-    MobileInspector
+    MobileInspector,
+    ImageInput
   },
   data() {
     return {
@@ -335,3 +374,10 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .el-header {
+    background-color: #B3C0D1;
+    color: #333;
+    line-height: 50px;
+  }
+</style>

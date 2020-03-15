@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div style="margin-bottom: 10px">
+    <div>
       <el-button @click="$router.push({ name: 'AddTestcaseCategory' })">添加分类</el-button>
       <el-button @click="$router.push({ name: 'AddTestcaseAction' })">添加测试用例</el-button>
     </div>
