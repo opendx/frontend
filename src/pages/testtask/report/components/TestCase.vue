@@ -55,9 +55,9 @@
         </div>
         <div style="clear: both; margin-top: 5px">
           <div v-if="testcase.failImgUrl" style="width: 300px; float: left; margin-right: 5px">
-            <img :src="testcase.failImgUrl" width="100%" />
+            <el-image :src="testcase.failImgUrl" :preview-src-list="[testcase.failImgUrl]" width="100%" />
           </div>
-          <div v-if="testcase.failInfo" style="width: 950px; float:left">
+          <div v-if="testcase.failInfo" style="width: 950px; float:left; font-size: 10px">
             <codemirror v-model="testcase.failInfo" :options="cmOptions" />
           </div>
         </div>
