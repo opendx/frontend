@@ -33,7 +33,7 @@
             <video :src="testcase.videoUrl" width="100%" controls="controls">浏览器不支持video标签</video>
           </div>
           <div style="width: 950px; float:left">
-            <el-table :data="testcase.steps" border>
+            <el-table :data="testcase.steps" border max-height="500px">
               <el-table-column prop="number" label="步骤" align="center" width="100" />
               <el-table-column prop="name" label="步骤名" align="center" min-width="100" show-overflow-tooltip />
               <el-table-column prop="startTime" label="开始时间" align="center" width="180" show-overflow-tooltip />

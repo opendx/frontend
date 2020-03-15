@@ -1,6 +1,9 @@
 <template>
   <div>
-    <mobile-inspector canvas-id="page-canvas" :window-info="windowInfo" :window-hierarchy="savePageForm.windowHierarchy" :tree-loading="false" />
+    <el-popover placement="right" trigger="click">
+      <mobile-inspector style="width: 1200px; height: 650px" canvas-id="page-canvas" :window-info="windowInfo" :window-hierarchy="savePageForm.windowHierarchy" :tree-loading="false" />
+      <el-button icon="el-icon-search" size="mini" slot="reference">Inspector</el-button>
+    </el-popover>
     <el-form label-width="80px" style="margin-top: 5px">
       <el-form-item label="元素">
         <el-button @click="addElement">+</el-button>
@@ -11,7 +14,7 @@
             </el-input>
           </el-col>
           <el-col :span="6">
-            <el-cascader v-model="element.findBy" :options="findBys" placeholder="定位方式" style="width: 100%" />
+            <el-cascader v-model="element.findBy" :options="findBys" placeholder="定位方式" style="width: 100%" :props="{ expandTrigger: 'hover' }" />
           </el-col>
           <el-col :span="12">
             <el-input v-model.trim="element.value" clearable placeholder="value">
@@ -30,7 +33,7 @@
             </el-input>
           </el-col>
           <el-col :span="6">
-            <el-cascader v-model="by.findBy" :options="bys" placeholder="定位方式" style="width: 100%" />
+            <el-cascader v-model="by.findBy" :options="bys" placeholder="定位方式" style="width: 100%" :props="{ expandTrigger: 'hover' }" />
           </el-col>
           <el-col :span="12">
             <el-input v-model.trim="by.value" clearable placeholder="value">
@@ -54,10 +57,7 @@
             <el-button @click="$router.push({ name: 'AddPageCategory' })">+</el-button>
           </el-form-item>
           <el-form-item label="描述">
-            <el-input v-model="savePageForm.description" clearable />
-          </el-form-item>
-          <el-form-item label="设备id">
-            <el-input v-model="savePageForm.deviceId" clearable :disabled="isAdd" />
+            <el-input v-model="savePageForm.description" type="textarea" :autosize="{ minRows: 6 }" clearable />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="savePage">保 存</el-button>
@@ -68,6 +68,9 @@
         <el-form label-width="100px">
           <el-form-item label="图片Path">
             <el-input v-model="savePageForm.imgPath" clearable :disabled="isAdd" />
+          </el-form-item>
+          <el-form-item label="设备id">
+            <el-input v-model="savePageForm.deviceId" clearable :disabled="isAdd" />
           </el-form-item>
           <el-form-item label="window高">
             <el-input v-model="savePageForm.windowHeight" clearable :disabled="isAdd" />

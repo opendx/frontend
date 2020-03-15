@@ -22,7 +22,7 @@
           <el-input v-model="row.name" placeholder="步骤名" style="margin-bottom: 5px" type="textarea" :autosize="{ minRows: 1 }" />
           <el-cascader
             v-model="row.actionId"
-            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, expandTrigger: 'hover' }"
             :options="selectableActions"
             filterable
             clearable
@@ -44,9 +44,9 @@
           <el-table :data="row.paramValues" border>
             <el-table-column label="参数名" width="150" show-overflow-tooltip>
               <template scope="scope_paramValues">
-                <el-popover placement="top-start" trigger="click">
+                <el-popover placement="right" trigger="click">
                   {{ paramNameDesc(row.actionId, scope_paramValues.row.paramName) }}
-                  <el-table v-if="hasPossibleValue(row.actionId, scope_paramValues.row.paramName)" :data="possibleValues(row.actionId, scope_paramValues.row.paramName)" border style="margin-top: 5px;width: 500px">
+                  <el-table v-if="hasPossibleValue(row.actionId, scope_paramValues.row.paramName)" :data="possibleValues(row.actionId, scope_paramValues.row.paramName)" border max-height="500px" style="margin-top: 5px;width: 500px">
                     <el-table-column align="center" label="可选值">
                       <template scope="scope_possibleValues">
                         <el-button type="text" @click="clickPossibleValue(row, scope_paramValues.row.paramName, scope_possibleValues.row.value)">{{ scope_possibleValues.row.value }}</el-button>
@@ -58,7 +58,7 @@
                 </el-popover>
               </template>
             </el-table-column>
-            <el-table-column label="参数类型" width="100" show-overflow-tooltip>
+            <el-table-column label="参数类型" width="100">
               <template scope="scope_paramValues">
                 {{ scope_paramValues.row.paramType }}
               </template>

@@ -7,7 +7,7 @@
     <div style="margin-bottom: 10px">
       <el-cascader
         v-model="queryActionListForm.pageId"
-        :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+        :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, expandTrigger: 'hover' }"
         :options="pageList"
         filterable
         clearable
@@ -34,7 +34,7 @@
               <template scope="{ row }">
                 <el-cascader
                   v-model="row.pageId"
-                  :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+                  :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, expandTrigger: 'hover' }"
                   @change="pageChange(row)"
                   :options="pageList"
                   filterable

@@ -11,23 +11,6 @@
       </el-table-column>
       <el-table-column label="测试计划" align="center" prop="name" min-width="100" show-overflow-tooltip />
       <el-table-column label="描述" align="center" prop="description" />
-      <el-table-column label="设备" align="center" width="200" show-overflow-tooltip>
-        <template scope="{ row }">
-          <div v-for="deviceId in row.deviceIds" :key="deviceId">{{ deviceId }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="录制视频" align="center" width="80">
-        <template scope="{ row }">
-          {{ row.enableRecordVideo === 1 ? '开启' : '关闭' }}
-        </template>
-      </el-table-column>
-      <el-table-column label="失败重试次数" align="center" prop="failRetryCount" width="100" />
-      <el-table-column label="定时任务" align="center" prop="description" width="80">
-        <template scope="{ row }">
-          {{ row.enableSchedule === 1 ?  '开启' : '关闭' }}
-        </template>
-      </el-table-column>
-      <el-table-column label="cron表达式" align="center" prop="cronExpression" width="150" show-overflow-tooltip />
       <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
         <template scope="{ row }">
           {{ row.creatorNickName + ' ' + row.createTime }}

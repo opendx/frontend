@@ -11,7 +11,7 @@
         <el-form-item label="BeforeClass">
           <el-cascader
             v-model="saveTestPlanForm.beforeClass"
-            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, expandTrigger: 'hover' }"
             :options="actions"
             filterable
             clearable
@@ -27,7 +27,7 @@
         <el-form-item label="BeforeMethod">
           <el-cascader
             v-model="saveTestPlanForm.beforeMethod"
-            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, expandTrigger: 'hover'}"
             :options="actions"
             filterable
             clearable
@@ -43,7 +43,7 @@
         <el-form-item label="AfterMethod">
           <el-cascader
             v-model="saveTestPlanForm.afterMethod"
-            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, expandTrigger: 'hover' }"
             :options="actions"
             filterable
             clearable
@@ -59,7 +59,7 @@
         <el-form-item label="AfterClass">
           <el-cascader
             v-model="saveTestPlanForm.afterClass"
-            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, expandTrigger: 'hover' }"
             :options="actions"
             filterable
             clearable

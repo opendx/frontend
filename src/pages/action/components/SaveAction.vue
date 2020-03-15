@@ -33,7 +33,7 @@
                     <el-form-item label="所属Page" v-if="!isTestCase">
                       <el-cascader
                         v-model="saveActionForm.pageId"
-                        :props="{ value: 'id', label: 'name', children: 'children', emitPath: false }"
+                        :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, expandTrigger: 'hover' }"
                         :options="pages"
                         filterable
                         clearable
@@ -45,7 +45,7 @@
                     <el-form-item label="依赖用例" v-if="isTestCase">
                       <el-cascader
                         v-model="saveActionForm.depends"
-                        :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true }"
+                        :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true, expandTrigger: 'hover' }"
                         :options="dependsOptions"
                         filterable
                         clearable
@@ -82,7 +82,7 @@
                 <el-tab-pane label="import action">
                   <el-cascader
                     v-model="saveActionForm.actionImports"
-                    :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true }"
+                    :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true, expandTrigger: 'hover' }"
                     :options="importActionOptions"
                     filterable
                     clearable

@@ -21,7 +21,7 @@
               <template scope="{ row }">
                 <el-cascader
                   v-model="row.depends"
-                  :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true }"
+                  :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true, expandTrigger: 'hover' }"
                   :options="dependsOptions"
                   filterable
                   clearable
