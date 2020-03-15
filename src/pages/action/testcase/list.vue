@@ -4,62 +4,61 @@
       <el-button @click="$router.push({ name: 'AddTestcaseCategory' })">添加分类</el-button>
       <el-button @click="$router.push({ name: 'AddTestcaseAction' })">添加测试用例</el-button>
     </div>
-    <div>
-      <el-tabs type="border-card" v-model="selectedCategoryName" @tab-remove="deleteCategory" @tab-click="onTabClick">
-        <el-tab-pane v-for="category in categoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'">
-          <el-table :data="actionList" highlight-current-row border>
-            <el-table-column label="分类" align="center" width="200">
-              <template scope="{ row }">
-                <el-select v-model="row.categoryId" clearable filterable @change="categoryChange(row)" placeholder="选择分类">
-                  <el-option v-for="category in categoryListWithoutTotal" :key="category.id" :label="category.name" :value="category.id" />
-                </el-select>
-              </template>
-            </el-table-column>
-            <el-table-column label="测试用例" align="center" prop="name" min-width="200" show-overflow-tooltip />
-            <el-table-column label="描述" align="center" prop="description" show-overflow-tooltip />
-            <el-table-column label="依赖用例" align="center" width="300px">
-              <template scope="{ row }">
-                <el-cascader
-                  v-model="row.depends"
-                  :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true, expandTrigger: 'hover' }"
-                  :options="dependsOptions"
-                  filterable
-                  clearable
-                  style="width: 100%"
-                  @change="dependsChange(row)"
-                  placeholder="选择依赖用例">
-                </el-cascader>
-              </template>
-            </el-table-column>
-            <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
-              <template scope="{ row }">
-                {{ row.creatorNickName + ' ' + row.createTime }}
-              </template>
-            </el-table-column>
-            <el-table-column label="更新时间" align="center" width="200" show-overflow-tooltip>
-              <template scope="{ row }">
-                {{ (row.updatorNickName ? row.updatorNickName : '') + ' ' + (row.updateTime ? row.updateTime : '') }}
-              </template>
-            </el-table-column>
-            <el-table-column label="状态" align="center" width="100">
-              <template scope="{ row }">
-                <el-select v-model="row.state" @change="stateChange(row)">
-                  <el-option v-for="state in stateList" :key="state.state" :label="state.name" :value="state.state" />
-                </el-select>
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" width="200" align="center">
-              <template scope="{ row }">
-                <el-button type="success" @click="copyAction(row)">复制</el-button>
-                <el-button type="primary" class="el-icon-edit" @click="updateAction(row.id)" />
-                <el-button type="danger" class="el-icon-delete" @click="deleteAction(row)" />
-              </template>
-            </el-table-column>
-          </el-table>
-          <pagination v-show="total>0" :total="total" :page.sync="queryActionListForm.pageNum" :limit.sync="queryActionListForm.pageSize" @pagination="fetchActionList" />
-        </el-tab-pane>
-      </el-tabs>
-    </div>
+
+    <el-tabs v-model="selectedCategoryName" @tab-remove="deleteCategory" @tab-click="onTabClick">
+      <el-tab-pane v-for="category in categoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'" />
+    </el-tabs>
+
+    <el-table :data="actionList" highlight-current-row border>
+      <el-table-column label="分类" align="center" width="200">
+        <template scope="{ row }">
+          <el-select v-model="row.categoryId" clearable filterable @change="categoryChange(row)" placeholder="选择分类">
+            <el-option v-for="category in categoryListWithoutTotal" :key="category.id" :label="category.name" :value="category.id" />
+          </el-select>
+        </template>
+      </el-table-column>
+      <el-table-column label="测试用例" align="center" prop="name" min-width="200" show-overflow-tooltip />
+      <el-table-column label="描述" align="center" prop="description" show-overflow-tooltip />
+      <el-table-column label="依赖用例" align="center" width="300px">
+        <template scope="{ row }">
+          <el-cascader
+            v-model="row.depends"
+            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true, expandTrigger: 'hover' }"
+            :options="dependsOptions"
+            filterable
+            clearable
+            style="width: 100%"
+            @change="dependsChange(row)"
+            placeholder="选择依赖用例">
+          </el-cascader>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
+        <template scope="{ row }">
+          {{ row.creatorNickName + ' ' + row.createTime }}
+        </template>
+      </el-table-column>
+      <el-table-column label="更新时间" align="center" width="200" show-overflow-tooltip>
+        <template scope="{ row }">
+          {{ (row.updatorNickName ? row.updatorNickName : '') + ' ' + (row.updateTime ? row.updateTime : '') }}
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" align="center" width="100">
+        <template scope="{ row }">
+          <el-select v-model="row.state" @change="stateChange(row)">
+            <el-option v-for="state in stateList" :key="state.state" :label="state.name" :value="state.state" />
+          </el-select>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="200" align="center">
+        <template scope="{ row }">
+          <el-button type="success" @click="copyAction(row)">复制</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="updateAction(row.id)" />
+          <el-button type="danger" class="el-icon-delete" @click="deleteAction(row)" />
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination v-show="total>0" :total="total" :page.sync="queryActionListForm.pageNum" :limit.sync="queryActionListForm.pageSize" @pagination="fetchActionList" />
   </div>
 </template>
 

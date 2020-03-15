@@ -4,48 +4,47 @@
       <el-button @click="$router.push({ name: 'AddGlobalVarCategory' })">添加分类</el-button>
       <el-button @click="$router.push({ name: 'AddGlobalVar' })" style="margin-bottom: 10px">添加全局变量</el-button>
     </div>
-    <div>
-      <el-tabs type="border-card" v-model="selectedCategoryName" @tab-remove="deleteCategory" @tab-click="onTabClick">
-        <el-tab-pane v-for="category in categoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'">
-          <el-table :data="globalVarList" highlight-current-row border>
-            <el-table-column label="分类" align="center" width="200">
+
+    <el-tabs v-model="selectedCategoryName" @tab-remove="deleteCategory" @tab-click="onTabClick">
+      <el-tab-pane v-for="category in categoryList" :key="category.id" :label="category.name" :name="category.name" :closable="category.name !== '全部'" />
+    </el-tabs>
+
+    <el-table :data="globalVarList" highlight-current-row border>
+      <el-table-column label="分类" align="center" width="200">
+        <template scope="{ row }">
+          <el-select v-model="row.categoryId" clearable filterable @change="categoryChange(row)" placeholder="选择分类">
+            <el-option v-for="category in categoryListWithoutTotal" :key="category.id" :label="category.name" :value="category.id" />
+          </el-select>
+        </template>
+      </el-table-column>
+      <el-table-column label="变量类型" align="center" prop="type" width="180" show-overflow-tooltip />
+      <el-table-column label="变量名" align="center" prop="name" width="180" show-overflow-tooltip />
+      <el-table-column label="变量值" align="center">
+        <template scope="{ row }">
+          <el-table :data="row.environmentValues" border fit>
+            <el-table-column label="环境" align="center" width="150" show-overflow-tooltip>
               <template scope="{ row }">
-                <el-select v-model="row.categoryId" clearable filterable @change="categoryChange(row)" placeholder="选择分类">
-                  <el-option v-for="category in categoryListWithoutTotal" :key="category.id" :label="category.name" :value="category.id" />
-                </el-select>
+                {{ environmentList.filter(env => env.id === row.environmentId)[0].name }}
               </template>
             </el-table-column>
-            <el-table-column label="变量类型" align="center" prop="type" width="180" show-overflow-tooltip />
-            <el-table-column label="变量名" align="center" prop="name" width="180" show-overflow-tooltip />
-            <el-table-column label="变量值" align="center">
-              <template scope="{ row }">
-                <el-table :data="row.environmentValues" border fit>
-                  <el-table-column label="环境" align="center" width="150" show-overflow-tooltip>
-                    <template scope="{ row }">
-                      {{ environmentList.filter(env => env.id === row.environmentId)[0].name }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="值" align="center" prop="value" show-overflow-tooltip/>
-                </el-table>
-              </template>
-            </el-table-column>
-            <el-table-column label="描述" align="center" prop="description" width="150" show-overflow-tooltip />
-            <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
-              <template scope="{ row }">
-                {{ row.creatorNickName + ' ' + row.createTime }}
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" width="150" align="center">
-              <template scope="{ row }">
-                <el-button type="primary" class="el-icon-edit" @click="updateGlobalVar(row)" />
-                <el-button type="danger" class="el-icon-delete" @click="deleteGlobalVar(row)" />
-              </template>
-            </el-table-column>
+            <el-table-column label="值" align="center" prop="value" show-overflow-tooltip/>
           </el-table>
-          <pagination v-show="total>0" :total="total" :page.sync="queryForm.pageNum" :limit.sync="queryForm.pageSize" @pagination="fetchGlobalVarList" />
-        </el-tab-pane>
-      </el-tabs>
-    </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="描述" align="center" prop="description" width="150" show-overflow-tooltip />
+      <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
+        <template scope="{ row }">
+          {{ row.creatorNickName + ' ' + row.createTime }}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="150" align="center">
+        <template scope="{ row }">
+          <el-button type="primary" class="el-icon-edit" @click="updateGlobalVar(row)" />
+          <el-button type="danger" class="el-icon-delete" @click="deleteGlobalVar(row)" />
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination v-show="total>0" :total="total" :page.sync="queryForm.pageNum" :limit.sync="queryForm.pageSize" @pagination="fetchGlobalVarList" />
   </div>
 </template>
 
