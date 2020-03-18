@@ -5,6 +5,7 @@
       <el-button @click="$router.push({ name: 'AddEncapsulationAction' })">添加Action</el-button>
     </div>
     <div>
+      <el-input v-model="queryActionListForm.name" style="width: 200px" placeholder="action名" clearable />
       <el-cascader
         v-model="queryActionListForm.pageId"
         :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, expandTrigger: 'hover' }"
@@ -29,22 +30,8 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="Action名" align="center" prop="name" min-width="200" show-overflow-tooltip />
+      <el-table-column label="Action名" align="center" prop="name" show-overflow-tooltip />
       <el-table-column label="描述" align="center" prop="description" show-overflow-tooltip />
-      <el-table-column label="Page" align="center" width="300">
-        <template scope="{ row }">
-          <el-cascader
-            v-model="row.pageId"
-            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, expandTrigger: 'hover' }"
-            @change="pageChange(row)"
-            :options="pageList"
-            filterable
-            clearable
-            style="width: 100%"
-            placeholder="选择page">
-          </el-cascader>
-        </template>
-      </el-table-column>
       <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
         <template scope="{ row }">
           {{ row.creatorNickName + ' ' + row.createTime }}
@@ -99,7 +86,8 @@ export default {
         pageSize: 10,
         type: 2,
         projectId: this.$store.state.project.id,
-        pageId: undefined
+        pageId: undefined,
+        name: ''
       },
       stateList: [
         {
@@ -206,14 +194,6 @@ export default {
     categoryChange(row) {
       if (row.categoryId === '') { // 清除分类
         row.categoryId = null
-      }
-      updateAction(row).then(response => {
-        this.fetchActionList()
-      })
-    },
-    pageChange(row) {
-      if (row.pageId === '') {
-        row.pageId = null
       }
       updateAction(row).then(response => {
         this.fetchActionList()

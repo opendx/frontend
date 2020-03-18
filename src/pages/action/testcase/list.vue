@@ -1,8 +1,13 @@
 <template>
   <div class="app-container">
-    <div>
+    <div style="margin-bottom: 10px">
       <el-button @click="$router.push({ name: 'AddTestcaseCategory' })">添加分类</el-button>
       <el-button @click="$router.push({ name: 'AddTestcaseAction' })">添加测试用例</el-button>
+    </div>
+
+    <div>
+      <el-input v-model="queryActionListForm.name" style="width: 200px" placeholder="测试用例名" clearable />
+      <el-button type="primary" class="el-icon-search" @click="onQueryBtnClick" />
     </div>
 
     <el-tabs v-model="selectedCategoryName" @tab-remove="deleteCategory" @tab-click="onTabClick">
@@ -17,22 +22,8 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="测试用例" align="center" prop="name" min-width="200" show-overflow-tooltip />
+      <el-table-column label="测试用例" align="center" prop="name" show-overflow-tooltip />
       <el-table-column label="描述" align="center" prop="description" show-overflow-tooltip />
-      <el-table-column label="依赖用例" align="center" width="300px">
-        <template scope="{ row }">
-          <el-cascader
-            v-model="row.depends"
-            :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true, expandTrigger: 'hover' }"
-            :options="dependsOptions"
-            filterable
-            clearable
-            style="width: 100%"
-            @change="dependsChange(row)"
-            placeholder="选择依赖用例">
-          </el-cascader>
-        </template>
-      </el-table-column>
       <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
         <template scope="{ row }">
           {{ row.creatorNickName + ' ' + row.createTime }}
@@ -64,7 +55,7 @@
 
 <script>
 import { getCategoryList, deleteCategory } from '@/api/category'
-import { getActionList, deleteAction, updateAction, getActionCascader } from '@/api/action'
+import { getActionList, deleteAction, updateAction } from '@/api/action'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -84,6 +75,7 @@ export default {
         pageSize: 10,
         type: 3,
         projectId: this.$store.state.project.id,
+        name: ''
       },
       stateList: [
         {
@@ -96,8 +88,7 @@ export default {
           state: 2,
           name: '发布'
         }
-      ],
-      dependsOptions: []
+      ]
     }
   },
   computed: {
@@ -114,16 +105,11 @@ export default {
   created() {
     this.fetchCategoryList()
     this.fetchActionList()
-    this.fetchActionCascader()
   },
   methods: {
-    fetchActionCascader() {
-      getActionCascader(this.projectId, this.platform).then(resp => {
-        const testcases = resp.data.filter(a => a.name === '测试用例')
-        if (testcases.length > 0) {
-          this.dependsOptions = testcases[0].children
-        }
-      })
+    onQueryBtnClick() {
+      this.queryActionListForm.pageNum = 1
+      this.fetchActionList()
     },
     copyAction(action) {
       const _action = JSON.parse(JSON.stringify(action))
@@ -204,13 +190,6 @@ export default {
         this.fetchActionList()
       }).catch(() => {
         // 修改失败，重刷，否则当前select选择的值是错误的
-        this.fetchActionList()
-      })
-    },
-    dependsChange(row) {
-      updateAction(row).then(response => {
-        this.fetchActionList()
-      }).catch(() => {
         this.fetchActionList()
       })
     }
