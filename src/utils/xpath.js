@@ -161,11 +161,11 @@ export function getAndroidUiautomator(tree, nodePath) {
     const contentDesc = current['content-desc']
 
     if (resourceId && mapIdCount[resourceId] === 1) {
-      androidUiautomator = `new UiSelector().resourceId('${resourceId}')`
+      androidUiautomator = `new UiSelector().resourceId(\\"${resourceId}\\")`
     } else if (text && mapTextCount[text] === 1) {
-      androidUiautomator = `new UiSelector().text('${text}')`
+      androidUiautomator = `new UiSelector().text(\\"${text}\\")`
     } else if (contentDesc && mapContentDescCount[contentDesc] === 1) {
-      androidUiautomator = `new UiSelector().description('${contentDesc}')`
+      androidUiautomator = `new UiSelector().description(\\"${contentDesc}\\")`
     } else {
       androidUiautomator = ''
     }
