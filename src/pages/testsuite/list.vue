@@ -43,7 +43,8 @@ export default {
       total: 0,
       queryForm: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        projectId: this.$store.state.project.id
       }
     }
   },
