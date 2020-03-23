@@ -68,7 +68,9 @@
                 <div v-if="row.actionId !== 1">
                   <image-input v-model="scope_paramValues.row.paramValue" />
                 </div>
-                <codemirror v-else v-model="scope_paramValues.row.paramValue" :options="cmOptions" />
+                <div v-else class="java-code">
+                  <codemirror v-model="scope_paramValues.row.paramValue" :options="cmOptions" />
+                </div>
               </template>
             </el-table-column>
           </el-table>
@@ -307,9 +309,10 @@ export default {
 }
 </script>
 <style scoped>
-  .required:before {
-    content: '*';
-    color: #ff4949;
-    margin-right: 4px;
+  .java-code {
+    width: 100%;
+  }
+  .java-code >>> .CodeMirror-scroll {
+    margin-right: 0px;
   }
 </style>
