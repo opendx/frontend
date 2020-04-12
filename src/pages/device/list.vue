@@ -96,7 +96,10 @@ export default {
         this.$notify.error('只能使用一台手机')
         return
       }
-      deviceStart(device.id).then(() => {
+      deviceStart(device.id).then(response => {
+        // 不排除agent ip端口变了，拿服务端最新的重新赋值
+        device.agentIp = response.data.agentIp
+        device.agentPort = response.data.agentPort
         // 设备改为使用中
         device.username = this.$store.state.user.name
         device.status = 1
@@ -107,6 +110,9 @@ export default {
         this.$store.dispatch('device/setPlatform', device.platform)
         this.$store.dispatch('device/setSystemVersion', device.systemVersion)
         this.$store.dispatch('device/setShow', true)
+      }).catch(() => {
+        // 请求失败，重刷列表获取最新设备状态
+        this.fetchDeviceList()
       })
     },
     fetchDeviceList() {
