@@ -9,7 +9,7 @@
         <canvas :id="canvasId" style="width: 100%" />
       </el-col>
       <!--中间布局树-->
-      <el-col v-if="!isWebView" :span="10" style="max-height:650px; overflow: auto">
+      <el-col v-if="!isWeb" :span="10" style="max-height:650px; overflow: auto">
         <el-tree
           ref="tree"
           v-loading="treeLoading"
@@ -23,7 +23,7 @@
         />
       </el-col>
       <!--右侧控件信息-->
-      <el-col v-if="!isWebView" :span="8" style="max-height:650px; overflow: auto">
+      <el-col v-if="!isWeb" :span="8" style="max-height:650px; overflow: auto">
         <ul style="list-style: none;word-break: break-all;padding: 0px;font-size: 13px;">
           <li v-for="(value,key) in nodeDetail" :key="key" style="border-bottom: 1px solid #eee">
             <label style="width: 100px;display: inline-block;">{{ key }}</label>
@@ -32,8 +32,8 @@
         </ul>
       </el-col>
       <!--WebView-->
-      <el-col v-if="isWebView" :span="18" align="center" style="max-height:650px; overflow: auto">
-        <iframe :srcdoc="windowHierarchy" width="100%" height="100%"></iframe>
+      <el-col v-if="isWeb" :span="18" align="center" style="max-height:650px; overflow: auto">
+        {{ todo }}
       </el-col>
     </el-row>
   </div>
@@ -46,7 +46,9 @@ import { getXPath, getXPathLite, getAndroidUiautomator, getIOSNsPredicateString 
 import clipboard from '@/directive/clipboard/index.js'
 
 export default {
-  components: {ElImageViewer},
+  components: {
+    ElImageViewer
+  },
   directives: {
     clipboard
   },
@@ -54,6 +56,7 @@ export default {
     canvasId: String,
     windowInfo: Object,
     windowHierarchy: String,
+    pageType: Number, // 1.andorid原生 2.iOS原生 3.web
     treeLoading: Boolean
   },
   data() {
@@ -68,9 +71,6 @@ export default {
         children: 'nodes',
         label: 'class'
       },
-      isAndroid: false,
-      isIos: false,
-      isWebView: false,
       // 右侧节点详细数据
       nodeDetail: {},
       treeData: [],
@@ -84,18 +84,37 @@ export default {
       nodeIndex: 0
     }
   },
+  computed: {
+    isWeb() {
+      return this.pageType === 3
+    },
+    isIos() {
+      return this.pageType === 2
+    },
+    isAndroid() {
+      return this.pageType === 1
+    }
+  },
   watch: {
     windowInfo() {
+      console.log('imgUrl', this.windowInfo.imgUrl)
+
       this.img = new Image()
       this.img.src = this.windowInfo.imgUrl
 
       this.img.onload = () => {
-        let scale
-        if (this.windowInfo.windowOrientation === 'portrait') { // 竖屏以window宽为准，window高不包含虚拟按键
-          scale = this.windowInfo.windowWidth / this.img.width
+        let scale = 1
+        if (this.windowInfo.windowOrientation) {
+          console.log('windowInfo native')
+          if (this.windowInfo.windowOrientation === 'portrait') { // 竖屏以window宽为准，window高不包含虚拟按键
+            scale = this.windowInfo.windowWidth / this.img.width
+          } else {
+            scale = this.windowInfo.windowHeight / this.img.height
+          }
         } else {
-          scale = this.windowInfo.windowHeight / this.img.height
+          console.log('windowInfo isWeb')
         }
+
         console.log('scale', scale)
 
         this.canvas.width = parseInt(this.img.width * scale)
@@ -105,29 +124,14 @@ export default {
       }
     },
     windowHierarchy() {
-      if (!this.windowHierarchy) {
+      if (this.isWeb) {
+        console.log('windowHierarchy isWeb')
         return
       }
-      console.log('windowHierarchy', this.windowHierarchy)
-      let windowHierarchyJson
-      try {
-        windowHierarchyJson = JSON.parse(this.windowHierarchy)
-      } catch (e) {
-        // 先粗暴处理，转换不了json就是webview。webview返回的是xml
-        this.isWebView = true
-        this.isAndroid = false
-        this.isIos = false
-        return
-      }
-      if (windowHierarchyJson.hierarchy.platform === 1) {
-        this.isAndroid = true
-        this.isIos = false
-        this.isWebView = false
-      } else if (windowHierarchyJson.hierarchy.platform === 2) {
-        this.isIos = true
-        this.isAndroid = false
-        this.isWebView = false
-      }
+
+      console.log('windowHierarchy native')
+      const windowHierarchyJson = JSON.parse(this.windowHierarchy)
+
       // 重新初始化数据，防止点击刷新按钮，数据错乱
       this.nodeDetail = {}
       this.treeData = []
@@ -160,7 +164,7 @@ export default {
       this.canvas.height = this.canvas.height // 重置canvas
       this.canvasCtx.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, this.canvas.width, this.canvas.height)
 
-      if (this.isWebView) {
+      if (this.isWeb) {
         return
       }
 
@@ -202,6 +206,11 @@ export default {
     this.canvasCtx = canvas.getContext('2d')
     // 点击左侧屏幕截图
     canvas.onmousedown = e => {
+      if (this.isWeb) {
+        console.log('web onmousedown return')
+        return
+      }
+
       const rect = canvas.getBoundingClientRect()
       const x = parseInt((e.clientX - rect.left) / rect.width * canvas.width)
       const y = parseInt((e.clientY - rect.top) / rect.height * canvas.height)

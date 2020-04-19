@@ -3,7 +3,7 @@
     <i class="el-icon-refresh" style="font-size: 20px;color: green;cursor: pointer" title="重新获取" @click="refresh" />
     <i class="el-icon-circle-plus" style="font-size: 20px;color: black;cursor: pointer" title="添加page" @click="addPage" />
     <!-- inspector -->
-    <mobile-inspector canvas-id="mobile-capture-canvas" :window-info="windowInfo" :window-hierarchy="windowHierarchy" :tree-loading="treeLoading" />
+    <mobile-inspector canvas-id="mobile-capture-canvas" :page-type="pageType" :window-info="windowInfo" :window-hierarchy="windowHierarchy" :tree-loading="treeLoading" />
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       windowHierarchy: null,
-      // 传递给MobileInspctor组件的数据
+      pageType: null,
       windowInfo: {
         windowWidth: null,
         windowHeight: null,
@@ -53,7 +53,9 @@ export default {
     fetchWindowHierarchy() {
       this.treeLoading = true
       dump(this.agentIp, this.agentPort, this.deviceId).then(response => {
-        this.windowHierarchy = response.data
+        const page = response.data
+        this.windowHierarchy = page.pageSource
+        this.pageType = page.type
       }).finally(() => {
         this.treeLoading = false
       })
@@ -78,6 +80,7 @@ export default {
           windowOrientation: this.windowInfo.windowOrientation,
           deviceId: this.deviceId,
           windowHierarchy: this.windowHierarchy,
+          type: this.pageType,
           elements: [],
           bys: []
         }

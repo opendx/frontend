@@ -3,8 +3,8 @@
     <el-container>
       <el-header height="50px">
         <el-popover placement="right" trigger="click">
-          <mobile-inspector style="width: 1200px; height: 650px" canvas-id="page-canvas" :window-info="windowInfo" :window-hierarchy="savePageForm.windowHierarchy" :tree-loading="false" />
-          <el-button icon="el-icon-search" slot="reference">Inspector</el-button>
+          <mobile-inspector style="width: 1200px; height: 650px" canvas-id="page-canvas" :page-type="savePageForm.type" :window-info="windowInfo" :window-hierarchy="savePageForm.windowHierarchy" :tree-loading="false" />
+          <el-button icon="el-icon-search" slot="reference">{{ pageType + ' - Inspector' }}</el-button>
         </el-popover>
 
         <el-button @click="$router.push({ name: 'AddPageCategory' })">添加分类</el-button>
@@ -100,7 +100,7 @@
               <el-form-item label="图片Path">
                 <el-input v-model="savePageForm.imgPath" clearable :disabled="isAdd" />
               </el-form-item>
-              <el-form-item label="图片布局">
+              <el-form-item label="布局">
                 <el-input v-model="savePageForm.windowHierarchy" clearable :disabled="isAdd" />
               </el-form-item>
               <el-form-item label="设备id">
@@ -151,6 +151,7 @@ export default {
         id: undefined,
         name: '',
         projectId: this.$store.state.project.id,
+        type: undefined,
         categoryId: undefined,
         description: '',
         imgPath: '',
@@ -173,6 +174,16 @@ export default {
         windowHeight: this.savePageForm.windowHeight,
         windowOrientation: this.savePageForm.windowOrientation,
         imgUrl: this.savePageForm.imgUrl
+      }
+    },
+    pageType() {
+      const pageType = this.savePageForm.type
+      if (pageType === 1) {
+        return 'Android Native'
+      } else if (pageType === 2) {
+        return 'iOS Native'
+      } else {
+        return 'Web'
       }
     },
     findBys() {
@@ -240,17 +251,20 @@ export default {
           label: 'xpath'
         }]
       }]
-      const platform = this.$store.state.project.platform
-      if (platform === 1 || platform === 3 || platform === 4) {
-        // 移除iOS
-        findBys.splice(1, 1)
-      } else if (platform === 2) {
-        // 移除android
+
+      const pageType = this.savePageForm.type
+      if (pageType === 1) { // android原生
+        // 移除iOS web
+        findBys.splice(1, 2)
+      } else if (pageType === 2) { // ios原生
+        // 移除android web
         findBys.splice(0, 1)
-      } else {
+        findBys.splice(1, 1)
+      } else { // web
         // 移除android ios
         findBys.splice(0, 2)
       }
+
       return findBys
     },
     bys() {
