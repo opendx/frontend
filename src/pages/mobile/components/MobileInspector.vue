@@ -33,7 +33,8 @@
       </el-col>
       <!--WebView-->
       <el-col v-if="isWeb" :span="18" align="center" style="max-height:650px; overflow: auto">
-        {{ todo }}
+        <!--todo XML-->
+        {{ windowHierarchy }}
       </el-col>
     </el-row>
   </div>
