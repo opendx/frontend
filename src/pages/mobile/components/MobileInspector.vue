@@ -32,9 +32,8 @@
         </ul>
       </el-col>
       <!--WebView-->
-      <el-col v-if="isWeb" :span="18" align="center" style="max-height:650px; overflow: auto">
-        <!--todo XML-->
-        {{ windowHierarchy }}
+      <el-col v-if="isWeb" :span="18" style="height:650px; overflow: auto;">
+        <iframe :srcdoc="windowHierarchy" width="100%" height="645px"></iframe>
       </el-col>
     </el-row>
   </div>

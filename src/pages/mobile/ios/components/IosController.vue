@@ -66,8 +66,14 @@ export default {
     const canvas = document.getElementById('iosControllerCanvas')
     this.loading = true
 
+    let platform = this.$store.state.project.platform
+    // platform: 2.ios 6.safari
+    if (platform !== 2 && platform !== 6) {
+      platform = 2
+    }
+
     // iosWebsocket
-    this.iosWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/ios/' + this.deviceId + '/user/' + this.username + '/platform/2')
+    this.iosWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/ios/' + this.deviceId + '/user/' + this.username + '/platform/' + platform)
     this.iosWebsocket.onclose = () => {
       this.showAlert = true
       this.loading = false

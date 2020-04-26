@@ -64,8 +64,8 @@ export default {
     document.getElementById('canvas-container').appendChild(canvas)
 
     let platform = this.$store.state.project.platform
-    // platform: 1.android 3.android wxtools 4.android wx appbrand
-    if (platform !== 1 && platform !== 3 && platform !== 4) {
+    // platform: 1.android 3.android wxtools 4.android wx appbrand 5. android chrome
+    if (platform !== 1 && platform !== 3 && platform !== 4 && platform !== 5) {
       platform = 1
     }
 
