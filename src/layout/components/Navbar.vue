@@ -123,6 +123,7 @@ export default {
       const selectedProject = this.userProjects.filter(project => project.id === projectId)[0]
       this.$store.dispatch('project/setId', selectedProject.id)
       this.$store.dispatch('project/setPlatform', selectedProject.platform)
+      location.reload()
     }
   }
 }

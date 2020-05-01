@@ -1,5 +1,5 @@
 <template>
-  <el-form :data="project" label-width="60px">
+  <el-form :data="project" label-width="100px">
     <el-form-item label="名称" :rules="[{required: true}]">
       <el-input v-model.trim="project.name" clearable style="width: 300px" />
     </el-form-item>
@@ -9,6 +9,9 @@
           {{ platform.name }}
         </el-radio>
       </el-radio-group>
+    </el-form-item>
+    <el-form-item label="Capabilities">
+      <codemirror v-model="project.capabilities" :options="cmOptions" />
     </el-form-item>
     <el-form-item label="描述">
       <el-input v-model.trim="project.description" type="textarea" style="width: 300px" />
@@ -21,6 +24,8 @@
 <script>
 import { addProject, updateProject, getProjectList } from '@/api/project'
 import { platforms } from '@/utils/project'
+import 'codemirror/theme/base16-dark.css'
+import 'codemirror/mode/javascript/javascript.js'
 export default {
   props: {
     isAdd: Boolean
@@ -31,8 +36,15 @@ export default {
       project: {
         id: null,
         name: '',
+        capabilities: null,
         description: '',
         platform: null
+      },
+      cmOptions: {
+        mode: 'javascript',
+        theme: 'base16-dark',
+        lineNumbers: true,
+        line: true
       }
     }
   },

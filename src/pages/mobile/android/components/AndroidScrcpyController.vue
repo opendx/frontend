@@ -63,13 +63,7 @@ export default {
     canvas.setAttribute('id', 'scrcpyCanvas') // style width: 100%;
     document.getElementById('canvas-container').appendChild(canvas)
 
-    let platform = this.$store.state.project.platform
-    // platform: 1.android 3.android wxtools 4.android wx appbrand 5. android chrome
-    if (platform !== 1 && platform !== 3 && platform !== 4 && platform !== 5) {
-      platform = 1
-    }
-
-    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/scrcpy/android/' + this.deviceId + '/user/' + this.username + '/platform/' + platform)
+    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/scrcpy/android/' + this.deviceId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
     this.androidWebsocket.binaryType = 'arraybuffer'
     this.androidWebsocket.onclose = () => {
       this.showAlert = true

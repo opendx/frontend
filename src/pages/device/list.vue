@@ -1,14 +1,7 @@
 <template>
   <div class="app-container">
-    <!--查询-->
-    <div>
-      <el-select v-model="queryForm.platform" placeholder="设备类型" clearable>
-        <el-option v-for="devicePlatform in devicePlatforms" :key="devicePlatform.platform" :label="devicePlatform.name" :value="devicePlatform.platform" />
-      </el-select>
-      <el-button type="primary" class="el-icon-search" @click="onQueryBtnClick" />
-    </div>
     <!--列表-->
-    <div style="margin-top: 10px">
+    <div>
       <el-table :data="deviceList" highlight-current-row border>
         <el-table-column label="设备" align="center" width="120">
           <template scope="{ row }">
@@ -64,22 +57,12 @@ export default {
   },
   data() {
     return {
-      devicePlatforms: [
-        {
-          platform: 1,
-          name: 'Android'
-        },
-        {
-          platform: 2,
-          name: 'iOS'
-        }
-      ],
       deviceList: [],
       total: 0,
       queryForm: {
         pageNum: 1,
         pageSize: 10,
-        platform: null
+        platform: this.$store.state.project.platform
       }
     }
   },

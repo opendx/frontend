@@ -68,13 +68,7 @@ export default {
     const BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
     const URL = window.URL || window.webkitURL
 
-    let platform = this.$store.state.project.platform
-    // platform: 1.android 3.android wxtools 4.android wx appbrand 5. android chrome
-    if (platform !== 1 && platform !== 3 && platform !== 4 && platform !== 5) {
-      platform = 1
-    }
-
-    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/stf/android/' + this.deviceId + '/user/' + this.username + '/platform/' + platform)
+    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/stf/android/' + this.deviceId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
     this.androidWebsocket.binaryType = 'blob'
     this.androidWebsocket.onclose = () => {
       this.showAlert = true
