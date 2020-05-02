@@ -6,8 +6,5 @@ export const platforms = [
   {
     type: 2,
     name: 'iOS'
-  }, {
-    type: 3,
-    name: 'PC Web'
   }
 ]
