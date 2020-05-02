@@ -1,31 +1,20 @@
 <template>
   <div class="app-container">
     <div style="margin-bottom: 10px">
-      <el-button @click="$router.push({ name: 'AddApp' })">添加app</el-button>
-    </div>
-    <div style="margin-bottom: 10px">
-      <el-select v-model="queryForm.platform">
-        <el-option v-for="platform in platforms" :key="platform.type" :label="platform.name" :value="platform.type" />
-      </el-select>
-      <el-button type="primary" class="el-icon-search" @click="onQueryBtnClick" />
+      <el-button @click="$router.push({ name: 'AddApp' })" :disabled="queryForm.platform !== 1 && queryForm.platform !== 2">添加app</el-button>
     </div>
     <!-- 列表 -->
     <div>
       <el-table :data="appList" highlight-current-row border>
-        <el-table-column label="平台" align="center" width="100">
-          <template scope="{ row }">
-            {{ row.platform === 1 ? 'Android' : 'iOS' }}
-          </template>
-        </el-table-column>
         <el-table-column label="App名" property="name" align="center" show-overflow-tooltip />
         <el-table-column label="下载地址" align="center" width="100">
           <template scope="{ row }">
             <el-button type="text" slot="append" v-clipboard:copy="row.downloadUrl" v-clipboard:success="onCopy">复制</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="Version" property="version" align="center" width="100" show-overflow-tooltip />
-        <el-table-column label="PackageName" property="packageName" align="center" show-overflow-tooltip />
-        <el-table-column label="LaunchActivity" property="launchActivity" align="center" show-overflow-tooltip />
+        <el-table-column label="Version" property="version" align="center" width="120" show-overflow-tooltip />
+        <el-table-column v-if="queryForm.platform === 1" label="PackageName" property="packageName" align="center" show-overflow-tooltip />
+        <el-table-column v-if="queryForm.platform === 1" label="LaunchActivity" property="launchActivity" align="center" show-overflow-tooltip />
         <el-table-column label="上传时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
             {{ row.uploadorNickName + ' ' + row.uploadTime }}
@@ -62,23 +51,13 @@ export default {
   data() {
     return {
       aaptDumpBadgingBtnLoading: false,
-      platforms: [
-        {
-          type: 1,
-          name: 'Android'
-        },
-        {
-          type: 2,
-          name: 'iOS'
-        }
-      ],
       appList: [],
       total: 0,
       queryForm: {
         projectId: this.$store.state.project.id,
         pageNum: 1,
         pageSize: 10,
-        platform: null
+        platform: this.$store.state.project.platform
       }
     }
   },
@@ -109,10 +88,6 @@ export default {
     },
     onCopy(e) {
       this.$notify.success(e.text + '复制成功')
-    },
-    onQueryBtnClick() {
-      this.queryForm.pageNum = 1
-      this.fetchAppList()
     },
     aaptDumpBadging(row) {
       this.aaptDumpBadgingBtnLoading = true
