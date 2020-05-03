@@ -302,18 +302,33 @@ export default {
         // 防止快捷键重复调试
         return
       }
-      if (!this.$store.state.device.show) {
-        this.$notify.error('先选择一台设备使用后才能调试')
-        return
+
+      const platform = this.$store.state.project.platform
+      if (platform === 1 || platform === 2) { // 移动端
+        if (!this.$store.state.device.show) {
+          this.$notify.error('先选择一台设备使用后才能调试')
+          return
+        }
+        if (!this.$store.state.device.appiumSessionId) {
+          this.$notify.error('appium正在初始化，请稍后')
+          return
+        }
+      } else if (platform === 3) { // pc web
+        if (!this.$store.state.browser.show) {
+          this.$notify.error('先选择一个浏览器使用后才能调试')
+          return
+        }
+        if (!this.$store.state.browser.driverSessionId) {
+          this.$notify.error('webdriver正在初始化，请稍后')
+          return
+        }
       }
+
       if (this.$refs.stepList.selectedSteps.length === 0) {
         this.$notify.error('至少勾选一个步骤')
         return
       }
-      if (!this.$store.state.device.appiumSessionId) {
-        this.$notify.error('appium正在初始化，请稍后')
-        return
-      }
+
       this.debugBtnLoading = true
       this.code = ''
       const action = {}
@@ -327,14 +342,23 @@ export default {
       action.params = this.$refs.paramList.params
       action.localVars = this.$refs.localVarList.localVars
       action.steps = this.$refs.stepList.selectedSteps
+
+      const debugInfo = platform === 3 ? {
+        agentIp: this.$store.state.browser.agentIp,
+        agentPort: this.$store.state.browser.agentPort,
+        deviceId: this.$store.state.browser.id
+      } : {
+        agentIp: this.$store.state.device.agentIp,
+        agentPort: this.$store.state.device.agentPort,
+        deviceId: this.$store.state.device.id
+      }
+
+      debugInfo.env = this.$store.state.project.env
+      debugInfo.platform = this.$store.state.project.platform
+
       debugAction({
         action: action,
-        debugInfo: {
-          agentIp: this.$store.state.device.agentIp,
-          agentPort: this.$store.state.device.agentPort,
-          env: this.$store.state.project.env,
-          deviceId: this.$store.state.device.id
-        }
+        debugInfo: debugInfo
       }).then(response => {
         this.$message.success(response.msg)
         this.code = response.data.code

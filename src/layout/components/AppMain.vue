@@ -13,6 +13,9 @@
       <android-scrcpy-controller v-else-if="screenType === 'scrcpy'" />
       <ios-controller v-else-if="screenType === 'ios'" />
     </div>
+    <div v-if="showBrowser" style="width: 80px;height: calc(100% - 84px);position: absolute;top: 84px;right: 10px;overflow: auto;">
+      <browser-web-sokcet-board />
+    </div>
   </section>
 </template>
 
@@ -20,21 +23,32 @@
 import AndroidStfController from '@/pages/mobile/android/components/AndroidStfController'
 import AndroidScrcpyController from '@/pages/mobile/android/components/AndroidScrcpyController'
 import IosController from '@/pages/mobile/ios/components/IosController'
+import BrowserWebSokcetBoard from '@/pages/browser/BrowserWebSokcetBoard'
 
 export default {
   name: 'AppMain',
   components: {
     AndroidStfController,
     AndroidScrcpyController,
-    IosController
+    IosController,
+    BrowserWebSokcetBoard
   },
   computed: {
     leftStyle() {
       // todo 先写死
-      return this.$store.state.device.show ? 'width: calc(100% - 360px)' : ''
+      if (this.$store.state.device.show) {
+        return 'width: calc(100% - 360px)'
+      } else if (this.$store.state.browser.show) {
+        return 'width: calc(100% - 90px)'
+      } else {
+        return ''
+      }
     },
     showDevice() {
       return this.$store.state.device.show
+    },
+    showBrowser() {
+      return this.$store.state.browser.show
     },
     screenType() {
       const platform = this.$store.state.device.platform
@@ -49,7 +63,7 @@ export default {
       } else if (platform === 2) { // ios
         return 'ios'
       } else {
-        return 'unKnow platform'
+        return 'unknow platform'
       }
     },
     cachedViews() {

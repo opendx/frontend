@@ -17,7 +17,7 @@
           :limit="1"
           :multiple="false"
           :on-success="(response, file, fileList) => onFileUploadSuccess(response, file, fileList, driverFile)">
-          <el-button>{{ driverFile.platform === 1 ? 'windows' : driverFile.platform === 2 ? 'linux' : 'mac' }} - 点击上传</el-button>
+          <el-button>{{ driverFile.platform === 1 ? 'windows' : driverFile.platform === 2 ? 'linux' : 'macos' }} - 点击上传</el-button>
           {{ driverFile.filePath }}
         </el-upload>
         <el-divider />
@@ -88,7 +88,7 @@ export default {
       }
     },
     fetDeviceList() {
-      getDeviceList().then(response => {
+      getDeviceList({ platform: 1 }).then(response => {
         this.devices = response.data
       })
     },

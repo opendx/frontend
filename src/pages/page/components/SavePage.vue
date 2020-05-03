@@ -254,12 +254,11 @@ export default {
 
       const pageType = this.savePageForm.type
       if (pageType === 1) { // android原生
-        // 移除iOS web
-        findBys.splice(1, 2)
-      } else if (pageType === 2) { // ios原生
-        // 移除android web
-        findBys.splice(0, 1)
+        // 移除iOS
         findBys.splice(1, 1)
+      } else if (pageType === 2) { // ios原生
+        // 移除android
+        findBys.splice(0, 1)
       } else { // web
         // 移除android ios
         findBys.splice(0, 2)
@@ -270,7 +269,7 @@ export default {
     bys() {
       const bys = [{
         value: 'MobileBy',
-        label: 'MobileBy',
+        label: 'By',
         children: [{
           value: 'id',
           label: 'id'

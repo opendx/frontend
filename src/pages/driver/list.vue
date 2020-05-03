@@ -17,7 +17,7 @@
             <el-table :data="row.files" border>
               <el-table-column label="平台" align="center" width="100" show-overflow-tooltip>
                 <template scope="{ row }">
-                  {{ row.platform === 1 ? 'windows' : row.platform === 2 ? 'linux' : 'mac' }}
+                  {{ row.platform === 1 ? 'windows' : row.platform === 2 ? 'linux' : 'macos' }}
                 </template>
               </el-table-column>
               <el-table-column label="下载地址" align="center" prop="downloadUrl" show-overflow-tooltip  />
