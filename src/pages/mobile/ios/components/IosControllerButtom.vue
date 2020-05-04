@@ -11,7 +11,6 @@
 
     <el-button-group>
       <el-button size="mini" @click="clickHome" :disabled="!$store.state.device.appiumSessionId">Home</el-button>
-      <el-button size="mini" @click="recreateImg">Retry</el-button>
       <el-button size="mini" @click="clickClose">Close</el-button>
     </el-button-group>
 
@@ -95,9 +94,6 @@ export default {
     // 点击home
     clickHome() {
       this.iosWebsocket.send(JSON.stringify(this.home))
-    },
-    recreateImg() {
-      this.$emit('recreateImg')
     },
     clickClose() {
       this.$store.dispatch('device/setShow', false) // AppMain.vue在v-if销毁右侧控制设备组件

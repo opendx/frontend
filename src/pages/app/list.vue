@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div style="margin-bottom: 10px">
-      <el-button @click="$router.push({ name: 'AddApp' })" :disabled="queryForm.platform !== 1 && queryForm.platform !== 2">添加app</el-button>
+      <el-button @click="$router.push({ name: 'AddApp' })">添加app</el-button>
     </div>
     <!-- 列表 -->
     <div>

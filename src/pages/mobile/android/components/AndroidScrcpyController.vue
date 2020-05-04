@@ -8,7 +8,7 @@
       type="error"
       show-icon
     />
-    <div id="canvas-container" style="width: 100%" />
+    <div id="canvas-container" style="width: 100%; min-height: 200px" />
     <div style="margin-top: 2px" align="center">
       <android-controller-buttom :android-websocket="androidWebsocket" />
     </div>

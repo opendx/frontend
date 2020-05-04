@@ -9,12 +9,11 @@
       show-icon
     />
     <!--画布-->
-    <div style="width: 100%">
-      <canvas id="iosControllerCanvas" style="position: absolute; width: 100%" />
-      <img v-if="showImg" id="iosImg" :src="'http://' + agentIp + ':' + agentPort + '/iproxy/' + deviceId" style="width: 100%">
+    <div style="width: 100%; min-height: 200px">
+      <canvas id="iosControllerCanvas" style="width: 100%" />
     </div>
     <div style="margin-top: 2px" align="center">
-      <ios-controller-buttom :ios-websocket="iosWebsocket" @recreateImg="recreateImg" />
+      <ios-controller-buttom :ios-websocket="iosWebsocket" />
     </div>
   </div>
 </template>
@@ -31,8 +30,6 @@ export default {
       loading: false,
       showAlert: false,
       iosWebsocket: null,
-      showImg: false,
-      mjpegServerPort: null,
       touchDown: {
         operation: 'd',
       },
@@ -63,8 +60,11 @@ export default {
     this.iosWebsocket.close()
   },
   mounted() {
-    const canvas = document.getElementById('iosControllerCanvas')
     this.loading = true
+    const canvas = document.getElementById('iosControllerCanvas')
+    const g = canvas.getContext('2d')
+    const BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+    const URL = window.URL || window.webkitURL
 
     // iosWebsocket
     this.iosWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/ios/' + this.deviceId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
@@ -77,19 +77,30 @@ export default {
       this.loading = false
     }
     this.iosWebsocket.onmessage = (message) => {
-      const data = message.data
-      console.log('iosWebsocket', data)
-      if (data.indexOf('appiumSessionId') !== -1) {
-        const d = JSON.parse(data)
-        this.$store.dispatch('device/setAppiumSessionId', d.appiumSessionId)
-        this.mjpegServerPort = d.mjpegServerPort
-        this.showImg = true
-        this.loading = false
-        setTimeout(() => {
-          const img = document.getElementById('iosImg')
+      if (message.data instanceof Blob) {
+        let blob = new Blob([message.data], { type: 'image/jpeg' })
+        let url = URL.createObjectURL(blob)
+        let img = new Image()
+        img.src = url
+        img.onload = () => {
           canvas.width = img.width
           canvas.height = img.height
-        }, 500)
+          g.drawImage(img, 0, 0)
+
+          img.onload = null
+          img.src = BLANK_IMG
+          img = null
+          blob = null
+
+          URL.revokeObjectURL(url)
+          url = null
+        }
+      } else {
+        console.log('iosWebsocket-onmessage', message.data)
+        if (message.data && message.data.indexOf('appiumSessionId') !== -1) {
+          this.loading = false
+          this.$store.dispatch('device/setAppiumSessionId', JSON.parse(message.data).appiumSessionId)
+        }
       }
     }
     let isMouseDown = false
@@ -126,14 +137,6 @@ export default {
         this.touchMove.height = canvas.height
         this.iosWebsocket.send(JSON.stringify(this.touchMove))
       }
-    }
-  },
-  methods: {
-    recreateImg() {
-      this.showImg = false
-      setTimeout(() => {
-        this.showImg = true
-      }, 500)
     }
   }
 }

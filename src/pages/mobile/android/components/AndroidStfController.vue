@@ -9,7 +9,7 @@
       show-icon
     />
     <!--画布-->
-    <div style="width: 100%">
+    <div style="width: 100%; min-height: 200px">
       <canvas id="stfCanvas" style="width: 100%" />
     </div>
     <div style="margin-top: 2px" align="center">
