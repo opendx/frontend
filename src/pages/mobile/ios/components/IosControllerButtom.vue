@@ -18,7 +18,7 @@
     <el-popover placement="left" trigger="click">
       <!-- 安装APP -->
       <el-upload drag action="/" :on-change="onChange" :multiple="false" :auto-upload="false">
-        <i class="el-icon-upload" /><div>将ipa拖到此处，或<em>点击选择ipa</em></div>
+        <i class="el-icon-upload" /><div>将app拖到此处，或<em>点击选择app</em></div>
       </el-upload>
       <el-button :loading="installBtnLoading" type="primary" size="mini" @click="installApp">{{ installBtnText }}</el-button>
       <el-button slot="reference" size="mini">...</el-button>
@@ -63,7 +63,7 @@ export default {
     }
   },
   methods: {
-    // 选择ipa
+    // 选择app
     onChange(file) {
       this.choosedFile = file
     },
@@ -74,12 +74,13 @@ export default {
         this.$notify.error('请选择一个app')
         return
       }
-      // 选择的文件是否以ipa结尾
+      // 校验文件格式
       const app = this.choosedFile.raw
-      if (!app.name.endsWith('.ipa')) {
-        this.$notify.error('请选择ipa文件')
+      if (!app.name.endsWith('.ipa') && !app.name.endsWith('.app')) {
+        this.$notify.error('请选择.ipa或.app文件')
         return
       }
+
       this.installBtnText = '安装中...'
       this.installBtnLoading = true
       const form = new FormData()

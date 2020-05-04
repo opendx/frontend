@@ -144,6 +144,7 @@ export default {
         this.$notify.error('请选择apk文件')
         return
       }
+
       this.installBtnText = '安装中...'
       this.installBtnLoading = true
       const form = new FormData()
