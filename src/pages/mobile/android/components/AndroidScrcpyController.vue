@@ -40,13 +40,13 @@ export default {
   },
   computed: {
     agentIp() {
-      return this.$store.state.device.agentIp
+      return this.$store.state.mobile.agentIp
     },
     agentPort() {
-      return this.$store.state.device.agentPort
+      return this.$store.state.mobile.agentPort
     },
-    deviceId() {
-      return this.$store.state.device.id
+    mobileId() {
+      return this.$store.state.mobile.id
     },
     username() {
       return this.$store.state.user.name
@@ -63,7 +63,7 @@ export default {
     canvas.setAttribute('id', 'scrcpyCanvas') // style width: 100%;
     document.getElementById('canvas-container').appendChild(canvas)
 
-    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/scrcpy/android/' + this.deviceId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
+    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/scrcpy/android/' + this.mobileId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
     this.androidWebsocket.binaryType = 'arraybuffer'
     this.androidWebsocket.onclose = () => {
       this.showAlert = true
@@ -78,9 +78,9 @@ export default {
         player.decode(new Uint8Array(message.data))
       } else {
         console.log('androidWebsocket-onmessage', message.data)
-        if (message.data && message.data.indexOf('appiumSessionId') !== -1) {
+        if (message.data && message.data.indexOf('driverSessionId') !== -1) {
           this.loading = false
-          this.$store.dispatch('device/setAppiumSessionId', JSON.parse(message.data).appiumSessionId)
+          this.$store.dispatch('device/setDriverSessionId', JSON.parse(message.data).driverSessionId)
         }
       }
     }

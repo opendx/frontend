@@ -2,7 +2,7 @@
   <div>
     <el-popover v-model="visible" placement="left" trigger="click">
       <mobile-capture style="width: 1200px; height: 680px" v-if="initMobileCapture" @closeMobileCapture="visible = false" />
-      <el-button slot="reference" :disabled="!$store.state.device.appiumSessionId" @click="initMobileCapture = true" size="mini">
+      <el-button slot="reference" :disabled="disable" @click="initMobileCapture = true" size="mini">
         <svg-icon icon-class="capture" />
       </el-button>
     </el-popover>
@@ -10,14 +10,14 @@
     <screenshot-viewer />
 
     <el-button-group>
-      <el-button size="mini" @click="clickHome" :disabled="!$store.state.device.appiumSessionId">Home</el-button>
-      <el-button size="mini" @click="clickBack" :disabled="!$store.state.device.appiumSessionId">Back</el-button>
+      <el-button size="mini" @click="clickHome" :disabled="disable">Home</el-button>
+      <el-button size="mini" @click="clickBack" :disabled="disable">Back</el-button>
       <el-button size="mini" @click="clickClose">Close</el-button>
     </el-button-group>
 
     <el-popover placement="left" trigger="click">
-      <el-button size="mini" @click="clickMenu" :disabled="!$store.state.device.appiumSessionId">Menu</el-button>
-      <el-button size="mini" @click="clickPower" :disabled="!$store.state.device.appiumSessionId">Power</el-button>
+      <el-button size="mini" @click="clickMenu">Menu</el-button>
+      <el-button size="mini" @click="clickPower">Power</el-button>
       <el-divider />
       <!-- 安装APP -->
       <el-upload drag action="/" :on-change="onChange" :multiple="false" :auto-upload="false">
@@ -39,7 +39,7 @@
         />
       </el-select>
       <el-divider />
-      <el-button slot="reference" size="mini">...</el-button>
+      <el-button slot="reference" size="mini" :disable="disable">...</el-button>
     </el-popover>
   </div>
 </template>
@@ -85,13 +85,16 @@ export default {
   },
   computed: {
     agentIp() {
-      return this.$store.state.device.agentIp
+      return this.$store.state.mobile.agentIp
     },
     agentPort() {
-      return this.$store.state.device.agentPort
+      return this.$store.state.mobile.agentPort
     },
-    deviceId() {
-      return this.$store.state.device.id
+    mobileId() {
+      return this.$store.state.mobile.id
+    },
+    disable() {
+      return !this.$store.state.mobile.driverSessionId
     }
   },
   methods: {
@@ -101,12 +104,12 @@ export default {
       }
     },
     imeSelected(ime) {
-      setIme(this.agentIp, this.agentPort, this.deviceId, ime).then(response => {
+      setIme(this.agentIp, this.agentPort, this.mobileId, ime).then(response => {
         this.$notify.success(response.msg)
       })
     },
     fetchImeList() {
-      getImeList(this.agentIp, this.agentPort, this.deviceId).then(response => {
+      getImeList(this.agentIp, this.agentPort, this.mobileId).then(response => {
         this.imeList = response.data.map(ime => {
           return { value: ime, label: ime }
         })
@@ -114,13 +117,13 @@ export default {
     },
     startOrStopAdbKit() {
       if (!this.adbKitIsStart) {
-        startAdbKit(this.agentIp, this.agentPort, this.deviceId).then(response => {
+        startAdbKit(this.agentIp, this.agentPort, this.mobileId).then(response => {
           this.adbKitIsStart = true
           this.adbKitBtnText = '关闭远程调试'
           this.adbkitTip = 'adb connect ' + this.agentIp + ':' + response.data.port
         })
       } else {
-        stopAdbKit(this.agentIp, this.agentPort, this.deviceId).then(() => {
+        stopAdbKit(this.agentIp, this.agentPort, this.mobileId).then(() => {
           this.adbKitIsStart = false
           this.adbKitBtnText = '开启远程调试'
           this.adbkitTip = ''
@@ -149,7 +152,7 @@ export default {
       this.installBtnLoading = true
       const form = new FormData()
       form.append('app', app)
-      installApp(this.agentIp, this.agentPort, this.deviceId, form).then(response => {
+      installApp(this.agentIp, this.agentPort, this.mobileId, form).then(response => {
         this.$notify.success(response.msg)
       }).finally(() => {
         this.installBtnText = '安装APP'
@@ -173,7 +176,7 @@ export default {
       this.androidWebsocket.send(JSON.stringify(this.power))
     },
     clickClose() {
-      this.$store.dispatch('device/setShow', false) // AppMain.vue在v-if销毁右侧控制设备组件
+      this.$store.dispatch('device/setShow', false) // AppMain.vue在v-if销毁右侧控制组件
     }
   }
 }

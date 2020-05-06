@@ -8,7 +8,7 @@
       <!--</transition>-->
     </div>
     <!--todo 先写死-->
-    <div v-if="showDevice" style="width: 350px;height: calc(100% - 84px);position: absolute;top: 84px;right: 10px;overflow: auto;">
+    <div v-if="showMobile" style="width: 350px;height: calc(100% - 84px);position: absolute;top: 84px;right: 10px;overflow: auto;">
       <android-stf-controller v-if="screenType === 'stf'" />
       <android-scrcpy-controller v-else-if="screenType === 'scrcpy'" />
       <ios-controller v-else-if="screenType === 'ios'" />
@@ -36,7 +36,7 @@ export default {
   computed: {
     leftStyle() {
       // todo 先写死
-      if (this.$store.state.device.show) {
+      if (this.$store.state.mobile.show) {
         return 'width: calc(100% - 360px)'
       } else if (this.$store.state.browser.show) {
         return 'width: calc(100% - 90px)'
@@ -44,15 +44,15 @@ export default {
         return ''
       }
     },
-    showDevice() {
-      return this.$store.state.device.show
+    showMobile() {
+      return this.$store.state.mobile.show
     },
     showBrowser() {
       return this.$store.state.browser.show
     },
     screenType() {
-      const platform = this.$store.state.device.platform
-      const systemVersion = this.$store.state.device.systemVersion
+      const platform = this.$store.state.mobile.platform
+      const systemVersion = this.$store.state.mobile.systemVersion
       if (platform === 1) {
         if (parseInt(systemVersion) >= 5) {
           // 版本5以上 scrcpy

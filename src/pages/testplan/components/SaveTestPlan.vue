@@ -143,7 +143,7 @@
 import { getActionCascader } from '@/api/action'
 import { getTestSuiteList } from '@/api/testSuite'
 import { addTestPlan, updateTestPlan, getTestPlanList } from '@/api/testPlan'
-import { getOnlineDevices } from '@/api/device'
+import { getOnlineMobiles } from '@/api/mobile'
 import { getEnvironmentList } from '@/api/environment'
 
 export default {
@@ -257,7 +257,7 @@ export default {
       }
     },
     fetchOnlineDevices() {
-      getOnlineDevices(this.platform).then(response => {
+      getOnlineMobiles(this.platform).then(response => {
         this.onlineDevices = response.data
       })
     }

@@ -171,15 +171,15 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: '/device',
+    path: '/mobile',
     component: Layout,
-    meta: { icon: 'device', roles: ['device'] },
+    meta: { icon: 'device', roles: ['mobile'] },
     children: [
       {
         path: 'list',
-        component: () => import('@/pages/device/list'),
-        name: 'DeviceList',
-        meta: { title: '设备', noCache: true }
+        component: () => import('@/pages/mobile/list'),
+        name: 'MobileList',
+        meta: { title: 'Mobile', noCache: true }
       }
     ]
   },

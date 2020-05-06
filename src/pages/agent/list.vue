@@ -15,13 +15,13 @@
           {{ row.ip + ':' + row.port }}
         </template>
       </el-table-column>
-      <el-table-column label="设备/浏览器" align="center">
+      <el-table-column label="Mobile/浏览器" align="center">
         <template scope="{ row }">
-          <el-table :data="row.devices" border>
-            <el-table-column label="设备id" prop="id" align="center" show-overflow-tooltip />
-            <el-table-column label="设备名" prop="name" align="center" show-overflow-tooltip />
+          <el-table :data="row.mobiles" border>
+            <el-table-column label="Mobile id" prop="id" align="center" show-overflow-tooltip />
+            <el-table-column label="name" prop="name" align="center" show-overflow-tooltip />
             <el-table-column label="系统版本" prop="systemVersion" align="center" show-overflow-tooltip />
-            <el-table-column label="设备状态" align="center" show-overflow-tooltip>
+            <el-table-column label="状态" align="center" show-overflow-tooltip>
               <template scope="{ row }">
                 {{ row.status === 2 ? '在线闲置': '[' + row.username + ']使用中' }}
               </template>
@@ -30,9 +30,9 @@
           <el-divider />
           <el-table :data="row.browsers" border>
             <el-table-column label="浏览器id" prop="id" align="center" show-overflow-tooltip />
-            <el-table-column label="浏览器类型" prop="type" align="center" show-overflow-tooltip />
-            <el-table-column label="浏览器版本" prop="version" align="center" show-overflow-tooltip />
-            <el-table-column label="浏览器状态" align="center" show-overflow-tooltip>
+            <el-table-column label="类型" prop="type" align="center" show-overflow-tooltip />
+            <el-table-column label="版本号" prop="version" align="center" show-overflow-tooltip />
+            <el-table-column label="状态" align="center" show-overflow-tooltip>
               <template scope="{ row }">
                 {{ row.status === 2 ? '在线闲置': '[' + row.username + ']使用中' }}
               </template>

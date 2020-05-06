@@ -24,6 +24,7 @@
             </el-table>
           </template>
         </el-table-column>
+        <!--todo mobiles-->
         <el-table-column label="devices" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
             <div v-for="deviceId in row.deviceIds" :key="deviceId">{{ deviceId }}</div>

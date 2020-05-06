@@ -64,7 +64,7 @@ export default {
   methods: {
     onQueryBtnClick() {
       this.queryForm.pageNum = 1
-      this.fetchDeviceList()
+      this.fetchBrowserList()
     },
     useBrowser(browser) {
       if (this.$store.state.browser.show) {
@@ -84,7 +84,7 @@ export default {
         this.$store.dispatch('browser/setId', browser.id)
         this.$store.dispatch('browser/setShow', true)
       }).catch(() => {
-        // 请求失败，重刷列表获取最新设备状态
+        // 请求失败，重刷列表获取最新状态
         this.fetchBrowserList()
       })
     },

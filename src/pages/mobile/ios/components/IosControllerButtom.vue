@@ -2,7 +2,7 @@
   <div>
     <el-popover v-model="visible" placement="left" trigger="click">
       <mobile-capture style="width: 1200px; height: 680px" v-if="initMobileCapture" @closeMobileCapture="visible = false" />
-      <el-button slot="reference" :disabled="!$store.state.device.appiumSessionId" @click="initMobileCapture = true" size="mini">
+      <el-button slot="reference" :disabled="disable" @click="initMobileCapture = true" size="mini">
         <svg-icon icon-class="capture" />
       </el-button>
     </el-popover>
@@ -10,7 +10,7 @@
     <screenshot-viewer />
 
     <el-button-group>
-      <el-button size="mini" @click="clickHome" :disabled="!$store.state.device.appiumSessionId">Home</el-button>
+      <el-button size="mini" @click="clickHome" :disabled="disable">Home</el-button>
       <el-button size="mini" @click="clickClose">Close</el-button>
     </el-button-group>
 
@@ -20,7 +20,7 @@
         <i class="el-icon-upload" /><div>将app拖到此处，或<em>点击选择app</em></div>
       </el-upload>
       <el-button :loading="installBtnLoading" type="primary" size="mini" @click="installApp">{{ installBtnText }}</el-button>
-      <el-button slot="reference" size="mini">...</el-button>
+      <el-button slot="reference" size="mini" :disabled="disable">...</el-button>
     </el-popover>
   </div>
 </template>
@@ -52,13 +52,16 @@ export default {
   },
   computed: {
     agentIp() {
-      return this.$store.state.device.agentIp
+      return this.$store.state.mobile.agentIp
     },
     agentPort() {
-      return this.$store.state.device.agentPort
+      return this.$store.state.mobile.agentPort
     },
-    deviceId() {
-      return this.$store.state.device.id
+    mobileId() {
+      return this.$store.state.mobile.id
+    },
+    disable() {
+      return !this.$store.state.mobile.driverSessionId
     }
   },
   methods: {
@@ -84,7 +87,7 @@ export default {
       this.installBtnLoading = true
       const form = new FormData()
       form.append('app', app)
-      installApp(this.agentIp, this.agentPort, this.deviceId, form).then(response => {
+      installApp(this.agentIp, this.agentPort, this.mobileId, form).then(response => {
         this.$notify.success(response.msg)
       }).finally(() => {
         this.installBtnText = '安装APP'
@@ -96,7 +99,7 @@ export default {
       this.iosWebsocket.send(JSON.stringify(this.home))
     },
     clickClose() {
-      this.$store.dispatch('device/setShow', false) // AppMain.vue在v-if销毁右侧控制设备组件
+      this.$store.dispatch('device/setShow', false) // AppMain.vue在v-if销毁右侧控制组件
     }
   }
 }

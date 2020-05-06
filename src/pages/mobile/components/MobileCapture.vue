@@ -32,13 +32,13 @@ export default {
   },
   computed: {
     agentIp() {
-      return this.$store.state.device.agentIp
+      return this.$store.state.mobile.agentIp
     },
     agentPort() {
-      return this.$store.state.device.agentPort
+      return this.$store.state.mobile.agentPort
     },
-    deviceId() {
-      return this.$store.state.device.id
+    mobileId() {
+      return this.$store.state.mobile.id
     }
   },
   created() {
@@ -46,13 +46,13 @@ export default {
   },
   methods: {
     fetchScreenShot() {
-      screenshot(this.agentIp, this.agentPort, this.deviceId).then(response => {
+      screenshot(this.agentIp, this.agentPort, this.mobileId).then(response => {
         this.windowInfo = response.data
       })
     },
     fetchWindowHierarchy() {
       this.treeLoading = true
-      dump(this.agentIp, this.agentPort, this.deviceId).then(response => {
+      dump(this.agentIp, this.agentPort, this.mobileId).then(response => {
         const page = response.data
         this.windowHierarchy = page.pageSource
         this.pageType = page.type
@@ -78,7 +78,7 @@ export default {
           windowHeight: this.windowInfo.windowHeight,
           windowWidth: this.windowInfo.windowWidth,
           windowOrientation: this.windowInfo.windowOrientation,
-          deviceId: this.deviceId,
+          deviceId: this.mobileId,
           windowHierarchy: this.windowHierarchy,
           type: this.pageType,
           elements: [],

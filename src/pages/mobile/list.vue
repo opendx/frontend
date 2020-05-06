@@ -2,14 +2,14 @@
   <div class="app-container">
     <!--列表-->
     <div>
-      <el-table :data="deviceList" highlight-current-row border>
-        <el-table-column label="设备" align="center" width="120">
+      <el-table :data="mobileList" highlight-current-row border>
+        <el-table-column label="mobile" align="center" width="120">
           <template scope="{ row }">
             <el-image :src="row.imgUrl" :preview-src-list="[row.imgUrl]" width="100px" />
           </template>
         </el-table-column>
-        <el-table-column label="设备id" align="center" prop="id" show-overflow-tooltip />
-        <el-table-column label="设备名" align="center" prop="name" show-overflow-tooltip />
+        <el-table-column label="id" align="center" prop="id" show-overflow-tooltip />
+        <el-table-column label="name" align="center" prop="name" show-overflow-tooltip />
         <el-table-column label="系统版本" align="center" prop="systemVersion" width="80" show-overflow-tooltip />
         <el-table-column label="分辨率" align="center" width="100" show-overflow-tooltip>
           <template scope="{ row }">
@@ -21,29 +21,29 @@
         <el-table-column label="agent ip" align="center" prop="agentIp" width="150" show-overflow-tooltip />
         <el-table-column label="操作" align="center" show-overflow-tooltip>
           <template scope="{ row }">
-            <el-button :type="row.status | btnType" :disabled="row.status | btnDisabled" @click="useDevice(row)">{{ row | btnText }}</el-button>
+            <el-button :type="row.status | btnType" :disabled="row.status | btnDisabled" @click="useMobile(row)">{{ row | btnText }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <!--分页-->
     <div>
-      <pagination v-show="total>0" :total="total" :page.sync="queryForm.pageNum" :limit.sync="queryForm.pageSize" @pagination="fetchDeviceList" />
+      <pagination v-show="total>0" :total="total" :page.sync="queryForm.pageNum" :limit.sync="queryForm.pageSize" @pagination="fetchMobileList" />
     </div>
   </div>
 </template>
 
 <script>
 
-import { getDeviceList, deviceStart } from '@/api/device'
-import Pagination from '@/components/Pagination'
+import { getMobileList, mobileStart } from '@/api/mobile'
+import Pagination from '@/components/Pagination/index'
 
 export default {
   components: {
     Pagination
   },
   filters: {
-    // deviceStatus: 0 -> 离线 ， 1 -> 使用中 ， 2 -> 在线闲置
+    // mobileStatus: 0 -> 离线 ， 1 -> 使用中 ， 2 -> 在线闲置
     btnDisabled(status) {
       return status !== 2
     },
@@ -57,7 +57,7 @@ export default {
   },
   data() {
     return {
-      deviceList: [],
+      mobileList: [],
       total: 0,
       queryForm: {
         pageNum: 1,
@@ -67,40 +67,40 @@ export default {
     }
   },
   created() {
-    this.fetchDeviceList()
+    this.fetchMobileList()
   },
   methods: {
     onQueryBtnClick() {
       this.queryForm.pageNum = 1
-      this.fetchDeviceList()
+      this.fetchMobileList()
     },
-    useDevice(device) {
-      if (this.$store.state.device.show) {
-        this.$notify.error('只能使用一台手机')
+    useMobile(mobile) {
+      if (this.$store.state.mobile.show) {
+        this.$notify.error('只能使用一个mobile')
         return
       }
-      deviceStart(device.id).then(response => {
+      mobileStart(mobile.id).then(response => {
         // 不排除agent ip端口变了，拿服务端最新的重新赋值
-        device.agentIp = response.data.agentIp
-        device.agentPort = response.data.agentPort
-        // 设备改为使用中
-        device.username = this.$store.state.user.name
-        device.status = 1
+        mobile.agentIp = response.data.agentIp
+        mobile.agentPort = response.data.agentPort
+        // mobile改为使用中
+        mobile.username = this.$store.state.user.name
+        mobile.status = 1
 
-        this.$store.dispatch('device/setAgentIp', device.agentIp)
-        this.$store.dispatch('device/setAgentPort', device.agentPort)
-        this.$store.dispatch('device/setId', device.id)
-        this.$store.dispatch('device/setPlatform', device.platform)
-        this.$store.dispatch('device/setSystemVersion', device.systemVersion)
-        this.$store.dispatch('device/setShow', true)
+        this.$store.dispatch('mobile/setAgentIp', mobile.agentIp)
+        this.$store.dispatch('mobile/setAgentPort', mobile.agentPort)
+        this.$store.dispatch('mobile/setId', mobile.id)
+        this.$store.dispatch('mobile/setPlatform', mobile.platform)
+        this.$store.dispatch('mobile/setSystemVersion', mobile.systemVersion)
+        this.$store.dispatch('mobile/setShow', true)
       }).catch(() => {
-        // 请求失败，重刷列表获取最新设备状态
-        this.fetchDeviceList()
+        // 请求失败，重刷列表获取最新状态
+        this.fetchMobileList()
       })
     },
-    fetchDeviceList() {
-      getDeviceList(this.queryForm).then(response => {
-        this.deviceList = response.data.data
+    fetchMobileList() {
+      getMobileList(this.queryForm).then(response => {
+        this.mobileList = response.data.data
         this.total = response.data.total
       })
     }

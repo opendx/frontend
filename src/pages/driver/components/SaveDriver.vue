@@ -23,14 +23,14 @@
         <el-divider />
       </div>
     </el-form-item>
-    <el-form-item label="devices">
-      <el-select v-model="driver.deviceIds" @visible-change="deviceSelectChange" clearable filterable multiple style="width: 100%">
-        <el-option v-for="device in devices" :label="device.id" :value="device.id" :key="device.id">
-          <span>{{ device.id }}</span>
+    <el-form-item label="mobiles">
+      <el-select v-model="driver.deviceIds" @visible-change="mobileSelectChange" clearable filterable multiple style="width: 100%">
+        <el-option v-for="mobile in mobiles" :label="mobile.id" :value="mobile.id" :key="mobile.id">
+          <span>{{ mobile.id }}</span>
           <el-divider direction="vertical" />
-          <span>{{ device.name }}</span>
+          <span>{{ mobile.name }}</span>
           <el-divider direction="vertical" />
-          <span>{{ device.systemVersion }}</span>
+          <span>{{ mobile.systemVersion }}</span>
         </el-option>
       </el-select>
     </el-form-item>
@@ -41,7 +41,7 @@
 </template>
 <script>
 import { addDriver, updateDriver, getDriverList } from '@/api/driver'
-import { getDeviceList } from '@/api/device'
+import { getMobileList } from '@/api/mobile'
 
 export default {
   props: {
@@ -68,9 +68,10 @@ export default {
             filePath: ''
           }
         ],
+        // todo mobileIds
         deviceIds: []
       },
-      devices: [],
+      mobiles: [],
       uploadUrl: process.env.VUE_APP_BASE_API + '/upload/file/4'
     }
   },
@@ -82,14 +83,14 @@ export default {
     }
   },
   methods: {
-    deviceSelectChange(type) {
+    mobileSelectChange(type) {
       if (type) {
-        this.fetDeviceList()
+        this.fetchMobileList()
       }
     },
-    fetDeviceList() {
-      getDeviceList({ platform: 1 }).then(response => {
-        this.devices = response.data
+    fetchMobileList() {
+      getMobileList({ platform: 1 }).then(response => {
+        this.mobiles = response.data
       })
     },
     onFileUploadSuccess(response, file, fileList, driverFile) {

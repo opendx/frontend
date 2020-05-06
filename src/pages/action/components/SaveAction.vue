@@ -305,11 +305,11 @@ export default {
 
       const platform = this.$store.state.project.platform
       if (platform === 1 || platform === 2) { // 移动端
-        if (!this.$store.state.device.show) {
-          this.$notify.error('先选择一台设备使用后才能调试')
+        if (!this.$store.state.mobile.show) {
+          this.$notify.error('先选择一个Mobile使用后才能调试')
           return
         }
-        if (!this.$store.state.device.appiumSessionId) {
+        if (!this.$store.state.mobile.driverSessionId) {
           this.$notify.error('appium正在初始化，请稍后')
           return
         }
@@ -348,9 +348,9 @@ export default {
         agentPort: this.$store.state.browser.agentPort,
         deviceId: this.$store.state.browser.id
       } : {
-        agentIp: this.$store.state.device.agentIp,
-        agentPort: this.$store.state.device.agentPort,
-        deviceId: this.$store.state.device.id
+        agentIp: this.$store.state.mobile.agentIp,
+        agentPort: this.$store.state.mobile.agentPort,
+        deviceId: this.$store.state.mobile.id
       }
 
       debugInfo.env = this.$store.state.project.env

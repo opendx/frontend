@@ -5,7 +5,7 @@ const state = {
   id: null,
   platform: null,
   systemVersion: null,
-  appiumSessionId: null
+  driverSessionId: null
 }
 
 const mutations = {
@@ -18,7 +18,7 @@ const mutations = {
       state.id = null
       state.platform = null
       state.systemVersion = null
-      state.appiumSessionId = null
+      state.driverSessionId = null
     }
   },
   SET_AGENT_IP(state, agentIp) {
@@ -36,8 +36,8 @@ const mutations = {
   SET_SYSTEM_VERSION(state, systemVersion) {
     state.systemVersion = systemVersion
   },
-  SET_APPIUM_SESSION_ID(state, appiumSessionId) {
-    state.appiumSessionId = appiumSessionId
+  SET_DRIVER_SESSION_ID(state, driverSessionId) {
+    state.driverSessionId = driverSessionId
   }
 }
 
@@ -60,8 +60,8 @@ const actions = {
   setSystemVersion({ commit }, systemVersion) {
     commit('SET_SYSTEM_VERSION', systemVersion)
   },
-  setAppiumSessionId({ commit }, appiumSessionId) {
-    commit('SET_APPIUM_SESSION_ID', appiumSessionId)
+  setDriverSessionId({ commit }, driverSessionId) {
+    commit('SET_DRIVER_SESSION_ID', driverSessionId)
   }
 }
 

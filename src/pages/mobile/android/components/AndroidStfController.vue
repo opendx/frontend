@@ -45,13 +45,13 @@ export default {
   },
   computed: {
     agentIp() {
-      return this.$store.state.device.agentIp
+      return this.$store.state.mobile.agentIp
     },
     agentPort() {
-      return this.$store.state.device.agentPort
+      return this.$store.state.mobile.agentPort
     },
-    deviceId() {
-      return this.$store.state.device.id
+    mobileId() {
+      return this.$store.state.mobile.id
     },
     username() {
       return this.$store.state.user.name
@@ -68,7 +68,7 @@ export default {
     const BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
     const URL = window.URL || window.webkitURL
 
-    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/stf/android/' + this.deviceId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
+    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/stf/android/' + this.mobileId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
     this.androidWebsocket.binaryType = 'blob'
     this.androidWebsocket.onclose = () => {
       this.showAlert = true
@@ -99,9 +99,9 @@ export default {
         }
       } else {
         console.log('androidWebsocket-onmessage', message.data)
-        if (message.data && message.data.indexOf('appiumSessionId') !== -1) {
+        if (message.data && message.data.indexOf('driverSessionId') !== -1) {
           this.loading = false
-          this.$store.dispatch('device/setAppiumSessionId', JSON.parse(message.data).appiumSessionId)
+          this.$store.dispatch('device/setDriverSessionId', JSON.parse(message.data).driverSessionId)
         }
       }
     }

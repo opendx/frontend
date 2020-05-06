@@ -43,13 +43,13 @@ export default {
   },
   computed: {
     agentIp() {
-      return this.$store.state.device.agentIp
+      return this.$store.state.mobile.agentIp
     },
     agentPort() {
-      return this.$store.state.device.agentPort
+      return this.$store.state.mobile.agentPort
     },
-    deviceId() {
-      return this.$store.state.device.id
+    mobileId() {
+      return this.$store.state.mobile.id
     },
     username() {
       return this.$store.state.user.name
@@ -67,7 +67,7 @@ export default {
     const URL = window.URL || window.webkitURL
 
     // iosWebsocket
-    this.iosWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/ios/' + this.deviceId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
+    this.iosWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/ios/' + this.mobileId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
     this.iosWebsocket.onclose = () => {
       this.showAlert = true
       this.loading = false
@@ -97,9 +97,9 @@ export default {
         }
       } else {
         console.log('iosWebsocket-onmessage', message.data)
-        if (message.data && message.data.indexOf('appiumSessionId') !== -1) {
+        if (message.data && message.data.indexOf('driverSessionId') !== -1) {
           this.loading = false
-          this.$store.dispatch('device/setAppiumSessionId', JSON.parse(message.data).appiumSessionId)
+          this.$store.dispatch('device/setDriverSessionId', JSON.parse(message.data).driverSessionId)
         }
       }
     }

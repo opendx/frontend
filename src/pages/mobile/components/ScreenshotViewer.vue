@@ -1,7 +1,7 @@
 <template>
   <span>
     <el-image-viewer v-if="show" :url-list="[imgUrl]" :on-close="closeImageViewer" />
-    <el-button :disabled="!$store.state.device.appiumSessionId" size="mini" icon="el-icon-full-screen" @click="showImageViewer" :loading="loading" />
+    <el-button :disabled="!$store.state.mobile.driverSessionId" size="mini" icon="el-icon-full-screen" @click="showImageViewer" :loading="loading" />
   </span>
 </template>
 <script>
@@ -18,19 +18,19 @@ export default {
   },
   computed: {
     agentIp() {
-      return this.$store.state.device.agentIp
+      return this.$store.state.mobile.agentIp
     },
     agentPort() {
-      return this.$store.state.device.agentPort
+      return this.$store.state.mobile.agentPort
     },
-    deviceId() {
-      return this.$store.state.device.id
+    mobileId() {
+      return this.$store.state.mobile.id
     }
   },
   methods: {
     showImageViewer() {
       this.loading = true
-      screenshot(this.agentIp, this.agentPort, this.deviceId).then(response => {
+      screenshot(this.agentIp, this.agentPort, this.mobileId).then(response => {
         this.imgUrl = response.data.imgUrl
         this.show = true
       }).finally(() => {
