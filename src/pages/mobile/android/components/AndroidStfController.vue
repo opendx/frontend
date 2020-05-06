@@ -101,7 +101,7 @@ export default {
         console.log('androidWebsocket-onmessage', message.data)
         if (message.data && message.data.indexOf('driverSessionId') !== -1) {
           this.loading = false
-          this.$store.dispatch('device/setDriverSessionId', JSON.parse(message.data).driverSessionId)
+          this.$store.dispatch('mobile/setDriverSessionId', JSON.parse(message.data).driverSessionId)
         }
       }
     }

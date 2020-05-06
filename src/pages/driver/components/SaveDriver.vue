@@ -89,6 +89,7 @@ export default {
       }
     },
     fetchMobileList() {
+      // platform: android
       getMobileList({ platform: 1 }).then(response => {
         this.mobiles = response.data
       })

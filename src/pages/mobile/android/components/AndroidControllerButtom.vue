@@ -39,7 +39,7 @@
         />
       </el-select>
       <el-divider />
-      <el-button slot="reference" size="mini" :disable="disable">...</el-button>
+      <el-button slot="reference" size="mini" :disabled="disable">...</el-button>
     </el-popover>
   </div>
 </template>
@@ -176,7 +176,7 @@ export default {
       this.androidWebsocket.send(JSON.stringify(this.power))
     },
     clickClose() {
-      this.$store.dispatch('device/setShow', false) // AppMain.vue在v-if销毁右侧控制组件
+      this.$store.dispatch('mobile/setShow', false) // AppMain.vue在v-if销毁右侧控制组件
     }
   }
 }

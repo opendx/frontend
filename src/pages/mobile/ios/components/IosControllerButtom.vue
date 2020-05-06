@@ -99,7 +99,7 @@ export default {
       this.iosWebsocket.send(JSON.stringify(this.home))
     },
     clickClose() {
-      this.$store.dispatch('device/setShow', false) // AppMain.vue在v-if销毁右侧控制组件
+      this.$store.dispatch('mobile/setShow', false) // AppMain.vue在v-if销毁右侧控制组件
     }
   }
 }

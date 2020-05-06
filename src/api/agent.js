@@ -4,7 +4,7 @@ export function screenshot(agentIp, agentPort, deviceId) {
   const request = service(agentIp, agentPort)
   return request({
     method: 'get',
-    url: '/mobile/' + deviceId + '/screenshot'
+    url: '/device/' + deviceId + '/screenshot'
   })
 }
 
@@ -12,49 +12,49 @@ export function dump(agentIp, agentPort, deviceId) {
   const request = service(agentIp, agentPort)
   return request({
     method: 'get',
-    url: '/mobile/' + deviceId + '/dump'
+    url: '/device/' + deviceId + '/dump'
   })
 }
 
-export function installApp(agentIp, agentPort, deviceId, data) {
+export function installApp(agentIp, agentPort, mobileId, data) {
   const request = service(agentIp, agentPort)
   return request({
     method: 'post',
     headers: { 'Content-Type': 'multipart/form-data' },
-    url: '/mobile/' + deviceId + '/installApp',
+    url: '/mobile/' + mobileId + '/installApp',
     data
   })
 }
 
-export function startAdbKit(agentIp, agentPort, deviceId) {
+export function startAdbKit(agentIp, agentPort, mobileId) {
   const request = service(agentIp, agentPort)
   return request({
     method: 'get',
-    url: '/android/' + deviceId + '/adbkit/start'
+    url: '/android/' + mobileId + '/adbkit/start'
   })
 }
 
-export function stopAdbKit(agentIp, agentPort, deviceId) {
+export function stopAdbKit(agentIp, agentPort, mobileId) {
   const request = service(agentIp, agentPort)
   return request({
     method: 'get',
-    url: '/android/' + deviceId + '/adbkit/stop'
+    url: '/android/' + mobileId + '/adbkit/stop'
   })
 }
 
-export function getImeList(agentIp, agentPort, deviceId) {
+export function getImeList(agentIp, agentPort, mobileId) {
   const request = service(agentIp, agentPort)
   return request({
     method: 'get',
-    url: '/android/' + deviceId + '/imeList'
+    url: '/android/' + mobileId + '/imeList'
   })
 }
 
-export function setIme(agentIp, agentPort, deviceId, ime) {
+export function setIme(agentIp, agentPort, mobileId, ime) {
   const request = service(agentIp, agentPort)
   return request({
     method: 'post',
-    url: '/android/' + deviceId + '/ime',
+    url: '/android/' + mobileId + '/ime',
     params: { ime }
   })
 }
