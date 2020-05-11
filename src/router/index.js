@@ -131,19 +131,6 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: '/agent',
-    component: Layout,
-    meta: { icon: 'node', roles: ['agent'] },
-    children: [
-      {
-        path: 'list',
-        component: () => import('@/pages/agent/list'),
-        name: 'AgentList',
-        meta: { title: 'Agent', noCache: true }
-      }
-    ]
-  },
-  {
     path: '/app',
     component: Layout,
     meta: { icon: 'app', roles: ['app'] },
@@ -458,6 +445,12 @@ export const asyncRoutes = [
     component: Layout,
     meta: { title: '系统管理', icon: 'setting', roles: ['admin'] },
     children: [
+      {
+        path: 'agent/list',
+        component: () => import('@/pages/agent/list'),
+        name: 'AgentList',
+        meta: { title: 'Agent', icon: 'node', noCache: true }
+      },
       {
         path: 'user/add',
         component: () => import('@/pages/user/add'),
