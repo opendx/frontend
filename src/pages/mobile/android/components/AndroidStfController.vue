@@ -1,19 +1,11 @@
 <template>
-  <div v-loading="loading" element-loading-text="正在初始化.... 请确保屏幕处于解锁显示状态" style="width: 100%">
-    <el-alert
-      v-if="showAlert"
-      style="position: fixed"
-      :closable="false"
-      title="远程连接已断开"
-      type="error"
-      show-icon
-    />
+  <div v-loading="loading" :element-loading-text="loadingText" style="width: 100%">
     <!--画布-->
     <div style="width: 100%; min-height: 200px">
       <canvas id="stfCanvas" style="width: 100%" />
     </div>
     <div style="margin-top: 2px" align="center">
-      <android-controller-buttom :android-websocket="androidWebsocket" />
+      <android-controller-buttom ref="controllerButtom" :android-websocket="androidWebsocket" @onClickClose="clickClose" />
     </div>
   </div>
 </template>
@@ -28,8 +20,9 @@ export default {
   data() {
     return {
       loading: false,
-      showAlert: false,
       androidWebsocket: null,
+      loadingText: '正在初始化...',
+      closeBoardByClickCloseBtn: false,
       touchDown: {
         operation: 'd',
         pressure: 50
@@ -71,12 +64,16 @@ export default {
     this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/stf/android/' + this.mobileId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
     this.androidWebsocket.binaryType = 'blob'
     this.androidWebsocket.onclose = () => {
-      this.showAlert = true
       this.loading = false
+      if (!this.closeBoardByClickCloseBtn) { // 点击关闭，不弹提示
+        this.alertOnWsClose()
+      }
+      this.$refs.controllerButtom.closeBoard()
     }
     this.androidWebsocket.onerror = () => {
-      this.showAlert = true
       this.loading = false
+      this.alertOnWsError()
+      this.$refs.controllerButtom.closeBoard()
     }
     this.androidWebsocket.onmessage = (message) => {
       if (message.data instanceof Blob) {
@@ -98,10 +95,14 @@ export default {
           url = null
         }
       } else {
-        console.log('androidWebsocket-onmessage', message.data)
-        if (message.data && message.data.indexOf('driverSessionId') !== -1) {
-          this.loading = false
-          this.$store.dispatch('mobile/setDriverSessionId', JSON.parse(message.data).driverSessionId)
+        console.log('ws-onmessage', message.data)
+        if (message.data) {
+          if (message.data.indexOf('driverSessionId') !== -1) {
+            this.loading = false
+            this.$store.dispatch('mobile/setDriverSessionId', JSON.parse(message.data).driverSessionId)
+          } else {
+            this.loadingText = message.data
+          }
         }
       }
     }
@@ -139,6 +140,21 @@ export default {
         this.touchMove.height = canvas.height
         this.androidWebsocket.send(JSON.stringify(this.touchMove))
       }
+    }
+  },
+  methods: {
+    alertOnWsClose() {
+      this.$alert('AndroidMobile连接已断开', '提示', {
+        confirmButtonText: '确定'
+      })
+    },
+    alertOnWsError() {
+      this.$alert('AndroidMobile连接错误', '提示', {
+        confirmButtonText: '确定'
+      })
+    },
+    clickClose() {
+      this.closeBoardByClickCloseBtn = true
     }
   }
 }

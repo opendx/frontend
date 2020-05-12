@@ -18,6 +18,11 @@
       <el-table-column label="Mobile/浏览器" align="center">
         <template scope="{ row }">
           <el-table :data="row.mobiles" border>
+            <el-table-column label="平台" align="center" show-overflow-tooltip>
+              <template scope="{ row }">
+                {{ row.platform === 1 ? 'Android' : 'iOS' }}
+              </template>
+            </el-table-column>
             <el-table-column label="Mobile id" prop="id" align="center" show-overflow-tooltip />
             <el-table-column label="name" prop="name" align="center" show-overflow-tooltip />
             <el-table-column label="系统版本" prop="systemVersion" align="center" show-overflow-tooltip />
@@ -29,8 +34,8 @@
           </el-table>
           <el-divider />
           <el-table :data="row.browsers" border>
-            <el-table-column label="浏览器id" prop="id" align="center" show-overflow-tooltip />
             <el-table-column label="类型" prop="type" align="center" show-overflow-tooltip />
+            <el-table-column label="浏览器id" prop="id" align="center" show-overflow-tooltip />
             <el-table-column label="版本号" prop="version" align="center" show-overflow-tooltip />
             <el-table-column label="状态" align="center" show-overflow-tooltip>
               <template scope="{ row }">

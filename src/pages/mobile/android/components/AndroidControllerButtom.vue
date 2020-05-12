@@ -176,6 +176,10 @@ export default {
       this.androidWebsocket.send(JSON.stringify(this.power))
     },
     clickClose() {
+      this.$emit('onClickClose')
+      this.closeBoard()
+    },
+    closeBoard() {
       this.$store.dispatch('mobile/setShow', false) // AppMain.vue在v-if销毁右侧控制组件
     }
   }

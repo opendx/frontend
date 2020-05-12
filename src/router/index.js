@@ -131,6 +131,19 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
+    path: '/browser',
+    component: Layout,
+    meta: { icon: 'browser', roles: ['browser'] },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/pages/browser/list'),
+        name: 'BrowserList',
+        meta: { title: '浏览器', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/app',
     component: Layout,
     meta: { icon: 'app', roles: ['app'] },

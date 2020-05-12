@@ -14,7 +14,7 @@
       <ios-controller v-else-if="screenType === 'ios'" />
     </div>
     <div v-if="showBrowser" style="width: 80px;height: calc(100% - 84px);position: absolute;top: 84px;right: 10px;overflow: auto;">
-      <browser-web-sokcet-board />
+      <browser-websocket-board />
     </div>
   </section>
 </template>
@@ -23,7 +23,7 @@
 import AndroidStfController from '@/pages/mobile/android/components/AndroidStfController'
 import AndroidScrcpyController from '@/pages/mobile/android/components/AndroidScrcpyController'
 import IosController from '@/pages/mobile/ios/components/IosController'
-import BrowserWebSokcetBoard from '@/pages/browser/BrowserWebSokcetBoard'
+import BrowserWebsocketBoard from '@/pages/browser/BrowserWebsocketBoard'
 
 export default {
   name: 'AppMain',
@@ -31,7 +31,7 @@ export default {
     AndroidStfController,
     AndroidScrcpyController,
     IosController,
-    BrowserWebSokcetBoard
+    BrowserWebsocketBoard
   },
   computed: {
     leftStyle() {
