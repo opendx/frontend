@@ -95,14 +95,25 @@
             <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="设备" :rules="[{required: true}]">
+        <el-form-item label="devices" :rules="[{required: true}]">
           <el-select v-model="saveTestPlanForm.deviceIds" @visible-change="deviceSelectChange" clearable filterable multiple style="width: 100%">
             <el-option v-for="device in onlineDevices" :label="device.id" :value="device.id" :key="device.id">
-              <span>{{ device.id }}</span>
-              <el-divider direction="vertical" />
-              <span>{{ device.name }}</span>
-              <el-divider direction="vertical" />
-              <span>{{ device.systemVersion }}</span>
+              <template v-if="platform === 3">
+                <span>{{ device.platform === 1 ? 'windows' : device.platform === 2 ? 'linux' : 'macos' }}</span>
+                <el-divider direction="vertical" />
+                <span>{{ device.type }}</span>
+                <el-divider direction="vertical" />
+                <span>{{ device.version }}</span>
+                <el-divider direction="vertical" />
+                <span>{{ device.id }}</span>
+              </template>
+              <template v-else>
+                <span>{{ device.id }}</span>
+                <el-divider direction="vertical" />
+                <span>{{ device.name }}</span>
+                <el-divider direction="vertical" />
+                <span>{{ device.systemVersion }}</span>
+              </template>
             </el-option>
           </el-select>
         </el-form-item>
@@ -121,13 +132,13 @@
         <el-form-item label="用例分发策略" :rules="[{required: true}]">
           <el-radio v-model="saveTestPlanForm.runMode" :label="1">
             兼容模式
-            <el-popover placement="top" trigger="hover" content="所有设备并行执行同一份用例">
+            <el-popover placement="top" trigger="hover" content="[并发执行]所选device执行同一份用例">
               <i class="el-icon-question" slot="reference" />
             </el-popover>
           </el-radio>
           <el-radio v-model="saveTestPlanForm.runMode" :label="2">
             高效模式
-            <el-popover placement="top" trigger="hover" content="用例平均分配给所有设备并行执行">
+            <el-popover placement="top" trigger="hover" content="[并发执行]用例平均分配给所选device执行">
               <i class="el-icon-question" slot="reference" />
             </el-popover>
           </el-radio>
@@ -144,6 +155,7 @@ import { getActionCascader } from '@/api/action'
 import { getTestSuiteList } from '@/api/testSuite'
 import { addTestPlan, updateTestPlan, getTestPlanList } from '@/api/testPlan'
 import { getOnlineMobiles } from '@/api/mobile'
+import { getOnlineBrowsers } from '@/api/browser'
 import { getEnvironmentList } from '@/api/environment'
 
 export default {
@@ -257,9 +269,15 @@ export default {
       }
     },
     fetchOnlineDevices() {
-      getOnlineMobiles(this.platform).then(response => {
-        this.onlineDevices = response.data
-      })
+      if (this.platform === 3) { // pc web
+        getOnlineBrowsers().then(response => {
+          this.onlineDevices = response.data
+        })
+      } else {
+        getOnlineMobiles(this.platform).then(response => { // mobile
+          this.onlineDevices = response.data
+        })
+      }
     }
   },
   created() {

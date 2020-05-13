@@ -41,7 +41,7 @@
       <el-tabs>
         <el-tab-pane v-for="deviceTestTask in deviceTestTaskList" :key="deviceTestTask.id">
           <span slot="label">
-            <i class="el-icon-mobile-phone" /> {{ deviceTestTask.deviceId }}
+            {{ deviceTestTask.deviceId }}
           </span>
           <test-case :data="deviceTestTask.testcases" />
         </el-tab-pane>

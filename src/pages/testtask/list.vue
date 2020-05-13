@@ -49,7 +49,7 @@
     <div>
       <pagination v-show="total>0" :total="total" :page.sync="queryTestTaskListForm.pageNum" :limit.sync="queryTestTaskListForm.pageSize" @pagination="fetchTestTaskList" />
     </div>
-    <!--设备测试任务-->
+    <!--device测试任务-->
     <el-drawer
       :with-header="false"
       :visible.sync="showDrawer"
@@ -77,7 +77,7 @@
               <el-button v-else @click="showCodemirror(row.errMsg)" type="text">error</el-button>
             </template>
           </el-table-column>
-          <el-table-column label="设备id" align="center" prop="deviceId" width="100" show-overflow-tooltip />
+          <el-table-column label="deviceId" align="center" prop="deviceId" width="100" show-overflow-tooltip />
           <el-table-column label="code" align="center" width="60">
             <template scope="{ row }">
               <el-button type="text" @click="showCodemirror(row.code)" v-if="row.code">查看</el-button>
