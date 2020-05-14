@@ -13,7 +13,7 @@
       <android-scrcpy-controller v-else-if="screenType === 'scrcpy'" />
       <ios-controller v-else-if="screenType === 'ios'" />
     </div>
-    <div v-if="showBrowser" style="width: 80px;height: calc(100% - 84px);position: absolute;top: 84px;right: 10px;overflow: auto;">
+    <div v-if="showBrowser" style="width: 100px;height: calc(100% - 84px);position: absolute;top: 84px;right: 10px;overflow: auto;">
       <browser-websocket-board />
     </div>
   </section>
@@ -39,7 +39,7 @@ export default {
       if (this.$store.state.mobile.show) {
         return 'width: calc(100% - 360px)'
       } else if (this.$store.state.browser.show) {
-        return 'width: calc(100% - 90px)'
+        return 'width: calc(100% - 110px)'
       } else {
         return ''
       }

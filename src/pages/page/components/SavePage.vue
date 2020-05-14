@@ -95,29 +95,47 @@
         </el-form>
 
         <el-row :gutter="10">
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form label-width="80px">
-              <el-form-item label="图片Path">
-                <el-input v-model="savePageForm.imgPath" clearable :disabled="isAdd" />
-              </el-form-item>
-              <el-form-item label="布局">
-                <el-input v-model="savePageForm.windowHierarchy" clearable :disabled="isAdd" />
-              </el-form-item>
-              <el-form-item label="设备id">
-                <el-input v-model="savePageForm.deviceId" clearable :disabled="isAdd" />
+              <el-form-item label="deviceId">
+                <el-input v-model="savePageForm.deviceId" clearable />
               </el-form-item>
             </el-form>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
+            <el-form label-width="100px">
+              <el-form-item label="图片Path">
+                <el-input v-model="savePageForm.imgPath" clearable />
+              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col :span="8">
+            <el-form label-width="100px">
+              <el-form-item label="布局">
+                <el-input v-model="savePageForm.windowHierarchy" clearable />
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" v-if="pageType !== 'Web'">
+          <el-col :span="8">
+            <el-form label-width="80px">
+              <el-form-item label="window宽">
+                <el-input v-model="savePageForm.windowWidth" clearable />
+              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col :span="8">
             <el-form label-width="100px">
               <el-form-item label="window高">
-                <el-input v-model="savePageForm.windowHeight" clearable :disabled="isAdd" />
+                <el-input v-model="savePageForm.windowHeight" clearable />
               </el-form-item>
-              <el-form-item label="window宽">
-                <el-input v-model="savePageForm.windowWidth" clearable :disabled="isAdd" />
-              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col :span="8">
+            <el-form label-width="100px">
               <el-form-item label="window方向">
-                <el-input v-model="savePageForm.windowOrientation" clearable :disabled="isAdd" />
+                <el-input v-model="savePageForm.windowOrientation" clearable />
               </el-form-item>
             </el-form>
           </el-col>
@@ -164,7 +182,8 @@ export default {
         elements: [],
         bys: []
       },
-      pageCategoryList: []
+      pageCategoryList: [],
+      added: false // 是否已添加成功
     }
   },
   computed: {
@@ -224,7 +243,7 @@ export default {
         }]
       }, {
         value: '@FindBy',
-        label: 'WebFindBy',
+        label: 'FindBy',
         children: [{
           value: 'id',
           label: 'id'
@@ -269,7 +288,7 @@ export default {
     bys() {
       const bys = [{
         value: 'MobileBy',
-        label: 'By',
+        label: 'MobileBy',
         children: [{
           value: 'id',
           label: 'id'
@@ -310,7 +329,43 @@ export default {
           value: 'tagName',
           label: 'tagName'
         }]
+      },
+      {
+        value: 'By',
+        label: 'By',
+        children: [{
+          value: 'id',
+          label: 'id'
+        }, {
+          value: 'name',
+          label: 'name'
+        }, {
+          value: 'className',
+          label: 'className'
+        }, {
+          value: 'css',
+          label: 'css'
+        }, {
+          value: 'tagName',
+          label: 'tagName'
+        }, {
+          value: 'linkText',
+          label: 'linkText'
+        }, {
+          value: 'partialLinkText',
+          label: 'partialLinkText'
+        }, {
+          value: 'xpath',
+          label: 'xpath'
+        }]
       }]
+
+      const pageType = this.savePageForm.type
+      if (pageType === 3) { // web
+        bys.splice(0, 1)
+      } else {
+        bys.splice(1, 1)
+      }
       return bys
     }
   },
@@ -331,22 +386,16 @@ export default {
     onCopy(e) {
       this.$notify.success(e.text + '复制成功')
     },
-    savePageSuccess(msg) {
-      this.$notify.success(msg)
-      if (this.isAdd) {
-        // 关闭当前tagview
-        this.$store.dispatch('tagsView/delView', this.$store.state.tagsView.visitedViews.filter(item => item.path === this.$route.path)[0])
-        this.$router.back()
-      }
-    },
     savePage() {
-      if (this.isAdd) {
+      if (this.isAdd && !this.added) {
         addPage(this.savePageForm).then(response => {
-          this.savePageSuccess(response.msg)
+          this.$notify.success(response.msg)
+          this.savePageForm = response.data
+          this.added = true
         })
       } else {
         updatePage(this.savePageForm).then(response => {
-          this.savePageSuccess(response.msg)
+          this.$notify.success(response.msg)
         })
       }
     },
