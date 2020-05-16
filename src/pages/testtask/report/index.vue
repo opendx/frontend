@@ -25,6 +25,7 @@
         <el-table-column label="跳过" prop="skipCaseCount" align="center" width="100" show-overflow-tooltip />
         <el-table-column label="通过率" prop="passPercent" align="center" width="100" show-overflow-tooltip/>
       </el-table>
+      <el-divider />
       <el-table :data="deviceTestTaskSummary" border style="margin-top: 10px">
         <el-table-column label="deviceId" prop="deviceId" align="center" show-overflow-tooltip />
         <el-table-column label="开始时间" prop="startTime" align="center" show-overflow-tooltip />

@@ -31,9 +31,9 @@
           </li>
         </ul>
       </el-col>
-      <!--WebView-->
-      <el-col v-if="isWeb" :span="18" style="height:650px; overflow: auto;">
-        <iframe :srcdoc="windowHierarchy" width="100%" height="645px"></iframe>
+      <!--Web-->
+      <el-col v-if="isWeb" :span="18" style="max-height:650px; overflow: auto;">
+        <pre v-text="htmlSource"></pre>
       </el-col>
     </el-row>
   </div>
@@ -44,6 +44,8 @@ import ElImageViewer from 'element-ui/packages/image/src/image-viewer'
 import _ from 'lodash'
 import { getXPath, getXPathLite, getAndroidUiautomator, getIOSNsPredicateString } from '@/utils/xpath'
 import clipboard from '@/directive/clipboard/index.js'
+
+import beautify from 'js-beautify/js/index'
 
 export default {
   components: {
@@ -93,6 +95,10 @@ export default {
     },
     isAndroid() {
       return this.pageType === 1
+    },
+    htmlSource() {
+      // 格式化html
+      return beautify.html(this.windowHierarchy, { indent_size: 2 })
     }
   },
   watch: {

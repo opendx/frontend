@@ -80,7 +80,6 @@ export default {
         mode: 'clike',
         theme: 'base16-dark',
         lineNumbers: true,
-        line: true,
         readOnly: true
       },
       testcase: {}

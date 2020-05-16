@@ -3,7 +3,7 @@
     <el-container>
       <el-header height="50px">
         <el-popover placement="right" trigger="click">
-          <mobile-inspector style="width: 1200px; height: 650px" canvas-id="page-canvas" :page-type="savePageForm.type" :window-info="windowInfo" :window-hierarchy="savePageForm.windowHierarchy" :tree-loading="false" />
+          <device-inspector style="width: 1200px; height: 650px" canvas-id="page-canvas" :page-type="savePageForm.type" :window-info="windowInfo" :window-hierarchy="savePageForm.windowHierarchy" :tree-loading="false" />
           <el-button icon="el-icon-search" slot="reference">{{ pageType + ' - Inspector' }}</el-button>
         </el-popover>
 
@@ -22,9 +22,12 @@
             <el-input v-model="savePageForm.description" type="textarea" :autosize="{ minRows: 1 }" clearable />
           </el-form-item>
           <el-form-item label="元素">
-            <el-button @click="addElement" style="margin-bottom: 5px">+</el-button>
             <el-table :data="savePageForm.elements" border>
-              <el-table-column align="center" label="WebElement">
+              <el-table-column align="center">
+                <template slot="header">
+                  <el-button @click="addElement" type="text" class="el-icon-circle-plus" />
+                  WebElement
+                </template>
                 <template scope="{ row }">
                   <el-input v-model.trim="row.name" clearable />
                 </template>
@@ -58,9 +61,12 @@
             </el-table>
           </el-form-item>
           <el-form-item label="By">
-            <el-button @click="addBy" style="margin-bottom: 5px">+</el-button>
             <el-table :data="savePageForm.bys" border>
-              <el-table-column align="center" label="By">
+              <el-table-column align="center">
+                <template slot="header">
+                  <el-button @click="addBy" type="text" class="el-icon-circle-plus" />
+                  By
+                </template>
                 <template scope="{ row }">
                   <el-input v-model.trim="row.name" clearable />
                 </template>
@@ -148,7 +154,7 @@
 
 import { addPage, updatePage, getPageList } from '@/api/page'
 import { getCategoryList } from '@/api/category'
-import MobileInspector from '@/pages/mobile/components/MobileInspector'
+import DeviceInspector from '@/pages/device/DeviceInspector'
 import clipboard from '@/directive/clipboard/index.js'
 import ImageInput from '@/components/ImageInput'
 
@@ -160,7 +166,7 @@ export default {
     isAdd: Boolean
   },
   components: {
-    MobileInspector,
+    DeviceInspector,
     ImageInput
   },
   data() {
@@ -377,7 +383,7 @@ export default {
       })
     } else {
       setTimeout(() => {
-        // 若这里不用异步 MobileInspector watch无法监听到windowHierarchy
+        // 若这里不用异步 DeviceInspector watch无法监听到windowHierarchy
         this.savePageForm = this.$route.params
       }, 100)
     }

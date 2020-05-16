@@ -104,6 +104,11 @@
 import { getActionCascader } from '@/api/action'
 import ActionDetail from './ActionDetail'
 import 'codemirror/mode/clike/clike.js'
+import 'codemirror/addon/fold/foldgutter.css'
+import 'codemirror/addon/fold/foldcode'
+import 'codemirror/addon/fold/foldgutter'
+import 'codemirror/addon/fold/brace-fold'
+import 'codemirror/addon/fold/comment-fold'
 import ImageInput from '@/components/ImageInput'
 export default {
   props: {
@@ -123,8 +128,10 @@ export default {
       cmOptions: {
         mode: 'text/x-java',
         theme: 'default',
+        tabSize: 2,
         lineNumbers: true,
-        line: true
+        foldGutter: true,
+        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers']
       },
       tableHeight: 100
     }

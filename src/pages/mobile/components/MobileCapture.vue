@@ -3,18 +3,18 @@
     <i class="el-icon-refresh" style="font-size: 20px;color: green;cursor: pointer" title="重新获取" @click="refresh" />
     <i class="el-icon-circle-plus" style="font-size: 20px;color: black;cursor: pointer" title="添加page" @click="addPage" />
     <!-- inspector -->
-    <mobile-inspector canvas-id="mobile-capture-canvas" :page-type="pageType" :window-info="windowInfo" :window-hierarchy="windowHierarchy" :tree-loading="treeLoading" />
+    <device-inspector canvas-id="mobile-capture-canvas" :page-type="pageType" :window-info="windowInfo" :window-hierarchy="windowHierarchy" :tree-loading="treeLoading" />
   </div>
 </template>
 
 <script>
 import { dump, screenshot } from '@/api/agent'
-import MobileInspector from './MobileInspector'
+import DeviceInspector from '@/pages/device/DeviceInspector'
 
 export default {
 
   components: {
-    MobileInspector
+    DeviceInspector
   },
   data() {
     return {

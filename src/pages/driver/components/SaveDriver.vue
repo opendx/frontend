@@ -68,7 +68,6 @@ export default {
             filePath: ''
           }
         ],
-        // todo mobileIds
         deviceIds: []
       },
       mobiles: [],
@@ -85,10 +84,10 @@ export default {
   methods: {
     mobileSelectChange(type) {
       if (type) {
-        this.fetchMobileList()
+        this.fetchAndroidMobileList()
       }
     },
-    fetchMobileList() {
+    fetchAndroidMobileList() {
       // platform: android
       getMobileList({ platform: 1 }).then(response => {
         this.mobiles = response.data

@@ -117,14 +117,14 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="定时任务" :rules="[{required: true}]">
+        <el-form-item label="定时执行" :rules="[{required: true}]">
           <el-switch v-model="saveTestPlanForm.enableSchedule" :active-value="1" :inactive-value="0" />
         </el-form-item>
         <el-form-item label="cron表达式">
           <el-input v-model="saveTestPlanForm.cronExpression" clearable />
         </el-form-item>
-        <el-form-item label="是否录制视频" :rules="[{required: true}]">
-          <el-switch v-model="saveTestPlanForm.enableRecordVideo" :active-value="1" :inactive-value="0" />
+        <el-form-item label="录制视频" :rules="[{required: true}]">
+          <el-switch :disabled="platform === 3" v-model="saveTestPlanForm.enableRecordVideo" :active-value="1" :inactive-value="0" />
         </el-form-item>
         <el-form-item label="失败重试次数" :rules="[{required: true}]">
           <el-input v-model="saveTestPlanForm.failRetryCount" clearable />
@@ -179,7 +179,7 @@ export default {
         runMode: 1,
         cronExpression: undefined,
         enableSchedule: 0,
-        enableRecordVideo: 1,
+        enableRecordVideo: 0,
         failRetryCount: 0
       },
       actions: [],

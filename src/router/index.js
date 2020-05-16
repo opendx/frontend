@@ -144,6 +144,19 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/mobile',
+    component: Layout,
+    meta: { icon: 'mobile', roles: ['mobile'] },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/pages/mobile/list'),
+        name: 'MobileList',
+        meta: { title: 'Mobile', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/app',
     component: Layout,
     meta: { icon: 'app', roles: ['app'] },
@@ -167,19 +180,6 @@ export const asyncRoutes = [
         component: () => import('@/pages/app/list'),
         name: 'AppList',
         meta: { title: 'App', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/mobile',
-    component: Layout,
-    meta: { icon: 'device', roles: ['mobile'] },
-    children: [
-      {
-        path: 'list',
-        component: () => import('@/pages/mobile/list'),
-        name: 'MobileList',
-        meta: { title: 'Mobile', noCache: true }
       }
     ]
   },

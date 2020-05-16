@@ -1,5 +1,9 @@
 <template>
   <div class="app-container">
+    <div style="margin-bottom: 10px">
+      <el-input v-model.trim="queryForm.agentIp" clearable style="width: 150px" placeholder="agentIp" />
+      <el-button @click="onQueryBtnClick" type="primary" class="el-icon-search" />
+    </div>
     <!--列表-->
     <div>
       <el-table :data="browserList" highlight-current-row border>
@@ -54,7 +58,8 @@ export default {
       total: 0,
       queryForm: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        agentIp: ''
       }
     }
   },

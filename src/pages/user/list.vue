@@ -14,12 +14,16 @@
         <el-table-column label="昵称" align="center" prop="nickName" show-overflow-tooltip />
         <el-table-column label="角色" align="center">
           <template scope="{ row }">
-            {{ row.roles.map(role => role.alias).join(' ') }}
+            <div v-for="role in row.roles" :key="role.id">
+              {{ role.alias }}
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="项目" align="center">
           <template scope="{ row }">
-            {{ row.projects.map(project => project.name).join(' ') }}
+            <div v-for="project in row.projects" :key="project.id">
+              {{ project.name }}
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="创建时间" align="center" prop="createTime" show-overflow-tooltip />

@@ -1,5 +1,11 @@
 <template>
   <div class="app-container">
+    <div style="margin-bottom: 10px">
+      <el-input v-model.trim="queryForm.agentIp" clearable style="width: 150px" placeholder="agentIp" />
+      <el-input v-model="queryForm.name" clearable style="width: 150px" placeholder="name" />
+      <el-input v-model.trim="queryForm.systemVersion" clearable style="width: 100px" placeholder="系统版本" />
+      <el-button @click="onQueryBtnClick" type="primary" class="el-icon-search" />
+    </div>
     <!--列表-->
     <div>
       <el-table :data="mobileList" highlight-current-row border>
@@ -62,7 +68,10 @@ export default {
       queryForm: {
         pageNum: 1,
         pageSize: 10,
-        platform: this.$store.state.project.platform
+        platform: this.$store.state.project.platform,
+        systemVersion: '',
+        agentIp: '',
+        name: ''
       }
     }
   },

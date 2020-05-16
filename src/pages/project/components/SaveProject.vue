@@ -10,7 +10,7 @@
         </el-radio>
       </el-radio-group>
     </el-form-item>
-    <el-form-item label="Capabilities">
+    <el-form-item label="Capabilities" v-if="project.platform !== 3">
       <codemirror v-model="project.capabilities" :options="cmOptions" />
     </el-form-item>
     <el-form-item label="描述">
@@ -41,10 +41,10 @@ export default {
         platform: null
       },
       cmOptions: {
-        mode: 'javascript',
+        mode: 'application/json',
         theme: 'base16-dark',
-        lineNumbers: true,
-        line: true
+        tabSize: 2,
+        lineNumbers: true
       }
     }
   },

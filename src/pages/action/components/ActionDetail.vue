@@ -30,8 +30,13 @@
 </template>
 
 <script>
-import 'codemirror/mode/javascript/javascript.js'
 import 'codemirror/theme/base16-dark.css'
+import 'codemirror/mode/javascript/javascript.js'
+import 'codemirror/addon/fold/foldgutter.css'
+import 'codemirror/addon/fold/foldcode'
+import 'codemirror/addon/fold/foldgutter'
+import 'codemirror/addon/fold/brace-fold'
+import 'codemirror/addon/fold/comment-fold'
 import clipboard from '@/directive/clipboard/index.js'
 export default {
   props: {
@@ -59,11 +64,12 @@ export default {
       innerDrawer: false,
       codemirrorContent: '',
       cmOptions: {
-        mode: 'javascript',
+        mode: 'application/json',
         theme: 'base16-dark',
         lineNumbers: true,
-        line: true,
-        readOnly: true
+        readOnly: true,
+        foldGutter: true,
+        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers']
       }
     }
   },

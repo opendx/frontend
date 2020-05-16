@@ -66,11 +66,27 @@ export default {
         return 'unknow platform'
       }
     },
+    routes() {
+      return this.$store.getters.permission_routes
+    },
+    platform() {
+      return this.$store.state.project.platform
+    },
     cachedViews() {
       return this.$store.state.tagsView.cachedViews
     },
     key() {
       return this.$route.fullPath
+    }
+  },
+  created() {
+    // 移除与项目冲突的路由
+    const toBeRemovedRoutePaths = this.platform === 1 ? ['/browser'] : this.platform === 2 ? ['/browser', '/driver'] : ['/app', '/mobile', '/driver']
+    for (let i = 0; i < this.routes.length; i++) {
+      if (toBeRemovedRoutePaths.includes(this.routes[i].path)) {
+        this.routes.splice(i, 1)
+        i = i - 1
+      }
     }
   }
 }
