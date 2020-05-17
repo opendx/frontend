@@ -107,7 +107,7 @@
                 </el-table-column>
                 <el-table-column label="步骤" align="center">
                   <template scope="{ row }">
-                    <el-table :data="row.steps" border>
+                    <el-table :data="row.steps" border max-height="150px">
                       <el-table-column label="#" prop="number" align="center" width="50" />
                       <el-table-column label="步骤名" prop="name" align="center" show-overflow-tooltip />
                       <el-table-column label="开始时间" prop="startTime" align="center" width="150" show-overflow-tooltip />
@@ -135,6 +135,11 @@ import { getDeviceTestTaskList, deleteDeviceTestTask } from '@/api/deviceTestTas
 import Pagination from '@/components/Pagination'
 import 'codemirror/mode/clike/clike.js'
 import 'codemirror/theme/base16-dark.css'
+import 'codemirror/addon/fold/foldgutter.css'
+import 'codemirror/addon/fold/foldcode'
+import 'codemirror/addon/fold/foldgutter'
+import 'codemirror/addon/fold/brace-fold'
+import 'codemirror/addon/fold/comment-fold'
 export default {
   components: {
     Pagination
@@ -154,10 +159,12 @@ export default {
       deviceTestTaskList: [],
       codemirrorContent: '',
       cmOptions: {
-        mode: 'clike',
+        mode: 'text/x-java',
         theme: 'base16-dark',
         lineNumbers: true,
-        readOnly: true
+        readOnly: true,
+        foldGutter: true,
+        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers']
       }
     }
   },

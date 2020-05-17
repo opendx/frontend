@@ -28,17 +28,17 @@
       :title="testcase.name"
       :visible.sync="showDrawer">
       <div style="padding: 5px">
-        <div>
-          <div v-if="testcase.videoUrl" style="width: 300px; float:left; margin-right: 5px">
+        <el-row>
+          <el-col v-if="testcase.videoUrl" :span="6">
             <video :src="testcase.videoUrl" width="100%" controls="controls">浏览器不支持video标签</video>
-          </div>
-          <div style="width: 950px; float:left">
+          </el-col>
+          <el-col :span="(testcase.videoUrl) ? 18 : 24">
             <el-table :data="testcase.steps" border max-height="500px">
               <el-table-column prop="number" label="步骤" align="center" width="100" />
-              <el-table-column prop="name" label="步骤名" align="center" min-width="100" show-overflow-tooltip />
+              <el-table-column prop="name" label="步骤名" align="center" show-overflow-tooltip />
               <el-table-column prop="startTime" label="开始时间" align="center" width="180" show-overflow-tooltip />
               <el-table-column prop="endTime" label="结束时间" align="center" width="180" show-overflow-tooltip />
-              <el-table-column label="耗时" align="center" show-overflow-tooltip>
+              <el-table-column label="耗时" align="center" width="180" show-overflow-tooltip>
                 <template scope="{ row }">
                   {{ row.endTime ? parseInt(new Date(row.endTime) - new Date(row.startTime)) / 1000 + '秒' : '-' }}
                 </template>
@@ -51,16 +51,16 @@
                 </template>
               </el-table-column>
             </el-table>
-          </div>
-        </div>
-        <div style="clear: both; margin-top: 5px">
-          <div v-if="testcase.failImgUrl" style="width: 300px; float: left; margin-right: 5px">
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col v-if="testcase.failImgUrl" :span="6">
             <el-image :src="testcase.failImgUrl" :preview-src-list="[testcase.failImgUrl]" width="100%" />
-          </div>
-          <div v-if="testcase.failInfo" style="width: 950px; float:left; font-size: 10px">
+          </el-col>
+          <el-col v-if="testcase.failInfo" :span="18">
             <codemirror v-model="testcase.failInfo" :options="cmOptions" />
-          </div>
-        </div>
+          </el-col>
+        </el-row>
       </div>
     </el-drawer>
   </div>
@@ -101,5 +101,6 @@ export default {
   }
   .CodeMirror {
     height: auto;
+    font-size: 10px;
   }
 </style>

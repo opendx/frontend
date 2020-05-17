@@ -8,6 +8,13 @@ export function addPage(data) {
   })
 }
 
+export function getPageById(pageId) {
+  return request({
+    method: 'get',
+    url: '/page/' + pageId
+  })
+}
+
 export function getPageList(params) {
   return request({
     method: 'post',

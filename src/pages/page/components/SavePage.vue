@@ -152,7 +152,7 @@
 </template>
 <script>
 
-import { addPage, updatePage, getPageList } from '@/api/page'
+import { addPage, updatePage, getPageById } from '@/api/page'
 import { getCategoryList } from '@/api/category'
 import DeviceInspector from '@/pages/device/DeviceInspector'
 import clipboard from '@/directive/clipboard/index.js'
@@ -378,8 +378,8 @@ export default {
   created() {
     this.fetchPageCategoryList() // 防止el-select只显示category id
     if (!this.isAdd) {
-      getPageList({ id: this.$route.params.pageId }).then(response => {
-        this.savePageForm = response.data[0]
+      getPageById(this.$route.params.pageId).then(response => {
+        this.savePageForm = response.data
       })
     } else {
       setTimeout(() => {
