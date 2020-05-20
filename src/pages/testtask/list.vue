@@ -1,5 +1,15 @@
 <template>
   <div class="app-container">
+    <div style="margin-bottom: 10px">
+      <el-select v-model="queryForm.testPlanId" filterable clearable placeholder="测试计划">
+        <el-option v-for="testPlan in testPlanList" :key="testPlan.id" :label="testPlan.name" :value="testPlan.id" />
+      </el-select>
+      <el-select v-model="queryForm.status" clearable placeholder="状态">
+        <el-option label="未完成" :value="0" />
+        <el-option label="已完成" :value="1" />
+      </el-select>
+      <el-button @click="onQueryBtnClick" type="primary" class="el-icon-search" />
+    </div>
     <div>
       <el-button @click="fetchTestTaskList" style="margin-bottom: 10px">刷新</el-button>
       <el-table :data="testTaskList" border fit>
@@ -39,17 +49,16 @@
             <el-button type="primary" @click="onDeviceTestTaskBtnClick(row)">查看进度</el-button>
             <!--未完成disable-->
             <el-button type="success" @click="goToReportPage(row)" :disabled="row.status !== 1">查看报告</el-button>
-            <!--已完成的不让删-->
-            <el-button type="danger" class="el-icon-delete" :disabled="row.status === 1" @click="deleteTestTask(row)" />
+            <el-button type="danger" class="el-icon-delete" @click="deleteTestTask(row)" />
           </template>
         </el-table-column>
       </el-table>
     </div>
     <!--分页-->
     <div>
-      <pagination v-show="total>0" :total="total" :page.sync="queryTestTaskListForm.pageNum" :limit.sync="queryTestTaskListForm.pageSize" @pagination="fetchTestTaskList" />
+      <pagination v-show="total>0" :total="total" :page.sync="queryForm.pageNum" :limit.sync="queryForm.pageSize" @pagination="fetchTestTaskList" />
     </div>
-    <!--device测试任务-->
+    <!--执行进度-->
     <el-drawer
       :with-header="false"
       :visible.sync="showDrawer"
@@ -67,8 +76,8 @@
         <el-table :data="deviceTestTaskList" border>
           <el-table-column label="操作" width="80" align="center">
             <template scope="{ row }">
-              <!-- status:-1出错不能执行 status:0未开始执行 -->
-              <el-button type="danger" size="mini" class="el-icon-delete" :disabled="!(row.status === 0 || row.status === -1)" @click="deleteDeviceTestTask(row)" />
+              <!-- status:1 执行中 -->
+              <el-button type="danger" size="mini" class="el-icon-delete" :disabled="row.status === 1" @click="deleteDeviceTestTask(row)" />
             </template>
           </el-table-column>
           <el-table-column label="执行进度" align="center" width="150">
@@ -132,6 +141,7 @@
 <script>
 import { getTestTaskList, deleteTestTask } from '@/api/testTask'
 import { getDeviceTestTaskList, deleteDeviceTestTask } from '@/api/deviceTestTask'
+import { getTestPlanList } from '@/api/testPlan'
 import Pagination from '@/components/Pagination'
 import 'codemirror/mode/clike/clike.js'
 import 'codemirror/theme/base16-dark.css'
@@ -149,13 +159,16 @@ export default {
       showDrawer: false,
       innerDrawer: false,
       testTaskList: [],
-      queryTestTaskListForm: {
+      queryForm: {
         pageNum: 1,
         pageSize: 10,
-        projectId: this.$store.state.project.id // 这里不能用computed里的projectId，会拿到undefined
+        projectId: this.$store.state.project.id, // 这里不能用computed里的projectId，会拿到undefined
+        status: undefined,
+        testPlanId: undefined
       },
       total: 0,
       testTaskIdInDrawer: undefined,
+      testPlanList: [],
       deviceTestTaskList: [],
       codemirrorContent: '',
       cmOptions: {
@@ -178,6 +191,10 @@ export default {
     }
   },
   methods: {
+    onQueryBtnClick() {
+      this.queryForm.pageNum = 1
+      this.fetchTestTaskList()
+    },
     showCodemirror(content) {
       this.codemirrorContent = content
       this.innerDrawer = true
@@ -185,13 +202,18 @@ export default {
     goToReportPage(testTask) {
       this.$router.push({ name: 'TestTaskReport', params: { testTaskId: testTask.id }})
     },
+    fetchTestPlanList() {
+      getTestPlanList({ projectId: this.queryForm.projectId }).then(response => {
+        this.testPlanList = response.data
+      })
+    },
     fetchDeviceTestTask(testTaskId) {
       getDeviceTestTaskList({ testTaskId: testTaskId }).then(response => {
         this.deviceTestTaskList = response.data
       })
     },
     fetchTestTaskList() {
-      getTestTaskList(this.queryTestTaskListForm).then(response => {
+      getTestTaskList(this.queryForm).then(response => {
         this.testTaskList = response.data.data
         this.total = response.data.total
       })
@@ -227,6 +249,7 @@ export default {
     }
   },
   created() {
+    this.fetchTestPlanList()
     this.fetchTestTaskList()
   }
 }
