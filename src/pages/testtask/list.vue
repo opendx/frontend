@@ -11,7 +11,6 @@
       <el-button @click="onQueryBtnClick" type="primary" class="el-icon-search" />
     </div>
     <div>
-      <el-button @click="fetchTestTaskList" style="margin-bottom: 10px">刷新</el-button>
       <el-table :data="testTaskList" border fit>
         <el-table-column label="提交时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
