@@ -91,13 +91,13 @@
               <el-button type="text" @click="showCodemirror(row.code)" v-if="row.code">查看</el-button>
             </template>
           </el-table-column>
-          <el-table-column label="开始时间" align="center" prop="startTime" width="150" show-overflow-tooltip />
-          <el-table-column label="结束时间" align="center" prop="endTime" width="150" show-overflow-tooltip />
+          <el-table-column label="开始时间" align="center" prop="startTime" width="150" show-overflow-tooltip sortable />
+          <el-table-column label="结束时间" align="center" prop="endTime" width="150" show-overflow-tooltip sortable />
           <el-table-column label="测试用例" align="center">
             <template scope="{ row }">
               <el-table :data="row.testcases" border max-height="400px">
                 <el-table-column label="用例名" align="center" prop="name" width="150" show-overflow-tooltip />
-                <el-table-column label="执行状态" align="center" width="100">
+                <el-table-column label="执行状态" align="center" width="120" prop="status" sortable>
                   <template scope="{ row }">
                     <div v-if="row.status === 0">
                       <el-tag type="danger">失败</el-tag>

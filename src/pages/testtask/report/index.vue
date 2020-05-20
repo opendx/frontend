@@ -26,14 +26,23 @@
         <el-table-column label="通过率" prop="passPercent" align="center" width="100" show-overflow-tooltip/>
       </el-table>
       <el-divider />
-      <el-table :data="deviceTestTaskSummary" border style="margin-top: 10px">
+      <el-table :data="deviceTestTaskSummary" border>
+        <el-table-column v-if="isWeb" prop="platform" label="操作系统" align="center" show-overflow-tooltip sortable>
+          <template scope="{ row }">
+            {{ row.platform === 1 ? 'windows' : row.platform === 2 ? 'linux' : 'macos'}}
+          </template>
+        </el-table-column>
         <el-table-column label="deviceId" prop="deviceId" align="center" show-overflow-tooltip />
-        <el-table-column label="开始时间" prop="startTime" align="center" show-overflow-tooltip />
-        <el-table-column label="结束时间" prop="endTime" align="center" show-overflow-tooltip />
-        <el-table-column label="执行用例数" prop="testcaseTotal" align="center" show-overflow-tooltip />
-        <el-table-column label="通过" prop="passTestcaseCount" align="center" show-overflow-tooltip />
-        <el-table-column label="失败" prop="failTestcaseCount" align="center" show-overflow-tooltip />
-        <el-table-column label="跳过" prop="skipTestcaseCount" align="center" show-overflow-tooltip />
+        <el-table-column v-if="isWeb" label="类型" prop="type" align="center" show-overflow-tooltip sortable />
+        <el-table-column v-if="isWeb" label="版本号" prop="version" align="center" show-overflow-tooltip sortable />
+        <el-table-column v-if="!isWeb" label="name" prop="name" align="center" show-overflow-tooltip sortable />
+        <el-table-column v-if="!isWeb" label="系统版本" prop="systemVersion" align="center" show-overflow-tooltip sortable />
+        <el-table-column label="开始时间" prop="startTime" align="center" show-overflow-tooltip sortable />
+        <el-table-column label="结束时间" prop="endTime" align="center" show-overflow-tooltip sortable />
+        <el-table-column label="执行用例数" prop="testcaseTotal" align="center" show-overflow-tooltip sortable />
+        <el-table-column label="通过" prop="passTestcaseCount" align="center" show-overflow-tooltip sortable />
+        <el-table-column label="失败" prop="failTestcaseCount" align="center" show-overflow-tooltip sortable />
+        <el-table-column label="跳过" prop="skipTestcaseCount" align="center" show-overflow-tooltip sortable />
       </el-table>
     </el-card>
 
@@ -56,11 +65,17 @@ import { getDeviceTestTaskList } from '@/api/deviceTestTask'
 import { getTestTaskSummary } from '@/api/testTask'
 import TestCase from './components/TestCase'
 import { platforms } from '@/utils/project'
+import _ from 'lodash'
 
 export default {
   name: 'TestTaskReport',
   components: {
     TestCase
+  },
+  computed: {
+    isWeb() {
+      return this.$store.state.project.platform === 3
+    }
   },
   data() {
     return {
@@ -79,15 +94,25 @@ export default {
       })
       this.deviceTestTaskList = deviceTestTasks
       this.deviceTestTaskSummary = deviceTestTasks.map(deviceTestTask => {
-        return {
+        const statusMap = _.groupBy(deviceTestTask.testcases, 'status')
+        const summaryItem = {
           deviceId: deviceTestTask.deviceId,
-          testcaseTotal: deviceTestTask.testcases.length,
           startTime: deviceTestTask.startTime,
           endTime: deviceTestTask.endTime,
-          passTestcaseCount: deviceTestTask.testcases.filter(tc => tc.status === 1).length,
-          failTestcaseCount: deviceTestTask.testcases.filter(tc => tc.status === 0).length,
-          skipTestcaseCount: deviceTestTask.testcases.filter(tc => tc.status === 2).length
+          testcaseTotal: deviceTestTask.testcases.length,
+          passTestcaseCount: statusMap[1] ? statusMap[1].length : 0,
+          failTestcaseCount: statusMap[0] ? statusMap[0].length : 0,
+          skipTestcaseCount: statusMap[2] ? statusMap[2].length : 0
         }
+        if (this.isWeb) {
+          summaryItem.type = deviceTestTask.device.type
+          summaryItem.version = deviceTestTask.device.version
+          summaryItem.platform = deviceTestTask.device.platform
+        } else {
+          summaryItem.name = deviceTestTask.device.name
+          summaryItem.systemVersion = deviceTestTask.device.systemVersion
+        }
+        return summaryItem
       })
     })
     getTestTaskSummary(this.testTaskId).then(response => {

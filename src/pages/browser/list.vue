@@ -7,7 +7,7 @@
     <!--列表-->
     <div>
       <el-table :data="browserList" highlight-current-row border>
-        <el-table-column label="平台" width="100" align="center">
+        <el-table-column label="操作系统" width="100" align="center">
           <template scope="{ row }">
             {{ row.platform === 1 ? 'windows' : row.platform === 2 ? 'linux' : 'macos' }}
           </template>

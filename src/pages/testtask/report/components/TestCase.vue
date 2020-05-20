@@ -1,16 +1,16 @@
 <template>
   <div>
     <el-table :data="data" border>
-      <el-table-column label="执行结果" align="center" width="80px">
+      <el-table-column label="执行结果" prop="status" align="center" width="120" sortable>
         <template scope="{ row }">
           <el-tag :type="row.status === 0 ? 'danger' : row.status === 1 ? 'success' : 'warning'" size="small">
             {{ row.status === 0 ? '失败' : row.status === 1 ? '成功' : '跳过' }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="测试用例" property="name" align="center" show-overflow-tooltip />
-      <el-table-column label="开始时间" property="startTime" align="center" show-overflow-tooltip />
-      <el-table-column label="结束时间" property="endTime" align="center" show-overflow-tooltip />
+      <el-table-column label="测试用例" prop="name" align="center" show-overflow-tooltip />
+      <el-table-column label="开始时间" prop="startTime" align="center" show-overflow-tooltip sortable />
+      <el-table-column label="结束时间" prop="endTime" align="center" show-overflow-tooltip sortable />
       <el-table-column label="耗时" align="center" show-overflow-tooltip>
         <template scope="{ row }">
           {{ parseInt(new Date(row.endTime) - new Date(row.startTime)) / 1000 + ' 秒' }}
