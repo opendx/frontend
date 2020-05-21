@@ -8,6 +8,14 @@ export function addGlobalVar(data) {
   })
 }
 
+export function addGlobalVars(data) {
+  return request({
+    method: 'post',
+    url: '/globalVar/addBatch',
+    data
+  })
+}
+
 export function updateGlobalVar(data) {
   return request({
     method: 'post',

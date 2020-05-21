@@ -1,15 +1,13 @@
 <template>
-  <div class="app-container">
-    <save-global-var :is-add="true" />
-  </div>
+  <add-global-vars />
 </template>
 
 <script>
-import SaveGlobalVar from './components/SaveGlobalVar'
+import AddGlobalVars from './components/AddGlobalVars'
 export default {
   name: 'AddGlobalVar',
   components: {
-    SaveGlobalVar
+    AddGlobalVars
   }
 }
 </script>

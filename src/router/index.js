@@ -82,7 +82,7 @@ export const constantRoutes = [
         meta: { title: '仪表板', icon: 'dashboard', affix: true }
       }
     ]
-  },
+  }
   // {
   //   path: '/documentation',
   //   component: Layout,
@@ -240,7 +240,7 @@ export const asyncRoutes = [
   {
     path: '/globalVar',
     component: Layout,
-    meta: { icon: 'globalvar' ,roles: ['globalVar'] },
+    meta: { icon: 'globalvar', roles: ['globalVar'] },
     children: [
       {
         path: 'add',
@@ -267,7 +267,7 @@ export const asyncRoutes = [
   {
     path: '/page',
     component: Layout,
-    meta: { icon: 'page' ,roles: ['page'] },
+    meta: { icon: 'page', roles: ['page'] },
     children: [
       {
         path: 'add',
