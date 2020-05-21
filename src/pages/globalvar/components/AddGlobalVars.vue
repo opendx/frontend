@@ -38,7 +38,7 @@
                 <template scope="scope">
                   <el-button-group>
                     <el-button @click="addEnvironmentValue(row, scope.$index)">+</el-button>
-                    <el-button @click="delEnvironmentValue(row ,scope.$index)" :disabled="scope.$index === 0">-</el-button>
+                    <el-button @click="delEnvironmentValue(row, scope.$index)" :disabled="scope.$index === 0">-</el-button>
                   </el-button-group>
                 </template>
               </el-table-column>
