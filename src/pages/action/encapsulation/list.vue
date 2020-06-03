@@ -5,9 +5,12 @@
       <el-button @click="$router.push({ name: 'AddEncapsulationAction' })">添加Action</el-button>
     </div>
     <div>
-      <el-input v-model="queryActionListForm.name" style="width: 200px" placeholder="action名" clearable />
+      <el-input v-model="queryForm.name" style="width: 200px" placeholder="action名" clearable />
+      <el-select v-model="queryForm.state" clearable placeholder="状态">
+        <el-option v-for="state in stateList" :key="state.state" :label="state.name" :value="state.state" />
+      </el-select>
       <el-cascader
-        v-model="queryActionListForm.pageId"
+        v-model="queryForm.pageId"
         :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, expandTrigger: 'hover' }"
         :options="pageList"
         filterable
@@ -57,7 +60,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="queryActionListForm.pageNum" :limit.sync="queryActionListForm.pageSize" @pagination="fetchActionList" />
+    <pagination v-show="total>0" :total="total" :page.sync="queryForm.pageNum" :limit.sync="queryForm.pageSize" @pagination="fetchActionList" />
   </div>
 </template>
 
@@ -81,13 +84,14 @@ export default {
       }],
       actionList: [],
       total: 0,
-      queryActionListForm: {
+      queryForm: {
         pageNum: 1,
         pageSize: 10,
         type: 2,
         projectId: this.$store.state.project.id,
         pageId: undefined,
-        name: ''
+        name: '',
+        state: undefined
       },
       stateList: [
         {
@@ -132,7 +136,7 @@ export default {
       })
     },
     onQueryBtnClick() {
-      this.queryActionListForm.pageNum = 1
+      this.queryForm.pageNum = 1
       this.fetchActionList()
     },
     fetchCategoryList() {
@@ -144,7 +148,7 @@ export default {
       })
     },
     async fetchActionList() {
-      const { data } = await getActionList(this.queryActionListForm)
+      const { data } = await getActionList(this.queryForm)
       this.actionList = data.data
       this.total = data.total
     },
@@ -154,8 +158,8 @@ export default {
     },
     onTabClick(tab) {
       const activedCategory = this.categoryList.filter(category => category.name === tab.label)[0]
-      this.queryActionListForm.categoryId = activedCategory.id
-      this.queryActionListForm.pageNum = 1
+      this.queryForm.categoryId = activedCategory.id
+      this.queryForm.pageNum = 1
       this.fetchActionList()
     },
     deleteCategory(name) {
@@ -170,8 +174,8 @@ export default {
           // 移除tab，切换到全部，重新请求全部数据
           this.categoryList.splice(this.categoryList.indexOf(category), 1)
           this.selectedCategoryName = '全部'
-          this.queryActionListForm.categoryId = undefined
-          this.queryActionListForm.pageNum = 1
+          this.queryForm.categoryId = undefined
+          this.queryForm.pageNum = 1
           this.fetchActionList()
         })
       })
