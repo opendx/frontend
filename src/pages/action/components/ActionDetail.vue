@@ -85,7 +85,7 @@ export default {
     copyJavaInvoke(action) {
       let params = ''
       if (action.params && action.params.length > 0) {
-        params = action.params.map(p => p.type + ' ' + p.name).join(',')
+        params = action.params.map(p => p.type + ' ' + p.name).join(', ')
       }
 
       let methodName = ''

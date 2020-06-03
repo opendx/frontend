@@ -35,6 +35,8 @@
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
               <el-divider v-if="data.returnValue" direction="vertical" />
               <span>{{ data.name }}</span>
+              <el-divider v-if="data.params && data.params.length > 0" direction="vertical" />
+              <span v-if="data.params  && data.params.length > 0">{{ params(data) }}</span>
             </template>
           </el-cascader>
         </template>
@@ -174,6 +176,11 @@ export default {
         } else {
           return action.returnValue
         }
+      }
+    },
+    params() {
+      return function(action) {
+        return '(' + action.params.map(p => p.type + ' ' + p.name).join(', ') + ')'
       }
     },
     projectId() {
