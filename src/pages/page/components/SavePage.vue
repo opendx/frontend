@@ -6,12 +6,11 @@
         <el-button icon="el-icon-search" slot="reference">{{ pageType + ' - Inspector' }}</el-button>
       </el-popover>
 
-      <el-button @click="$router.push({ name: 'AddPageCategory' })">添加分类</el-button>
       <el-select v-model="savePageForm.categoryId" clearable filterable @visible-change="pageCategorySelectChange" placeholder="选择分类">
         <el-option v-for="category in pageCategoryList" :key="category.id" :value="category.id" :label="category.name" />
       </el-select>
 
-      <span style="margin-left: 10px" class="required"/><el-input v-model="savePageForm.name" clearable style="width: 200px" placeholder="page名" />
+      <span class="required" /><el-input v-model="savePageForm.name" clearable style="width: 200px" placeholder="page名" />
       <el-button type="primary" @click="savePage">保 存</el-button>
     </el-header>
 
@@ -37,6 +36,7 @@
                   v-model="row.findBy"
                   :options="findBys"
                   style="width: 100%"
+                  filterable
                   :props="{ expandTrigger: 'hover' }"
                 />
               </template>
@@ -76,6 +76,7 @@
                   v-model="row.findBy"
                   :options="bys"
                   style="width: 100%"
+                  filterable
                   :props="{ expandTrigger: 'hover' }" />
               </template>
             </el-table-column>

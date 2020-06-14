@@ -1,7 +1,6 @@
 <template>
   <el-container style="height: 100%">
     <el-header height="50px">
-      <el-button @click="$router.push({ name: 'AddGlobalVarCategory' })">添加分类</el-button>
       <el-select v-model="selectedCategoryId" @visible-change="categorySelectChange" clearable filterable placeholder="选择分类">
         <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
       </el-select>
@@ -9,17 +8,26 @@
     </el-header>
     <el-main>
       <el-table :data="globalVars" border>
-        <el-table-column label="变量类型" align="center" width="150">
+        <el-table-column align="center" width="150">
+          <template slot="header">
+            <span class="required">变量类型</span>
+          </template>
           <template scope="{ row }">
             <el-input v-model.trim="row.type" clearable />
           </template>
         </el-table-column>
-        <el-table-column label="变量名" align="center" width="200">
+        <el-table-column align="center" width="200">
+          <template slot="header">
+            <span class="required">变量名</span>
+          </template>
           <template scope="{ row }">
             <el-input v-model.trim="row.name" clearable />
           </template>
         </el-table-column>
-        <el-table-column label="变量值" align="center">
+        <el-table-column align="center">
+          <template slot="header">
+            <span class="required">变量值</span>
+          </template>
           <template scope="{ row }">
             <el-table :data="row.environmentValues" border>
               <el-table-column align="center" label="环境" width="150">

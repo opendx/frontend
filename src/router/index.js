@@ -292,40 +292,6 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: '/category',
-    component: Layout,
-    children: [
-      {
-        path: 'page/add',
-        component: () => import('@/pages/category/addPageCategory'),
-        name: 'AddPageCategory',
-        meta: { title: '添加Page分类', noCache: false },
-        hidden: true
-      },
-      {
-        path: 'action/add',
-        component: () => import('@/pages/category/addActionCategory'),
-        name: 'AddActionCategory',
-        meta: { title: '添加Action分类', noCache: false },
-        hidden: true
-      },
-      {
-        path: 'globalVar/add',
-        component: () => import('@/pages/category/addGlobalVarCategory'),
-        name: 'AddGlobalVarCategory',
-        meta: { title: '添加全局变量分类', noCache: false },
-        hidden: true
-      },
-      {
-        path: 'testcase/add',
-        component: () => import('@/pages/category/addTestcaseCategory'),
-        name: 'AddTestcaseCategory',
-        meta: { title: '添加测试用例分类', noCache: false },
-        hidden: true
-      }
-    ]
-  },
-  {
     path: '/action/encapsulation',
     component: Layout,
     meta: { icon: 'module', roles: ['action'] },

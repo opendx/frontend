@@ -4,7 +4,6 @@
       <el-select v-model="globalVar.categoryId" @visible-change="categorySelectChange" clearable filterable placeholder="选择分类">
         <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
       </el-select>
-      <el-button @click="$router.push({ name: 'AddGlobalVarCategory' })">+</el-button>
     </el-form-item>
     <el-form-item label="变量类型" :rules="[{required: true}]">
       <el-input v-model.trim="globalVar.type" clearable style="width: 300px" />

@@ -25,22 +25,14 @@
                 <el-row>
                   <el-col :span="12">
                     <el-form-item label="所属分类">
-                      <el-select v-model="saveActionForm.categoryId" @visible-change="actionCategorySelectChange" clearable filterable style="width: 80%" placeholder="选择分类">
+                      <el-select v-model="saveActionForm.categoryId" @visible-change="actionCategorySelectChange" clearable filterable style="width: 100%" placeholder="选择分类">
                         <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
                       </el-select>
-                      <el-button @click="addCategory">+</el-button>
                     </el-form-item>
                     <el-form-item label="所属Page" v-if="!isTestCase">
-                      <el-cascader
-                        v-model="saveActionForm.pageId"
-                        :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, expandTrigger: 'hover' }"
-                        :options="pages"
-                        filterable
-                        clearable
-                        style="width: 100%"
-                        @visible-change="pageSelectChange"
-                        placeholder="选择page">
-                      </el-cascader>
+                      <el-select v-model="saveActionForm.pageId" @visible-change="pageSelectChange" clearable filterable style="width: 100%" placeholder="选择page">
+                        <el-option v-for="page in pageList" :key="page.id" :value="page.id" :label="page.name" />
+                      </el-select>
                     </el-form-item>
                     <el-form-item label="依赖用例" v-if="isTestCase">
                       <el-cascader
@@ -109,7 +101,7 @@ import ActionParamList from '../components/ActionParamList'
 import ActionLocalVarList from '../components/ActionLocalVarList'
 import ActionStepList from '../components/ActionStepList'
 import DebugActionCode from '../components/DebugActionCode'
-import { getPageCascader } from '@/api/page'
+import { getPageList } from '@/api/page'
 import { getCategoryList } from '@/api/category'
 import { addAction, updateAction, getActionList, debugAction } from '@/api/action'
 import { getEnvironmentList } from '@/api/environment'
@@ -119,7 +111,7 @@ export default {
     ActionParamList,
     ActionLocalVarList,
     ActionStepList,
-    DebugActionCode,
+    DebugActionCode
   },
   props: {
     isAdd: Boolean,
@@ -166,7 +158,7 @@ export default {
         depends: undefined
       },
       categories: [],
-      pages: [],
+      pageList: [],
       debugBtnLoading: false,
       // 开始时的表单数据，用于校验表单数据是否有变化
       startSaveActionFormString: '',
@@ -204,7 +196,7 @@ export default {
     this.fetchEnvironmentList()
     this.fetchActionCategoryList()
     if (!this.isTestCase) {
-      this.fetchPageCascader()
+      this.fetchPageList()
     }
     if (this.isAdd) {
       // 复制，传递过来的数据
@@ -253,12 +245,12 @@ export default {
     },
     pageSelectChange(type) {
       if (type) {
-        this.fetchPageCascader()
+        this.fetchPageList()
       }
     },
-    fetchPageCascader() {
-      getPageCascader(this.saveActionForm.projectId).then(response => {
-        this.pages = response.data
+    fetchPageList() {
+      getPageList({ projectId: this.saveActionForm.projectId }).then(response => {
+        this.pageList = response.data
       })
     },
     actionCategorySelectChange(type) {
@@ -399,13 +391,6 @@ export default {
     selectedEnv(envId) {
       const selectedEnv = this.environmentList.filter(env => env.id === envId)[0]
       this.$store.dispatch('project/setEnv', selectedEnv.id)
-    },
-    addCategory() {
-      if (this.isTestCase) {
-        this.$router.push({ name: 'AddTestcaseCategory' })
-      } else {
-        this.$router.push({ name: 'AddActionCategory' })
-      }
     }
   }
 }
