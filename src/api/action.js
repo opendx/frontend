@@ -31,13 +31,14 @@ export function deleteAction(actionId) {
   })
 }
 
-export function getActionCascader(projectId, platform) {
+export function getActionCascader(projectId, platform, type) {
   return request({
     method: 'get',
     url: '/action/cascader',
     params: {
       projectId: projectId,
-      platform: platform
+      platform: platform,
+      type: type
     }
   })
 }

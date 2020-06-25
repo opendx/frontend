@@ -2,8 +2,7 @@
   <div class="app-container">
     <div style="margin-bottom: 10px">
       <el-button @click="$router.push({ name: 'AddEncapsulationAction' })">添加Action</el-button>
-    </div>
-    <div style="margin-bottom: 10px">
+
       <el-input v-model="queryForm.name" style="width: 200px" placeholder="action名" clearable />
       <el-select v-model="queryForm.pageId" filterable clearable placeholder="选择page">
         <el-option v-for="page in pageList" :key="page.id" :value="page.id" :label="page.name" />

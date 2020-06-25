@@ -91,7 +91,7 @@
     </div>
 
     <div style="margin-top: 5px">
-      <action-step-list ref="stepList" :cur-action-id="saveActionForm.id" @selectableActionsChange="onSelectableActionsChange" />
+      <action-step-list ref="stepList" @selectableActionsChange="onSelectableActionsChange" />
     </div>
   </div>
 </template>
@@ -259,10 +259,7 @@ export default {
       }
     },
     fetchActionCategoryList() {
-      let type = 2
-      if (this.isTestCase) {
-        type = 4
-      }
+      const type = this.isTestCase ? 4 : 2
       getCategoryList({ projectId: this.saveActionForm.projectId, type: type }).then(response => {
         this.categories = response.data
       })

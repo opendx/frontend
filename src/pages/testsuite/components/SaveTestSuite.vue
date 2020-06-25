@@ -15,7 +15,7 @@
         node-key="id"
         :default-checked-keys="testSuite.testcases"
         ref="tree"
-        highlight-current>
+      >
       </el-tree>
     </el-form-item>
 
@@ -69,9 +69,9 @@ export default {
   },
   methods: {
     fetchActionCascader() {
-      getActionCascader(this.projectId, this.platform).then(resp => {
-        const testcases = resp.data.filter(a => a.name === '测试用例')
-        this.treeData = testcases
+      // 3: 测试用例
+      getActionCascader(this.projectId, this.platform, 3).then(resp => {
+        this.treeData = resp.data
       })
     },
     saveTestSuite() {

@@ -2,9 +2,7 @@
   <div class="app-container">
     <div style="margin-bottom: 10px">
       <el-button @click="$router.push({ name: 'AddTestcaseAction' })">添加测试用例</el-button>
-    </div>
 
-    <div style="margin-bottom: 10px">
       <el-input v-model="queryForm.name" style="width: 200px" placeholder="测试用例名" clearable />
       <el-select v-model="queryForm.state" clearable placeholder="状态" style="width: 100px">
         <el-option v-for="state in stateList" :key="state.state" :label="state.name" :value="state.state" />

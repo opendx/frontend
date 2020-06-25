@@ -16,7 +16,7 @@
             filterable
             clearable
             style="width: 60%"
-            @visible-change="actionSelectChange">
+            >
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
               <el-divider v-if="data.returnValue" direction="vertical" />
@@ -33,7 +33,7 @@
             filterable
             clearable
             style="width: 60%"
-            @visible-change="actionSelectChange">
+            >
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
               <el-divider v-if="data.returnValue" direction="vertical" />
@@ -50,7 +50,7 @@
             filterable
             clearable
             style="width: 60%"
-            @visible-change="actionSelectChange">
+            >
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
               <el-divider v-if="data.returnValue" direction="vertical" />
@@ -67,7 +67,7 @@
             filterable
             clearable
             style="width: 60%"
-            @visible-change="actionSelectChange">
+            >
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
               <el-divider v-if="data.returnValue" direction="vertical" />
@@ -226,11 +226,6 @@ export default {
         updateTestPlan(this.saveTestPlanForm).then(response => {
           this.saveTestPlanSuccess(response.msg)
         })
-      }
-    },
-    actionSelectChange(type) {
-      if (type) {
-        this.fetchActionCascader()
       }
     },
     fetchActionCascader() {

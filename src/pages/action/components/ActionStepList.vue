@@ -35,8 +35,6 @@
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
               <el-divider v-if="data.returnValue" direction="vertical" />
               <span>{{ data.name }}</span>
-              <el-divider v-if="data.params && data.params.length > 0" direction="vertical" />
-              <span v-if="data.params  && data.params.length > 0">{{ params(data) }}</span>
             </template>
           </el-cascader>
         </template>
@@ -113,10 +111,6 @@ import 'codemirror/addon/fold/brace-fold'
 import 'codemirror/addon/fold/comment-fold'
 import ImageInput from '@/components/ImageInput'
 export default {
-  props: {
-    // 当前编辑的actionId
-    curActionId: Number
-  },
   components: {
     ActionDetail,
     ImageInput
@@ -176,11 +170,6 @@ export default {
         } else {
           return action.returnValue
         }
-      }
-    },
-    params() {
-      return function(action) {
-        return '(' + action.params.map(p => p.type + ' ' + p.name).join(', ') + ')'
       }
     },
     projectId() {
@@ -258,9 +247,6 @@ export default {
     fetchActionCascader() {
       getActionCascader(this.projectId, this.platform).then(resp => {
         this.selectableActions = resp.data
-        if (this.curActionId) { // 编辑action时，第一次拿不到curActionId
-          this.disableCurActionInSelectableActions(this.curActionId)
-        }
         this.$emit('selectableActionsChange', this.selectableActions)
       })
     },
@@ -302,22 +288,6 @@ export default {
           }
         }
       }
-    },
-    disableAction(actions, actionId) {
-      for (let i = 0; i < actions.length; i++) {
-        if (actions[i].children) {
-          this.disableAction(actions[i].children, actionId)
-        } else {
-          if (actions[i].id === actionId) {
-            console.log('disable action', actions[i].id)
-            actions[i].disabled = true
-          }
-        }
-      }
-    },
-    // 禁用当前编辑的action
-    disableCurActionInSelectableActions(actionId) {
-      this.disableAction(this.selectableActions, actionId)
     }
   }
 }
