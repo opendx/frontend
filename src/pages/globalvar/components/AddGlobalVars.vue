@@ -97,12 +97,7 @@ export default {
         categoryId: undefined,
         projectId: undefined
       }],
-      environmentList: [
-        {
-          id: -1,
-          name: '默认'
-        }
-      ],
+      environmentList: [],
       categories: []
     }
   },
@@ -184,10 +179,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-  .el-header {
-    background-color: #B3C0D1;
-    color: #333;
-    line-height: 50px;
-  }
-</style>

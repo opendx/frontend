@@ -64,7 +64,7 @@
 import { getDeviceTestTaskList } from '@/api/deviceTestTask'
 import { getTestTaskSummary } from '@/api/testTask'
 import TestCase from './components/TestCase'
-import { platforms } from '@/utils/project'
+import { platforms } from '@/utils/common'
 import _ from 'lodash'
 
 export default {

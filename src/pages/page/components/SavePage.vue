@@ -23,7 +23,7 @@
           <el-table :data="savePageForm.elements" border>
             <el-table-column align="center">
               <template slot="header">
-                <el-button @click="addElement" type="text" class="el-icon-circle-plus" />
+                <el-button @click="addElement(savePageForm.elements.length)" type="text" class="el-icon-circle-plus" />
                 WebElement
               </template>
               <template scope="{ row }">
@@ -48,13 +48,16 @@
             </el-table-column>
             <el-table-column align="center" label="描述">
               <template scope="{ row }">
-                <el-input v-model="row.description" type="textarea" />
+                <el-input v-model="row.description" type="textarea" :autosize="{ minRows: 1 }" />
               </template>
             </el-table-column>
             <el-table-column align="center" label="操作" width="150">
               <template scope="scope">
-                <el-button v-clipboard:copy="savePageForm.name + '_' + scope.row.name" v-clipboard:success="onCopy">引用</el-button>
-                <el-button @click="delElement(scope.$index)">删除</el-button>
+                <el-button-group>
+                  <el-button size="mini" v-clipboard:copy="savePageForm.name + '_' + scope.row.name" v-clipboard:success="onCopySuccess">引用</el-button>
+                  <el-button size="mini" @click="addElement(scope.$index)">+</el-button>
+                  <el-button size="mini" @click="delElement(scope.$index)">-</el-button>
+                </el-button-group>
               </template>
             </el-table-column>
           </el-table>
@@ -63,7 +66,7 @@
           <el-table :data="savePageForm.bys" border>
             <el-table-column align="center">
               <template slot="header">
-                <el-button @click="addBy" type="text" class="el-icon-circle-plus" />
+                <el-button @click="addBy(savePageForm.bys.length)" type="text" class="el-icon-circle-plus" />
                 By
               </template>
               <template scope="{ row }">
@@ -87,13 +90,16 @@
             </el-table-column>
             <el-table-column align="center" label="描述">
               <template scope="{ row }">
-                <el-input v-model="row.description" type="textarea" />
+                <el-input v-model="row.description" type="textarea" :autosize="{ minRows: 1 }" />
               </template>
             </el-table-column>
             <el-table-column align="center" label="操作" width="150">
               <template scope="scope">
-                <el-button v-clipboard:copy="savePageForm.name + '_' + scope.row.name" v-clipboard:success="onCopy">引用</el-button>
-                <el-button @click="delBy(scope.$index)">删除</el-button>
+                <el-button-group>
+                  <el-button size="mini" v-clipboard:copy="savePageForm.name + '_' + scope.row.name" v-clipboard:success="onCopySuccess">引用</el-button>
+                  <el-button size="mini" @click="addBy(scope.$index)">+</el-button>
+                  <el-button size="mini" @click="delBy(scope.$index)">-</el-button>
+                </el-button-group>
               </template>
             </el-table-column>
           </el-table>
@@ -381,15 +387,14 @@ export default {
         this.savePageForm = response.data
       })
     } else {
-      setTimeout(() => {
-        // 若这里不用异步 DeviceInspector watch无法监听到windowHierarchy
+      this.$nextTick(() => {
         this.savePageForm = this.$route.params
-      }, 100)
+      })
     }
   },
   methods: {
-    onCopy(e) {
-      this.$notify.success(e.text + '复制成功')
+    onCopySuccess(e) {
+      this.$notify.success('引用已添加到剪切板')
     },
     savePage() {
       if (this.isAdd && !this.added) {
@@ -418,15 +423,15 @@ export default {
         this.pageCategoryList = response.data
       })
     },
-    addElement() {
-      this.savePageForm.elements.push({
+    addElement(index) {
+      this.savePageForm.elements.splice(index + 1, 0, {
         name: '',
         findBy: [],
         value: ''
       })
     },
-    addBy() {
-      this.savePageForm.bys.push({
+    addBy(index) {
+      this.savePageForm.bys.splice(index + 1, 0, {
         name: '',
         findBy: [],
         value: ''
@@ -441,10 +446,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-  .el-header {
-    background-color: #B3C0D1;
-    color: #333;
-    line-height: 50px;
-  }
-</style>

@@ -23,7 +23,7 @@
 </template>
 <script>
 import { addProject, updateProject, getProjectList } from '@/api/project'
-import { platforms } from '@/utils/project'
+import { platforms } from '@/utils/common'
 import 'codemirror/theme/base16-dark.css'
 import 'codemirror/mode/javascript/javascript.js'
 export default {

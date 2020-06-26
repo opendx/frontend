@@ -7,11 +7,11 @@
     <div class="right-menu">
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
-        <error-log class="errLog-container right-menu-item hover-effect" />
+        <!--<error-log class="errLog-container right-menu-item hover-effect" />-->
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
-        <el-tooltip content="Global Size" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
+        <!--<el-tooltip content="Global Size" effect="dark" placement="bottom">-->
+          <!--<size-select id="size-select" class="right-menu-item hover-effect" />-->
+        <!--</el-tooltip>-->
       </template>
       <span class="right-menu-item" style="margin-right: -16px; font-size: 12px; color: #2d2f33">当前项目:</span>
       <el-select v-model="projectId" placeholder="选择项目" class="right-menu-item" size="mini" @change="selectedUserProject">

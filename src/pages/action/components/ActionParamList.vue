@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-table :data="params" border max-height="500">
-      <el-table-column align="center" width="250">
+    <el-table :data="paramList" border>
+      <el-table-column align="center">
         <template slot="header">
           <el-button type="text" class="el-icon-circle-plus" @click="addParam" />
           方法参数类型
@@ -17,10 +17,10 @@
       </el-table-column>
       <el-table-column label="描述" align="center">
         <template scope="{ row }">
-          <el-input type="textarea" v-model.trim="row.description" clearable />
+          <el-input type="textarea" v-model.trim="row.description" :autosize="{ minRows: 1 }" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="50">
+      <el-table-column label="操作" align="center" width="45">
         <template scope="scope">
           <el-button type="text" class="el-icon-delete" @click="deleteParam(scope.$index)" />
         </template>
@@ -32,23 +32,34 @@
 <script>
 export default {
   props: {
-    isAdd: Boolean
+    params: {
+      type: Array,
+      default: () => []
+    }
+  },
+  watch: {
+    params() {
+      this.paramList = this.params
+    },
+    paramList() {
+      this.$emit('update:params', this.paramList)
+    }
   },
   data() {
     return {
-      params: []
+      paramList: this.params
     }
   },
   methods: {
     addParam() {
-      this.params.push({
+      this.paramList.push({
         type: 'String',
         name: '',
         description: ''
       })
     },
     deleteParam(index) {
-      this.params.splice(index, 1)
+      this.paramList.splice(index, 1)
     }
   }
 }

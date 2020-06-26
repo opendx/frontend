@@ -9,7 +9,7 @@
         <el-table-column label="App名" property="name" align="center" show-overflow-tooltip />
         <el-table-column label="下载地址" align="center" width="100">
           <template scope="{ row }">
-            <el-button type="text" slot="append" v-clipboard:copy="row.downloadUrl" v-clipboard:success="onCopy">复制</el-button>
+            <el-button type="text" slot="append" v-clipboard:copy="row.downloadUrl" v-clipboard:success="onCopySuccess">复制</el-button>
           </template>
         </el-table-column>
         <el-table-column label="Version" property="version" align="center" width="120" show-overflow-tooltip />
@@ -86,8 +86,8 @@ export default {
         this.total = resp.data.total
       })
     },
-    onCopy(e) {
-      this.$notify.success(e.text + '复制成功')
+    onCopySuccess(e) {
+      this.$notify.success('下载地址已添加到剪切板')
     },
     aaptDumpBadging(row) {
       this.aaptDumpBadgingBtnLoading = true

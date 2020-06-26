@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { platforms } from '@/utils/project'
+import { platforms } from '@/utils/common'
 import { getProjectList, deleteProject } from '@/api/project'
 import Pagination from '@/components/Pagination'
 

@@ -62,8 +62,6 @@ const actions = {
         const roles = data.roles.map(role => role.name)
         data.roles = roles
 
-        console.log('userInfo', data)
-
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')

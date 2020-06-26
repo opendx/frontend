@@ -77,3 +77,34 @@
 .el-range-editor.el-input__inner {
   display: inline-flex !important;
 }
+
+.el-table--small th, .el-table--small td {
+  padding: 2px 0;
+}
+
+.el-form-item--mini.el-form-item {
+  margin-bottom: 5px;
+}
+.el-form-item__label {
+  font-size: 5px;
+}
+.el-header {
+  background-color: #B3C0D1;
+  color: #333;
+  line-height: 50px;
+}
+.el-table__header th {
+  background-color: #f2f2f2;
+}
+.el-table .cell {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+.el-table--border th:first-child .cell, .el-table--border td:first-child .cell {
+  padding-left: 2px;
+}
+
+.el-tree>.el-tree-node {
+  font-size: 10px;
+}
+

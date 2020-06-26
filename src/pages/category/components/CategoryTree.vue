@@ -91,7 +91,7 @@ export default {
       this.isAddCategory = true
       this.saveCategoryForm.id = undefined
       this.saveCategoryForm.name = ''
-      this.saveCategoryForm.parentId = data.id ? data.id : 0
+      this.saveCategoryForm.parentId = data.id || 0
       this.dialogFormVisible = true
     },
     update(data) {

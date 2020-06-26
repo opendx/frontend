@@ -1,21 +1,21 @@
 <template>
   <div>
-    <el-table :data="localVars" border max-height="500">
-      <el-table-column align="center" width="150">
+    <el-table :data="localVarList" border :height="tableHeight">
+      <el-table-column align="center">
         <template slot="header">
-          <el-button type="text" class="el-icon-circle-plus" @click="addLocalVar" />
+          <el-button type="text" class="el-icon-circle-plus" @click="addLocalVar(localVarList.length)" />
           局部变量类型
         </template>
         <template scope="{ row }">
-          <el-input v-model.trim="row.type" type="textarea" />
+          <el-input v-model.trim="row.type" clearable />
         </template>
       </el-table-column>
-      <el-table-column label="局部变量名" align="center" width="200">
+      <el-table-column label="局部变量名" align="center">
         <template scope="{ row }">
-          <el-input v-model.trim="row.name" type="textarea" />
+          <el-input v-model.trim="row.name" type="textarea" :autosize="{ minRows: 1 }" />
         </template>
       </el-table-column>
-      <el-table-column label="局部变量值" align="center" min-width="500">
+      <el-table-column label="局部变量值" align="center" min-width="350">
         <template scope="{ row }">
           <el-table :data="row.environmentValues" border>
             <el-table-column label="环境" align="center" width="150">
@@ -30,7 +30,7 @@
                 <image-input v-model="row.value" />
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="100">
+            <el-table-column label="操作" align="center" width="85">
               <template scope="scope">
                 <el-button-group>
                   <el-button @click="addEnvironmentValue(row, scope.$index)">+</el-button>
@@ -41,14 +41,17 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column label="描述" align="center" width="150">
+      <el-table-column label="描述" align="center">
         <template scope="{ row }">
-          <el-input type="textarea" v-model.trim="row.description" clearable />
+          <el-input type="textarea" v-model.trim="row.description" clearable :autosize="{ minRows: 1 }" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="50">
+      <el-table-column label="操作" align="center" width="85">
         <template scope="scope">
-          <el-button type="text" class="el-icon-delete" @click="deleteLocalVar(scope.$index)" />
+          <el-button-group>
+            <el-button @click="addLocalVar(scope.$index)">+</el-button>
+            <el-button @click="deleteLocalVar(scope.$index)">-</el-button>
+          </el-button-group>
         </template>
       </el-table-column>
     </el-table>
@@ -59,20 +62,33 @@
 import ImageInput from '@/components/ImageInput'
 export default {
   props: {
-    environmentList: Array
+    environmentList: Array,
+    tableHeight: Number,
+    localVars: {
+      type: Array,
+      default: () => []
+    }
   },
   components: {
     ImageInput
   },
+  watch: {
+    localVars() {
+      this.localVarList = this.localVars
+    },
+    localVarList() {
+      this.$emit('update:localVars', this.localVarList)
+    }
+  },
   data() {
     return {
       returnValue: null,
-      localVars: []
+      localVarList: this.localVars
     }
   },
   methods: {
-    addLocalVar() {
-      this.localVars.push({
+    addLocalVar(index) {
+      this.localVarList.splice(index + 1, 0, {
         type: 'String',
         name: '',
         environmentValues: [
@@ -85,7 +101,7 @@ export default {
       })
     },
     deleteLocalVar(index) {
-      this.localVars.splice(index, 1)
+      this.localVarList.splice(index, 1)
     },
     addEnvironmentValue(row, index) {
       row.environmentValues.splice(index + 1, 0, {

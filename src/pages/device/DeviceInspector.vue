@@ -27,7 +27,7 @@
         <ul style="list-style: none;word-break: break-all;padding: 0px;font-size: 13px;">
           <li v-for="(value,key) in nodeDetail" :key="key" style="border-bottom: 1px solid #eee">
             <label style="width: 100px;display: inline-block;">{{ key }}</label>
-            <div v-clipboard:copy="value" v-clipboard:success="onCopy" title="click to copy" style="display: inline;color: #8cc5ff;cursor: pointer;">{{ value }}</div>
+            <div v-clipboard:copy="value" v-clipboard:success="onCopySuccess" title="click to copy" style="display: inline;color: #8cc5ff;cursor: pointer;">{{ value }}</div>
           </li>
         </ul>
       </el-col>
@@ -244,9 +244,8 @@ export default {
     closeImageViewer() {
       this.showImageViewer = false
     },
-    // 点击复制到粘贴板
-    onCopy() {
-      this.$notify.success('复制成功')
+    onCopySuccess() {
+      this.$notify.success('已添加到剪切板')
     },
     // 获取当前节点在整个tree里的位置，计算xpath的时候需要传入，如：[0,0,1,1]
     getNodePath(tree, targetId) {

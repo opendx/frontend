@@ -25,7 +25,7 @@
           </el-table-column>
           <el-table-column label="更新时间" align="center" width="200" show-overflow-tooltip>
             <template scope="{ row }">
-              {{ (row.updatorNickName ? row.updatorNickName : '') + ' ' + (row.updateTime ? row.updateTime : '') }}
+              {{ (row.updatorNickName || '') + ' ' + (row.updateTime || '') }}
             </template>
           </el-table-column>
           <el-table-column label="状态" align="center" width="100">
@@ -37,7 +37,7 @@
           </el-table-column>
           <el-table-column label="操作" width="200" align="center">
             <template scope="{ row }">
-              <el-button type="success" @click="copyAction(row)">复制</el-button>
+              <el-button type="success" class="el-icon-document-copy" @click="copyAction(row)" />
               <el-button type="primary" class="el-icon-edit" @click="updateAction(row.id)" />
               <el-button type="danger" class="el-icon-delete" @click="deleteAction(row)" />
             </template>
@@ -53,6 +53,7 @@
 import { getActionList, deleteAction, updateAction } from '@/api/action'
 import Pagination from '@/components/Pagination'
 import CategoryTree from '@/pages/category/components/CategoryTree'
+import { stateList } from '@/utils/common'
 
 export default {
   components: {
@@ -72,18 +73,7 @@ export default {
         state: undefined,
         categoryId: undefined
       },
-      stateList: [
-        {
-          state: 0,
-          name: '禁用'
-        }, {
-          state: 1,
-          name: '草稿'
-        }, {
-          state: 2,
-          name: '发布'
-        }
-      ]
+      stateList: stateList
     }
   },
   computed: {

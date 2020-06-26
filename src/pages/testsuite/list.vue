@@ -15,7 +15,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template scope="{ row }">
-            <el-button type="success" @click="copyTestSuite(row)">复制</el-button>
+            <el-button type="success" class="el-icon-document-copy" @click="copyTestSuite(row)" />
             <el-button type="primary" class="el-icon-edit" @click="updateTestSuite(row)" />
             <el-button type="danger" class="el-icon-delete" @click="deleteTestSuite(row)" />
           </template>

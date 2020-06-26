@@ -67,7 +67,7 @@
             filterable
             clearable
             style="width: 60%"
-            >
+          >
             <template slot-scope="{ node, data }">
               <span v-if="data.returnValue">{{ returnValue(data) }}</span>
               <el-divider v-if="data.returnValue" direction="vertical" />
@@ -185,12 +185,7 @@ export default {
       actions: [],
       testSuites: [],
       onlineDevices: [],
-      environmentList: [
-        {
-          id: -1,
-          name: '默认'
-        }
-      ]
+      environmentList: []
     }
   },
   computed: {

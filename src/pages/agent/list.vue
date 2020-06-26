@@ -4,7 +4,7 @@
     <el-table :data="agentList" highlight-current-row border v-loading="loading">
       <el-table-column label="状态" align="center" width="50">
         <template>
-          <div class="circle"/>
+          <div class="circle" />
         </template>
       </el-table-column>
       <el-table-column label="操作系统" property="osName" align="center" width="150" show-overflow-tooltip />
@@ -32,8 +32,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-divider />
-          <el-table :data="row.browsers" border>
+          <el-table :data="row.browsers" border style="margin-top: 3px">
             <el-table-column label="类型" prop="type" align="center" show-overflow-tooltip sortable />
             <el-table-column label="浏览器id" prop="id" align="center" show-overflow-tooltip />
             <el-table-column label="版本号" prop="version" align="center" show-overflow-tooltip sortable />

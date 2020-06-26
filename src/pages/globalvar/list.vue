@@ -65,12 +65,7 @@ export default {
         pageSize: 10,
         categoryId: undefined
       },
-      environmentList: [
-        {
-          id: -1,
-          name: '默认'
-        }
-      ]
+      environmentList: []
     }
   },
   computed: {
@@ -106,7 +101,10 @@ export default {
     },
     fetchEnvironmentList() {
       getEnvironmentList({ projectId: this.$store.state.project.id }).then(response => {
-        this.environmentList = this.environmentList.concat(response.data)
+        this.environmentList = [{
+          id: -1,
+          name: '默认'
+        }].concat(response.data)
       })
     },
     onCategoryClick(categoryId) {

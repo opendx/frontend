@@ -73,12 +73,7 @@ export default {
         categoryId: undefined,
         projectId: this.$store.state.project.id
       },
-      environmentList: [
-        {
-          id: -1,
-          name: '默认'
-        }
-      ],
+      environmentList: [],
       categories: []
     }
   },
