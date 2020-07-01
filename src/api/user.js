@@ -33,7 +33,7 @@ export function addUser(data) {
 export function deleteUser(id) {
   return request({
     method: 'delete',
-    url: '/user/' + id
+    url: `/user/${id}`
   })
 }
 

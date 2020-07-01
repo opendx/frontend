@@ -27,7 +27,7 @@ export function getActionList(params) {
 export function deleteAction(actionId) {
   return request({
     method: 'delete',
-    url: '/action/' + actionId
+    url: `/action/${actionId}`
   })
 }
 

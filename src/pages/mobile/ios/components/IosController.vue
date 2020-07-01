@@ -60,7 +60,7 @@ export default {
     const URL = window.URL || window.webkitURL
 
     // iosWebsocket
-    this.iosWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/ios/' + this.mobileId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
+    this.iosWebsocket = new WebSocket(`ws://${this.agentIp}:${this.agentPort}/ios/${this.mobileId}/user/${this.username}/project/${this.$store.state.project.id}`)
     this.iosWebsocket.onclose = () => {
       this.loading = false
       if (!this.closeBoardByClickCloseBtn) { // 点击关闭，不弹提示

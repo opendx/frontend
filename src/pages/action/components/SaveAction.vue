@@ -1,6 +1,6 @@
 <template>
-  <div style="padding: 5px">
-    <el-row :style="'height: ' + topHeight + 'px; overflow: auto'" :gutter="5">
+  <div style="padding: 3px">
+    <el-row :style="`height: ${topHeight}px; overflow: auto`" :gutter="2">
       <el-col :span="10" style="height: 100%; overflow: auto">
         <el-row style="margin-bottom: 5px">
           <span>
@@ -83,7 +83,7 @@
           <action-param-list :params.sync="saveActionForm.params" />
         </el-row>
 
-        <el-row style="margin-top: 5px" :gutter="10">
+        <el-row style="margin-top: 5px">
           <el-col :span="12">
             <action-java-import-list :java-imports.sync="saveActionForm.javaImports" />
           </el-col>
@@ -112,7 +112,7 @@
     </el-row>
 
     <div style="margin-top: 5px">
-      <action-step ref="actionStep" :steps.sync="saveActionForm.steps" :table-height="bottomHeight" @actionTreeChange="onActionTreeChange" />
+      <action-step ref="actionStep" :steps.sync="saveActionForm.steps" :height="bottomHeight" @actionTreeChange="onActionTreeChange" />
     </div>
   </div>
 </template>

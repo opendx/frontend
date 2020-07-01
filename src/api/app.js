@@ -12,7 +12,7 @@ export function uploadApp(data) {
 export function deleteApp(id) {
   return request({
     method: 'delete',
-    url: '/app/' + id
+    url: `/app/${id}`
   })
 }
 
@@ -35,6 +35,6 @@ export function getAppList(params) {
 export function aaptDumpBadging(appId) {
   return request({
     method: 'get',
-    url: '/app/' + appId + '/aaptDumpBadging'
+    url: `/app/${appId}/aaptDumpBadging`
   })
 }

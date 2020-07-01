@@ -11,7 +11,7 @@ export function getMobileList(params) {
 export function mobileStart(mobileId) {
   return request({
     method: 'get',
-    url: '/mobile/' + mobileId + '/start'
+    url: `/mobile/${mobileId}/start`
   })
 }
 

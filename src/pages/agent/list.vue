@@ -12,7 +12,7 @@
       <el-table-column label="appium版本" property="appiumVersion" align="center" width="100" show-overflow-tooltip />
       <el-table-column label="地址" align="center" width="180" show-overflow-tooltip>
         <template scope="{ row }">
-          {{ row.ip + ':' + row.port }}
+          {{ `${row.ip}:${row.port}` }}
         </template>
       </el-table-column>
       <el-table-column label="Mobile/浏览器" align="center">
@@ -28,7 +28,7 @@
             <el-table-column label="系统版本" prop="systemVersion" align="center" show-overflow-tooltip sortable />
             <el-table-column label="状态" prop="status" align="center" show-overflow-tooltip sortable>
               <template scope="{ row }">
-                {{ row.status === 2 ? '在线闲置': '[' + row.username + ']使用中' }}
+                {{ row.status === 2 ? '在线闲置': `[${row.username}]使用中` }}
               </template>
             </el-table-column>
           </el-table>
@@ -38,7 +38,7 @@
             <el-table-column label="版本号" prop="version" align="center" show-overflow-tooltip sortable />
             <el-table-column label="状态" prop="status" align="center" show-overflow-tooltip sortable>
               <template scope="{ row }">
-                {{ row.status === 2 ? '在线闲置': '[' + row.username + ']使用中' }}
+                {{ row.status === 2 ? '在线闲置': `[${row.username}]使用中` }}
               </template>
             </el-table-column>
           </el-table>

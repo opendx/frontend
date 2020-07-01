@@ -10,10 +10,10 @@
         <el-table-column label="描述" align="center" prop="description" show-overflow-tooltip />
         <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
-            {{ row.creatorNickName + ' ' + row.createTime }}
+            {{ `${row.creatorNickName} ${row.createTime}` }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="200">
+        <el-table-column label="操作" align="center" width="180">
           <template scope="{ row }">
             <el-button type="success" class="el-icon-document-copy" @click="copyTestSuite(row)" />
             <el-button type="primary" class="el-icon-edit" @click="updateTestSuite(row)" />
@@ -56,7 +56,7 @@ export default {
       this.$router.push({ name: 'UpdateTestSuite', params: { testSuiteId: testSuite.id }})
     },
     deleteTestSuite(testSuite) {
-      this.$confirm('删除' + testSuite.name, '提示', {
+      this.$confirm(`删除${testSuite.name}`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

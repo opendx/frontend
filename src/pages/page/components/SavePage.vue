@@ -3,7 +3,7 @@
     <el-header height="50px">
       <el-popover placement="right" trigger="click">
         <device-inspector style="width: 1200px; height: 650px" canvas-id="page-canvas" :page-type="savePageForm.type" :window-info="windowInfo" :window-hierarchy="savePageForm.windowHierarchy" :tree-loading="false" />
-        <el-button icon="el-icon-search" slot="reference">{{ pageType + ' - Inspector' }}</el-button>
+        <el-button icon="el-icon-search" slot="reference">{{ `${pageType} - Inspector` }}</el-button>
       </el-popover>
 
       <el-select v-model="savePageForm.categoryId" clearable filterable @visible-change="pageCategorySelectChange" placeholder="选择分类">
@@ -54,7 +54,7 @@
             <el-table-column align="center" label="操作" width="150">
               <template scope="scope">
                 <el-button-group>
-                  <el-button size="mini" v-clipboard:copy="savePageForm.name + '_' + scope.row.name" v-clipboard:success="onCopySuccess">引用</el-button>
+                  <el-button size="mini" v-clipboard:copy="`${savePageForm.name}_${scope.row.name}`" v-clipboard:success="onCopySuccess">引用</el-button>
                   <el-button size="mini" @click="addElement(scope.$index)">+</el-button>
                   <el-button size="mini" @click="delElement(scope.$index)">-</el-button>
                 </el-button-group>
@@ -96,7 +96,7 @@
             <el-table-column align="center" label="操作" width="150">
               <template scope="scope">
                 <el-button-group>
-                  <el-button size="mini" v-clipboard:copy="savePageForm.name + '_' + scope.row.name" v-clipboard:success="onCopySuccess">引用</el-button>
+                  <el-button size="mini" v-clipboard:copy="`${savePageForm.name}_${scope.row.name}`" v-clipboard:success="onCopySuccess">引用</el-button>
                   <el-button size="mini" @click="addBy(scope.$index)">+</el-button>
                   <el-button size="mini" @click="delBy(scope.$index)">-</el-button>
                 </el-button-group>

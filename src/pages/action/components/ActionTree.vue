@@ -1,20 +1,25 @@
 <template>
   <div>
-    <el-input placeholder="筛选action, 试试输入: click / 点击" v-model="filterText" clearable style="width: 100%" size="mini" />
-    <el-tree
-      :data="actionTree"
-      :props="{ children: 'children', label: 'name' }"
-      default-expand-all
-      :filter-node-method="filterNode"
-      ref="tree"
-    >
-      <span slot-scope="{ node, data }">
-        <span :title="nodeTitle(data)">{{ node.label }}</span>
-        <el-button v-if="node.isLeaf" type="text" @click="addStep(data)">添加</el-button>
-        <el-button v-if="node.isLeaf" type="text" style="margin-left: 0px" @click="insertStep(data)">插入</el-button>
-        <el-button v-if="node.isLeaf" type="text" style="margin-left: 0px" v-clipboard:copy="copyJavaInvoke(data)" v-clipboard:success="onCopySuccess">Java调用</el-button>
-      </span>
-    </el-tree>
+    <div>
+      <el-input placeholder="试试输入: click/点击，通过name invoke过滤" v-model="filterText" clearable style="width: 100%" size="mini" />
+    </div>
+    <div :style="treeStyle">
+      <el-tree
+        :data="actionTree"
+        :props="{ children: 'children', label: 'name' }"
+        default-expand-all
+        :filter-node-method="filterNode"
+        ref="tree"
+      >
+        <span slot-scope="{ node, data }">
+          <span :title="nodeTitle(data)">{{ node.label }}</span>
+          <el-button v-if="node.isLeaf" type="text" @click="addStep(data)">添加</el-button>
+          <el-button v-if="node.isLeaf" type="text" style="margin-left: 0px" @click="insertStep(data)">插入</el-button>
+          <el-button v-if="node.isLeaf" type="text" style="margin-left: 0px" v-clipboard:copy="copyJavaInvoke(data)" v-clipboard:success="onCopySuccess">Java调用</el-button>
+        </span>
+      </el-tree>
+    </div>
+
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%">
       <el-form label-position="left" label-width="50px">
         <el-form-item label="步骤">
@@ -36,7 +41,8 @@ import clipboard from '@/directive/clipboard/index.js'
 export default {
   props: {
     actionTree: Array,
-    stepCount: Number
+    stepCount: Number,
+    height: Number
   },
   directives: {
     clipboard
@@ -44,6 +50,11 @@ export default {
   watch: {
     filterText(val) {
       this.$refs.tree.filter(val)
+    }
+  },
+  computed: {
+    treeStyle() {
+      return `height: ${this.height - 28}px; overflow: auto`
     }
   },
   data() {
@@ -68,6 +79,8 @@ export default {
       if (node.id) { // action
         const descText = '描述: ' + (node.description || '无')
 
+        const invoke = 'invoke: ' + (node.invoke || '无')
+
         let returnValueText = '返回值: ' + node.returnValue
         if (node.returnValueDesc) {
           returnValueText = returnValueText + '(' + node.returnValueDesc + ')'
@@ -82,7 +95,7 @@ export default {
           paramText += '无'
         }
 
-        return descText + '\n' + returnValueText + '\n' + paramText
+        return descText + '\n' + invoke + '\n' + returnValueText + '\n' + paramText
       } else {
         return ''
       }

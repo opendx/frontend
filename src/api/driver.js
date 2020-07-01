@@ -11,7 +11,7 @@ export function addDriver(data) {
 export function deleteDriver(id) {
   return request({
     method: 'delete',
-    url: '/driver/' + id
+    url: `/driver/${id}`
   })
 }
 

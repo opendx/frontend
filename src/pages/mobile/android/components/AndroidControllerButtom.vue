@@ -120,7 +120,7 @@ export default {
         startAdbKit(this.agentIp, this.agentPort, this.mobileId).then(response => {
           this.adbKitIsStart = true
           this.adbKitBtnText = '关闭远程调试'
-          this.adbkitTip = 'adb connect ' + this.agentIp + ':' + response.data.port
+          this.adbkitTip = `'adb connect ${this.agentIp}:${response.data.port}`
         })
       } else {
         stopAdbKit(this.agentIp, this.agentPort, this.mobileId).then(() => {

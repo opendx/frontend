@@ -61,7 +61,7 @@ export default {
     const BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
     const URL = window.URL || window.webkitURL
 
-    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/stf/android/' + this.mobileId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
+    this.androidWebsocket = new WebSocket(`ws://'${this.agentIp}:${this.agentPort}/stf/android/${this.mobileId}/user/${this.username}/project/${this.$store.state.project.id}`)
     this.androidWebsocket.binaryType = 'blob'
     this.androidWebsocket.onclose = () => {
       this.loading = false

@@ -14,7 +14,7 @@
       <el-table :data="testTaskList" border fit>
         <el-table-column label="提交时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
-            {{ row.creatorNickName + ' ' + row.commitTime }}
+            {{ `${row.creatorNickName} ${row.commitTime}` }}
           </template>
         </el-table-column>
         <el-table-column label="完成时间" prop="finishTime" align="center" width="150" show-overflow-tooltip />
@@ -43,7 +43,7 @@
             {{ scope.row.status === 0 ? '未完成' : '已完成' }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="280" align="center">
+        <el-table-column label="操作" width="260" align="center">
           <template scope="{ row }">
             <el-button type="primary" @click="onDeviceTestTaskBtnClick(row)">查看进度</el-button>
             <!--未完成disable-->
@@ -218,7 +218,7 @@ export default {
       })
     },
     deleteTestTask(testTask) {
-      this.$confirm('删除测试任务id: ' + testTask.id, '提示', {
+      this.$confirm(`删除测试任务id: ${testTask.id}`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -230,7 +230,7 @@ export default {
       })
     },
     deleteDeviceTestTask(deviceTestTask) {
-      this.$confirm('删除' + deviceTestTask.deviceId + '测试任务', '提示', {
+      this.$confirm(`删除${deviceTestTask.deviceId}测试任务`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

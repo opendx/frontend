@@ -11,7 +11,7 @@ export function commitTestTask(params) {
 export function deleteTestTask(testTaskId) {
   return request({
     method: 'delete',
-    url: '/testTask/' + testTaskId
+    url: `/testTask/${testTaskId}`
   })
 }
 
@@ -26,6 +26,6 @@ export function getTestTaskList(params) {
 export function getTestTaskSummary(testTaskId) {
   return request({
     method: 'get',
-    url: '/testTask/' + testTaskId + '/summary'
+    url: `/testTask/${testTaskId}/summary`
   })
 }

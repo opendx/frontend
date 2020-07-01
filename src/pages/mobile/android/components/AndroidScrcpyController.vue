@@ -56,7 +56,7 @@ export default {
     canvas.setAttribute('id', 'scrcpyCanvas') // style width: 100%;
     document.getElementById('canvas-container').appendChild(canvas)
 
-    this.androidWebsocket = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/scrcpy/android/' + this.mobileId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
+    this.androidWebsocket = new WebSocket(`ws://${this.agentIp}:${this.agentPort}/scrcpy/android/${this.mobileId}/user/${this.username}/project/${this.$store.state.project.id}`)
     this.androidWebsocket.binaryType = 'arraybuffer'
     this.androidWebsocket.onclose = () => {
       this.loading = false

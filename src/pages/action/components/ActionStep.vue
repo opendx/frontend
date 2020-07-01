@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-row :gutter="5">
-      <el-col :span="5" :style="treeStyle">
-        <action-tree :actionTree="actionTree" :step-count="stepList.length" @actionClick="addStep" />
+    <el-row :gutter="2">
+      <el-col :span="5">
+        <action-tree :height="height" :actionTree="actionTree" :step-count="stepList.length" @actionClick="addStep" />
       </el-col>
       <el-col :span="19">
         <el-table
@@ -10,7 +10,7 @@
           ref="table"
           :data="stepList"
           border
-          :height="tableHeight"
+          :height="height"
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="20" />
@@ -134,7 +134,7 @@ export default {
     ImageInput
   },
   props: {
-    tableHeight: Number,
+    height: Number,
     steps: {
       type: Array,
       default: () => []
@@ -182,9 +182,6 @@ export default {
         row.number = stepNumber
         return row.number
       }
-    },
-    treeStyle() {
-      return 'height: ' + this.tableHeight + 'px; overflow: auto'
     }
   },
   created() {

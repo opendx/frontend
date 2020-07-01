@@ -11,7 +11,7 @@ export function addProject(data) {
 export function deleteProject(id) {
   return request({
     method: 'delete',
-    url: '/project/' + id
+    url: `/project/${id}`
   })
 }
 

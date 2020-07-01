@@ -15,10 +15,10 @@
           <el-input v-model.trim="row.name" type="textarea" :autosize="{ minRows: 1 }" />
         </template>
       </el-table-column>
-      <el-table-column label="局部变量值" align="center" min-width="350">
+      <el-table-column label="局部变量值" align="center" min-width="320">
         <template scope="{ row }">
           <el-table :data="row.environmentValues" border>
-            <el-table-column label="环境" align="center" width="150">
+            <el-table-column label="环境" align="center" width="120">
               <template scope = "{ row }">
                 <el-select v-model="row.environmentId" placeholder="选择环境" style="width: 100%">
                   <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />

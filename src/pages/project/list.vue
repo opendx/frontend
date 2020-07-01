@@ -22,10 +22,10 @@
         <el-table-column label="项目描述" align="center" prop="description" show-overflow-tooltip />
         <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
-            {{ row.creatorNickName + ' ' + row.createTime }}
+            {{ `${row.creatorNickName} ${row.createTime}` }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="150">
+        <el-table-column label="操作" align="center" width="120">
           <template scope="{ row }">
             <el-button type="primary" class="el-icon-edit" @click="updateProject(row)" />
             <el-button type="danger" class="el-icon-delete" @click="deleteProject(row)" />
@@ -73,7 +73,7 @@ export default {
       this.$router.push({ name: 'UpdateProject', params: { projectId: project.id }})
     },
     deleteProject(project) {
-      this.$confirm('删除' + project.name, '提示', {
+      this.$confirm(`删除${project.name}`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

@@ -17,10 +17,10 @@
         <el-table-column v-if="queryForm.platform === 1" label="LaunchActivity" property="launchActivity" align="center" show-overflow-tooltip />
         <el-table-column label="上传时间" align="center" width="200" show-overflow-tooltip>
           <template scope="{ row }">
-            {{ row.uploadorNickName + ' ' + row.uploadTime }}
+            {{ `${row.uploadorNickName} ${row.uploadTime}` }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="250">
+        <el-table-column label="操作" align="center" width="230">
           <template scope="{ row }">
             <el-button v-if="row.platform === 1 && (!row.packageName || !row.launchActivity || !row.version)" @click="aaptDumpBadging(row)" title="获取Version PackageName LaunchActivity" :loading="aaptDumpBadgingBtnLoading">aapt dump</el-button>
             <el-button type="primary" class="el-icon-edit" @click="updateApp(row)" />
@@ -69,7 +69,7 @@ export default {
       this.$router.push({ name: 'UpdateApp', params: { appId: app.id }})
     },
     deleteApp(app) {
-      this.$confirm('删除' + app.name, '提示', {
+      this.$confirm(`删除${app.name}`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

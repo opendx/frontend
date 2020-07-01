@@ -198,7 +198,7 @@ export default {
     returnValue() {
       return function(action) {
         if (action.returnValueDesc) {
-          return action.returnValue + '(' + action.returnValueDesc + ')'
+          return `${action.returnValue}(${action.returnValueDesc})`
         } else {
           return action.returnValue
         }

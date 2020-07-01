@@ -11,7 +11,7 @@ export function addEnvironment(data) {
 export function deleteEnvironment(id) {
   return request({
     method: 'delete',
-    url: '/environment/' + id
+    url: `/environment/${id}`
   })
 }
 

@@ -32,7 +32,7 @@
             {{ row.status === 1 ? '启用' : '禁用' }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="150">
+        <el-table-column label="操作" align="center" width="120">
           <template scope="{ row }">
             <el-button type="primary" class="el-icon-edit" @click="updateUser(row)" />
             <el-button type="danger" class="el-icon-delete" @click="deleteUser(row)" />

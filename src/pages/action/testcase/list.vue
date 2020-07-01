@@ -20,12 +20,12 @@
           <el-table-column label="描述" align="center" prop="description" show-overflow-tooltip />
           <el-table-column label="创建时间" align="center" width="200" show-overflow-tooltip>
             <template scope="{ row }">
-              {{ row.creatorNickName + ' ' + row.createTime }}
+              {{ `${row.creatorNickName} ${row.createTime}` }}
             </template>
           </el-table-column>
           <el-table-column label="更新时间" align="center" width="200" show-overflow-tooltip>
             <template scope="{ row }">
-              {{ (row.updatorNickName || '') + ' ' + (row.updateTime || '') }}
+              {{ `${row.updatorNickName || ''} ${row.updateTime || ''}` }}
             </template>
           </el-table-column>
           <el-table-column label="状态" align="center" width="100">
@@ -35,7 +35,7 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="200" align="center">
+          <el-table-column label="操作" width="180" align="center">
             <template scope="{ row }">
               <el-button type="success" class="el-icon-document-copy" @click="copyAction(row)" />
               <el-button type="primary" class="el-icon-edit" @click="updateAction(row.id)" />
@@ -112,7 +112,7 @@ export default {
       this.total = data.total
     },
     deleteAction(action) {
-      this.$confirm('删除' + action.name, '提示', {
+      this.$confirm(`删除${action.name}`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

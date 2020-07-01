@@ -11,7 +11,7 @@ export function getBrowserList(params) {
 export function browserStart(browserId) {
   return request({
     method: 'get',
-    url: '/browser/' + browserId + '/start'
+    url: `/browser/${browserId}/start`
   })
 }
 

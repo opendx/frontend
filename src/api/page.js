@@ -11,7 +11,7 @@ export function addPage(data) {
 export function getPageById(pageId) {
   return request({
     method: 'get',
-    url: '/page/' + pageId
+    url: `/page/${pageId}`
   })
 }
 
@@ -26,7 +26,7 @@ export function getPageList(params) {
 export function deletePage(pageId) {
   return request({
     method: 'delete',
-    url: '/page/' + pageId
+    url: `/page/${pageId}`
   })
 }
 
