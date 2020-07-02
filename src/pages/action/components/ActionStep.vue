@@ -35,7 +35,7 @@
           <el-table-column label="Action" min-width="300">
             <template scope="{ row }">
               <el-table :data="row.paramValues" border>
-                <el-table-column label="参数" width="150" show-overflow-tooltip>
+                <el-table-column :key="row.actionId" label="参数" width="150" show-overflow-tooltip>
                   <template slot="header">
                     <el-tag type="success">{{ getActionName(row.actionId) }}</el-tag>
                   </template>
