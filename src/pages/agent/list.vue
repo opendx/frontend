@@ -15,6 +15,11 @@
           {{ `${row.ip}:${row.port}` }}
         </template>
       </el-table-column>
+      <el-table-column label="日志" align="center" width="100" show-overflow-tooltip>
+        <template scope="{ row }">
+          <a :href="getLogFileUrl(row.instanceId)" target="_blank">查看</a>
+        </template>
+      </el-table-column>
       <el-table-column label="Mobile/浏览器" align="center">
         <template scope="{ row }">
           <el-table :data="row.mobiles" border>
@@ -66,6 +71,9 @@ export default {
       }).finally(() => {
         this.loading = false
       })
+    },
+    getLogFileUrl(agentInstanceId) {
+      return `${process.env.VUE_APP_BASE_API}/springboot-admin#/instances/${agentInstanceId}/logfile`
     }
   },
   created() {
