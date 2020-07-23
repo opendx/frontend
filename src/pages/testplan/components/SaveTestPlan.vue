@@ -18,8 +18,8 @@
             style="width: 60%"
             >
             <template slot-scope="{ node, data }">
-              <span v-if="data.returnValue">{{ returnValue(data) }}</span>
-              <el-divider v-if="data.returnValue" direction="vertical" />
+              <span v-if="data.returnValueType">{{ returnValue(data) }}</span>
+              <el-divider v-if="data.returnValueType" direction="vertical" />
               <span>{{ data.name }}</span>
             </template>
           </el-cascader>
@@ -33,10 +33,10 @@
             filterable
             clearable
             style="width: 60%"
-            >
+          >
             <template slot-scope="{ node, data }">
-              <span v-if="data.returnValue">{{ returnValue(data) }}</span>
-              <el-divider v-if="data.returnValue" direction="vertical" />
+              <span v-if="data.returnValueType">{{ returnValue(data) }}</span>
+              <el-divider v-if="data.returnValueType" direction="vertical" />
               <span>{{ data.name }}</span>
             </template>
           </el-cascader>
@@ -50,10 +50,10 @@
             filterable
             clearable
             style="width: 60%"
-            >
+          >
             <template slot-scope="{ node, data }">
-              <span v-if="data.returnValue">{{ returnValue(data) }}</span>
-              <el-divider v-if="data.returnValue" direction="vertical" />
+              <span v-if="data.returnValueType">{{ returnValue(data) }}</span>
+              <el-divider v-if="data.returnValueType" direction="vertical" />
               <span>{{ data.name }}</span>
             </template>
           </el-cascader>
@@ -69,8 +69,8 @@
             style="width: 60%"
           >
             <template slot-scope="{ node, data }">
-              <span v-if="data.returnValue">{{ returnValue(data) }}</span>
-              <el-divider v-if="data.returnValue" direction="vertical" />
+              <span v-if="data.returnValueType">{{ returnValue(data) }}</span>
+              <el-divider v-if="data.returnValueType" direction="vertical" />
               <span>{{ data.name }}</span>
             </template>
           </el-cascader>
@@ -197,11 +197,7 @@ export default {
     },
     returnValue() {
       return function(action) {
-        if (action.returnValueDesc) {
-          return `${action.returnValue}(${action.returnValueDesc})`
-        } else {
-          return action.returnValue
-        }
+        return action.returnValueDesc ? `${action.returnValueType}(${action.returnValueDesc})` : action.returnValueType
       }
     }
   },

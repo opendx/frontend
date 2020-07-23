@@ -81,7 +81,7 @@ export default {
 
         const invoke = 'invoke: ' + (node.invoke || '无')
 
-        let returnValueText = '返回值: ' + node.returnValue
+        let returnValueText = '返回值: ' + node.returnValueType
         if (node.returnValueDesc) {
           returnValueText = returnValueText + '(' + node.returnValueDesc + ')'
         }

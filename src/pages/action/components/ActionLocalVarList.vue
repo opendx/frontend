@@ -82,7 +82,6 @@ export default {
   },
   data() {
     return {
-      returnValue: null,
       localVarList: this.localVars
     }
   },

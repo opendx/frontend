@@ -24,7 +24,7 @@
           <el-col :span="12">
             <el-form size="mini" label-position="rigth" label-width="85px">
               <el-form-item label="返回值类型" :rules="[{required: true}]">
-                <el-input v-model.trim="saveActionForm.returnValue" clearable />
+                <el-input v-model.trim="saveActionForm.returnValueType" clearable />
               </el-form-item>
               <el-form-item label="所属分类">
                 <el-select
@@ -151,14 +151,14 @@ export default {
         name: '',
         description: '',
         type: this.isTestCase ? 3 : 2,
-        returnValue: 'void',
+        returnValueType: 'void',
         returnValueDesc: null,
         params: [],
         localVars: [],
         steps: [],
         javaImports: [],
         actionImports: [],
-        platforms: [this.$store.state.project.platform],
+        platforms: [],
         pageId: undefined,
         projectId: this.$store.state.project.id,
         categoryId: undefined,

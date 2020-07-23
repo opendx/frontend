@@ -251,7 +251,7 @@ export default {
     },
     getActionReturnValueText(actionId) {
       const action = this.actionMap.get(actionId)
-      let text = `返回值: ${action.returnValue}`
+      let text = `返回值: ${action.returnValueType}`
       if (action.returnValueDesc) {
         text = `${text}(${action.returnValueDesc})`
       }
@@ -259,7 +259,7 @@ export default {
     },
     isEvaluationDisabled(actionId) {
       const action = this.actionMap.get(actionId)
-      return action.returnValue === 'void'
+      return action.returnValueType === 'void'
     },
     getActionName(actionId) {
       return this.actionMap.get(actionId).name
