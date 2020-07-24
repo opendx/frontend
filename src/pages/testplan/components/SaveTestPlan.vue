@@ -16,13 +16,7 @@
             filterable
             clearable
             style="width: 60%"
-            >
-            <template slot-scope="{ node, data }">
-              <span v-if="data.returnValueType">{{ returnValue(data) }}</span>
-              <el-divider v-if="data.returnValueType" direction="vertical" />
-              <span>{{ data.name }}</span>
-            </template>
-          </el-cascader>
+          />
           <span style="margin-left: 10px;font-size: 10px;color: #8c939d">所有测试用例执行前执行的操作</span>
         </el-form-item>
         <el-form-item label="BeforeMethod">
@@ -33,13 +27,7 @@
             filterable
             clearable
             style="width: 60%"
-          >
-            <template slot-scope="{ node, data }">
-              <span v-if="data.returnValueType">{{ returnValue(data) }}</span>
-              <el-divider v-if="data.returnValueType" direction="vertical" />
-              <span>{{ data.name }}</span>
-            </template>
-          </el-cascader>
+          />
           <span style="margin-left: 10px;font-size: 10px;color: #8c939d">每条测试用例执行前执行的操作</span>
         </el-form-item>
         <el-form-item label="AfterMethod">
@@ -50,13 +38,7 @@
             filterable
             clearable
             style="width: 60%"
-          >
-            <template slot-scope="{ node, data }">
-              <span v-if="data.returnValueType">{{ returnValue(data) }}</span>
-              <el-divider v-if="data.returnValueType" direction="vertical" />
-              <span>{{ data.name }}</span>
-            </template>
-          </el-cascader>
+          />
           <span style="margin-left: 10px;font-size: 10px;color: #8c939d">每条测试用例执行后执行的操作</span>
         </el-form-item>
         <el-form-item label="AfterClass">
@@ -67,13 +49,7 @@
             filterable
             clearable
             style="width: 60%"
-          >
-            <template slot-scope="{ node, data }">
-              <span v-if="data.returnValueType">{{ returnValue(data) }}</span>
-              <el-divider v-if="data.returnValueType" direction="vertical" />
-              <span>{{ data.name }}</span>
-            </template>
-          </el-cascader>
+          />
           <span style="margin-left: 10px;font-size: 10px;color: #8c939d">所有测试用例执行后执行的操作</span>
         </el-form-item>
         <el-form-item label="测试集" :rules="[{required: true}]">
@@ -194,11 +170,6 @@ export default {
     },
     platform() {
       return this.$store.state.project.platform
-    },
-    returnValue() {
-      return function(action) {
-        return action.returnValueDesc ? `${action.returnValueType}(${action.returnValueDesc})` : action.returnValueType
-      }
     }
   },
   methods: {
