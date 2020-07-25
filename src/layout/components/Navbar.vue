@@ -13,6 +13,8 @@
           <!--<size-select id="size-select" class="right-menu-item hover-effect" />-->
         <!--</el-tooltip>-->
       </template>
+      <span class="right-menu-item" style="font-size: 12px; color: #2d2f33">前端版本: {{ frontendVersion }}</span>
+      <span class="right-menu-item" style="font-size: 12px; color: #2d2f33">server版本: {{ serverVersion }}</span>
       <span class="right-menu-item" style="margin-right: -16px; font-size: 12px; color: #2d2f33">当前项目:</span>
       <el-select v-model="projectId" placeholder="选择项目" class="right-menu-item" size="mini" @change="selectedUserProject">
         <el-option
@@ -47,6 +49,8 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
+import packageJson from '../../../package.json'
+import { getServerVersion } from '@/api/application'
 
 export default {
   components: {
@@ -66,13 +70,19 @@ export default {
       'projectId',
       'userProjects',
       'roles'
-    ])
+    ]),
+    frontendVersion() {
+      return packageJson.version
+    }
   },
   data() {
     return {
+      serverVersion: ''
     }
   },
   created() {
+    this.fetchServerVersion()
+
     if (this.userProjects.length === 0) { // 未分配项目
       if (this.roles.indexOf('admin') === -1) { // 非管理员
         this.$alert('未加入任何项目，请联系管理员添加', '提示', {
@@ -112,6 +122,10 @@ export default {
     }
   },
   methods: {
+    async fetchServerVersion() {
+      const { data } = await getServerVersion()
+      this.serverVersion = data.version
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },

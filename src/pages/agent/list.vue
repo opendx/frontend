@@ -8,6 +8,7 @@
         </template>
       </el-table-column>
       <el-table-column label="操作系统" property="osName" align="center" width="150" show-overflow-tooltip />
+      <el-table-column label="版本" property="version" align="center" width="100" show-overflow-tooltip />
       <el-table-column label="java版本" property="javaVersion" align="center" width="100" show-overflow-tooltip />
       <el-table-column label="appium版本" property="appiumVersion" align="center" width="100" show-overflow-tooltip />
       <el-table-column label="地址" align="center" width="180" show-overflow-tooltip>
