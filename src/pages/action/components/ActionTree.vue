@@ -38,6 +38,7 @@
 
 <script>
 import clipboard from '@/directive/clipboard/index.js'
+import { getJavaSimpleName } from '@/utils/common'
 export default {
   props: {
     actionTree: Array,
@@ -120,7 +121,7 @@ export default {
     copyJavaInvoke(action) {
       let params = ''
       if (action.params && action.params.length > 0) {
-        params = action.params.map(p => p.type + ' ' + p.name).join(', ')
+        params = action.params.map(p => getJavaSimpleName(p.type) + ' ' + p.name).join(', ')
       }
       // type: 1 基础组件
       const methodName = action.type === 1 ? action.invoke : 'action_' + action.id

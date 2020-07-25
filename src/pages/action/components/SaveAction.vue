@@ -1,125 +1,135 @@
 <template>
   <div style="padding: 3px">
-    <el-row :style="`height: ${topHeight}px; overflow: auto`" :gutter="2">
-      <el-col :span="10" style="height: 100%; overflow: auto">
-        <el-row style="margin-bottom: 5px">
-          <span>
-            <el-select v-model="env" @change="selectedEnv" @visible-change="envSelectChange" style="width: 150px" size="mini">
-              <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
+    <div id="top">
+      <el-row>
+        <el-form size="mini" :inline="true">
+          <el-form-item label="分类">
+            <el-select
+              v-model="saveActionForm.categoryId"
+              @visible-change="actionCategorySelectChange"
+              clearable
+              filterable
+              placeholder="选择分类"
+            >
+              <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
             </el-select>
-            <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" title="ctrl+d" size="mini">调试</el-button>
-            <el-button type="primary" style="margin-left: -1px" v-show="code" @click="showCode = true" size="mini">查看code</el-button>
-            <action-code-drawer :code="code" :visible.sync="showCode" />
-          </span>
-
-          <span style="float: right">
-            <el-select v-model="saveActionForm.state" style="width: 80px" size="mini">
+          </el-form-item>
+          <el-form-item :label="isTestCase ? '用例名' : 'Action名'" :rules="[{required: true}]">
+            <el-input v-model="saveActionForm.name" clearable />
+          </el-form-item>
+          <el-form-item label="描述">
+            <el-input v-model="saveActionForm.description" clearable />
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="saveActionForm.state" style="width: 80px">
               <el-option v-for="state in stateList" :key="state.state" :label="state.name" :value="state.state" />
             </el-select>
-            <el-button type="success" @click="saveAction" title="ctrl+s" size="mini">保存</el-button>
-          </span>
-        </el-row>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="success" @click="saveAction" title="ctrl+s">保存</el-button>
+          </el-form-item>
+        </el-form>
+      </el-row>
 
-        <el-row>
-          <el-col :span="12">
-            <el-form size="mini" label-position="rigth" label-width="85px">
-              <el-form-item label="返回值类型" :rules="[{required: true}]">
-                <el-input v-model.trim="saveActionForm.returnValueType" clearable />
-              </el-form-item>
-              <el-form-item label="所属分类">
-                <el-select
-                  v-model="saveActionForm.categoryId"
-                  @visible-change="actionCategorySelectChange"
-                  clearable
-                  filterable
-                  style="width: 100%"
-                  placeholder="选择分类"
-                >
-                  <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
-                </el-select>
-              </el-form-item>
-              <el-form-item :label="isTestCase ? '用例名' : 'Action名'" :rules="[{required: true}]">
-                <el-input v-model="saveActionForm.name" clearable />
-              </el-form-item>
-            </el-form>
-          </el-col>
-          <el-col :span="12">
-            <el-form size="mini" label-position="rigth" label-width="85px">
-              <el-form-item label="返回值描述">
-                <el-input v-model="saveActionForm.returnValueDesc" clearable type="textarea" :autosize="{ minRows: 1 }" />
-              </el-form-item>
-              <el-form-item v-if="!isTestCase" label="所属Page">
-                <el-select
-                  v-model="saveActionForm.pageId"
-                  @visible-change="pageSelectChange"
-                  filterable
-                  clearable
-                  style="width: 100%"
-                  placeholder="选择Page"
-                >
-                  <el-option v-for="page in pages" :key="page.id" :value="page.id" :label="page.name" />
-                </el-select>
-              </el-form-item>
-              <el-form-item v-if="isTestCase" label="依赖用例">
-                <el-cascader
-                  v-model="saveActionForm.depends"
-                  :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true, expandTrigger: 'hover' }"
-                  :options="dependsOptions"
-                  filterable
-                  clearable
-                  style="width: 100%"
-                  placeholder="选择依赖用例"
-                >
-                </el-cascader>
-              </el-form-item>
-              <el-form-item :label="isTestCase ? '用例描述' : 'Action描述'">
-                <el-input v-model="saveActionForm.description" type="textarea" :autosize="{ minRows: 1 }" />
-              </el-form-item>
-            </el-form>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <action-param-list :params.sync="saveActionForm.params" />
-        </el-row>
-
-        <el-row style="margin-top: 5px">
-          <el-col :span="12">
-            <action-java-import-list :java-imports.sync="saveActionForm.javaImports" />
-          </el-col>
-          <el-col :span="12">
-            <el-form size="mini" label-position="rigth" label-width="85px">
-              <el-form-item label="导入Action">
-                <el-cascader
-                  v-model="saveActionForm.actionImports"
-                  :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true, expandTrigger: 'hover' }"
-                  :options="importActionOptions"
-                  filterable
-                  clearable
-                  style="width: 100%"
-                  placeholder="选择Action"
-                >
-                </el-cascader>
-              </el-form-item>
-            </el-form>
-          </el-col>
-        </el-row>
-      </el-col>
-
-      <el-col :span="14" style="height: 100%; overflow: auto">
-        <action-local-var-list :local-vars.sync="saveActionForm.localVars" :environment-list="environmentList" :table-height="topHeight" />
-      </el-col>
-    </el-row>
-
-    <div style="margin-top: 5px">
-      <action-step ref="actionStep" :steps.sync="saveActionForm.steps" :height="bottomHeight" @actionTreeChange="onActionTreeChange" />
+      <el-row>
+        <el-form size="mini" :inline="true">
+          <el-form-item>
+            <el-button type="text" v-popover:action-return-value-popover>返回值</el-button>
+            <el-button type="text" @click="showParam = true">方法参数</el-button>
+            <el-button type="text" @click="showLocalVar = true">局部变量</el-button>
+            <el-button type="text" @click="showJavaImport = true">Java Import</el-button>
+            <el-button type="text" v-popover:action-import-popover title="java代码调用非基础组件，需要在此导入">导入Action</el-button>
+            <el-button type="text" v-popover:action-depends-popover v-if="isTestCase">依赖用例</el-button>
+            <el-button type="text" v-popover:action-page-popover v-if="!isTestCase">绑定Page</el-button>
+          </el-form-item>
+          <el-form-item label="调试环境">
+            <el-select v-model="env" @change="selectedEnv" @visible-change="envSelectChange" style="width: 150px">
+              <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" title="ctrl+d">调试</el-button>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" v-show="code" @click="showCode = true">查看code</el-button>
+          </el-form-item>
+        </el-form>
+      </el-row>
     </div>
+
+    <action-step ref="actionStep" :steps.sync="saveActionForm.steps" :height="bottomHeight" @actionTreeChange="onActionTreeChange" />
+
+    <action-param-list-drawer :visible.sync="showParam" :params.sync="saveActionForm.params" />
+    <action-code-drawer :code="code" :visible.sync="showCode" />
+    <action-local-var-list-drawer :visible.sync="showLocalVar" :local-vars.sync="saveActionForm.localVars" :environment-list="environmentList" />
+    <action-java-import-list-drawer :visible.sync="showJavaImport" :java-imports.sync="saveActionForm.javaImports" />
+    <el-popover
+      placement="bottom"
+      ref="action-import-popover"
+      width="600"
+      trigger="click"
+    >
+      <el-cascader
+        v-model="saveActionForm.actionImports"
+        :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true, expandTrigger: 'hover' }"
+        :options="importActionOptions"
+        filterable
+        clearable
+        style="width: 100%"
+      />
+    </el-popover>
+    <el-popover
+      placement="bottom"
+      ref="action-depends-popover"
+      width="600"
+      trigger="click"
+    >
+      <el-cascader
+        v-model="saveActionForm.depends"
+        :props="{ value: 'id', label: 'name', children: 'children', emitPath: false, multiple: true, expandTrigger: 'hover' }"
+        :options="dependsOptions"
+        filterable
+        clearable
+        style="width: 100%"
+      />
+    </el-popover>
+    <el-popover
+      placement="bottom"
+      ref="action-page-popover"
+      width="600"
+      trigger="click"
+    >
+      <el-select
+        v-model="saveActionForm.pageId"
+        @visible-change="pageSelectChange"
+        filterable
+        clearable
+        style="width: 100%"
+      >
+        <el-option v-for="page in pages" :key="page.id" :value="page.id" :label="page.name" />
+      </el-select>
+    </el-popover>
+    <el-popover
+      placement="bottom"
+      ref="action-return-value-popover"
+      width="600"
+      trigger="click"
+    >
+      <el-form size="mini" label-width="50px">
+        <el-form-item label="类型" :rules="[{required: true}]">
+          <el-input v-model.trim="saveActionForm.returnValueType" clearable />
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input v-model="saveActionForm.returnValueDesc" clearable />
+        </el-form-item>
+      </el-form>
+    </el-popover>
   </div>
 </template>
 <script>
-import ActionJavaImportList from './ActionJavaImportList'
-import ActionParamList from './ActionParamList'
-import ActionLocalVarList from './ActionLocalVarList'
+import ActionJavaImportListDrawer from './ActionJavaImportListDrawer'
+import ActionParamListDrawer from './ActionParamListDrawer'
+import ActionLocalVarListDrawer from './ActionLocalVarListDrawer'
 import ActionStep from './ActionStep'
 import ActionCodeDrawer from './ActionCodeDrawer'
 import { getPageList } from '@/api/page'
@@ -129,9 +139,9 @@ import { getEnvironmentList } from '@/api/environment'
 import { stateList } from '@/utils/common'
 export default {
   components: {
-    ActionJavaImportList,
-    ActionParamList,
-    ActionLocalVarList,
+    ActionJavaImportListDrawer,
+    ActionParamListDrawer,
+    ActionLocalVarListDrawer,
     ActionStep,
     ActionCodeDrawer
   },
@@ -142,8 +152,7 @@ export default {
   data() {
     return {
       env: this.$store.state.project.env,
-      topHeight: 300,
-      bottomHeight: 0,
+      bottomHeight: 60,
       environmentList: [],
       stateList: stateList,
       saveActionForm: {
@@ -172,7 +181,10 @@ export default {
       dependsOptions: [],
       importActionOptions: [],
       showCode: false,
-      code: ''
+      code: '',
+      showLocalVar: false,
+      showParam: false,
+      showJavaImport: false
     }
   },
   destroyed() {
@@ -181,11 +193,14 @@ export default {
     document.onkeydown = null
   },
   mounted() {
+    const top = document.getElementById('top')
+    const topHeight = parseInt(window.getComputedStyle(top)['height'].replace('px', ''))
+
     this.$nextTick(() => {
-      this.bottomHeight = window.innerHeight - (this.topHeight + 100)
+      this.bottomHeight = window.innerHeight - (topHeight + 100)
 
       window.onresize = () => {
-        this.bottomHeight = window.innerHeight - (this.topHeight + 100)
+        this.bottomHeight = window.innerHeight - (topHeight + 100)
       }
     })
     window.onbeforeunload = () => {

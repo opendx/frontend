@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <el-drawer
+    :visible.sync="drawerVisible"
+    direction="rtl"
+    :with-header="false"
+    size="80%"
+  >
     <el-table :data="paramList" border>
       <el-table-column align="center">
         <template slot="header">
@@ -26,18 +31,25 @@
         </template>
       </el-table-column>
     </el-table>
-  </div>
+  </el-drawer>
 </template>
 
 <script>
 export default {
   props: {
+    visible: Boolean,
     params: {
       type: Array,
       default: () => []
     }
   },
   watch: {
+    visible(val) {
+      this.drawerVisible = val
+    },
+    drawerVisible(val) {
+      this.$emit('update:visible', val)
+    },
     params() {
       this.paramList = this.params
     },
@@ -47,6 +59,7 @@ export default {
   },
   data() {
     return {
+      drawerVisible: false,
       paramList: this.params
     }
   },
