@@ -40,7 +40,7 @@
                     <el-tag type="success">{{ getActionName(row.actionId) }}</el-tag>
                   </template>
                   <template scope="scope">
-                    <span>{{ getParamType(row.actionId, scope.$index) }}</span>
+                    <span>{{ getSimpleParamType(row.actionId, scope.$index) }}</span>
                     <el-button type="text" @click="showStepActionParamDialog(row.actionId, scope.$index, row.args)">
                       {{ getParamName(row.actionId, scope.$index) }}
                     </el-button>
@@ -128,6 +128,7 @@ import 'codemirror/addon/fold/foldgutter'
 import 'codemirror/addon/fold/brace-fold'
 import 'codemirror/addon/fold/comment-fold'
 import ImageInput from '@/components/ImageInput'
+import { getJavaSimpleName } from '@/utils/common'
 export default {
   components: {
     ActionTree,
@@ -242,9 +243,9 @@ export default {
       this.actionTreeToMap(this.actionTree, this.actionMap)
       this.showTable = true // 防止步骤提前渲染，从actionMap拿不到action的问题
     },
-    getParamType(actionId, paramIndex) {
+    getSimpleParamType(actionId, paramIndex) {
       const action = this.actionMap.get(actionId)
-      return action.params[paramIndex].type
+      return getJavaSimpleName(action.params[paramIndex].type)
     },
     getParamName(actionId, paramIndex) {
       const action = this.actionMap.get(actionId)
@@ -252,7 +253,7 @@ export default {
     },
     getActionReturnValueText(actionId) {
       const action = this.actionMap.get(actionId)
-      let text = `返回值: ${action.returnValueType}`
+      let text = `返回值: ${getJavaSimpleName(action.returnValueType)}`
       if (action.returnValueDesc) {
         text = `${text}(${action.returnValueDesc})`
       }
