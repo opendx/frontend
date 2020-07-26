@@ -38,6 +38,7 @@
 
 <script>
 import clipboard from '@/directive/clipboard/index.js'
+import { getJavaSimpleName } from '@/utils/common'
 export default {
   props: {
     actionTree: Array,
@@ -81,7 +82,7 @@ export default {
 
         const invoke = 'invoke: ' + (node.invoke || '无')
 
-        let returnValueText = '返回值: ' + node.returnValue
+        let returnValueText = '返回值: ' + node.returnValueType
         if (node.returnValueDesc) {
           returnValueText = returnValueText + '(' + node.returnValueDesc + ')'
         }
@@ -120,9 +121,9 @@ export default {
     copyJavaInvoke(action) {
       let params = ''
       if (action.params && action.params.length > 0) {
-        params = action.params.map(p => p.type + ' ' + p.name).join(', ')
+        params = action.params.map(p => getJavaSimpleName(p.type) + ' ' + p.name).join(', ')
       }
-      // type: 1 基础组件
+      // type: 1 基础Action
       const methodName = action.type === 1 ? action.invoke : 'action_' + action.id
       return methodName + '(' + params + ')'
     },

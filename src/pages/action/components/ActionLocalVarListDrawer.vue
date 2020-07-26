@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <el-table :data="localVarList" border :height="tableHeight">
+  <el-drawer
+    :visible.sync="drawerVisible"
+    direction="rtl"
+    :with-header="false"
+    size="80%"
+  >
+    <el-table :data="localVarList" border>
       <el-table-column align="center">
         <template slot="header">
           <el-button type="text" class="el-icon-circle-plus" @click="addLocalVar(localVarList.length)" />
@@ -55,15 +60,15 @@
         </template>
       </el-table-column>
     </el-table>
-  </div>
+  </el-drawer>
 </template>
 
 <script>
 import ImageInput from '@/components/ImageInput'
 export default {
   props: {
+    visible: Boolean,
     environmentList: Array,
-    tableHeight: Number,
     localVars: {
       type: Array,
       default: () => []
@@ -73,6 +78,12 @@ export default {
     ImageInput
   },
   watch: {
+    visible(val) {
+      this.drawerVisible = val
+    },
+    drawerVisible(val) {
+      this.$emit('update:visible', val)
+    },
     localVars() {
       this.localVarList = this.localVars
     },
@@ -82,7 +93,7 @@ export default {
   },
   data() {
     return {
-      returnValue: null,
+      drawerVisible: false,
       localVarList: this.localVars
     }
   },

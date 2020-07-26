@@ -5,7 +5,7 @@
     :with-header="false"
     :destroy-on-close="true"
     size="50%">
-    <div style="padding: 5px; font-size: 8px">
+    <div style="font-size: 8px">
       <codemirror v-model="code" :options="cmOptions" />
     </div>
   </el-drawer>

@@ -34,25 +34,25 @@
           </el-table-column>
           <el-table-column label="Action" min-width="300">
             <template scope="{ row }">
-              <el-table :data="row.paramValues" border>
+              <el-table :data="row.args" border>
                 <el-table-column :key="row.actionId" label="参数" width="150" show-overflow-tooltip>
                   <template slot="header">
                     <el-tag type="success">{{ getActionName(row.actionId) }}</el-tag>
                   </template>
-                  <template scope="scope_paramValues">
-                    <span>{{ scope_paramValues.row.paramType }}</span>
-                    <el-button type="text" @click="showStepActionParamDialog(row.actionId, scope_paramValues.row)">
-                      {{ scope_paramValues.row.paramName }}
+                  <template scope="scope">
+                    <span>{{ getSimpleParamType(row.actionId, scope.$index) }}</span>
+                    <el-button type="text" @click="showStepActionParamDialog(row.actionId, scope.$index, row.args)">
+                      {{ getParamName(row.actionId, scope.$index) }}
                     </el-button>
                   </template>
                 </el-table-column>
                 <el-table-column label="参数值">
-                  <template scope="scope_paramValues">
+                  <template scope="scope">
                     <div v-if="row.actionId !== 1">
-                      <image-input v-model="scope_paramValues.row.paramValue" />
+                      <image-input v-model="row.args[scope.$index]" />
                     </div>
                     <div v-else class="java-code">
-                      <codemirror v-model="scope_paramValues.row.paramValue" :options="cmOptions" />
+                      <codemirror v-model="row.args[scope.$index]" :options="cmOptions" />
                     </div>
                   </template>
                 </el-table-column>
@@ -128,6 +128,7 @@ import 'codemirror/addon/fold/foldgutter'
 import 'codemirror/addon/fold/brace-fold'
 import 'codemirror/addon/fold/comment-fold'
 import ImageInput from '@/components/ImageInput'
+import { getJavaSimpleName } from '@/utils/common'
 export default {
   components: {
     ActionTree,
@@ -154,7 +155,8 @@ export default {
       stepActionParamDialog: {
         visible: false,
         param: {},
-        stepActionParam: {}
+        paramIndex: undefined,
+        args: []
       },
       stepList: this.steps,
       selectedSteps: [],
@@ -188,19 +190,15 @@ export default {
     this.fetchActionCascader()
   },
   methods: {
-    showStepActionParamDialog(stepActionId, stepActionParam) {
+    showStepActionParamDialog(stepActionId, paramIndex, args) {
       const action = this.actionMap.get(stepActionId)
-      if (action && action.params) {
-        const params = action.params.filter(p => p.name === stepActionParam.paramName)
-        if (params && params.length > 0) {
-          this.stepActionParamDialog.param = params[0]
-          this.stepActionParamDialog.stepActionParam = stepActionParam
-          this.stepActionParamDialog.visible = true
-        }
-      }
+      this.stepActionParamDialog.param = action.params[paramIndex]
+      this.stepActionParamDialog.paramIndex = paramIndex
+      this.stepActionParamDialog.args = args
+      this.stepActionParamDialog.visible = true
     },
     clickPossibleValue(value) {
-      this.stepActionParamDialog.stepActionParam.paramValue = value
+      this.$set(this.stepActionParamDialog.args, this.stepActionParamDialog.paramIndex, value)
       this.stepActionParamDialog.visible = false
     },
     moveUpDisable(index) {
@@ -219,14 +217,10 @@ export default {
       this.stepList.splice(index, 1)
     },
     addStep(action, stepNumber) {
-      const step = { actionId: action.id, paramValues: [], handleException: null, status: 1 }
+      const step = { actionId: action.id, args: [], handleException: null, status: 1 }
       if (action.params) {
         action.params.forEach(param => {
-          step.paramValues.push({
-            paramName: param.name,
-            paramType: param.type,
-            paramValue: ''
-          })
+          step.args.push('')
         })
       }
 
@@ -249,9 +243,17 @@ export default {
       this.actionTreeToMap(this.actionTree, this.actionMap)
       this.showTable = true // 防止步骤提前渲染，从actionMap拿不到action的问题
     },
+    getSimpleParamType(actionId, paramIndex) {
+      const action = this.actionMap.get(actionId)
+      return getJavaSimpleName(action.params[paramIndex].type)
+    },
+    getParamName(actionId, paramIndex) {
+      const action = this.actionMap.get(actionId)
+      return action.params[paramIndex].name
+    },
     getActionReturnValueText(actionId) {
       const action = this.actionMap.get(actionId)
-      let text = `返回值: ${action.returnValue}`
+      let text = `返回值: ${getJavaSimpleName(action.returnValueType)}`
       if (action.returnValueDesc) {
         text = `${text}(${action.returnValueDesc})`
       }
@@ -259,7 +261,7 @@ export default {
     },
     isEvaluationDisabled(actionId) {
       const action = this.actionMap.get(actionId)
-      return action.returnValue === 'void'
+      return action.returnValueType === 'void'
     },
     getActionName(actionId) {
       return this.actionMap.get(actionId).name
