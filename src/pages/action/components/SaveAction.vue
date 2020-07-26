@@ -38,7 +38,7 @@
             <el-button type="text" @click="showParam = true">方法参数</el-button>
             <el-button type="text" @click="showLocalVar = true">局部变量</el-button>
             <el-button type="text" @click="showJavaImport = true">Java Import</el-button>
-            <el-button type="text" v-popover:action-import-popover title="java代码调用非基础组件，需要在此导入">导入Action</el-button>
+            <el-button type="text" v-popover:action-import-popover title="java代码调用非基础Action，需要在此导入">导入Action</el-button>
             <el-button type="text" v-popover:action-depends-popover v-if="isTestCase">依赖用例</el-button>
             <el-button type="text" v-popover:action-page-popover v-if="!isTestCase">绑定Page</el-button>
           </el-form-item>
@@ -246,7 +246,7 @@ export default {
   methods: {
     onActionTreeChange(actionTree) {
       if (actionTree && actionTree.length > 0) {
-        const actionsWithoutBasicAction = actionTree.filter(a => a.name !== '基础组件')
+        const actionsWithoutBasicAction = actionTree.filter(a => a.name !== '基础Action')
         if (actionsWithoutBasicAction.length > 0) {
           this.importActionOptions = actionsWithoutBasicAction
         }

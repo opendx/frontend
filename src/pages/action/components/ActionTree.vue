@@ -123,7 +123,7 @@ export default {
       if (action.params && action.params.length > 0) {
         params = action.params.map(p => getJavaSimpleName(p.type) + ' ' + p.name).join(', ')
       }
-      // type: 1 基础组件
+      // type: 1 基础Action
       const methodName = action.type === 1 ? action.invoke : 'action_' + action.id
       return methodName + '(' + params + ')'
     },
