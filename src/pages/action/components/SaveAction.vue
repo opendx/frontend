@@ -35,9 +35,9 @@
         <el-form size="mini" :inline="true">
           <el-form-item>
             <el-button type="text" v-popover:action-return-value-popover>返回值</el-button>
-            <el-button type="text" @click="showParam = true">方法参数</el-button>
+            <el-button type="text" v-popover:action-param-popover>方法参数</el-button>
             <el-button type="text" @click="showLocalVar = true">局部变量</el-button>
-            <el-button type="text" @click="showJavaImport = true">Java Import</el-button>
+            <el-button type="text" v-popover:action-java-import-popover>Java Import</el-button>
             <el-button type="text" v-popover:action-import-popover title="java代码调用非基础Action，需要在此导入">导入Action</el-button>
             <el-button type="text" v-popover:action-depends-popover v-if="isTestCase">依赖用例</el-button>
             <el-button type="text" v-popover:action-page-popover v-if="!isTestCase">绑定Page</el-button>
@@ -59,10 +59,8 @@
 
     <action-step ref="actionStep" :steps.sync="saveActionForm.steps" :height="bottomHeight" @actionTreeChange="onActionTreeChange" />
 
-    <action-param-list-drawer :visible.sync="showParam" :params.sync="saveActionForm.params" />
     <action-code-drawer :code="code" :visible.sync="showCode" />
     <action-local-var-list-drawer :visible.sync="showLocalVar" :local-vars.sync="saveActionForm.localVars" :environment-list="environmentList" />
-    <action-java-import-list-drawer :visible.sync="showJavaImport" :java-imports.sync="saveActionForm.javaImports" />
     <el-popover
       placement="bottom"
       ref="action-import-popover"
@@ -124,11 +122,27 @@
         </el-form-item>
       </el-form>
     </el-popover>
+    <el-popover
+      placement="bottom"
+      ref="action-param-popover"
+      width="1000"
+      trigger="click"
+    >
+      <action-param-list :params.sync="saveActionForm.params" />
+    </el-popover>
+    <el-popover
+      placement="bottom"
+      ref="action-java-import-popover"
+      width="800"
+      trigger="click"
+    >
+      <action-java-import-list :java-imports.sync="saveActionForm.javaImports" />
+    </el-popover>
   </div>
 </template>
 <script>
-import ActionJavaImportListDrawer from './ActionJavaImportListDrawer'
-import ActionParamListDrawer from './ActionParamListDrawer'
+import ActionJavaImportList from './ActionJavaImportList'
+import ActionParamList from './ActionParamList'
 import ActionLocalVarListDrawer from './ActionLocalVarListDrawer'
 import ActionStep from './ActionStep'
 import ActionCodeDrawer from './ActionCodeDrawer'
@@ -139,8 +153,8 @@ import { getEnvironmentList } from '@/api/environment'
 import { stateList } from '@/utils/common'
 export default {
   components: {
-    ActionJavaImportListDrawer,
-    ActionParamListDrawer,
+    ActionJavaImportList,
+    ActionParamList,
     ActionLocalVarListDrawer,
     ActionStep,
     ActionCodeDrawer
@@ -182,9 +196,7 @@ export default {
       importActionOptions: [],
       showCode: false,
       code: '',
-      showLocalVar: false,
-      showParam: false,
-      showJavaImport: false
+      showLocalVar: false
     }
   },
   destroyed() {
