@@ -2,7 +2,7 @@
   <div>
     <el-row :gutter="2">
       <el-col :span="5">
-        <action-tree :height="height" :actionTree="actionTree" :step-count="stepList.length" @actionClick="addStep" />
+        <action-tree :height="height" :action-tree="actionTree" :step-count="stepList.length" @actionClick="addStep" />
       </el-col>
       <el-col :span="19">
         <el-table
@@ -37,7 +37,7 @@
               <el-table :data="row.args" border>
                 <el-table-column :key="row.actionId" label="参数" width="150" show-overflow-tooltip>
                   <template slot="header">
-                    <el-tag type="success">{{ getActionName(row.actionId) }}</el-tag>
+                    <el-tag type="success" @click="clickActionName(row.actionId)">{{ getActionName(row.actionId) }}</el-tag>
                   </template>
                   <template scope="scope">
                     <span>{{ getSimpleParamType(row.actionId, scope.$index) }}</span>
@@ -63,8 +63,8 @@
             <template scope="{ row }">
               <span class="ellipsis">{{ getActionReturnValueText(row.actionId) }}</span>
               <el-input
-                :disabled="isEvaluationDisabled(row.actionId)"
                 v-model="row.evaluation"
+                :disabled="isEvaluationDisabled(row.actionId)"
                 type="textarea"
                 :autosize="{ minRows: 1 }"
               />
@@ -141,14 +141,6 @@ export default {
       default: () => []
     }
   },
-  watch: {
-    steps() {
-      this.stepList = this.steps
-    },
-    stepList() {
-      this.$emit('update:steps', this.stepList)
-    }
-  },
   data() {
     return {
       showTable: false,
@@ -184,6 +176,14 @@ export default {
         row.number = stepNumber
         return row.number
       }
+    }
+  },
+  watch: {
+    steps() {
+      this.stepList = this.steps
+    },
+    stepList() {
+      this.$emit('update:steps', this.stepList)
     }
   },
   created() {
@@ -265,6 +265,14 @@ export default {
     },
     getActionName(actionId) {
       return this.actionMap.get(actionId).name
+    },
+    clickActionName(actionId) {
+      const actionType = this.actionMap.get(actionId).type
+      if (actionType === 2) {
+        this.$router.push({ name: 'UpdateEncapsulationAction', params: { actionId }})
+      } else if (actionType === 3) {
+        this.$router.push({ name: 'UpdateTestcaseAction', params: { actionId }})
+      }
     },
     actionTreeToMap(actionTree, actionMap) {
       actionTree.forEach(node => {
