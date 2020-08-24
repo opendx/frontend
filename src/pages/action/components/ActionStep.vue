@@ -2,7 +2,7 @@
   <div>
     <el-row :gutter="2">
       <el-col :span="5">
-        <action-tree :height="height" :action-tree="actionTree" :step-count="stepList.length" @actionClick="addStep" />
+        <action-tree ref="actionTree" :height="height" :action-tree="actionTree" :step-count="stepList.length" @actionClick="addStep" />
       </el-col>
       <el-col :span="19">
         <el-table
@@ -11,7 +11,9 @@
           :data="stepList"
           border
           :height="height"
+          highlight-current-row
           @selection-change="handleSelectionChange"
+          @row-click="clickStep"
         >
           <el-table-column type="selection" width="20" />
           <el-table-column width="220">
@@ -283,6 +285,9 @@ export default {
           this.actionTreeToMap(node.children, actionMap)
         }
       })
+    },
+    clickStep(row) {
+      this.$refs.actionTree.setCurrentKey(row.actionId)
     }
   }
 }

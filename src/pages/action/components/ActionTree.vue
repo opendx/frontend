@@ -7,8 +7,10 @@
       <el-tree
         :data="actionTree"
         :props="{ children: 'children', label: 'name' }"
+        highlight-current
         default-expand-all
         :filter-node-method="filterNode"
+        node-key="id"
         ref="tree"
       >
         <span slot-scope="{ node, data }">
@@ -129,6 +131,9 @@ export default {
     },
     onCopySuccess() {
       this.$notify.success('Java调用已添加到剪切板')
+    },
+    setCurrentKey(id) {
+      this.$refs.tree.setCurrentKey(id)
     }
   }
 }
