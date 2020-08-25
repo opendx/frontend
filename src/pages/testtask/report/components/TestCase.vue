@@ -95,10 +95,6 @@ export default {
 </script>
 
 <style>
-  .el-drawer__body {
-    height: 100%;
-    overflow: auto;
-  }
   .CodeMirror {
     height: auto;
     font-size: 10px;

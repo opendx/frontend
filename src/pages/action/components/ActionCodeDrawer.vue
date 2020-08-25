@@ -51,8 +51,4 @@ export default {
   .CodeMirror {
     height: auto;
   }
-  .el-drawer__body {
-    height: 100%;
-    overflow: auto;
-  }
 </style>
