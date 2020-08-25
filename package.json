@@ -1,6 +1,6 @@
 {
   "name": "opendx-frontend",
-  "version": "0.7.5",
+  "version": "0.7.7",
   "description": "opendx前端，基于https://github.com/PanJiaChen/vue-element-admin开发",
   "author": "jiangyitao",
   "license": "MIT",
