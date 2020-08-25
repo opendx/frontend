@@ -182,11 +182,11 @@ export default {
         javaImports: [],
         actionImports: [],
         platforms: [],
-        pageId: undefined,
+        pageId: null,
         projectId: this.$store.state.project.id,
-        categoryId: undefined,
+        categoryId: null,
         state: 2,
-        depends: undefined
+        depends: null
       },
       categories: [],
       pages: [],

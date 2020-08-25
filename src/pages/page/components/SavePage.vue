@@ -12,6 +12,8 @@
 
       <span class="required" /><el-input v-model="savePageForm.name" clearable style="width: 200px" placeholder="page名" />
       <el-button type="primary" @click="savePage">保 存</el-button>
+
+      <el-button @click="addAction">添加Action</el-button>
     </el-header>
 
     <el-main>
@@ -442,6 +444,18 @@ export default {
     },
     delBy(index) {
       this.savePageForm.bys.splice(index, 1)
+    },
+    addAction() {
+      if (!this.savePageForm.id) {
+        this.$notify.error('page未保存，无法添加')
+        return
+      }
+      this.$router.push({
+        name: 'AddEncapsulationAction',
+        params: {
+          pageId: this.savePageForm.id
+        }
+      })
     }
   }
 }
