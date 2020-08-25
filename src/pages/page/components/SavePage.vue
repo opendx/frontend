@@ -14,7 +14,10 @@
       <el-button type="primary" @click="savePage">保 存</el-button>
 
       <el-button @click="addAction">添加Action</el-button>
+      <el-button @click="showPageAction">查看Action</el-button>
     </el-header>
+
+    <page-action-drawer :page-id="savePageForm.id" :visible.sync="showPageActionDrawer" />
 
     <el-main>
       <el-form label-width="80px">
@@ -164,6 +167,7 @@ import { getCategoryList } from '@/api/category'
 import DeviceInspector from '@/pages/device/DeviceInspector'
 import clipboard from '@/directive/clipboard/index.js'
 import ImageInput from '@/components/ImageInput'
+import PageActionDrawer from './PageActionDrawer'
 
 export default {
   directives: {
@@ -174,10 +178,12 @@ export default {
   },
   components: {
     DeviceInspector,
-    ImageInput
+    ImageInput,
+    PageActionDrawer
   },
   data() {
     return {
+      showPageActionDrawer: false,
       savePageForm: {
         id: undefined,
         name: '',
@@ -456,6 +462,13 @@ export default {
           pageId: this.savePageForm.id
         }
       })
+    },
+    showPageAction() {
+      if (!this.savePageForm.id) {
+        this.$notify.error('page未保存，无法查看')
+        return
+      }
+      this.showPageActionDrawer = true
     }
   }
 }
