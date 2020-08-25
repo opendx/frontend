@@ -49,3 +49,11 @@ function unqualify(name) {
   if (!name) return name
   return name.substring(name.lastIndexOf('.') + 1)
 }
+
+export function copyMatchingKeyValues(source, target) {
+  Object.keys(target).forEach(k => {
+    if (source[k] !== undefined) {
+      source[k] = target[k]
+    }
+  })
+}

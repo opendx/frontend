@@ -28,6 +28,7 @@
 
 import { addTestSuite, updateTestSuite, getTestSuiteList } from '@/api/testSuite'
 import { getActionCascader } from '@/api/action'
+import { copyMatchingKeyValues } from '@/utils/common'
 
 export default {
   props: {
@@ -61,10 +62,7 @@ export default {
         this.testSuite = response.data[0]
       })
     } else {
-      // 复制
-      if (this.$route.params.name) {
-        this.testSuite = this.$route.params
-      }
+      copyMatchingKeyValues(this.testSuite, this.$route.params)
     }
   },
   methods: {

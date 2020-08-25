@@ -150,7 +150,7 @@ import { getPageList } from '@/api/page'
 import { getCategoryList } from '@/api/category'
 import { addAction, updateAction, getActionList, debugAction } from '@/api/action'
 import { getEnvironmentList } from '@/api/environment'
-import { stateList } from '@/utils/common'
+import { stateList, copyMatchingKeyValues } from '@/utils/common'
 export default {
   components: {
     ActionJavaImportList,
@@ -241,9 +241,7 @@ export default {
       this.fetchPageList()
     }
     if (this.isAdd) {
-      if (this.$route.params.name) { // 复制，传递过来的数据
-        this.saveActionForm = this.$route.params
-      }
+      copyMatchingKeyValues(this.saveActionForm, this.$route.params)
       // 记录开始时的表单数据
       this.startSaveActionFormString = JSON.stringify(this.saveActionForm)
     } else {
