@@ -47,14 +47,15 @@ export default {
   },
   mounted() {
     this.loading = true
+    this.closeBoardByClickCloseBtn = false
 
     this.ws = new WebSocket('ws://' + this.agentIp + ':' + this.agentPort + '/browser/' + this.browserId + '/user/' + this.username + '/project/' + this.$store.state.project.id)
     this.ws.onclose = () => {
       this.loading = false
       if (!this.closeBoardByClickCloseBtn) { // 点击关闭调试，不弹提示
         this.alertOnWsClose()
+        this.closeBoard()
       }
-      this.closeBoard()
     }
     this.ws.onerror = () => {
       this.loading = false

@@ -63,6 +63,18 @@ export default {
       }
     }
   },
+  computed: {
+    showBrowser() {
+      return this.$store.state.browser.show
+    }
+  },
+  watch: {
+    showBrowser(newValue, oldValue) {
+      if (oldValue === true && newValue === false) {
+        setTimeout(this.fetchBrowserList, 2000)
+      }
+    }
+  },
   created() {
     this.fetchBrowserList()
   },

@@ -75,6 +75,18 @@ export default {
       }
     }
   },
+  computed: {
+    showMobile() {
+      return this.$store.state.mobile.show
+    }
+  },
+  watch: {
+    showMobile(newValue, oldValue) {
+      if (oldValue === true && newValue === false) {
+        setTimeout(this.fetchMobileList, 2000)
+      }
+    }
+  },
   created() {
     this.fetchMobileList()
   },

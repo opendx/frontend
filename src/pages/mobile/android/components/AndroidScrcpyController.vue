@@ -51,6 +51,8 @@ export default {
   },
   mounted() {
     this.loading = true
+    this.closeBoardByClickCloseBtn = false
+
     const player = new Player()
     const canvas = player.canvas
     canvas.setAttribute('id', 'scrcpyCanvas') // style width: 100%;
@@ -62,8 +64,8 @@ export default {
       this.loading = false
       if (!this.closeBoardByClickCloseBtn) { // 点击关闭，不弹提示
         this.alertOnWsClose()
+        this.$refs.controllerButtom.closeBoard()
       }
-      this.$refs.controllerButtom.closeBoard()
     }
     this.androidWebsocket.onerror = () => {
       this.loading = false

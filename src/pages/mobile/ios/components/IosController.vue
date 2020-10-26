@@ -54,6 +54,8 @@ export default {
   },
   mounted() {
     this.loading = true
+    this.closeBoardByClickCloseBtn = false
+
     const canvas = document.getElementById('iosControllerCanvas')
     const g = canvas.getContext('2d')
     const BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
@@ -65,8 +67,8 @@ export default {
       this.loading = false
       if (!this.closeBoardByClickCloseBtn) { // 点击关闭，不弹提示
         this.alertOnWsClose()
+        this.$refs.controllerButtom.closeBoard()
       }
-      this.$refs.controllerButtom.closeBoard()
     }
     this.iosWebsocket.onerror = () => {
       this.loading = false
