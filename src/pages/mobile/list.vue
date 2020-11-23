@@ -27,7 +27,10 @@
         <el-table-column label="agent ip" align="center" prop="agentIp" width="150" show-overflow-tooltip />
         <el-table-column label="操作" align="center" show-overflow-tooltip>
           <template scope="{ row }">
-            <el-button :type="row.status | btnType" :disabled="row.status | btnDisabled" @click="useMobile(row)">{{ row | btnText }}</el-button>
+            <el-button :type="row.status | btnType" :disabled="row.status | btnDisabled" @click="useMobile(row)">
+              {{ row | btnText }}
+            </el-button>
+            <el-button v-permission="['admin']" type="danger" class="el-icon-delete" @click="deleteMobile(row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -41,13 +44,15 @@
 
 <script>
 
-import { getMobileList, mobileStart } from '@/api/mobile'
+import { getMobileList, mobileStart, deleteMobile } from '@/api/mobile'
 import Pagination from '@/components/Pagination/index'
+import permission from '@/directive/permission/index.js' // 权限判断指令
 
 export default {
   components: {
     Pagination
   },
+  directives: { permission },
   filters: {
     // mobileStatus: 0 -> 离线 ， 1 -> 使用中 ， 2 -> 在线闲置
     btnDisabled(status) {
@@ -94,6 +99,18 @@ export default {
     onQueryBtnClick() {
       this.queryForm.pageNum = 1
       this.fetchMobileList()
+    },
+    deleteMobile(mobile) {
+      this.$confirm(`删除${mobile.id}`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteMobile(mobile.id).then(resp => {
+          this.$notify.success(resp.msg)
+          this.fetchMobileList()
+        })
+      })
     },
     useMobile(mobile) {
       if (this.$store.state.mobile.show) {

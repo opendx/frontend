@@ -21,3 +21,10 @@ export function getOnlineMobiles(platform) {
     url: '/mobile/online/platform/' + platform
   })
 }
+
+export function deleteMobile(mobileId) {
+  return request({
+    method: 'delete',
+    url: `/mobile/${mobileId}`
+  })
+}
