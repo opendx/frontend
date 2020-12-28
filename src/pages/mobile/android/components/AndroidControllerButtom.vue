@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-popover v-model="visible" placement="left" trigger="click">
-      <mobile-capture style="width: 1200px; height: 680px" v-if="initMobileCapture" @closeMobileCapture="visible = false" />
-      <el-button slot="reference" :disabled="disable" @click="initMobileCapture = true" size="mini">
+      <mobile-capture v-if="initMobileCapture" style="width: 1200px; height: 680px" @closeMobileCapture="visible = false" />
+      <el-button slot="reference" :disabled="disable" size="mini" @click="initMobileCapture = true">
         <svg-icon icon-class="capture" />
       </el-button>
     </el-popover>
@@ -10,14 +10,14 @@
     <screenshot-viewer />
 
     <el-button-group>
-      <el-button size="mini" @click="clickHome" :disabled="disable">Home</el-button>
-      <el-button size="mini" @click="clickBack" :disabled="disable">Back</el-button>
+      <el-button size="mini" :disabled="disable" @click="sendKeycode(3)">Home</el-button>
+      <el-button size="mini" :disabled="disable" @click="sendKeycode(4)">Back</el-button>
       <el-button size="mini" @click="clickClose">Close</el-button>
     </el-button-group>
 
     <el-popover placement="left" trigger="click">
-      <el-button size="mini" @click="clickMenu">Menu</el-button>
-      <el-button size="mini" @click="clickPower">Power</el-button>
+      <el-button size="mini" @click="sendKeycode(82)">Menu</el-button>
+      <el-button size="mini" @click="sendKeycode(26)">Power</el-button>
       <el-divider />
       <!-- 安装APP -->
       <el-upload drag action="/" :on-change="onChange" :multiple="false" :auto-upload="false">
@@ -30,7 +30,7 @@
       <el-tag v-if="adbKitIsStart" type="success">{{ adbkitTip }}</el-tag>
       <el-divider />
       <!--切换输入法-->
-      <el-select v-model="ime" @visible-change="selectIme" @change="imeSelected" placeholder="切换输入法" style="width: 100%">
+      <el-select v-model="ime" placeholder="切换输入法" style="width: 100%" @visible-change="selectIme" @change="imeSelected">
         <el-option
           v-for="ime in imeList"
           :key="ime.value"
@@ -68,19 +68,7 @@ export default {
       adbKitIsStart: false,
       installBtnLoading: false,
       installBtnText: '安装APP',
-      choosedFile: null,
-      menu: {
-        operation: 'menu'
-      },
-      home: {
-        operation: 'home'
-      },
-      back: {
-        operation: 'back'
-      },
-      power: {
-        operation: 'power'
-      }
+      choosedFile: null
     }
   },
   computed: {
@@ -159,21 +147,11 @@ export default {
         this.installBtnLoading = false
       })
     },
-    // 点击menu
-    clickMenu() {
-      this.androidWebsocket.send(JSON.stringify(this.menu))
-    },
-    // 点击home
-    clickHome() {
-      this.androidWebsocket.send(JSON.stringify(this.home))
-    },
-    // 点击back
-    clickBack() {
-      this.androidWebsocket.send(JSON.stringify(this.back))
-    },
-    // 点击power
-    clickPower() {
-      this.androidWebsocket.send(JSON.stringify(this.power))
+    sendKeycode(keycode) {
+      this.androidWebsocket.send(JSON.stringify({
+        operation: 'k',
+        keycode
+      }))
     },
     clickClose() {
       this.$emit('onClickClose')
