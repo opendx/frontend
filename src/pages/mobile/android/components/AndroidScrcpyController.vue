@@ -9,6 +9,7 @@
 
 <script>
 import AndroidControllerButtom from './AndroidControllerButtom'
+import MapToAndroid from '@/utils/stf-keycodes'
 
 export default {
   components: {
@@ -131,6 +132,37 @@ export default {
         this.touchMove.height = canvas.height
         this.androidWebsocket.send(JSON.stringify(this.touchMove))
       }
+    }
+
+    canvas.setAttribute('tabindex', '0') // needed to put focus on the canvas
+    canvas.onclick = () => {
+      canvas.focus()
+    }
+
+    canvas.onkeyup = (e) => { // 聚焦后keyup才能进到这个回调
+      const androidKeycode = MapToAndroid(e.keyCode)
+      if (androidKeycode !== -1) {
+        const data = {
+          operation: 'ku',
+          keycode: androidKeycode,
+          metaState: e.shiftKey ? 1 : 0
+        }
+        this.androidWebsocket.send(JSON.stringify(data))
+      }
+      e.preventDefault()
+    }
+
+    canvas.onkeydown = (e) => { // 聚焦后keydown才能进到这个回调
+      const androidKeycode = MapToAndroid(e.keyCode)
+      if (androidKeycode !== -1) {
+        const data = {
+          operation: 'kd',
+          keycode: androidKeycode,
+          metaState: e.shiftKey ? 1 : 0
+        }
+        this.androidWebsocket.send(JSON.stringify(data))
+      }
+      e.preventDefault()
     }
   },
   methods: {
