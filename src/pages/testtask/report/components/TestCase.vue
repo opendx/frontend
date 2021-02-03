@@ -18,8 +18,15 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template scope="{ row }">
-          <el-button @click="clickDetailInfo(row)" size="small" type="text">详细信息</el-button>
-          <el-button @click="$router.push({ name: 'UpdateTestcaseAction', params: { actionId: row.id }})" size="small" type="text">编辑用例</el-button>
+          <el-button @click="clickDetailInfo(row)" size="small" type="text">
+            详细信息
+          </el-button>
+          <el-button @click="$router.push({ name: 'UpdateTestcaseAction', params: { actionId: row.id }})" size="small" type="text">
+            编辑用例
+          </el-button>
+          <el-button v-if="row.logUrl" size="small" type="text">
+            <a :href="row.logUrl" target="_blank">日志</a>
+          </el-button>
         </template>
       </el-table-column>
     </el-table>

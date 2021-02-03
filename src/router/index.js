@@ -82,6 +82,19 @@ export const constantRoutes = [
         meta: { title: '仪表板', icon: 'dashboard', affix: true }
       }
     ]
+  },
+  {
+    path: 'log',
+    component: Layout,
+    children: [
+      {
+        path: '/:wsUrl',
+        component: () => import('@/pages/log/index'),
+        name: 'Log',
+        meta: { title: '日志', noCache: false },
+        hidden: true
+      }
+    ]
   }
   // {
   //   path: '/documentation',

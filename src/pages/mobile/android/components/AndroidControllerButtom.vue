@@ -10,9 +10,10 @@
     <screenshot-viewer />
 
     <el-button-group>
-      <el-button size="mini" :disabled="disable" @click="sendKeycode(3)">Home</el-button>
-      <el-button size="mini" :disabled="disable" @click="sendKeycode(4)">Back</el-button>
-      <el-button size="mini" @click="clickClose">Close</el-button>
+      <el-button size="mini" icon="el-icon-s-home" :disabled="disable" @click="sendKeycode(3)"></el-button>
+      <el-button size="mini" icon="el-icon-back" :disabled="disable" @click="sendKeycode(4)"></el-button>
+      <el-button size="mini" icon="el-icon-close" @click="clickClose"></el-button>
+      <el-button size="mini" :disabled="disable" :loading="logBtnLoading" @click="startLog">Log</el-button>
     </el-button-group>
 
     <el-popover placement="left" trigger="click">
@@ -46,7 +47,7 @@
 
 <script>
 import MobileCapture from '@/pages/mobile/components/MobileCapture'
-import { startAdbKit, stopAdbKit, installApp, getImeList, setIme } from '@/api/agent'
+import { startAdbKit, stopAdbKit, installApp, getImeList, setIme, startLogsBroadcast } from '@/api/agent'
 import ScreenshotViewer from '@/pages/mobile/components/ScreenshotViewer'
 
 export default {
@@ -68,7 +69,8 @@ export default {
       adbKitIsStart: false,
       installBtnLoading: false,
       installBtnText: '安装APP',
-      choosedFile: null
+      choosedFile: null,
+      logBtnLoading: false
     }
   },
   computed: {
@@ -80,6 +82,9 @@ export default {
     },
     mobileId() {
       return this.$store.state.mobile.id
+    },
+    driverSessionId() {
+      return this.$store.state.mobile.driverSessionId
     },
     disable() {
       return !this.$store.state.mobile.driverSessionId
@@ -117,6 +122,15 @@ export default {
           this.adbkitTip = ''
         })
       }
+    },
+    startLog() {
+      this.logBtnLoading = true
+      startLogsBroadcast(this.agentIp, this.agentPort, this.mobileId, this.driverSessionId).then(response => {
+        const wsUrl = response.data.wsUrl
+        this.$router.push({ name: 'Log', params: { wsUrl }})
+      }).finally(() => {
+        this.logBtnLoading = false
+      })
     },
     // 选择apk
     onChange(file) {

@@ -26,6 +26,22 @@ export function installApp(agentIp, agentPort, mobileId, data) {
   })
 }
 
+export function startLogsBroadcast(agentIp, agentPort, mobileId, sessionId) {
+  const request = service(agentIp, agentPort)
+  return request({
+    method: 'get',
+    url: `/mobile/${mobileId}/session/${sessionId}/startLogsBroadcast`
+  })
+}
+
+export function stopLogsBroadcast(agentIp, agentPort, mobileId) {
+  const request = service(agentIp, agentPort)
+  return request({
+    method: 'get',
+    url: `/mobile/${mobileId}/stopLogsBroadcast`
+  })
+}
+
 export function startAdbKit(agentIp, agentPort, mobileId) {
   const request = service(agentIp, agentPort)
   return request({

@@ -10,8 +10,9 @@
     <screenshot-viewer />
 
     <el-button-group>
-      <el-button size="mini" @click="clickHome" :disabled="disable">Home</el-button>
-      <el-button size="mini" @click="clickClose">Close</el-button>
+      <el-button size="mini" icon="el-icon-s-home" :disabled="disable" @click="clickHome"></el-button>
+      <el-button size="mini" :disabled="disable" :loading="logBtnLoading" @click="startLog">Log</el-button>
+      <el-button size="mini" icon="el-icon-close" @click="clickClose"></el-button>
     </el-button-group>
 
     <el-popover placement="left" trigger="click">
@@ -27,7 +28,7 @@
 
 <script>
 import MobileCapture from '@/pages/mobile/components/MobileCapture'
-import { installApp } from '@/api/agent'
+import { installApp, startLogsBroadcast } from '@/api/agent'
 import ScreenshotViewer from '@/pages/mobile/components/ScreenshotViewer'
 
 export default {
@@ -47,7 +48,8 @@ export default {
       choosedFile: null,
       home: {
         operation: 'home'
-      }
+      },
+      logBtnLoading: false
     }
   },
   computed: {
@@ -62,6 +64,9 @@ export default {
     },
     disable() {
       return !this.$store.state.mobile.driverSessionId
+    },
+    driverSessionId() {
+      return this.$store.state.mobile.driverSessionId
     }
   },
   methods: {
@@ -101,6 +106,15 @@ export default {
     clickClose() {
       this.$emit('onClickClose')
       this.closeBoard()
+    },
+    startLog() {
+      this.logBtnLoading = true
+      startLogsBroadcast(this.agentIp, this.agentPort, this.mobileId, this.driverSessionId).then(response => {
+        const wsUrl = response.data.wsUrl
+        this.$router.push({ name: 'Log', params: { wsUrl }})
+      }).finally(() => {
+        this.logBtnLoading = false
+      })
     },
     closeBoard() {
       this.$store.dispatch('mobile/setShow', false) // AppMain.vue在v-if销毁右侧控制组件
