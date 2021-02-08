@@ -18,7 +18,7 @@
           <el-table-column type="selection" width="20" />
           <el-table-column width="220">
             <template slot="header">
-              <span class="required">步骤</span>
+              步骤
             </template>
             <template scope="scope">
               <div style="margin-bottom: 3px">
@@ -61,7 +61,7 @@
               </el-table>
             </template>
           </el-table-column>
-          <el-table-column label="变量接收Action返回值">
+          <el-table-column label="赋值">
             <template scope="{ row }">
               <span class="ellipsis">{{ getActionReturnValueText(row.actionId) }}</span>
               <el-input

@@ -6,10 +6,10 @@
           <el-form-item label="分类">
             <el-select
               v-model="saveActionForm.categoryId"
-              @visible-change="actionCategorySelectChange"
               clearable
               filterable
               placeholder="选择分类"
+              @visible-change="actionCategorySelectChange"
             >
               <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" />
             </el-select>
@@ -26,7 +26,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="success" @click="saveAction" title="ctrl+s">保存</el-button>
+            <el-button type="success" title="ctrl+s" @click="saveAction">保存</el-button>
           </el-form-item>
         </el-form>
       </el-row>
@@ -34,24 +34,26 @@
       <el-row>
         <el-form size="mini" :inline="true">
           <el-form-item>
-            <el-button type="text" v-popover:action-return-value-popover>返回值</el-button>
-            <el-button type="text" v-popover:action-param-popover>方法参数</el-button>
+            <el-button v-if="isTestCase" v-popover:action-set-up-popover type="text">setUp</el-button>
+            <el-button v-if="isTestCase" v-popover:action-tear-down-popover type="text">tearDown</el-button>
+            <el-button v-popover:action-return-value-popover type="text">返回值</el-button>
+            <el-button v-if="!isTestCase" v-popover:action-param-popover type="text">方法参数</el-button>
             <el-button type="text" @click="showLocalVar = true">局部变量</el-button>
-            <el-button type="text" v-popover:action-java-import-popover>Java Import</el-button>
-            <el-button type="text" v-popover:action-import-popover title="java代码调用非基础Action，需要在此导入">导入Action</el-button>
-            <el-button type="text" v-popover:action-depends-popover v-if="isTestCase">依赖用例</el-button>
-            <el-button type="text" v-popover:action-page-popover v-if="!isTestCase">绑定Page</el-button>
+            <el-button v-popover:action-java-import-popover type="text">Java Import</el-button>
+            <el-button v-popover:action-import-popover type="text" title="java代码调用非基础Action，需要在此导入">导入Action</el-button>
+            <el-button v-if="isTestCase" v-popover:action-depends-popover type="text">依赖用例</el-button>
+            <el-button v-if="!isTestCase" v-popover:action-page-popover type="text">绑定Page</el-button>
           </el-form-item>
           <el-form-item label="调试环境">
-            <el-select v-model="env" @change="selectedEnv" @visible-change="envSelectChange" style="width: 150px">
+            <el-select v-model="env" style="width: 150px" @change="selectedEnv" @visible-change="envSelectChange">
               <el-option v-for="environment in environmentList" :key="environment.id" :value="environment.id" :label="environment.name" />
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="warning" :loading="debugBtnLoading" @click="debugAction" title="ctrl+d">调试</el-button>
+            <el-button type="warning" :loading="debugBtnLoading" title="ctrl+d" @click="debugAction">调试</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" v-show="code" @click="showCode = true">查看code</el-button>
+            <el-button v-show="code" type="primary" @click="showCode = true">查看code</el-button>
           </el-form-item>
         </el-form>
       </el-row>
@@ -62,8 +64,8 @@
     <action-code-drawer :code="code" :visible.sync="showCode" />
     <action-local-var-list-drawer :visible.sync="showLocalVar" :local-vars.sync="saveActionForm.localVars" :environment-list="environmentList" />
     <el-popover
-      placement="bottom"
       ref="action-import-popover"
+      placement="bottom"
       width="600"
       trigger="click"
     >
@@ -77,8 +79,8 @@
       />
     </el-popover>
     <el-popover
-      placement="bottom"
       ref="action-depends-popover"
+      placement="bottom"
       width="600"
       trigger="click"
     >
@@ -92,24 +94,40 @@
       />
     </el-popover>
     <el-popover
-      placement="bottom"
       ref="action-page-popover"
+      placement="bottom"
       width="600"
       trigger="click"
     >
       <el-select
         v-model="saveActionForm.pageId"
-        @visible-change="pageSelectChange"
         filterable
         clearable
         style="width: 100%"
+        @visible-change="pageSelectChange"
       >
         <el-option v-for="page in pages" :key="page.id" :value="page.id" :label="page.name" />
       </el-select>
     </el-popover>
     <el-popover
+      ref="action-set-up-popover"
       placement="bottom"
+      width="1200"
+      trigger="click"
+    >
+      <action-step ref="actionSetUp" :steps.sync="saveActionForm.setUp" :height="bottomHeight" />
+    </el-popover>
+    <el-popover
+      ref="action-tear-down-popover"
+      placement="bottom"
+      width="1200"
+      trigger="click"
+    >
+      <action-step ref="actionTearDown" :steps.sync="saveActionForm.tearDown" :height="bottomHeight" />
+    </el-popover>
+    <el-popover
       ref="action-return-value-popover"
+      placement="bottom"
       width="600"
       trigger="click"
     >
@@ -123,16 +141,16 @@
       </el-form>
     </el-popover>
     <el-popover
-      placement="bottom"
       ref="action-param-popover"
+      placement="bottom"
       width="1000"
       trigger="click"
     >
       <action-param-list :params.sync="saveActionForm.params" />
     </el-popover>
     <el-popover
-      placement="bottom"
       ref="action-java-import-popover"
+      placement="bottom"
       width="800"
       trigger="click"
     >
@@ -178,7 +196,9 @@ export default {
         returnValueDesc: null,
         params: [],
         localVars: [],
+        setUp: [],
         steps: [],
+        tearDown: [],
         javaImports: [],
         actionImports: [],
         platforms: [],
@@ -335,16 +355,13 @@ export default {
         return
       }
 
-      if (this.$refs.actionStep.selectedSteps.length === 0) {
-        this.$notify.error('至少勾选一个步骤')
-        return
-      }
-
       this.debugBtnLoading = true
       this.code = ''
 
       const action = JSON.parse(JSON.stringify(this.saveActionForm))
+      action.setUp = this.$refs.actionSetUp.selectedSteps
       action.steps = this.$refs.actionStep.selectedSteps
+      action.tearDown = this.$refs.actionTearDown.selectedSteps
 
       const debugInfo = platform === 3 ? {
         agentIp: this.$store.state.browser.agentIp,
