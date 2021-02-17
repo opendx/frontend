@@ -444,6 +444,12 @@ export const asyncRoutes = [
         meta: { title: 'Agent', icon: 'node', noCache: true }
       },
       {
+        path: 'agent/extJar/list',
+        component: () => import('@/pages/agent/extjar/list'),
+        name: 'AgentExtJarList',
+        meta: { title: 'AgentJar', icon: 'jar', noCache: false }
+      },
+      {
         path: 'user/add',
         component: () => import('@/pages/user/add'),
         name: 'AddUser',
